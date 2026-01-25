@@ -18,7 +18,7 @@ Small, actionable steps go here. Ralph triggers Clawd for each one.
 - [ ] **Design Discord server logo** - Generate or source a logo for the server
 - [ ] **Implement audio message processing** - Add Discord voice message transcription capability  
 - [ ] **Multi-user access system** - Design restricted access model for sharing Ralph/Clawd with others
-- [ ] **Model switching interface** - Enable model selection from Discord chat
+- [x] **Model switching interface** - Enable model selection from Discord chat (Added !model command)
 - [x] **Dashboard** - Created and accessible via serve_dashboard.py
 - [x] **Task queue visibility** - Visible via INBOX.md and dashboard
 

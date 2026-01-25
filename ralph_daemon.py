@@ -120,9 +120,23 @@ class RalphBot(discord.Client):
         elif content.startswith('!listkeys'):
             keys = self.bot_config.get("api_keys", {}).keys()
             if keys:
-                await message.channel.send(f"🔑 **Stored Keys:**\n" + "\n".join([f"- `{k}`" for k in keys]))
+                await message.channel.send(f"🔑 **Stored Keys:**\\n" + "\\n".join([f"- `{k}`" for k in keys]))
             else:
                 await message.channel.send("Empty 🔑 keychain.")
+
+        elif content.startswith('!model'):
+            parts = content[7:].strip().split()
+            if not parts:
+                # Show current model
+                current_model = self.bot_config.get("model", "default")
+                await message.channel.send(f"🤖 **Current Model:** `{current_model}`\\n\\nUse `!model \u003cprovider/model\u003e` to change (e.g., `!model anthropic/claude-sonnet-4`).")
+            else:
+                # Set new model
+                new_model = parts[0]
+                self.bot_config["model"] = new_model
+                save_config(self.bot_config)
+                await message.channel.send(f"✅ **Model switched to:** `{new_model}`")
+
 
         elif content.startswith('!resume'):
             self.bot_config["api_error_paused"] = False
@@ -181,6 +195,7 @@ class RalphBot(discord.Client):
             "`!status` - View current focus, uptime, and system load.\\n"
             "`!queue` / `!inbox` - View the detailed task queue from INBOX.md.\\n"
             "`!pulse` - Force an immediate project check.\\n"
+            "`!model [provider/model]` - View or switch AI model.\\n"
             "`!reset [clawd/ralph]` - Restart the specified service.\\n"
             "`!setkey [NAME] [VAL]` - Update API keys.\\n"
             "`!help` - Show this guide."
@@ -291,10 +306,19 @@ class RalphBot(discord.Client):
             print(f"[DEBUG] Running: {OPENCODE_BIN} run \"{prompt[:100]}...\"")
             print(f"[DEBUG] Working directory: {CLAW_DIR}")
 
+            # Build command with optional model parameter
+            cmd_args = [OPENCODE_BIN, "run"]
+            
+            # Add model if specified in config
+            model = self.bot_config.get("model")
+            if model:
+                cmd_args.extend(["--model", model])
+                print(f"[DEBUG] Using model: {model}")
+            
+            cmd_args.append(prompt)
+
             process = await asyncio.create_subprocess_exec(
-                OPENCODE_BIN,
-                "run",
-                prompt,  # This is passed as a separate argument, not concatenated
+                *cmd_args,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 env=env,
