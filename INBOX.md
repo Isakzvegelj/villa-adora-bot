@@ -17,7 +17,7 @@ These are large projects. Clawd will break these down into small tasks.
 Small, actionable steps go here. Ralph triggers Clawd for each one.
 - [ ] **Design Discord server logo** - Generate or source a logo for the server
 - [ ] **Implement audio message processing** - Add Discord voice message transcription capability  
-- [ ] **Multi-user access system** - Design restricted access model for sharing Ralph/Clawd with others
+- [x] **Multi-user access system** - Designed restricted access model (see MULTI_USER_ACCESS_DESIGN.md)
 - [x] **Model switching interface** - Enable model selection from Discord chat (Added !model command)
 - [x] **Dashboard** - Created and accessible via serve_dashboard.py
 - [x] **Task queue visibility** - Visible via INBOX.md and dashboard
