@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel_name }} — Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #1e3c72; margin-bottom: 20px; }
+        .refresh-btn { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
+        .refresh-btn:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #1e3c72; color: white; font-weight: 600; }
+        tr:hover { background: #f8f9fa; }
+        .empty { text-align: center; padding: 40px; color: #666; }
+        .badge { display: inline-block; padding: 4px 10px; background: #e8f5e9; color: #2e7d32; border-radius: 12px; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Booking Dashboard — {{ hotel_name }}</h1>
+        <button class="refresh-btn" onclick="loadBookings()">Refresh</button>
+        <table id="bookingsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                </tr>
+            </thead>
+            <tbody id="bookingsBody">
+                <tr><td colspan="5" class="empty">Loading bookings...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadBookings() {
+            const tbody = document.getElementById('bookingsBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="empty">Loading...</td></tr>';
+            
+            try {
+                const res = await fetch('/api/bookings');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                
+                if (data.bookings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet.</td></tr>';
+                    return;
+                }
+                
+                data.bookings.forEach(b => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${b.id}</td>
+                        <td>${b.guest}</td>
+                        <td><span class="badge">${b.room}</span></td>
+                        <td>${b.check_in}</td>
+                        <td>${b.check_out}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty">Error loading bookings.</td></tr>';
+                console.error(e);
+            }
+        }
+        
+        loadBookings();
+        // Auto-refresh every 30 seconds
+        setInterval(loadBookings, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel.name }} — Digital Concierge</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 800px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        @media (min-width: 520px) { .container { height: 90vh; } }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.3em; margin-bottom: 5px; }
+        .header p { font-size: 0.9em; opacity: 0.9; }
+        
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user { margin-left: auto; }
+        
+        .bubble {
+            padding: 14px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 0.95em;
+        }
+        .message.bot .bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e1e4e8;
+            border-top-left-radius: 4px;
+        }
+        .message.user .bubble {
+            background: #007bff;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        
+        .typing {
+            display: flex;
+            gap: 6px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            width: fit-content;
+        }
+        .typing span {
+            width: 8px; height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%,60%,100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e1e4e8;
+            display: flex;
+            gap: 10px;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+        }
+        #messageInput:focus { border-color: #007bff; }
+        #sendBtn {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        
+        .welcome {
+            text-align: center;
+            color: #666;
+            padding: 30px 20px;
+        }
+        .welcome h2 { color: #1e3c72; margin-bottom: 10px; font-size: 1.3em; }
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .suggestion {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+        }
+        .suggestion:hover { background: #1976d2; color: white; }
+        
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8em;
+            color: #888;
+            background: #f8f9fa;
+        }
+        
+        .booking-card {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        .confirmation-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        .btn-yes { background: #4caf50; color: white; }
+        .btn-no { background: #f44336; color: white; }
+        
+        /* Markdown styling */
+        .bubble strong { font-weight: 600; color: #1a1a1a; }
+        .bubble em { font-style: italic; color: #555; }
+        .bubble code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .bubble ul, .bubble ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .bubble li { margin: 4px 0; }
+        .bubble p { margin: 8px 0; }
+        .bubble p:first-child { margin-top: 0; }
+        .bubble p:last-child { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ hotel_name }}</h1>
+            <p>🏔️ Luka, your digital concierge</p>
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <div class="welcome">
+                <h2>Welcome to Villa Adora Bled</h2>
+                <p>I'm Luka, your personal concierge. Ask me anything about our hotel, rooms, or Lake Bled!</p>
+                <div class="suggestions">
+                    <span class="suggestion" data-q="What rooms do you have?">View Rooms</span>
+                    <span class="suggestion" data-q="Check-in/check-out times">Check-in/out</span>
+                    <span class="suggestion" data-q="Tell me about breakfast">Breakfast</span>
+                    <span class="suggestion" data-q="I want to book">Book Now</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
+            <button id="sendBtn">➤</button>
+        </div>
+        
+        <div class="footer">
+            Villa Adora Bled • Cesta svobode 35, 4260 Bled, Slovenia
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const sessionId = 'web-' + Math.random().toString(36).substr(2, 9);
+        
+        let pendingBooking = null;
+        
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        
+        function addMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            if (isUser) {
+                bubble.textContent = text;
+            } else {
+                bubble.innerHTML = marked.parse(text);
+            }
+            msgDiv.appendChild(bubble);
+            chatArea.appendChild(msgDiv);
+            scrollToBottom();
+        }
+        
+        function showTyping() {
+            const typing = document.createElement('div');
+            typing.className = 'message bot';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
+            chatArea.appendChild(typing);
+            scrollToBottom();
+        }
+        
+        function removeTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+        
+        function createConfirmationCard(booking) {
+            const card = document.createElement('div');
+            card.className = 'booking-card';
+            card.innerHTML = `
+                <div style="font-weight:600;margin-bottom:8px;">📋 Booking Confirmation</div>
+                <div>Guest: <strong>${booking.guest_name}</strong></div>
+                <div>Check-in: ${booking.check_in}</div>
+                <div>Check-out: ${booking.check_out}</div>
+                <div>Room: <strong>${booking.room_name}</strong></div>
+                <div class="confirmation-buttons">
+                    <button class="btn btn-yes" onclick="confirmBooking(true)">✓ Yes, Confirm</button>
+                    <button class="btn btn-no" onclick="confirmBooking(false)">✗ No, Cancel</button>
+                </div>
+            `;
+            return card;
+        }
+        
+        async function sendMessage() {
+            const text = messageInput.value.trim();
+            if (!text) return;
+            
+            messageInput.value = '';
+            addMessage(text, true);
+            showTyping();
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, message: text })
+                });
+                
+                const data = await response.json();
+                removeTyping();
+                
+                for (const reply of data.replies) {
+                    if (reply.type === 'text') {
+                        addMessage(reply.content);
+                    } else if (reply.type === 'confirmation_request') {
+                        addMessage(reply.content);
+                    }
+                }
+                
+            } catch (error) {
+                removeTyping();
+                addMessage("⚠️ Connection error. Please refresh.");
+            }
+        }
+        
+        async function confirmBooking(confirmed) {
+            const card = document.querySelector('.booking-card');
+            if (card) card.remove();
+            
+            showTyping();
+            
+            try {
+                const response = await fetch('/api/confirm', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, confirmed: confirmed })
+                });
+                
+                const data = await response.json();
+                removeTyping();
+                addMessage(data.reply.content);
+                
+            } catch (error) {
+                removeTyping();
+                addMessage("⚠️ Error processing confirmation.");
+            }
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+        
+        document.querySelectorAll('.suggestion').forEach(el => {
+            el.addEventListener('click', () => {
+                messageInput.value = el.dataset.q;
+                sendMessage();
+            });
+        });
+        
+        messageInput.focus();
+    </script>
+</body>
+</html>
