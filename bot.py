@@ -1,5 +1,6 @@
 import ollama
 import json
+import os
 from database import add_booking, init_db
 from hotel_data import hotel_info
 
@@ -8,29 +9,52 @@ init_db()
 # ============ Function Schemas ============
 
 book_room_function = {
-    "name": "book_room",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "guest_name": {"type": "string"},
-            "check_in": {"type": "string", "description": "YYYY-MM-DD"},
-            "check_out": {"type": "string", "description": "YYYY-MM-DD"},
-            "room_name": {"type": "string"}
+    "type": "function",
+    "function": {
+        "name": "book_room",
+        "description": "Book a hotel room.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "guest_name": {"type": "string"},
+                "check_in": {"type": "string", "description": "YYYY-MM-DD"},
+                "check_out": {"type": "string", "description": "YYYY-MM-DD"},
+                "room_name": {"type": "string"}
+            },
+            "required": ["guest_name", "check_in", "check_out", "room_name"],
         },
-        "required": ["guest_name", "check_in", "check_out", "room_name"]
-    }
+    },
 }
 
 query_hotel_info_function = {
-    "name": "query_hotel_info",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "topic": {"type": "string", "enum": ["rooms","policies","amenities","location","experiences","breakfast","parking","wifi","pets","cancellation","general"]},
-            "question": {"type": "string"}
+    "type": "function",
+    "function": {
+        "name": "query_hotel_info",
+        "description": "Look up hotel information.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "topic": {
+                    "type": "string",
+                    "enum": [
+                        "rooms",
+                        "policies",
+                        "amenities",
+                        "location",
+                        "experiences",
+                        "breakfast",
+                        "parking",
+                        "wifi",
+                        "pets",
+                        "cancellation",
+                        "general",
+                    ],
+                },
+                "question": {"type": "string"},
+            },
+            "required": ["topic", "question"],
         },
-        "required": ["topic", "question"]
-    }
+    },
 }
 
 # ============ Minimal System Prompt ============
@@ -102,11 +126,14 @@ def chat():
         messages.append({"role": "user", "content": user_input})
         
         try:
+            options = {"num_predict": 100}
+            if "llama3.1" in os.environ.get("OLLAMA_MODEL", ""):
+                options["num_ctx"] = 4096
             response = ollama.chat(
                 model='llama3.2:3b',  # Fast
                 messages=messages,
                 tools=[book_room_function, query_hotel_info_function],
-                options={'num_predict': 100}
+                options=options,
             )
             
             msg = response['message']

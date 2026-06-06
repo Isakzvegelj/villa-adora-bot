@@ -17,12 +17,14 @@
         tr:hover { background: #f8f9fa; }
         .empty { text-align: center; padding: 40px; color: #666; }
         .badge { display: inline-block; padding: 4px 10px; background: #e8f5e9; color: #2e7d32; border-radius: 12px; font-size: 0.85em; }
+        .meta { color: #555; margin-bottom: 12px; font-size: 0.95em; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📋 Booking Dashboard — {{ hotel_name }}</h1>
-        <button class="refresh-btn" onclick="loadBookings()">Refresh</button>
+        <p class="empty">Last updated: <span id="lastUpdated">Never</span></p>
+        <button class="refresh-btn" onclick="loadBookings()">Refresh Now</button>
         <table id="bookingsTable">
             <thead>
                 <tr>
@@ -42,18 +44,20 @@
     <script>
         async function loadBookings() {
             const tbody = document.getElementById('bookingsBody');
+            const lastUpdated = document.getElementById('lastUpdated');
             tbody.innerHTML = '<tr><td colspan="5" class="empty">Loading...</td></tr>';
-            
+
             try {
                 const res = await fetch('/api/bookings');
                 const data = await res.json();
                 tbody.innerHTML = '';
-                
+
                 if (data.bookings.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet.</td></tr>';
+                    if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
                     return;
                 }
-                
+
                 data.bookings.forEach(b => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -65,6 +69,7 @@
                     `;
                     tbody.appendChild(tr);
                 });
+                if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
             } catch (e) {
                 tbody.innerHTML = '<tr><td colspan="5" class="empty">Error loading bookings.</td></tr>';
                 console.error(e);

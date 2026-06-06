@@ -1,48 +1,28 @@
 # Villa Adora Bled — Digital Concierge "Luka"
 
-A multi-language-capable hotel concierge bot powered by Ollama and SQLite, featuring a web chat interface.
+A hotel concierge bot with a web chat interface. It uses a cloud LLM API via OpenRouter and persists bookings in SQLite.
 
-## Features
-
-✅ **Real-time chat** via web browser or terminal  
-✅ **SQLite bookings** — persists to `hotel.db`  
-✅ **Villa Adora Bled data** — rooms, policies, amenities, experiences  
-✅ **Function calling** — extracts booking details automatically  
-✅ **Confirmation flow** — user confirms before booking  
-✅ **Web interface** — responsive chat UI (Flask)  
+## Current Mode
+- **Interface:** Web chat (Flask app at `/`)
+- **LLM:** OpenRouter-compatible API
+- **Data:** `hotel_data.py` for hotel facts/rooms/policies, `hotel.db` for bookings
+- **Admin:** Simple booking viewer at `/admin`  
 
 ---
 
-## Quick Start
-
-### 1. Install Ollama & Pull Model
+## Dev Quick Start
 
 ```bash
-# Install from https://ollama.ai
-ollama pull hotel-concierge  # your custom model
+cd /Users/isakzvegelj/Documents/antigravity/villa-adora-bot
+./run.sh
 ```
 
-### 2. Install Python Dependencies
+`run.sh` loads the OpenRouter API key from the macOS Keychain, starts the Flask app with the local virtualenv, and then opens an authenticated Cloudflare tunnel on demand.
 
-```bash
-cd /Users/isakzvegelj/hotelbot
-pip3 install -r requirements.txt
-```
-
-### 3. Run the Bot
-
-**Option A — Terminal (CLI)**
-
-```bash
-python3 bot.py
-```
-
-**Option B — Web Interface**
-
-```bash
-python3 app.py
-# Then open http://localhost:5000 in your browser
-```
+## Admin & Staff Handoff
+Staff can view recent bookings at `/admin`. For web testing, use the `/` chat UI. If you see no reply from the bot, the most common issues are:
+- Keychain item `openrouter-api-key` missing or wrong user account
+- Wrong local port: app listens on `5173`; `run.sh` now tunnels `5173`.
 
 ---
 
