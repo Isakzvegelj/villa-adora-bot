@@ -7,7 +7,11 @@ from database import add_booking, init_db
 from hotel_data import hotel_info
 import sqlite3
 from flask import Flask, render_template, request, jsonify
-from rag import retrieve as rag_retrieve
+try:
+    from rag import retrieve as rag_retrieve
+    _RAG_AVAILABLE = True
+except ImportError:
+    _RAG_AVAILABLE = False
 
 init_db()
 
@@ -115,6 +119,8 @@ def format_rag_context(docs: list[str]) -> str:
 
 
 def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
+    if not _RAG_AVAILABLE:
+        return []
     try:
         return rag_retrieve(query=query, top_k=max_facts)
     except Exception:
