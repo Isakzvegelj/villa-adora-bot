@@ -103,6 +103,10 @@ query_hotel_info_function = {
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
+    # Fix missing space between word and number: "from14:00" -> "from 14:00"
+    text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
+    # Fix missing space between number and word: "11.What" -> "11. What"  
+    text = re.sub(r'(\d)([A-Z])', r'\1 \2', text)
     # Fix missing space after punctuation: "word.Word" -> "word. Word"
     text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     # Fix missing space after comma: "word,word" -> "word, word"
@@ -111,7 +115,7 @@ def fix_spacing(text):
     text = re.sub(r':([a-zA-Z])', r': \1', text)
     # Fix run-on words: lowercase followed by uppercase with no space
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
-    # Fix unicode whitespace: replace narrow no-break space, non-breaking space etc with normal space
+    # Fix unicode whitespace
     text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011]', ' ', text)
     # Fix missing space after hyphen when followed by lowercase: "Check-inis" -> "Check-in is"
     text = re.sub(r'-([a-z])', r'- \1', text)
@@ -498,9 +502,17 @@ def api_chat():
                     {"role": "system", "content": f"BOOKING_PENDING: {json.dumps(args)}"}
                 ]
             elif fn == "query_hotel_info":
-                answer = get_hotel_info_response(args.get("topic", "general"), args.get("question", ""))
-                if not answer:
+                topic = args.get("topic", "general")
+                question = args.get("question", user_message)
+                answer = get_hotel_info_response(topic, question)
+                if not answer or not answer.strip():
                     answer = get_hotel_info_response("general", user_message)
+                if not answer or not answer.strip():
+                    answer = (
+                        "I'd be happy to help with that! Could you tell me more about what you'd like to know? "
+                        "I can assist with rooms, check-in times, breakfast, parking, and more."
+                    )
+                answer = fix_spacing(answer)
                 replies.append({"type": "text", "content": answer})
                 messages.append({"role": "tool", "content": answer})
         if not replies:
