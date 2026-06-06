@@ -656,10 +656,20 @@ def api_chat():
                 reply["content"] = clean_response(reply["content"])
             # If content is empty after cleaning, provide a fallback
             if reply.get("type") == "text" and not reply.get("content", "").strip():
-                reply["content"] = get_hotel_info_response("general", user_message) or (
-                    "I'd be happy to help with that! Could you tell me more about what you'd like to know? "
-                    "I can assist with rooms, dining, check-in times, and more."
-                )
+                # Try to detect the topic from the user message
+                msg_lower = user_message.lower()
+                if any(word in msg_lower for word in ["restaurant", "menu", "dining", "chef", "food", "eat", "meal", "wine", "bar", "cocktail"]):
+                    reply["content"] = get_hotel_info_response("restaurant", user_message) or (
+                        f"We have the Adora Pop Up Restaurant right here at the hotel! Creative Slovenian cuisine "
+                        f"by Chef Domen Demšar, served on the terrace with stunning lake views. "
+                        f"Tasting menu ~€65/person, wine pairing ~€35/person. "
+                        f"Reservations: +386 40 558 158. Would you like to book a table?"
+                    )
+                else:
+                    reply["content"] = get_hotel_info_response("general", user_message) or (
+                        "I'd be happy to help with that! Could you tell me more about what you'd like to know? "
+                        "I can assist with rooms, dining, check-in times, and more."
+                    )
 
         return jsonify({"replies": replies})
     except Exception as e:
