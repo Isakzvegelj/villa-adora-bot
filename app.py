@@ -263,7 +263,10 @@ def get_hotel_info_response(topic, question):
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim"],
-        "breakfast": ["breakfast", "food", "eat", "dining", "restaurant", "meal"],
+        "breakfast": ["breakfast", "morning meal", "brunch"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining"],
+        "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
+        "bar": ["bar", "cocktail", "cocktails", "aperitivo", "drinks", "mixologist"],
         "parking": ["parking", "park", "car"],
         "wifi": ["wifi", "wi-fi", "internet", "wireless"],
         "pets": ["pet", "dog", "cat", "animal"],
@@ -354,6 +357,38 @@ def get_hotel_info_response(topic, question):
         return (
             f"{h['policies']['breakfast']} "
             f"Shall I add breakfast to your booking, or would you like to know about local restaurants too?"
+        )
+
+    # Restaurant
+    if actual_topic == "restaurant":
+        r = h.get("dining", {}).get("restaurant", {})
+        return (
+            f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
+            f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
+            f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
+            f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
+            f"The terrace has arguably the best sunset views in Bled. "
+            f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
+            f"Would you like to make a reservation?"
+        )
+
+    # Wine list
+    if actual_topic == "wine":
+        return (
+            f"Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines "
+            f"from vineyards near Bled alongside selected international labels. "
+            f"Wine pairing is available with our tasting menu (approximately €35/person). "
+            f"The tasting menu itself is approximately €65/person. "
+            f"For the full current wine list, I'd recommend contacting the restaurant directly at "
+            f"+386 40 558 158. Would you like to reserve a table?"
+        )
+
+    # Bar
+    if actual_topic == "bar":
+        return (
+            f"Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
+            f"It's the perfect spot for sunset drinks! The terrace is open every day. "
+            f"Would you like to know about our pop-up dining events too?"
         )
 
     # Parking
