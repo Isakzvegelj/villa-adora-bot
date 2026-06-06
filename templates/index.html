@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ hotel.name }} — Digital Concierge</title>
+    <title>{{ hotel_name }} — Digital Concierge</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%),
+                        url('/static/images/hero_lake.jpg') center/cover no-repeat fixed;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,31 +22,42 @@
             max-width: 500px;
             height: 100vh;
             max-height: 800px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.97);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
         }
-        @media (min-width: 520px) { .container { height: 90vh; } }
-        
+
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, rgba(30,60,114,0.92) 0%, rgba(42,82,152,0.88) 100%),
+                        url('/static/images/hotel_exterior.jpg') center/cover no-repeat;
             color: white;
-            padding: 20px;
+            padding: 24px 20px;
             text-align: center;
+            position: relative;
         }
-        .header h1 { font-size: 1.3em; margin-bottom: 5px; }
-        .header p { font-size: 0.9em; opacity: 0.9; }
-        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(30,60,114,0.7) 0%, rgba(42,82,152,0.85) 100%);
+            z-index: 0;
+        }
+        .header > * { position: relative; z-index: 1; }
+        .header h1 { font-size: 1.4em; margin-bottom: 4px; font-weight: 600; letter-spacing: 0.5px; }
+        .header p { font-size: 0.9em; opacity: 0.95; font-weight: 300; }
+
         .chat-area {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
             background: #f8f9fa;
         }
-        
+
         .message {
             margin-bottom: 15px;
             max-width: 85%;
@@ -56,7 +68,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .message.user { margin-left: auto; }
-        
+
         .bubble {
             padding: 14px 18px;
             border-radius: 18px;
@@ -74,7 +86,7 @@
             color: white;
             border-top-right-radius: 4px;
         }
-        
+
         .typing {
             display: flex;
             gap: 6px;
@@ -96,7 +108,7 @@
             0%,60%,100% { transform: translateY(0); }
             30% { transform: translateY(-5px); }
         }
-        
+
         .input-area {
             padding: 15px;
             background: white;
@@ -123,7 +135,7 @@
             cursor: pointer;
             font-size: 1.2em;
         }
-        
+
         .welcome {
             text-align: center;
             color: #666;
@@ -150,7 +162,7 @@
             flex-wrap: wrap;
             gap: 8px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 12px;
         }
         .suggestion {
             background: #e3f2fd;
@@ -162,7 +174,7 @@
             cursor: pointer;
         }
         .suggestion:hover { background: #1976d2; color: white; }
-        
+
         .footer {
             text-align: center;
             padding: 10px;
@@ -170,7 +182,7 @@
             color: #888;
             background: #f8f9fa;
         }
-        
+
         .booking-card {
             background: #e8f5e9;
             border: 1px solid #c8e6c9;
@@ -193,8 +205,7 @@
         }
         .btn-yes { background: #4caf50; color: white; }
         .btn-no { background: #f44336; color: white; }
-        
-        /* Markdown styling */
+
         .bubble strong { font-weight: 600; color: #1a1a1a; }
         .bubble em { font-style: italic; color: #555; }
         .bubble code {
@@ -204,10 +215,7 @@
             font-family: monospace;
             font-size: 0.9em;
         }
-        .bubble ul, .bubble ol {
-            margin: 8px 0;
-            padding-left: 20px;
-        }
+        .bubble ul, .bubble ol { margin: 8px 0; padding-left: 20px; }
         .bubble li { margin: 4px 0; }
         .bubble p { margin: 8px 0; }
         .bubble p:first-child { margin-top: 0; }
@@ -220,7 +228,7 @@
             <h1>{{ hotel_name }}</h1>
             <p>🏔️ Luka, your digital concierge</p>
         </div>
-        
+
         <div class="chat-area" id="chatArea">
             <div class="welcome">
                 <h2>Welcome to Villa Adora Bled</h2>
@@ -241,12 +249,12 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="input-area">
             <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
             <button id="sendBtn">➤</button>
         </div>
-        
+
         <div class="footer">
             Villa Adora Bled • Cesta svobode 35, 4260 Bled, Slovenia
         </div>
@@ -257,13 +265,13 @@
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
         const sessionId = 'web-' + Math.random().toString(36).substr(2, 9);
-        
+
         let pendingBooking = null;
-        
+
         function scrollToBottom() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
-        
+
         function addMessage(text, isUser = false) {
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${isUser ? 'user' : 'bot'}`;
@@ -276,15 +284,6 @@
             }
             msgDiv.appendChild(bubble);
             chatArea.appendChild(msgDiv);
-            scrollToBottom();
-        }
-        
-        function showTyping() {
-            const typing = document.createElement('div');
-            typing.className = 'message bot';
-            typing.id = 'typingIndicator';
-            typing.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
-            chatArea.appendChild(typing);
             scrollToBottom();
         }
 
@@ -301,12 +300,7 @@
             const el = document.getElementById('thinkingIndicator');
             if (el) el.remove();
         }
-        
-        function removeTyping() {
-            const typing = document.getElementById('typingIndicator');
-            if (typing) typing.remove();
-        }
-        
+
         function createConfirmationCard(booking) {
             const card = document.createElement('div');
             card.className = 'booking-card';
@@ -323,25 +317,25 @@
             `;
             return card;
         }
-        
+
         async function sendMessage() {
             const text = messageInput.value.trim();
             if (!text) return;
-            
+
             messageInput.value = '';
             addMessage(text, true);
             showThinking();
-            
+
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_id: sessionId, message: text })
                 });
-                
+
                 const data = await response.json();
                 removeThinking();
-                
+
                 for (const reply of data.replies) {
                     if (reply.type === 'text') {
                         addMessage(reply.content);
@@ -349,48 +343,48 @@
                         addMessage(reply.content);
                     }
                 }
-                
+
             } catch (error) {
                 removeThinking();
                 addMessage("⚠️ Connection error. Please refresh.");
             }
         }
-        
+
         async function confirmBooking(confirmed) {
             const card = document.querySelector('.booking-card');
             if (card) card.remove();
-            
-            showTyping();
-            
+
+            showThinking();
+
             try {
                 const response = await fetch('/api/confirm', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_id: sessionId, confirmed: confirmed })
                 });
-                
+
                 const data = await response.json();
-                removeTyping();
+                removeThinking();
                 addMessage(data.reply.content);
-                
+
             } catch (error) {
-                removeTyping();
+                removeThinking();
                 addMessage("⚠️ Error processing confirmation.");
             }
         }
-        
+
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
-        
+
         document.querySelectorAll('.suggestion').forEach(el => {
             el.addEventListener('click', () => {
                 messageInput.value = el.dataset.q;
                 sendMessage();
             });
         });
-        
+
         messageInput.focus();
     </script>
 </body>
