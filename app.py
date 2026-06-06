@@ -103,9 +103,11 @@ query_hotel_info_function = {
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
+    # Replace all unicode whitespace variants with normal space
+    text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011\u2012\u2013\u2014]', ' ', text)
     # Fix missing space between word and number: "from14:00" -> "from 14:00"
     text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
-    # Fix missing space between number and word: "11.What" -> "11. What"  
+    # Fix missing space between number and word: "11.What" -> "11. What"
     text = re.sub(r'(\d)([A-Z])', r'\1 \2', text)
     # Fix missing space after punctuation: "word.Word" -> "word. Word"
     text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
@@ -115,10 +117,6 @@ def fix_spacing(text):
     text = re.sub(r':([a-zA-Z])', r': \1', text)
     # Fix run-on words: lowercase followed by uppercase with no space
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
-    # Fix unicode whitespace
-    text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011]', ' ', text)
-    # Fix missing space after hyphen when followed by lowercase: "Check-inis" -> "Check-in is"
-    text = re.sub(r'-([a-z])', r'- \1', text)
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
