@@ -135,13 +135,14 @@ def build_system_prompt() -> str:
         "- After collecting all details, summarize and ask 'Would you like me to confirm this booking?'\n"
         "- Only call book_room() after guest confirms yes.\n\n"
         "RULES:\n"
+        "- Answer ALL common questions directly from the facts above. Do NOT use tools for simple queries.\n"
+        "- Questions about: check-in/out times, rooms, breakfast, parking, WiFi, pets, location, experiences, policies — answer directly.\n"
+        "- Only use query_hotel_info() if the question is very specific and you need to look up details.\n"
+        "- Only use book_room() when the guest explicitly wants to make a booking and has confirmed.\n"
         "- If you don't know something, say 'Let me check with the manager on that.'\n"
-        "- For anything not covered above, politely say you'll need to check.\n"
-        "- Always end with a question like 'Would you like to know about...' or 'Can I help with anything else?'\n"
-        "- When guest asks about check-in/check-out times, give the exact times from the facts above — do NOT ask for booking details first.\n"
-        "- For general hotel info (times, policies, rooms, breakfast, parking, etc.), answer directly from the facts above.\n"
-        "- Only use query_hotel_info() tool for complex or specific info lookups.\n"
+        "- Always end with a follow-up question to keep the conversation going.\n"
         "- Never ask for booking reference or reservation details — you don't have access to booking systems.\n"
+        "- Keep responses to 2-3 sentences plus a closing question.\n"
     )
 
 
@@ -370,8 +371,8 @@ def api_chat():
             model=MODEL,
             messages=messages,
             tools=[book_room_function, query_hotel_info_function],
-            temperature=0.5,
-            max_tokens=200,
+            temperature=0.7,
+            max_tokens=300,
         )
         choice = response.choices[0] if response.choices else None
         if choice is None:
