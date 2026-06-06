@@ -654,6 +654,12 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
+            # If content is empty after cleaning, provide a fallback
+            if reply.get("type") == "text" and not reply.get("content", "").strip():
+                reply["content"] = get_hotel_info_response("general", user_message) or (
+                    "I'd be happy to help with that! Could you tell me more about what you'd like to know? "
+                    "I can assist with rooms, dining, check-in times, and more."
+                )
 
         return jsonify({"replies": replies})
     except Exception as e:
