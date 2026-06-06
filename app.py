@@ -572,6 +572,35 @@ def api_chat():
                 replies.append({"type": "text", "content": fallback})
             else:
                 replies.append({"type": "text", "content": content})
+
+        # Check if guest mentioned a late check-in or check-out time in this message
+        # and save to calendar for hotel staff awareness
+        msg_lower = user_message.lower()
+        is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late"])
+        is_late_checkout = any(word in msg_lower for word in ["late check-out", "late checkout", "late check out", "check out late", "later checkout"])
+        if is_late_checkin or is_late_checkout:
+            extracted_time = extract_time_from_message(user_message)
+            if extracted_time:
+                event_type = "late_check_in" if is_late_checkin else "late_check_out"
+                # Try to get guest name from session messages
+                guest_name = "Guest"
+                for msg in messages:
+                    if isinstance(msg, dict) and msg.get("role") == "user":
+                        name_match = re.search(r"(?:my name is|i'm|i am|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", msg.get("content", ""), re.IGNORECASE)
+                        if name_match:
+                            guest_name = name_match.group(1)
+                            break
+                add_calendar_event(
+                    session_id=session_id,
+                    event_type=event_type,
+                    guest_name=guest_name,
+                    time=extracted_time,
+                    notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}"
+                )
+                # Append confirmation to the last reply
+                if replies:
+                    replies[-1]["content"] += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar for the hotel staff."
+
         return jsonify({"replies": replies})
     except Exception as e:
         return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}]}), 500
