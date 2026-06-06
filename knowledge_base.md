@@ -110,8 +110,8 @@
 - €22 per person
 - Fresh pastries, bread, local Slovenian products
 - Served in dining room with lake views
-- High quality, described as "absolutely delicious"
-- Can accommodate dietary preferences
+- **Dietary options:** Vegan, vegetarian, and gluten-free options available on request
+- Please inform us of any allergies or dietary requirements when booking
 
 ### Adora Pop Up Restaurant
 - **Location:** Inside Adora Luxury Hotel, on the shores of Lake Bled

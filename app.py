@@ -193,7 +193,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-21:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "- Breakfast: €22/person, served 8-10 AM in dining room\n"
+        "- Breakfast: €22/person, served 8-10 AM. Vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
@@ -353,9 +353,29 @@ def get_hotel_info_response(topic, question):
 
     # Breakfast
     if actual_topic == "breakfast":
+        b = h.get("dining", {}).get("breakfast", {})
+        if isinstance(b, dict):
+            dietary = b.get("dietary", {})
+            # Check if asking about dietary needs
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
+                return (
+                    f"Breakfast is €22/person, served 8-10 AM in our dining room. "
+                    f"We cater to dietary needs: {dietary.get('vegan', 'Vegan options available')}, "
+                    f"{dietary.get('vegetarian', 'vegetarian options')}, "
+                    f"{dietary.get('gluten_free', 'gluten-free on request')}. "
+                    f"{dietary.get('allergies', 'Please inform us of any allergies when booking')}. "
+                    f"Would you like to add breakfast to your booking?"
+                )
+            return (
+                f"Breakfast is €22/person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
+                f"We also offer vegan, vegetarian, and gluten-free options on request. "
+                f"Shall I add breakfast to your booking?"
+            )
+        # Fallback for old string format
         return (
-            f"{h['policies']['breakfast']} "
-            f"Shall I add breakfast to your booking, or would you like to know about local restaurants too?"
+            f"{b} "
+            f"Vegan, vegetarian, and gluten-free options are available on request. "
+            f"Shall I add breakfast to your booking?"
         )
 
     # Restaurant

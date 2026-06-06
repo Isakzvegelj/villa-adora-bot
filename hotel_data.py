@@ -139,7 +139,16 @@ hotel_info = {
         "Child friendly"
     ],
     "dining": {
-        "breakfast": "Served daily 8:00-10:00 AM, €22/person, fresh pastries, bread, local products",
+        "breakfast": {
+            "description": "Served daily 8:00-10:00 AM, €22/person",
+            "includes": ["Fresh pastries", "Bread", "Local Slovenian products", "Coffee & tea"],
+            "dietary": {
+                "vegan": "Yes — vegan breakfast option available on request",
+                "vegetarian": "Yes — vegetarian options available",
+                "gluten_free": "Yes — gluten-free options available on request",
+                "allergies": "Please inform us of any allergies or dietary requirements when booking"
+            }
+        },
         "restaurant": {
             "name": "Adora Pop Up Restaurant",
             "description": "Exclusive dining destination inside Adora Luxury Hotel. Creative, locally inspired Slovenian dishes using top-quality regional ingredients. Led by renowned Chef Domen Demšar.",
