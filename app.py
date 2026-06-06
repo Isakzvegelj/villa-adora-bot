@@ -140,7 +140,7 @@ def build_system_prompt() -> str:
         "- Only use query_hotel_info() if the question is very specific and you need to look up details.\n"
         "- Only use book_room() when the guest explicitly wants to make a booking and has confirmed.\n"
         "- If you don't know something, say 'Let me check with the manager on that.'\n"
-        "- Always end with a follow-up question to keep the conversation going.\n"
+        "- Always end with a follow-up question to keep the conversation going. Never give a bare answer without a question.\n"
         "- Never ask for booking reference or reservation details — you don't have access to booking systems.\n"
         "- Keep responses to 2-3 sentences plus a closing question.\n"
     )
@@ -443,7 +443,13 @@ def api_chat():
                 replies.append({"type": "text", "content": answer})
                 messages.append({"role": "tool", "content": answer})
         if not replies:
-            replies.append({"type": "text", "content": content})
+            # Fallback: if model returned empty content, try to answer directly
+            if tool_calls:
+                # Try to answer from hotel data directly
+                fallback = get_hotel_info_response("general", user_message)
+                replies.append({"type": "text", "content": fallback})
+            else:
+                replies.append({"type": "text", "content": content})
         return jsonify({"replies": replies})
     except Exception as e:
         return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}]}), 500
