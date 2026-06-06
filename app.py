@@ -45,7 +45,7 @@ def make_client() -> OpenAI:
     )
 
 client = make_client()
-MODEL = os.environ.get("LLM_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
+MODEL = os.environ.get("LLM_MODEL", "anthropic/claude-sonnet-4")
 
 book_room_function = {
     "type": "function",
@@ -519,6 +519,12 @@ def api_chat():
     messages = apply_rag_to_messages(messages, user_message)
     sessions[session_id] = messages
     messages.append({"role": "user", "content": user_message})
+
+    # Trim conversation to last 10 messages to avoid token limits
+    if len(messages) > 12:
+        messages = [messages[0]] + messages[-10:]
+        sessions[session_id] = messages
+
     try:
         response = client.chat.completions.create(
             model=MODEL,
