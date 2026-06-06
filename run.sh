@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 OPENAI_API_KEY="$(security find-generic-password -a isakzvegelj -s openrouter-api-key -w)"
 export OPENAI_API_KEY
 export LLM_BASE_URL="${LLM_BASE_URL:-https://openrouter.ai/api/v1}"
-export LLM_MODEL="${LLM_MODEL:-google/gemini-2.0-flash-exp:free}"
+export LLM_MODEL="${LLM_MODEL:-openrouter/free}"
 
 if [ -z "$OPENAI_API_KEY" ]; then
   echo "OpenRouter API key not found in Keychain. Store it first:" >&2

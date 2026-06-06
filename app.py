@@ -41,7 +41,7 @@ def make_client() -> OpenAI:
     )
 
 client = make_client()
-MODEL = os.environ.get("LLM_MODEL", "google/gemini-2.0-flash-exp:free")
+MODEL = os.environ.get("LLM_MODEL", "openrouter/free")
 
 book_room_function = {
     "type": "function",
