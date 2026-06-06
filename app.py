@@ -194,10 +194,9 @@ def build_system_prompt() -> str:
         "- Check-in: 14:00-21:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
         "- Breakfast: €22/person, served 8-10 AM in dining room\n"
-        "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
-        "- Tasting menu ~€65/person, wine pairing ~€35/person\n"
-        "- Wine list: curated Slovenian and international wines\n"
-        "- Bar: cocktails and aperitivos daily on terrace\n"
+        "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
+        "- Wine list: curated Slovenian and international wines by in-house expert\n"
+        "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
         "- Free parking and WiFi\n"
         "- Pets allowed on request\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
@@ -264,7 +263,7 @@ def get_hotel_info_response(topic, question):
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim"],
         "breakfast": ["breakfast", "morning meal", "brunch"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
         "bar": ["bar", "cocktail", "cocktails", "aperitivo", "drinks", "mixologist"],
         "parking": ["parking", "park", "car"],
