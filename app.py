@@ -44,7 +44,7 @@ def make_client() -> OpenAI:
     )
 
 client = make_client()
-MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-120b:free")
+MODEL = os.environ.get("LLM_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
 
 book_room_function = {
     "type": "function",
