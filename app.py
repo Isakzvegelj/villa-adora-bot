@@ -111,6 +111,10 @@ def fix_spacing(text):
     text = re.sub(r':([a-zA-Z])', r': \1', text)
     # Fix run-on words: lowercase followed by uppercase with no space
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # Fix unicode whitespace: replace narrow no-break space, non-breaking space etc with normal space
+    text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011]', ' ', text)
+    # Fix missing space after hyphen when followed by lowercase: "Check-inis" -> "Check-in is"
+    text = re.sub(r'-([a-z])', r'- \1', text)
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
@@ -214,7 +218,7 @@ def get_hotel_info_response(topic, question):
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
-        "location": ["location", "address", "where", "direction", "map", "find"],
+        "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim"],
         "breakfast": ["breakfast", "food", "eat", "dining", "restaurant", "meal"],
         "parking": ["parking", "park", "car"],
