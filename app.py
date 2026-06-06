@@ -1,8 +1,9 @@
 import os
 import subprocess
 import json
+import re
 from openai import OpenAI
-from database import add_booking, init_db
+from database import add_booking, init_db, add_calendar_event, get_all_calendar_events
 from hotel_data import hotel_info
 import sqlite3
 from flask import Flask, render_template, request, jsonify
@@ -120,6 +121,32 @@ def fix_spacing(text):
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
+
+
+def extract_time_from_message(message):
+    """Extract time from a natural language message like 'I'll arrive at 10pm' or 'around 22:30'."""
+    # Match patterns like "10pm", "10 pm", "10:30pm", "22:30", "10:00 PM", "at 10", "around 10pm"
+    patterns = [
+        r'(?:at|around|about|by|before|after)\s+(\d{1,2}):?(\d{2})?\s*(am|pm|AM|PM)?',
+        r'(\d{1,2}):(\d{2})\s*(am|pm|AM|PM)?',
+        r'(\d{1,2})\s*(am|pm|AM|PM)',
+        r'(?:at|around|about|by|before|after)\s+(\d{1,2})\s*(am|pm|AM|PM)?',
+    ]
+    msg_lower = message.lower()
+    for pattern in patterns:
+        match = re.search(pattern, msg_lower)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2)) if match.group(2) else 0
+            ampm = match.group(3) if len(match.groups()) >= 3 and match.group(3) else None
+            if ampm:
+                ampm = ampm.lower()
+                if ampm == 'pm' and hour < 12:
+                    hour += 12
+                elif ampm == 'am' and hour == 12:
+                    hour = 0
+            return f"{hour:02d}:{minute:02d}"
+    return None
 
 
 def build_system_prompt() -> str:
@@ -511,6 +538,30 @@ def api_chat():
                         "I can assist with rooms, check-in times, breakfast, parking, and more."
                     )
                 answer = fix_spacing(answer)
+
+                # If guest provided a specific time for late check-in/out, save to calendar
+                if topic in ("late_check_in", "late_check_out", "check_in", "check_out"):
+                    extracted_time = extract_time_from_message(user_message)
+                    if extracted_time:
+                        event_type = "late_check_in" if "check_in" in topic or "arrival" in user_message.lower() else "late_check_out"
+                        # Try to get guest name from session messages
+                        guest_name = "Guest"
+                        for msg in messages:
+                            if isinstance(msg, dict) and msg.get("role") == "user":
+                                # Simple name extraction — look for patterns like "my name is X" or "I'm X"
+                                name_match = re.search(r"(?:my name is|i'm|i am|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", msg.get("content", ""), re.IGNORECASE)
+                                if name_match:
+                                    guest_name = name_match.group(1)
+                                    break
+                        add_calendar_event(
+                            session_id=session_id,
+                            event_type=event_type,
+                            guest_name=guest_name,
+                            time=extracted_time,
+                            notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Original message: {user_message}"
+                        )
+                        answer += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar. "
+
                 replies.append({"type": "text", "content": answer})
                 messages.append({"role": "tool", "content": answer})
         if not replies:
@@ -588,6 +639,27 @@ def api_bookings():
 @app.route("/admin")
 def admin():
     return render_template("admin.html", hotel_name=hotel_info["name"])
+
+
+@app.route("/api/calendar", methods=["GET"])
+def api_calendar():
+    """Get all calendar events (late check-in/out, etc.)."""
+    events = get_all_calendar_events()
+    return jsonify({
+        "events": [
+            {
+                "id": e[0],
+                "session_id": e[1],
+                "event_type": e[2],
+                "guest_name": e[3],
+                "time": e[4],
+                "date": e[5],
+                "notes": e[6],
+                "created_at": e[7],
+            }
+            for e in events
+        ]
+    })
 
 
 if __name__ == "__main__":

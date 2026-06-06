@@ -7,24 +7,48 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; }
         h1 { color: #1e3c72; margin-bottom: 20px; }
-        .refresh-btn { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
+        h2 { color: #1e3c72; margin: 30px 0 15px 0; font-size: 1.2em; }
+        .refresh-btn { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; margin-right: 10px; }
         .refresh-btn:hover { background: #0056b3; }
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
         th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
         th { background: #1e3c72; color: white; font-weight: 600; }
         tr:hover { background: #f8f9fa; }
         .empty { text-align: center; padding: 40px; color: #666; }
         .badge { display: inline-block; padding: 4px 10px; background: #e8f5e9; color: #2e7d32; border-radius: 12px; font-size: 0.85em; }
+        .badge-late-in { display: inline-block; padding: 4px 10px; background: #fff3e0; color: #e65100; border-radius: 12px; font-size: 0.85em; }
+        .badge-late-out { display: inline-block; padding: 4px 10px; background: #e3f2fd; color: #1565c0; border-radius: 12px; font-size: 0.85em; }
         .meta { color: #555; margin-bottom: 12px; font-size: 0.95em; }
+        .notes { color: #666; font-size: 0.85em; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📋 Booking Dashboard — {{ hotel_name }}</h1>
-        <p class="empty">Last updated: <span id="lastUpdated">Never</span></p>
-        <button class="refresh-btn" onclick="loadBookings()">Refresh Now</button>
+        <h1>📋 Admin Dashboard — {{ hotel_name }}</h1>
+        <p class="meta">Last updated: <span id="lastUpdated">Never</span></p>
+        <button class="refresh-btn" onclick="loadAll()">Refresh All</button>
+
+        <h2>📅 Late Check-in / Check-out Calendar</h2>
+        <table id="calendarTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Guest</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <tr><td colspan="7" class="empty">Loading calendar...</td></tr>
+            </tbody>
+        </table>
+
+        <h2>🛏️ Bookings</h2>
         <table id="bookingsTable">
             <thead>
                 <tr>
@@ -42,22 +66,52 @@
     </div>
 
     <script>
+        async function loadCalendar() {
+            const tbody = document.getElementById('calendarBody');
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">Loading...</td></tr>';
+            try {
+                const res = await fetch('/api/calendar');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.events.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="empty">No calendar events yet.</td></tr>';
+                    return;
+                }
+                data.events.forEach(e => {
+                    const tr = document.createElement('tr');
+                    const badgeClass = e.event_type === 'late_check_in' ? 'badge-late-in' : 'badge-late-out';
+                    const typeLabel = e.event_type === 'late_check_in' ? 'Late Check-in' : 'Late Check-out';
+                    const created = e.created_at ? new Date(e.created_at).toLocaleString() : '-';
+                    tr.innerHTML = `
+                        <td>#${e.id}</td>
+                        <td><span class="${badgeClass}">${typeLabel}</span></td>
+                        <td>${e.guest_name || 'Guest'}</td>
+                        <td><strong>${e.time || '-'}</strong></td>
+                        <td>${e.date || '-'}</td>
+                        <td class="notes" title="${e.notes || ''}">${e.notes || '-'}</td>
+                        <td>${created}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty">Error loading calendar.</td></tr>';
+                console.error(e);
+            }
+        }
+
         async function loadBookings() {
             const tbody = document.getElementById('bookingsBody');
             const lastUpdated = document.getElementById('lastUpdated');
             tbody.innerHTML = '<tr><td colspan="5" class="empty">Loading...</td></tr>';
-
             try {
                 const res = await fetch('/api/bookings');
                 const data = await res.json();
                 tbody.innerHTML = '';
-
                 if (data.bookings.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet.</td></tr>';
                     if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
                     return;
                 }
-
                 data.bookings.forEach(b => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -75,10 +129,13 @@
                 console.error(e);
             }
         }
-        
-        loadBookings();
-        // Auto-refresh every 30 seconds
-        setInterval(loadBookings, 30000);
+
+        async function loadAll() {
+            await Promise.all([loadCalendar(), loadBookings()]);
+        }
+
+        loadAll();
+        setInterval(loadAll, 30000);
     </script>
 </body>
 </html>
