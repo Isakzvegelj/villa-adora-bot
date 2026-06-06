@@ -135,13 +135,15 @@ def build_system_prompt() -> str:
         "- After collecting all details, summarize and ask 'Would you like me to confirm this booking?'\n"
         "- Only call book_room() after guest confirms yes.\n\n"
         "RULES:\n"
-        "- Answer ALL common questions directly from the facts above. Do NOT use tools for simple queries.\n"
-        "- Questions about: check-in/out times, rooms, breakfast, parking, WiFi, pets, location, experiences, policies — answer directly.\n"
-        "- Only use query_hotel_info() if the question is very specific and you need to look up details.\n"
+        "- Answer ALL common questions DIRECTLY from the facts above. Do NOT use tools for simple queries.\n"
+        "- Questions about: check-in/out times, rooms, breakfast, parking, WiFi, pets, location, experiences, policies — ANSWER DIRECTLY, do not call any tool.\n"
+        "- IMPORTANT: When someone asks 'when is check in' or 'what time is check-out', answer immediately: 'Check-in is from 14:00 to 21:00. Check-out is by 07:00 to 11:00.' Do NOT ask for booking details.\n"
+        "- IMPORTANT: When someone asks about rooms, answer directly with the room list from the facts above. Do NOT call a tool.\n"
+        "- Only use query_hotel_info() for very specific questions that need detailed lookup.\n"
         "- Only use book_room() when the guest explicitly wants to make a booking and has confirmed.\n"
+        "- Never ask for booking reference, reservation ID, or guest name unless you are in the booking flow.\n"
         "- If you don't know something, say 'Let me check with the manager on that.'\n"
-        "- Always end with a follow-up question to keep the conversation going. Never give a bare answer without a question.\n"
-        "- Never ask for booking reference or reservation details — you don't have access to booking systems.\n"
+        "- Always end with a follow-up question. Never give a bare answer without a question.\n"
         "- Keep responses to 2-3 sentences plus a closing question.\n"
     )
 
@@ -439,7 +441,9 @@ def api_chat():
                     {"role": "system", "content": f"BOOKING_PENDING: {json.dumps(args)}"}
                 ]
             elif fn == "query_hotel_info":
-                answer = get_hotel_info_response(args["topic"], args["question"])
+                answer = get_hotel_info_response(args.get("topic", "general"), args.get("question", ""))
+                if not answer:
+                    answer = get_hotel_info_response("general", user_message)
                 replies.append({"type": "text", "content": answer})
                 messages.append({"role": "tool", "content": answer})
         if not replies:
