@@ -104,12 +104,55 @@
 - Can accommodate dietary preferences
 
 ## Dining
-- Breakfast served daily
-- Restaurant/lunch/dinner available on request (not always open in off-season)
-- Bar open in summer season
-- No full-time restaurant on-site
-- Outdoor dining available
-- Guests can walk to Bled town center (15 min) for restaurants
+
+### Breakfast
+- Served daily 8:00-10:00 AM
+- €22 per person
+- Fresh pastries, bread, local Slovenian products
+- Served in dining room with lake views
+- High quality, described as "absolutely delicious"
+- Can accommodate dietary preferences
+
+### Adora Pop Up Restaurant
+- **Location:** Inside Adora Luxury Hotel, on the shores of Lake Bled
+- **Terrace:** Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails
+- **Cuisine:** Creative, locally inspired Slovenian dishes using top-quality regional ingredients
+- **Chef:** Led by renowned Chef Domen Demšar, known for innovation and accommodating dietary needs
+- **Experience:** More than a meal — a curated moment combining food, view, and ambiance
+- **Hours:**
+  - Lunch: Tuesday – Sunday
+  - Dinner: Tuesday – Sunday
+  - Brunch: Thursday – Saturday
+  - Drinks: Every day
+- **Booking:** Reservations required (small restaurant with limited space)
+- **Contact:** +386 40 558 158 / +386 51 603 858 | evita.vilebled@gmail.com | WhatsApp: +386 51 603 858
+
+### Menu
+- Seasonal tasting menu (changes with availability) — approximately €65/person
+- Wine pairing available — approximately €35/person
+- Locally sourced Slovenian specialties
+- Signature Kremšnita — a fresh twist on Bled's iconic cream cake
+- Dietary preferences and allergies accommodated with advance notice
+- Regular pop-up dining events with special menus
+
+### Wine List
+- Curated selection of the best Slovenian wines near Bled
+- Chosen by in-house wine expert
+- Showcases both local and international labels
+- Wine pairing available with tasting menu
+
+### Bar
+- Elegant, balanced cocktails designed to complement both food and scenery
+- Served daily on the terrace with lake views
+- Perfect for sunset aperitivos
+
+### Room Service
+- Room service available
+
+### Note
+- Small restaurant with limited space — intentionally focused on quality over quantity
+- Guests can also walk to Bled town center (15 min) for additional restaurants
+- In off-season, restaurant may not always be open — check ahead
 
 ## Policies
 - Children of all ages welcome

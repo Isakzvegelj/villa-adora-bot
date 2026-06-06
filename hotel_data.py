@@ -140,11 +140,53 @@ hotel_info = {
     ],
     "dining": {
         "breakfast": "Served daily 8:00-10:00 AM, €22/person, fresh pastries, bread, local products",
-        "restaurant": "Restaurant/lunch/dinner available on request (not always open in off-season)",
-        "bar": "Bar open in summer season",
+        "restaurant": {
+            "name": "Adora Pop Up Restaurant",
+            "description": "Exclusive dining destination inside Adora Luxury Hotel. Creative, locally inspired Slovenian dishes using top-quality regional ingredients. Led by renowned Chef Domen Demšar.",
+            "terrace": "Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails",
+            "hours": {
+                "lunch": "Tuesday – Sunday",
+                "dinner": "Tuesday – Sunday",
+                "brunch": "Thursday – Saturday",
+                "drinks": "Every day"
+            },
+            "phone": "+386 40 558 158 / +386 51 603 858",
+            "email": "evita.vilebled@gmail.com",
+            "whatsapp": "+386 51 603 858",
+            "booking_required": True
+        },
+        "bar": "Elegant cocktails and aperitivos served daily on the terrace with lake views",
         "room_service": "Room service available",
-        "outdoor_dining": "Outdoor dining available",
-        "note": "No full-time restaurant on-site. Guests can walk to Bled town center (15 min) for restaurants."
+        "outdoor_dining": "Outdoor dining on terrace with panoramic lake views",
+        "note": "Small restaurant with limited space — quality over quantity. Reservations recommended."
+    },
+    "menu": {
+        "restaurant": {
+            "description": "Creative, locally inspired Slovenian dishes using top-quality regional ingredients. Menu changes seasonally.",
+            "chef": "Chef Domen Demšar — known for innovation and accommodating dietary needs",
+            "signature_dishes": [
+                "Seasonal tasting menu (changes with availability)",
+                "Locally sourced Slovenian specialties",
+                "Signature Kremšnita — a fresh twist on Bled's iconic cream cake"
+            ],
+            "dietary": "Dietary preferences and allergies accommodated with advance notice",
+            "pricing": {
+                "tasting_menu": "€65 per person (approximate)",
+                "wine_pairing": "€35 per person (approximate)",
+                "note": "Prices are approximate and may change seasonally. Contact restaurant for current menu and pricing."
+            },
+            "pop_up_events": "Regular pop-up dining events with special menus. Check website or inquire for upcoming events."
+        },
+        "wine_list": {
+            "description": "Curated selection of the best Slovenian wines near Bled, chosen by in-house wine expert. Showcases both local and international labels.",
+            "highlights": [
+                "Prem Slovenian wines from nearby vineyards",
+                "International labels selected to complement the menu",
+                "Wine pairing available with tasting menu (€35/person)"
+            ],
+            "note": "Full wine list available at the restaurant. Contact for current selection."
+        },
+        "placeholder_note": "TODO: Add full menu PDF, current wine list, and seasonal dishes when available from hotel management"
     },
     "experiences": [
         "Row to Bled Island (traditional pletna boat)",
