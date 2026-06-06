@@ -100,7 +100,20 @@ query_hotel_info_function = {
 }
 
 
-def build_system_prompt() -> str:
+def fix_spacing(text):
+    """Fix common LLM spacing issues."""
+    import re
+    # Fix missing space after punctuation: "word.Word" -> "word. Word"
+    text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
+    # Fix missing space after comma: "word,word" -> "word, word"
+    text = re.sub(r',([a-zA-Z])', r', \1', text)
+    # Fix missing space after colon: "word:word" -> "word: word"
+    text = re.sub(r':([a-zA-Z])', r': \1', text)
+    # Fix run-on words: lowercase followed by uppercase with no space
+    text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # Fix multiple spaces
+    text = re.sub(r'  +', ' ', text)
+    return text.strip()
     return (
         "You are Luka, the friendly digital concierge at Villa Adora Bled — a small luxury hotel on the shore of Lake Bled, Slovenia.\n\n"
         "PERSONALITY:\n"
@@ -232,17 +245,20 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "rooms":
         for room in h["rooms"].values():
             if any(word in q for word in room["name"].lower().split()):
+                features = ", ".join(room.get("features", [])[:3])
                 return (
                     f"{room['name']} — {room['price']} EUR/night. {room['description']} "
+                    f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
-        room_list = "\n".join(
-            [f"• {r['name']}: {r['price']} EUR/night" for r in h["rooms"].values()]
-        )
-        return (
-            f"We have 6 beautiful suites:\n{room_list}\n\n"
-            f"Which one catches your eye? I can tell you more about any of them!"
-        )
+        lines = ["We have 6 beautiful room options for you:"]
+        for r in h["rooms"].values():
+            size = f", {r['size_sqm']}m²" if r.get("size_sqm") else ""
+            cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
+            feat = ", ".join(r.get("features", [])[:2])
+            lines.append(f"• {r['name']}: €{r['price']}/night{size}{cap} — {feat}")
+        lines.append("\nWhich one catches your eye? I can tell you more about any of them!")
+        return "\n".join(lines)
 
     # Policies
     if actual_topic == "policies":
@@ -381,7 +397,7 @@ def api_chat():
             return jsonify({"replies": [{"type": "text", "content": "No response from model."}]}), 500
 
         msg = choice.message
-        content = getattr(msg, "content", None) or ""
+        content = fix_spacing(getattr(msg, "content", None) or "")
         tool_calls = getattr(msg, "tool_calls", None) or []
         assistant_msg = {"role": "assistant", "content": content}
         if tool_calls:
