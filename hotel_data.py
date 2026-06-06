@@ -66,6 +66,8 @@ hotel_info = {
     "policies": {
         "check_in": "14:00 - 21:00",
         "check_out": "07:00 - 11:00",
+        "late_check_in": "Late check-in is available on request. Contact the reception to arrange. We can accommodate late arrivals with advance notice.",
+        "late_check_out": "Late check-out is available on request, subject to availability. Additional fees may apply. Contact reception to arrange.",
         "breakfast": "Breakfast available for €22 per person. Served in the dining room with fresh pastries, bread, and local products.",
         "parking": "Free private parking available on-site",
         "wifi": "Complimentary high-speed WiFi throughout the property",

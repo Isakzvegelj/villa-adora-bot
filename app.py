@@ -130,6 +130,8 @@ def build_system_prompt() -> str:
         "- Use a natural, conversational tone. Not robotic.\n\n"
         "HOTEL FACTS (use these, never invent):\n"
         "- Check-in: 14:00-21:00 | Check-out: 07:00-11:00\n"
+        "- Late check-in: Available on request, contact reception to arrange. We can accommodate late arrivals with advance notice.\n"
+        "- Late check-out: Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.\n"
         "- Breakfast: €22/person, fresh pastries, bread, local products\n"
         "- Parking: Free private parking on-site\n"
         "- WiFi: Complimentary high-speed throughout\n"
@@ -213,8 +215,8 @@ def get_hotel_info_response(topic, question):
 
     # Map common synonyms to topics
     topic_aliases = {
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure"],
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
@@ -228,6 +230,8 @@ def get_hotel_info_response(topic, question):
         "payment": ["payment", "pay", "card", "visa", "mastercard", "cash"],
         "children": ["child", "kid", "baby", "family", "toddler"],
         "smoking": ["smoke", "smoking", "cigarette"],
+        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
+        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
         "general": ["general", "info", "information", "about", "tell me"],
     }
@@ -242,11 +246,40 @@ def get_hotel_info_response(topic, question):
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
+        # Check if asking about late arrival/departure
+        if any(word in q for word in ["late", "later", "after", "early", "before", "outside"]):
+            if actual_topic == "check_in" or "late" in q or "arrival" in q or "arrive" in q:
+                return (
+                    f"Our standard check-in is {h['policies']['check_in']}, but late check-in is available on request! "
+                    f"Just contact our reception to arrange. We can accommodate late arrivals with advance notice. "
+                    f"What time were you planning to arrive?"
+                )
+            else:
+                return (
+                    f"Our standard check-out is {h['policies']['check_out']}, but late check-out is available on request! "
+                    f"It's subject to availability and additional fees may apply. Contact reception to arrange. "
+                    f"What time would you like to check out?"
+                )
         return (
-            f"Check-in is from {h['policies']['check_in']}. "
-            f"Check-out is by {h['policies']['check_out']}. "
-            f"Would you like to know anything else about your stay?"
+            f"Check-in is from {h['policies']['check_in']}, and check-out is between {h['policies']['check_out']}. "
+            f"Late check-in or check-out can also be arranged on request — just let us know your plans! "
+            f"Would you like help with a reservation?"
         )
+
+    # Late check-in / check-out specific
+    if actual_topic in ("late_check_in", "late_check_out"):
+        if actual_topic == "late_check_in":
+            return (
+                f"Late check-in is absolutely possible! Our standard window is {h['policies']['check_in']}, "
+                f"but we can accommodate late arrivals on request. Just contact our reception in advance "
+                f"and we'll make sure everything is ready for you. What time were you planning to arrive?"
+            )
+        else:
+            return (
+                f"Late check-out is available on request, subject to availability. Additional fees may apply. "
+                f"Our standard check-out is {h['policies']['check_out']}. "
+                f"What time would you like to check out? I can note your preference."
+            )
 
     # Rooms
     if actual_topic == "rooms":
