@@ -1,6 +1,7 @@
 import os
 import subprocess
 import json
+import traceback
 from openai import OpenAI
 from database import add_booking, init_db
 from hotel_data import hotel_info
@@ -268,7 +269,8 @@ def api_chat():
             replies.append({"type": "text", "content": content})
         return jsonify({"replies": replies})
     except Exception as e:
-        return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}]}), 500
+        tb = traceback.format_exc()
+        return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}, {"type": "text", "content": f"Traceback:\n{tb}"}]}), 500
 
 
 @app.route("/api/confirm", methods=["POST"])
