@@ -45,7 +45,7 @@ def make_client() -> OpenAI:
     )
 
 client = make_client()
-MODEL = os.environ.get("LLM_MODEL", "openrouter/free")
+MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-120b:free")
 
 book_room_function = {
     "type": "function",
@@ -246,7 +246,17 @@ def api_chat():
             )
             if not fn:
                 continue
-            args = json.loads(raw_args) if isinstance(raw_args, str) else raw_args or {}
+            if isinstance(raw_args, str):
+                try:
+                    args = json.loads(raw_args)
+                except (json.JSONDecodeError, TypeError):
+                    args = {}
+            elif isinstance(raw_args, dict):
+                args = raw_args
+            else:
+                args = {}
+            if not isinstance(args, dict):
+                continue
             if fn == "book_room":
                 room_key = args["room_name"].lower().replace(" ", "_")
                 price = hotel_info["rooms"].get(room_key, {}).get("price", "")
