@@ -576,7 +576,7 @@ def api_chat():
         # Check if guest mentioned a late check-in or check-out time in this message
         # and save to calendar for hotel staff awareness
         msg_lower = user_message.lower()
-        is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late"])
+        is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late", "late at", "arrive at", "get in late", "coming late", "late check in"])
         is_late_checkout = any(word in msg_lower for word in ["late check-out", "late checkout", "late check out", "check out late", "later checkout"])
         if is_late_checkin or is_late_checkout:
             extracted_time = extract_time_from_message(user_message)
@@ -600,6 +600,10 @@ def api_chat():
                 # Append confirmation to the last reply
                 if replies:
                     replies[-1]["content"] += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar for the hotel staff."
+            else:
+                # Guest mentioned late check-in/out but no specific time found
+                if replies:
+                    replies[-1]["content"] += " What time would you like to arrive? I can note it in our calendar."
 
         return jsonify({"replies": replies})
     except Exception as e:
