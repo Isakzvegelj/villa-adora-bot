@@ -29,7 +29,11 @@ def _chunk_text(source: str, text: str, chunk_size: int = 120, overlap: int = 40
 def build_corpus() -> Path:
     root = Path(__file__).resolve().parent
     out_path = root / "rag_corpus.jsonl"
+    # Files/directories to exclude from RAG
+    exclude_files = {"rag_corpus.jsonl", "speed_test.py", "test_db.py"}
+    exclude_dirs = {"_vendor", "__pycache__", ".venv", ".venv424", ".pytest_cache", "tests", "openai_local_backup"}
     with out_path.open("w", encoding="utf-8") as fh:
+        # Index hotel_data.py
         hotel_text = json.dumps(
             __import__("hotel_data", fromlist=["hotel_info"]).hotel_info,
             ensure_ascii=False,
@@ -38,13 +42,19 @@ def build_corpus() -> Path:
         for chunk in _chunk_text("hotel_data.py", hotel_text):
             chunk["id"] = f"{chunk['source']}:{len(chunk['text'].split())}"
             fh.write(json.dumps(chunk, ensure_ascii=False) + "\n")
+        # Index knowledge_base.md and other markdown files
         for p in sorted(root.glob("**/*.md")):
+            if p.name in exclude_files or any(d in p.parts for d in exclude_dirs):
+                continue
             text = p.read_text(encoding="utf-8", errors="ignore")
             if text.strip():
                 for chunk in _chunk_text(str(p.relative_to(root)), text):
                     chunk["id"] = f"{chunk['source']}:{len(chunk['text'].split())}"
                     fh.write(json.dumps(chunk, ensure_ascii=False) + "\n")
+        # Index .txt files (but not test files)
         for p in sorted(root.glob("**/*.txt")):
+            if p.name in exclude_files or any(d in p.parts for d in exclude_dirs):
+                continue
             text = p.read_text(encoding="utf-8", errors="ignore")
             if text.strip():
                 for chunk in _chunk_text(str(p.relative_to(root)), text):

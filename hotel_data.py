@@ -1,11 +1,21 @@
 hotel_info = {
     "name": "Villa Adora Bled",
-    "tagline": "A small luxury hotel located on the shore of magnificent Lake Bled",
+    "tagline": "A small luxury boutique hotel on the shore of Lake Bled",
+    "formerly": "Vila Istra (now Adora Luxury Hotel)",
+    "built": 1878,
+    "heritage": "Heritage-protected villa converted into a luxury design hotel",
     "location": {
         "address": "Cesta svobode 35, 4260 Bled, Slovenia",
         "phone": "+386 51 603 858",
         "email": "evita.vilebled@gmail.com",
-        "description": "Villa Adora is an old heritage-protected villa built in 1878, converted into a luxurious design hotel. Located right on the shore of Lake Bled with panoramic views of the island, castle, and Triglav Mountains."
+        "description": "Directly on the shores of Lake Bled — one of the few hotels with this prime position. Views of Bled Island, Bled Castle, and Triglav Mountains. 2-minute walk to boat station, 15-minute walk to Bled town center, 30-minute walk to Bled Castle.",
+        "walking_distances": {
+            "boat_station": "2 min walk",
+            "town_center": "15 min walk",
+            "bled_castle": "30 min walk",
+            "straza_cable_car": "1 min walk",
+            "vintgar_gorge": "2.4 km"
+        }
     },
     "rooms": {
         "princess_suite": {
@@ -14,8 +24,10 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": 55,
             "capacity": 2,
-            "features": ["Lake view from tower", "Living area", "Queen bed", "Private bathroom"],
-            "description": "Tastefully decorated suite with a little tower overlooking Lake Bled. Perfect for a romantic getaway."
+            "bed": "Queen",
+            "view": "Lake view from tower",
+            "features": ["Lake view from tower", "Living area", "Romantic getaway", "Little tower overlooks Lake Bled"],
+            "description": "Very nicely furnished and tastefully decorated. 55 sq m of extremely pleasant space with living area, bedroom and bathroom. The little tower overlooks beautiful Lake Bled. Perfectly designed for a couple to experience a romantic night."
         },
         "luxury_suite": {
             "name": "Luxury Suite",
@@ -23,8 +35,10 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 2,
+            "bed": "Comfortable bedding",
+            "view": "Lake view",
             "features": ["Lake view", "Elegant decor", "Comfortable bedding"],
-            "description": "Nicely furnished suite with tasteful decor for a comfortable stay."
+            "description": "Nicely furnished suite with tasteful decor and lake views for a comfortable stay."
         },
         "penthouse_suite": {
             "name": "Penthouse Suite",
@@ -32,17 +46,21 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": 60,
             "capacity": 2,
-            "features": ["2 floors", "Breathtaking views", "King-size bed", "Very cosy atmosphere"],
-            "description": "The most unique place in the house with spectacular views from two floors."
+            "bed": "King-sized",
+            "view": "Breathtaking lake views from 2 floors",
+            "features": ["2 floors", "King-sized bed", "Breathtaking views", "Most unique place in the house", "Cosy atmosphere"],
+            "description": "The most unique place in the house, designed with good taste. 60 sq m in 2 floors. The atmosphere is the most special and cosy. Breathtaking views through the windows. Extremely comfortable King-sized bed provides the best sleep possible."
         },
         "swan_suite": {
             "name": "Swan Suite",
             "price": 370,
             "currency": "EUR",
             "size_sqm": None,
-            "capacity": None,
-            "features": ["Lake view", "Luxury furnishings"],
-            "description": "An elegant suite with stunning lake views."
+            "capacity": 2,
+            "bed": None,
+            "view": "Lake view",
+            "features": ["Lake view", "Luxury furnishings", "Elegant suite"],
+            "description": "An elegant suite with stunning lake views and luxury furnishings."
         },
         "island_suite": {
             "name": "Island Suite",
@@ -50,8 +68,10 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": 65,
             "capacity": 4,
-            "features": ["First floor", "2 luxury bedrooms", "2 balconies", "Stunning lake & island view", "Big living area"],
-            "description": "Stylish luxury suite on the first floor, perfect for couples, friends, or families with two bedrooms and views of Bled Island."
+            "bed": "2 luxury bedrooms",
+            "view": "Stunning lake and island view",
+            "features": ["First floor", "2 luxury bedrooms", "Big living area", "2 balconies", "Stunning lake & island view"],
+            "description": "Stylish luxury suite extending over 65 sq m on the first floor. Stunning view of the lake and Bled Island. Perfect for couples, groups of friends, or families. Features 2 luxury bedrooms, a big living area and 2 balconies."
         },
         "prestige_suite": {
             "name": "Prestige Suite",
@@ -59,16 +79,29 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": 72,
             "capacity": 2,
-            "features": ["Ground floor", "Living area", "Dining area", "Ultra-comfortable bed", "Spacious terrace", "Big flat TV", "Lake view through all windows", "Luxury bathroom"],
-            "description": "Our most spacious suite with absolute harmony of artful decor, elegance, and an unforgettable lake view."
+            "bed": "King",
+            "view": "Unforgettable lake view through all windows",
+            "features": ["Ground floor", "Living area", "Dining area", "King bed overlooking lake", "Luxury bathroom", "Spacious terrace", "Big flat TV", "Lake view through all windows"],
+            "description": "The absolute harmony of artful decor, elegance and spaciousness. 72 sq m with living area, small dining area, the most comfortable bed overlooking Lake Bled, very big luxury bathroom, spacious terrace and big flat TV. Located on the ground floor with unforgettable lake view through all windows."
+        },
+        "castle_suite": {
+            "name": "Castle Suite",
+            "price": None,
+            "currency": "EUR",
+            "size_sqm": None,
+            "capacity": 2,
+            "bed": None,
+            "view": "Castle views",
+            "features": ["Stylish luxury suite", "Castle views"],
+            "description": "Stylish luxury suite with castle views."
         }
     },
     "policies": {
-        "check_in": "14:00 - 21:00",
-        "check_out": "07:00 - 11:00",
-        "late_check_in": "Late check-in is available on request. Contact the reception to arrange. We can accommodate late arrivals with advance notice.",
-        "late_check_out": "Late check-out is available on request, subject to availability. Additional fees may apply. Contact reception to arrange.",
-        "breakfast": "Breakfast available for €22 per person. Served in the dining room with fresh pastries, bread, and local products.",
+        "check_in": "14:00 (2:00 PM)",
+        "check_out": "11:00 (11:00 AM)",
+        "late_check_in": "Available on request. Contact reception to arrange. We can accommodate late arrivals with advance notice.",
+        "late_check_out": "Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.",
+        "breakfast": "Breakfast served daily 8:00-10:00 AM. €22 per person. Fresh pastries, bread, local Slovenian products served in dining room with lake views. High quality — described as 'absolutely delicious'.",
         "parking": "Free private parking available on-site",
         "wifi": "Complimentary high-speed WiFi throughout the property",
         "pets": "Pets allowed on request. Please contact us for details and fees.",
@@ -76,41 +109,101 @@ hotel_info = {
         "payment": "Visa, MasterCard accepted",
         "children": "Children of all ages are welcome. Cribs and extra beds are not available.",
         "smoking": "Non-smoking property",
-        "minimum_age": "Main guest must be at least 18 years old at check-in"
+        "minimum_age": "Main guest must be at least 18 years old at check-in",
+        "reception": "16h reception service, 24h guest support"
     },
     "amenities": [
         "Air conditioning",
         "Free WiFi",
-        "Flat-screen TV with satellite channels",
+        "Flat-screen TV with satellite/cable channels",
         "Mini-fridge bar",
         "Coffee & tea making equipment",
         "Hair dryer",
         "Private bathroom with shower",
-        "Separate toilet",
-        "Balcony or terrace (most rooms)",
-        "Lake views",
-        "Garden for guests",
-        "Concierge service",
+        "Safe deposit box",
+        "Work space/desk",
+        "Daily housekeeping (linen and towels changed daily)",
+        "Room service",
+        "Laundry service",
+        "Shuttle service / Airport transfer",
+        "24h guest support",
+        "Business center",
+        "Meeting room",
+        "Garden with lake views",
+        "Terrace and outdoor sitting area",
+        "Hotel boats for hire",
         "Bicycle rental",
-        "Sport gear rental",
-        "Car rental / Transfer services",
-        "Non-smoking",
-        "Safety deposit box"
+        "In-room massage (24 hours notice required)",
+        "Express check-in/check-out",
+        "Non-smoking property",
+        "Child friendly"
     ],
+    "dining": {
+        "breakfast": "Served daily 8:00-10:00 AM, €22/person, fresh pastries, bread, local products",
+        "restaurant": "Restaurant/lunch/dinner available on request (not always open in off-season)",
+        "bar": "Bar open in summer season",
+        "room_service": "Room service available",
+        "outdoor_dining": "Outdoor dining available",
+        "note": "No full-time restaurant on-site. Guests can walk to Bled town center (15 min) for restaurants."
+    },
     "experiences": [
-        "Hiking around Lake Bled",
-        "Visit Bled Castle (5 min by car)",
-        "Row to Bled Island",
-        "Straza cable car station (1 min walk)",
-        "Visit Vintgar Gorge (2.4 km)",
+        "Row to Bled Island (traditional pletna boat)",
+        "Visit Church of the Assumption on the island",
+        "Swimming in Lake Bled (permitted and free)",
+        "Paddleboarding, kayaking, canoeing, diving",
+        "Boat trips and lake tours",
+        "Hotel boats for hire",
+        "6 km lakeside walking path around Lake Bled",
+        "15 signposted hikes around Bled",
+        "Vintgar Gorge walk (2.4 km from Bled)",
+        "Hiking in Julian Alps",
+        "Bled Castle visit (30 min walk or 5 min by car)",
+        "Straza cable car (1 min walk)",
+        "Canyoning in Bohinj Valley",
         "Horse riding tours",
+        "Horse-drawn carriage rides",
+        "Cycling — paved route around Lake Bled",
         "Fishing",
-        "Mini golf"
+        "Mini golf",
+        "In-room massage (24 hours notice)",
+        "Garden evenings with wine",
+        "Day trips to Lake Bohinj, Ljubljana, Postojna Cave, Piran"
     ],
-    "notes": [
-        "Villa Adora is a heritage-protected villa built in 1878, fully renovated in 1996.",
-        "All suites feature panoramic lake views and unique classical-style furniture.",
-        "The hotel has 7-9 suites total.",
-        "Located just 7 minutes walk from the lake shore and Bled town center."
+    "nearby_attractions": {
+        "on_lake": ["Bled Island", "Church of the Assumption", "Swimming", "Paddleboarding", "Kayaking", "Canoeing", "Diving", "Boat tours"],
+        "walking_hiking": ["6 km lakeside path", "15 signposted hikes", "Vintgar Gorge (2.4 km)", "Julian Alps hiking"],
+        "sightseeing": ["Bled Castle (30 min walk)", "Straza cable car (1 min walk)", "Bled town center (15 min walk)"],
+        "adventure": ["Canyoning in Bohinj Valley", "Horse riding", "Cycling", "Fishing"],
+        "day_trips": ["Lake Bohinj", "Ljubljana", "Postojna Cave", "Piran", "Triglav National Park"]
+    },
+    "guest_reviews_highlights": [
+        "One of the most beautifully situated hotels I've ever stayed in",
+        "The views of the island and castle are outstanding",
+        "One of the comfiest beds I've ever slept in",
+        "Absolutely stunning to wake up to that view!",
+        "Pristine, comfortable rooms with stunning views",
+        "Peaceful, intimate small-hotel atmosphere",
+        "Perfectly positioned just a short distance from the town centre",
+        "A wonderful lakeside villa with lush gardens leading down to the shore",
+        "Old world charm, impressive views",
+        "Fairytale-like setting"
+    ],
+    "best_for": [
+        "Couples and romantic breaks",
+        "Families and groups",
+        "Active holidays (kayaking, canyoning, cycling, hiking)",
+        "Country/lakeside escapes",
+        "Luxury seekers",
+        "Those wanting peace and quiet with easy access to town"
+    ],
+    "tips": [
+        "Best season: Summer (full services), Spring/Autumn (fewer crowds)",
+        "Book via Booking.com or direct email",
+        "In-room massage is highly recommended",
+        "Garden is perfect for relaxing with wine",
+        "Walk to Bled town center for dinner options",
+        "The 6 km lakeside walk is a must-do",
+        "Vintgar Gorge is worth the short trip",
+        "Bled cream cake is a local specialty — try it in town"
     ]
 }
