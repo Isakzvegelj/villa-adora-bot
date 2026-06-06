@@ -686,6 +686,15 @@ def admin():
     return render_template("admin.html", hotel_name=hotel_info["name"])
 
 
+@app.route("/static/images/<path:filename>")
+def serve_images(filename):
+    """Serve hotel images."""
+    import os
+    from flask import send_from_directory
+    image_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "images")
+    return send_from_directory(image_dir, filename)
+
+
 @app.route("/api/calendar", methods=["GET"])
 def api_calendar():
     """Get all calendar events (late check-in/out, etc.)."""
