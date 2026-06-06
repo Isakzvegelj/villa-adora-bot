@@ -1,7 +1,6 @@
 import os
 import subprocess
 import json
-import traceback
 from openai import OpenAI
 from database import add_booking, init_db
 from hotel_data import hotel_info
@@ -269,8 +268,7 @@ def api_chat():
             replies.append({"type": "text", "content": content})
         return jsonify({"replies": replies})
     except Exception as e:
-        tb = traceback.format_exc()
-        return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}, {"type": "text", "content": f"Traceback: {tb}"}]}), 500
+        return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}]}), 500
 
 
 @app.route("/api/confirm", methods=["POST"])
@@ -338,6 +336,7 @@ def admin():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5173))
     print(f"🏔️  {hotel_info['name']} — Fast Mode")
-    print("📍 http://localhost:5173 | 📊 /admin")
-    app.run(host="0.0.0.0", port=5173, debug=True, threaded=True)
+    print(f"📍 http://localhost:{port} | 📊 /admin")
+    app.run(host="0.0.0.0", port=port, debug=True, threaded=True)
