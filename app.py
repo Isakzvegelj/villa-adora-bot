@@ -123,6 +123,37 @@ def fix_spacing(text):
     return text.strip()
 
 
+def clean_response(text):
+    """Remove model reasoning/chain-of-thought text from responses."""
+    # If the text contains what looks like reasoning followed by a final answer,
+    # extract only the final answer portion
+    # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
+    # Also handle cases where the model outputs reasoning in quotes
+    lines = text.split('\n')
+    
+    # If the response is very long and contains reasoning markers, trim it
+    reasoning_markers = [
+        "we need to respond:", "according to the rules:", "so we can say:",
+        "let's craft:", "thus:", "therefore:", "i should", "we should",
+        "the guest says", "they already gave", "we can confirm",
+        "end with a follow-up", "i've noted your"
+    ]
+    
+    # Check if the text has reasoning mixed in
+    has_reasoning = any(marker in text.lower() for marker in reasoning_markers)
+    
+    if has_reasoning and len(text) > 200:
+        # Try to find the actual response after reasoning
+        # Look for the last substantial sentence that sounds like a response
+        for i in range(len(lines) - 1, -1, -1):
+            line = lines[i].strip()
+            if line and len(line) > 20 and not any(m in line.lower() for m in reasoning_markers):
+                # Found a clean line, return from here
+                return '\n'.join(lines[i:]).strip()
+    
+    return text
+
+
 def extract_time_from_message(message):
     """Extract time from a natural language message like 'I'll arrive at 10pm' or 'around 22:30'."""
     # Match patterns like "10pm", "10 pm", "10:30pm", "22:30", "10:00 PM", "at 10", "around 10pm"
@@ -580,6 +611,11 @@ def api_chat():
                 # Guest mentioned late check-in/out but no specific time found
                 if replies:
                     replies[-1]["content"] += " What time would you like to arrive? I can note it in our calendar."
+
+        # Clean up any model reasoning text from responses
+        for reply in replies:
+            if reply.get("type") == "text" and reply.get("content"):
+                reply["content"] = clean_response(reply["content"])
 
         return jsonify({"replies": replies})
     except Exception as e:
