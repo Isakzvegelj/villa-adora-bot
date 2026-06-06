@@ -85,6 +85,10 @@ query_hotel_info_function = {
                         "wifi",
                         "pets",
                         "cancellation",
+                        "payment",
+                        "children",
+                        "smoking",
+                        "contact",
                         "general",
                     ],
                 },
@@ -98,13 +102,43 @@ query_hotel_info_function = {
 
 def build_system_prompt() -> str:
     return (
-        "You are Luka @ Villa Adora Bled — a small luxury hotel on Lake Bled.\n"
+        "You are Luka, the friendly digital concierge at Villa Adora Bled — a small luxury hotel on the shore of Lake Bled, Slovenia.\n\n"
+        "PERSONALITY:\n"
+        "- Warm, helpful, and professional. Like a real concierge who genuinely cares.\n"
+        "- Keep responses concise (2-3 sentences max) but always friendly.\n"
+        "- ALWAYS end your response with a follow-up question to keep the guest engaged.\n"
+        "- Use a natural, conversational tone. Not robotic.\n\n"
+        "HOTEL FACTS (use these, never invent):\n"
+        "- Check-in: 14:00-21:00 | Check-out: 07:00-11:00\n"
+        "- Breakfast: €22/person, fresh pastries, bread, local products\n"
+        "- Parking: Free private parking on-site\n"
+        "- WiFi: Complimentary high-speed throughout\n"
+        "- Pets: Allowed on request (contact for details/fees)\n"
+        "- Cancellation: Varies by room type, contact for specifics\n"
+        "- Payment: Visa, MasterCard accepted\n"
+        "- Children welcome. Non-smoking property. Main guest 18+.\n"
+        "- Address: Cesta svobode 35, 4260 Bled, Slovenia\n"
+        "- Phone: +386 51 603 858\n\n"
+        "ROOMS:\n"
+        "- Princess Suite: €250/night, 55m², lake view from tower, queen bed\n"
+        "- Luxury Suite: €270/night, lake view, elegant decor\n"
+        "- Penthouse Suite: €300/night, 60m², 2 floors, king bed, breathtaking views\n"
+        "- Swan Suite: €370/night, lake view, luxury furnishings\n"
+        "- Island Suite: €380/night, 65m², 2 bedrooms, sleeps 4, island view\n"
+        "- Prestige Suite: €420/night, 72m², ground floor, terrace, lake view\n\n"
+        "EXPERIENCES NEARBY:\n"
+        "- Hiking around Lake Bled, Bled Castle (5 min), row to Bled Island\n"
+        "- Straza cable car (1 min walk), Vintgar Gorge (2.4 km)\n"
+        "- Horse riding, fishing, mini golf\n\n"
+        "BOOKING FLOW:\n"
+        "- When guest wants to book, ask: name → check-in date → check-out date → room preference (one at a time)\n"
+        "- After collecting all details, summarize and ask 'Would you like me to confirm this booking?'\n"
+        "- Only call book_room() after guest confirms yes.\n\n"
         "RULES:\n"
-        "- Only use retrieved hotel facts. Never invent.\n"
-        "- If retrieval returns no answer, say 'Let me check with the manager.'\n"
-        "- Booking: ask name, check-in date, check-out date, room (one at a time).\n"
-        "- Restate, ask 'Confirm? yes/no'. Call book_room() only on 'yes'.\n"
-        "- Keep replies under 50 words."
+        "- If you don't know something, say 'Let me check with the manager on that.'\n"
+        "- For anything not covered above, politely say you'll need to check.\n"
+        "- Always end with a question like 'Would you like to know about...' or 'Can I help with anything else?'\n"
+        "- When guest asks about check-in/check-out times, give the exact times from the facts above.\n"
     )
 
 
@@ -150,36 +184,160 @@ def apply_rag_to_messages(messages: list[dict], user_query: str) -> list[dict]:
 def get_hotel_info_response(topic, question):
     h = hotel_info
     q = question.lower()
-    if topic == "rooms" or "room" in q or "suite" in q:
+
+    # Map common synonyms to topics
+    topic_aliases = {
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out"],
+        "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
+        "policies": ["policy", "rule", "regulation"],
+        "amenities": ["amenity", "facility", "feature", "service", "perk"],
+        "location": ["location", "address", "where", "direction", "map", "find"],
+        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim"],
+        "breakfast": ["breakfast", "food", "eat", "dining", "restaurant", "meal"],
+        "parking": ["parking", "park", "car"],
+        "wifi": ["wifi", "wi-fi", "internet", "wireless"],
+        "pets": ["pet", "dog", "cat", "animal"],
+        "cancellation": ["cancel", "refund", "cancellation"],
+        "payment": ["payment", "pay", "card", "visa", "mastercard", "cash"],
+        "children": ["child", "kid", "baby", "family", "toddler"],
+        "smoking": ["smoke", "smoking", "cigarette"],
+        "contact": ["contact", "phone", "email", "call", "reach"],
+        "general": ["general", "info", "information", "about", "tell me"],
+    }
+
+    # Detect actual topic from question if topic is generic
+    actual_topic = topic
+    if topic in ("general", "policies"):
+        for t, aliases in topic_aliases.items():
+            if any(a in q for a in aliases):
+                actual_topic = t
+                break
+
+    # Check-in / Check-out
+    if actual_topic in ("check_in", "check_out"):
+        return (
+            f"Check-in is from {h['policies']['check_in']}. "
+            f"Check-out is by {h['policies']['check_out']}. "
+            f"Would you like to know anything else about your stay?"
+        )
+
+    # Rooms
+    if actual_topic == "rooms":
         for room in h["rooms"].values():
             if any(word in q for word in room["name"].lower().split()):
                 return (
-                    f"{room['name']} — {room['price']} EUR/night."
-                    f" {room['description']}"
+                    f"{room['name']} — {room['price']} EUR/night. {room['description']} "
+                    f"Would you like to book this suite or see other options?"
                 )
-        return "\n".join(
+        room_list = "\n".join(
             [f"• {r['name']}: {r['price']} EUR/night" for r in h["rooms"].values()]
         )
-    elif topic == "policies":
         return (
-            f"Check-in: {h['policies']['check_in']}."
-            f" Check-out: {h['policies']['check_out']}"
+            f"We have 6 beautiful suites:\n{room_list}\n\n"
+            f"Which one catches your eye? I can tell you more about any of them!"
         )
-    elif topic in [
-        "breakfast",
-        "parking",
-        "wifi",
-        "pets",
-        "cancellation",
-        "location",
-    ]:
-        return h["policies"].get(topic, h["location"].get("description", ""))
-    elif topic == "location":
-        return f"{h['name']}, {h['location']['address']}. Phone: {h['location']['phone']}"
-    elif topic == "experiences":
-        return "Popular: " + ", ".join(h["experiences"][:5])
-    else:
-        return h["location"]["description"]
+
+    # Policies
+    if actual_topic == "policies":
+        return (
+            f"Check-in: {h['policies']['check_in']}. Check-out: {h['policies']['check_out']}. "
+            f"Breakfast is €22/person. Free parking and WiFi. Pets allowed on request. "
+            f"Is there a specific policy you'd like to know more about?"
+        )
+
+    # Breakfast
+    if actual_topic == "breakfast":
+        return (
+            f"{h['policies']['breakfast']} "
+            f"Shall I add breakfast to your booking, or would you like to know about local restaurants too?"
+        )
+
+    # Parking
+    if actual_topic == "parking":
+        return (
+            f"{h['policies']['parking']} "
+            f"Will you be driving to Bled, or would you like tips on public transport?"
+        )
+
+    # WiFi
+    if actual_topic == "wifi":
+        return (
+            f"{h['policies']['wifi']} "
+            f"Anything else you'd like to know about our amenities?"
+        )
+
+    # Pets
+    if actual_topic == "pets":
+        return (
+            f"{h['policies']['pets']} "
+            f"Are you planning to bring a furry friend along?"
+        )
+
+    # Cancellation
+    if actual_topic == "cancellation":
+        return (
+            f"{h['policies']['cancellation']} "
+            f"Would you like me to note any special conditions for your booking?"
+        )
+
+    # Payment
+    if actual_topic == "payment":
+        return (
+            f"{h['policies']['payment']} "
+            f"Would you like to proceed with a booking?"
+        )
+
+    # Children
+    if actual_topic == "children":
+        return (
+            f"{h['policies']['children']} "
+            f"Traveling with family? I can help find the best room for everyone!"
+        )
+
+    # Smoking
+    if actual_topic == "smoking":
+        return (
+            f"{h['policies']['smoking']} "
+            f"Is there anything else I can help you with?"
+        )
+
+    # Location
+    if actual_topic == "location":
+        return (
+            f"We're at {h['location']['address']}. "
+            f"{h['location']['description']} "
+            f"Phone: {h['location']['phone']}. "
+            f"Would you like directions or tips on getting here?"
+        )
+
+    # Experiences
+    if actual_topic == "experiences":
+        return (
+            f"There's so much to do! Popular options: {', '.join(h['experiences'][:5])}. "
+            f"Would you like more details on any of these, or shall I help with booking activities?"
+        )
+
+    # Contact
+    if actual_topic == "contact":
+        return (
+            f"You reach us at {h['location']['phone']} or {h['location']['email']}. "
+            f"Or just keep chatting with me — I'm here to help! What else would you like to know?"
+        )
+
+    # Amenities
+    if actual_topic == "amenities":
+        return (
+            f"We offer: {', '.join(h['amenities'][:8])}. "
+            f"Would you like the full list, or is there something specific you're looking for?"
+        )
+
+    # Fallback
+    return (
+        f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "
+        f"right on Lake Bled. We have 6 unique suites with panoramic lake views. "
+        f"What would you like to know — rooms, booking, or things to do in Bled?"
+    )
 
 
 app = Flask(__name__)
