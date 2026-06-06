@@ -138,7 +138,10 @@ def build_system_prompt() -> str:
         "- If you don't know something, say 'Let me check with the manager on that.'\n"
         "- For anything not covered above, politely say you'll need to check.\n"
         "- Always end with a question like 'Would you like to know about...' or 'Can I help with anything else?'\n"
-        "- When guest asks about check-in/check-out times, give the exact times from the facts above.\n"
+        "- When guest asks about check-in/check-out times, give the exact times from the facts above — do NOT ask for booking details first.\n"
+        "- For general hotel info (times, policies, rooms, breakfast, parking, etc.), answer directly from the facts above.\n"
+        "- Only use query_hotel_info() tool for complex or specific info lookups.\n"
+        "- Never ask for booking reference or reservation details — you don't have access to booking systems.\n"
     )
 
 
