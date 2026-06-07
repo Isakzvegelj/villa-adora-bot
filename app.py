@@ -117,7 +117,22 @@ def fix_spacing(text):
     # Fix missing space after colon: "word:word" -> "word: word"
     text = re.sub(r':([a-zA-Z])', r': \1', text)
     # Fix run-on words: lowercase followed by uppercase with no space
+    # But be careful not to break intentional camelCase or common patterns
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # Fix common LLM spacing glitches
+    text = re.sub(r'\bwewelcome\b', 'we welcome', text, flags=re.IGNORECASE)
+    text = re.sub(r'\barriveat\b', 'arrive at', text, flags=re.IGNORECASE)
+    text = re.sub(r'\binhouse\b', 'in-house', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcheckout\b', 'check-out', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcheckin\b', 'check-in', text, flags=re.IGNORECASE)
+    text = re.sub(r'\babar\b', 'a bar', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blakeview\b', 'lake view', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
+    # Fix missing space after period before "The" or other common words
+    text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
+    # Fix missing space before parentheses
+    text = re.sub(r'([a-zA-Z])\(', r'\1 (', text)
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
@@ -187,14 +202,20 @@ def build_system_prompt() -> str:
         "- Detect the guest's language from their message and respond in the SAME language.\n"
         "- Supported languages: English, Slovenian (Slovenščina), German (Deutsch), Italian (Italiano), French (Français), Spanish (Español), Croatian (Hrvatski), Serbian (Srpski), and any other language you can handle.\n"
         "- If the guest writes in Slovenian, respond in Slovenian. If in German, respond in German, etc.\n"
-        "- Keep the same warm, concise style regardless of language.\n\n"
+        "- Keep the same warm, concise style regardless of language.\n"
+        "- IMPORTANT: When a tool returns English information (like a room list), you MUST translate it to the guest's language before sending.\n\n"
         "STYLE:\n"
         "- Be warm, concise, and conversational — like a real human concierge.\n"
         "- Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\n"
         "- Always end with a follow-up question to keep the guest engaged.\n"
         "- NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "- NEVER mention room prices unless the guest specifically asks about pricing.\n"
-        "- If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
+        "- If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n\n"
+        "RESPONSE QUALITY:\n"
+        "- Ensure proper spacing between words. Avoid run-on words like 'wewe' or 'abar'.\n"
+        "- Never output raw dictionary values or technical data structures.\n"
+        "- Give ONE cohesive answer — don't send multiple separate replies unless each is clearly distinct.\n"
+        "- If you don't know something, say so warmly and suggest contacting the hotel directly.\n\n"
         "KEY FACTS:\n"
         "- Check-in: 14:00-21:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
@@ -206,12 +227,13 @@ def build_system_prompt() -> str:
         "- Pets allowed on request\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858\n\n"
-        "ROOMS: Princess Suite, Luxury Suite, Penthouse Suite, Swan Suite, Island Suite (sleeps 4), Prestige Suite, Castle Suite — all with lake views.\n\n"
+        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite, Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
         "- Ask for booking reference or reservation ID\n"
-        "- Give bare answers without a follow-up question"
+        "- Give bare answers without a follow-up question\n"
+        "- Send multiple separate replies to a single question"
     )
 
 
@@ -335,16 +357,16 @@ def get_hotel_info_response(topic, question):
             if any(word in q for word in room["name"].lower().split()):
                 features = ", ".join(room.get("features", [])[:3])
                 return (
-                    f"{room['name']} — {room['price']} EUR/night. {room['description']} "
+                    f"{room['name']} — {room['description']} "
                     f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
-        lines = ["We have 6 beautiful room options for you:"]
+        lines = ["We have 7 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
-            size = f", {r['size_sqm']}m²" if r.get("size_sqm") else ""
+            size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
             feat = ", ".join(r.get("features", [])[:2])
-            lines.append(f"• {r['name']}: €{r['price']}/night{size}{cap} — {feat}")
+            lines.append(f"• {r['name']}{size}{cap} — {feat}")
         lines.append("\nWhich one catches your eye? I can tell you more about any of them!")
         return "\n".join(lines)
 
@@ -365,10 +387,9 @@ def get_hotel_info_response(topic, question):
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
-                    f"We cater to dietary needs: {dietary.get('vegan', 'Vegan options available')}, "
-                    f"{dietary.get('vegetarian', 'vegetarian options')}, "
-                    f"{dietary.get('gluten_free', 'gluten-free on request')}. "
-                    f"{dietary.get('allergies', 'Please inform us of any allergies when booking')}. "
+                    f"We're happy to accommodate dietary needs — just let us know when you book! "
+                    f"We offer vegan, vegetarian, and gluten-free options on request, "
+                    f"and can handle allergies and other dietary requirements with advance notice. "
                     f"Would you like to add breakfast to your booking?"
                 )
             return (
@@ -679,7 +700,7 @@ def api_chat():
             else:
                 # Guest mentioned late check-in/out but no specific time found
                 if replies:
-                    replies[-1]["content"] += " What time would you like to arrive? I can note it in our calendar."
+                    replies[-1]["content"] += " What time would you like to check out? I can note it in our calendar."
 
         # Clean up any model reasoning text from responses
         for reply in replies:
