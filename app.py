@@ -279,7 +279,7 @@ def build_system_prompt() -> str:
         "- Supported languages: English, Slovenian (Slovenščina), German (Deutsch), Italian (Italiano), French (Français), Spanish (Español), Croatian (Hrvatski), Serbian (Srpski), and any other language you can handle.\n"
         "- If the guest writes in Slovenian, respond in Slovenian. If in German, respond in German, etc.\n"
         "- Keep the same warm, concise style regardless of language.\n"
-        "- IMPORTANT: When a tool returns English information (like a room list), you MUST translate it to the guest's language before sending.\n\n"
+        "- IMPORTANT: When a tool returns English information (like a room list), you MUST translate it to the guest's language before sending. NEVER send English responses to non-English guests.\n\n"
         "STYLE:\n"
         "- Be warm, concise, and conversational — like a real human concierge.\n"
         "- Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\n"
@@ -292,7 +292,8 @@ def build_system_prompt() -> str:
         "- Ensure proper spacing between words. Avoid run-on words like 'wewe' or 'abar'.\n"
         "- Never output raw dictionary values or technical data structures.\n"
         "- Give ONE cohesive answer — don't send multiple separate replies unless each is clearly distinct.\n"
-        "- If you don't know something, say so warmly and suggest contacting the hotel directly.\n\n"
+        "- If you don't know something, say so warmly and suggest contacting the hotel directly.\n"
+        "- MANDATORY: You MUST call query_hotel_info for ALL factual questions about the hotel. NEVER answer factual questions from your own knowledge — always use the tool to get accurate, up-to-date information. This includes: rooms, check-in/out, breakfast, restaurant, bar, wine, parking, pets, location, activities, policies, amenities, contact info, shuttle, and pricing.\n\n"
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
@@ -658,14 +659,16 @@ def api_chat():
         sessions[session_id] = messages
 
     try:
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=messages,
-            tools=[book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
-            temperature=0.7,
-            max_tokens=1000,
-            timeout=25,
-        )
+        tool_params = {
+            "model": MODEL,
+            "messages": messages,
+            "tools": [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
+            "temperature": 0.7,
+            "max_tokens": 1200,
+            "timeout": 25,
+        }
+        # Force tool use for factual questions by setting tool_choice
+        response = client.chat.completions.create(**tool_params)
         choice = response.choices[0] if response.choices else None
         if choice is None:
             return jsonify({"replies": [{"type": "text", "content": "No response from model."}]}), 500
@@ -824,7 +827,26 @@ def api_chat():
                 fallback = get_hotel_info_response("general", user_message)
                 replies.append({"type": "text", "content": fallback})
             else:
-                replies.append({"type": "text", "content": content})
+                # LLM didn't call any tool — check if this is a factual question
+                # that should have used query_hotel_info
+                factual_keywords = [
+                    "room", "suite", "check", "breakfast", "restaurant", "bar",
+                    "wine", "parking", "pet", "dog", "cat", "location", "address",
+                    "where", "activity", "activities", "wifi", "internet", "shuttle",
+                    "transfer", "policy", "cancel", "payment", "price", "cost",
+                    "hour", "time", "contact", "phone", "email", "direction",
+                    "nearby", "around", "do here", "vegan", "vegetarian", "gluten",
+                    "dietary", "allergy", "amenity", "facility", "service", "book",
+                    "reservation", "available", "offer", "have", "provide"
+                ]
+                msg_lower = user_message.lower()
+                is_factual = any(kw in msg_lower for kw in factual_keywords)
+                if is_factual and len(content.strip()) < 50:
+                    # LLM gave a short non-tool response to a factual question — use tool data
+                    fallback = get_hotel_info_response("general", user_message)
+                    replies.append({"type": "text", "content": fallback})
+                else:
+                    replies.append({"type": "text", "content": content})
 
         # Check if guest mentioned a late check-in or check-out time in this message
         # and save to calendar for hotel staff awareness
