@@ -4,430 +4,393 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ hotel_name }} — Digital Concierge</title>
+    <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+    <link rel="apple-touch-icon" href="/static/images/favicon.svg">
+    <meta name="theme-color" content="#1e3c72">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2137 100%),
+                        url('/static/images/hero_lake.jpg') center/cover no-repeat fixed;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            color: #e8e8e8;
+            padding: 10px;
         }
-        .header {
-            text-align: center;
-            padding: 2rem 1rem 1rem;
-            max-width: 600px;
-        }
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin-bottom: 0.3rem;
-            color: #f0e6d3;
-        }
-        .header p {
-            font-size: 0.85rem;
-            color: #a8b2c1;
-            font-style: italic;
-        }
-        .chat-container {
+        .container {
             width: 100%;
-            max-width: 600px;
-            flex: 1;
+            max-width: 500px;
+            height: 100vh;
+            max-height: 800px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
             display: flex;
             flex-direction: column;
-            padding: 0 1rem 1rem;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
         }
-        .messages {
+
+        .header {
+            background: linear-gradient(135deg, rgba(30,60,114,0.92) 0%, rgba(42,82,152,0.88) 100%),
+                        url('/static/images/hotel_exterior.jpg') center/cover no-repeat;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(30,60,114,0.7) 0%, rgba(42,82,152,0.85) 100%);
+            z-index: 0;
+        }
+        .header > * { position: relative; z-index: 1; }
+        .header h1 { font-size: 1.4em; margin-bottom: 4px; font-weight: 600; letter-spacing: 0.5px; }
+        .header p { font-size: 0.9em; opacity: 0.95; font-weight: 300; }
+
+        .chat-area {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            min-height: 300px;
-            max-height: 60vh;
+            padding: 20px;
+            background: #f8f9fa;
         }
+
         .message {
+            margin-bottom: 15px;
             max-width: 85%;
-            padding: 0.8rem 1.1rem;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user { margin-left: auto; }
+
+        .bubble {
+            padding: 14px 18px;
             border-radius: 18px;
             line-height: 1.5;
-            font-size: 0.95rem;
-            white-space: pre-wrap;
+            font-size: 0.95em;
         }
-        .message.bot {
-            align-self: flex-start;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #e8e8e8;
-            border-bottom-left-radius: 4px;
+        .message.bot .bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e1e4e8;
+            border-top-left-radius: 4px;
         }
-        .message.user {
-            align-self: flex-end;
-            background: rgba(94, 129, 172, 0.4);
-            color: #f0e6d3;
-            border-bottom-right-radius: 4px;
+        .message.user .bubble {
+            background: #007bff;
+            color: white;
+            border-top-right-radius: 4px;
         }
-        .message.confirmation {
-            align-self: flex-start;
-            background: rgba(240, 230, 211, 0.15);
-            border: 1px solid rgba(240, 230, 211, 0.3);
-            color: #f0e6d3;
-            border-bottom-left-radius: 4px;
-        }
-        .input-area {
+
+        .typing {
             display: flex;
-            gap: 0.5rem;
-            padding: 0.8rem;
-            background: rgba(255,255,255,0.05);
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.15);
+            gap: 6px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 18px;
+            border-top-left-radius: 4px;
+            width: fit-content;
         }
-        .input-area input {
+        .typing span {
+            width: 8px; height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce {
+            0%,60%,100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e1e4e8;
+            display: flex;
+            gap: 10px;
+        }
+        #messageInput {
             flex: 1;
-            background: transparent;
-            border: none;
+            padding: 12px 18px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1em;
             outline: none;
-            color: #e8e8e8;
-            font-size: 0.95rem;
-            padding: 0.3rem 0.5rem;
-            font-family: inherit;
         }
-        .input-area input::placeholder { color: #6b7b8d; }
-        .input-area button {
-            background: rgba(94, 129, 172, 0.6);
+        #messageInput:focus { border-color: #007bff; }
+        #sendBtn {
+            background: #007bff;
+            color: white;
             border: none;
-            color: #f0e6d3;
-            padding: 0.5rem 1.2rem;
-            border-radius: 20px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-family: inherit;
-            transition: background 0.2s;
+            font-size: 1.2em;
         }
-        .input-area button:hover { background: rgba(94, 129, 172, 0.8); }
-        .input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .typing { font-style: italic; color: #6b7b8d; padding: 0.5rem; }
-        .quick-replies {
+
+        .welcome {
+            text-align: center;
+            color: #666;
+            padding: 20px 20px 10px 20px;
+        }
+        .welcome h2 { color: #1e3c72; margin-bottom: 8px; font-size: 1.2em; }
+        .welcome p { font-size: 0.9em; margin-bottom: 8px; }
+        .virtual-agent-notice {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin: 8px 0;
+            font-size: 0.82em;
+            color: #f57f17;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        .virtual-agent-notice .icon { font-size: 1.2em; }
+        .suggestions {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem;
-            padding: 0.5rem 0;
-        }
-        .quick-reply {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #a8b2c1;
-            padding: 0.4rem 0.8rem;
-            border-radius: 16px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-        .quick-reply:hover {
-            background: rgba(255,255,255,0.15);
-            color: #e8e8e8;
-        }
-        .human-agent-btn {
-            display: flex;
-            align-items: center;
+            gap: 8px;
             justify-content: center;
-            gap: 0.4rem;
-            width: 100%;
-            padding: 0.6rem 1rem;
-            margin-top: 0.5rem;
-            background: rgba(180, 140, 80, 0.15);
-            border: 1px solid rgba(180, 140, 80, 0.35);
-            color: #d4b87a;
-            border-radius: 12px;
+            margin-top: 12px;
+        }
+        .suggestion {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-family: inherit;
-            transition: all 0.2s;
         }
-        .human-agent-btn:hover {
-            background: rgba(180, 140, 80, 0.25);
-            border-color: rgba(180, 140, 80, 0.5);
-        }
-        .human-agent-btn svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-        }
-        /* Modal overlay */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: #1e2a3a;
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px;
-            padding: 1.5rem;
-            max-width: 380px;
-            width: 100%;
+        .suggestion:hover { background: #1976d2; color: white; }
+
+        .footer {
             text-align: center;
+            padding: 10px;
+            font-size: 0.8em;
+            color: #888;
+            background: #f8f9fa;
         }
-        .modal h3 {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #f0e6d3;
-            margin-bottom: 0.6rem;
+
+        .booking-card {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 10px 0;
         }
-        .modal p {
-            font-size: 0.88rem;
-            color: #a8b2c1;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-        .modal .warning {
+        .confirmation-buttons {
             display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            background: rgba(180, 140, 80, 0.12);
-            border: 1px solid rgba(180, 140, 80, 0.25);
-            border-radius: 10px;
-            padding: 0.7rem 0.8rem;
-            margin-bottom: 1.2rem;
-            text-align: left;
+            gap: 10px;
+            margin-top: 12px;
         }
-        .modal .warning svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            margin-top: 1px;
-            color: #d4b87a;
-        }
-        .modal .warning span {
-            font-size: 0.82rem;
-            color: #c8b88a;
-            line-height: 1.45;
-        }
-        .modal-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .modal-buttons button {
+        .btn {
             flex: 1;
-            padding: 0.55rem 1rem;
-            border-radius: 10px;
+            padding: 10px;
             border: none;
+            border-radius: 8px;
+            font-size: 0.9em;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-family: inherit;
-            transition: all 0.2s;
         }
-        .modal-buttons .btn-cancel {
-            background: rgba(255,255,255,0.08);
-            color: #a8b2c1;
-            border: 1px solid rgba(255,255,255,0.12);
+        .btn-yes { background: #4caf50; color: white; }
+        .btn-no { background: #f44336; color: white; }
+
+        .bubble strong { font-weight: 600; color: #1a1a1a; }
+        .bubble em { font-style: italic; color: #555; }
+        .bubble code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
         }
-        .modal-buttons .btn-cancel:hover { background: rgba(255,255,255,0.14); }
-        .modal-buttons .btn-confirm {
-            background: rgba(180, 140, 80, 0.3);
-            color: #f0e6d3;
-            border: 1px solid rgba(180, 140, 80, 0.4);
-        }
-        .modal-buttons .btn-confirm:hover { background: rgba(180, 140, 80, 0.45); }
-        /* Human agent active banner */
-        .human-banner {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            padding: 0.5rem 1rem;
-            background: rgba(180, 140, 80, 0.12);
-            border: 1px solid rgba(180, 140, 80, 0.25);
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
-            font-size: 0.82rem;
-            color: #c8b88a;
-        }
-        .human-banner.active { display: flex; }
-        .human-banner .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #d4b87a;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        @media (max-width: 640px) {
-            .header h1 { font-size: 1.4rem; }
-            .message { max-width: 90%; font-size: 0.9rem; }
-        }
+        .bubble ul, .bubble ol { margin: 8px 0; padding-left: 20px; }
+        .bubble li { margin: 4px 0; }
+        .bubble p { margin: 8px 0; }
+        .bubble p:first-child { margin-top: 0; }
+        .bubble p:last-child { margin-bottom: 0; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>{{ hotel_name }}</h1>
-        <p>Your digital concierge — ask me anything about your stay</p>
-    </div>
-    <div class="chat-container">
-        <div class="messages" id="messages"></div>
-        <div class="quick-replies" id="quickReplies">
-            <span class="quick-reply" onclick="sendQuick('What rooms do you have?')">🏨 Rooms</span>
-            <span class="quick-reply" onclick="sendQuick('Tell me about breakfast')">🍳 Breakfast</span>
-            <span class="quick-reply" onclick="sendQuick('What activities are nearby?')">🏔️ Activities</span>
-            <span class="quick-reply" onclick="sendQuick('I want to book a room')">📅 Book</span>
-            <span class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</span>
+    <div class="container">
+        <div class="header">
+            <h1>{{ hotel_name }}</h1>
+            <p>🏔️ Luka, your digital concierge</p>
         </div>
-        <button class="human-agent-btn" onclick="showHumanModal()" id="humanBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Speak to a Human Agent
-        </button>
+
+        <div class="chat-area" id="chatArea">
+            <div class="welcome">
+                <h2>Welcome to Villa Adora Bled</h2>
+                <p>I'm Luka, your personal concierge. Ask me anything about our hotel, rooms, or Lake Bled!</p>
+                <div class="virtual-agent-notice">
+                    <span class="icon">🤖</span>
+                    <span>I'm a virtual agent — responses take a few seconds. I'm here to help!</span>
+                </div>
+                <div class="suggestions">
+                    <span class="suggestion" data-q="What rooms do you have?">🛏️ Rooms</span>
+                    <span class="suggestion" data-q="Tell me about the restaurant and menu">🍽️ Restaurant</span>
+                    <span class="suggestion" data-q="What are the check-in and check-out times?">🕐 Check-in/out</span>
+                    <span class="suggestion" data-q="Tell me about breakfast">🍳 Breakfast</span>
+                    <span class="suggestion" data-q="Do you have parking?">🅿️ Parking</span>
+                    <span class="suggestion" data-q="Can I bring my dog?">🐕 Pets</span>
+                    <span class="suggestion" data-q="Where are you located?">📍 Location</span>
+                    <span class="suggestion" data-q="What is there to do nearby?">🏔️ Activities</span>
+                    <span class="suggestion" data-q="I want to book a shuttle">🚐 Shuttle</span>
+                    <span class="suggestion" data-q="I want to book a room">📅 Book Now</span>
+                </div>
+            </div>
+        </div>
+
         <div class="input-area">
-            <input type="text" id="userInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendMessage()" />
-            <button onclick="sendMessage()" id="sendBtn">Send</button>
+            <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
+            <button id="sendBtn">➤</button>
         </div>
-    </div>
 
-    <!-- Human Agent Modal -->
-    <div class="modal-overlay" id="humanModal">
-        <div class="modal">
-            <h3>Speak to a Human Agent</h3>
-            <p>Our reception team will be notified and will respond to you here in the chat.</p>
-            <div class="warning">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span><strong>Please note:</strong> Responses from a human agent may take longer than the instant bot replies. For urgent matters, you can also call us directly at <strong>+386 51 603 858</strong>.</span>
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="hideHumanModal()">Cancel</button>
-                <button class="btn-confirm" onclick="confirmHumanAgent()">Yes, connect me</button>
-            </div>
+        <div class="footer">
+            Villa Adora Bled • Cesta svobode 35, 4260 Bled, Slovenia
         </div>
-    </div>
-
-    <!-- Human Agent Active Banner -->
-    <div class="human-banner" id="humanBanner">
-        <span class="dot"></span>
-        <span>A human agent has been notified and will respond shortly.</span>
     </div>
 
     <script>
-        const sessionId = 'web_' + Math.random().toString(36).substr(2, 9);
-        const messagesEl = document.getElementById('messages');
-        const inputEl = document.getElementById('userInput');
+        const chatArea = document.getElementById('chatArea');
+        const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
+        const sessionId = 'web-' + Math.random().toString(36).substr(2, 9);
 
-        function addMessage(text, role) {
-            const div = document.createElement('div');
-            div.className = 'message ' + role;
-            div.textContent = text;
-            messagesEl.appendChild(div);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
+        let pendingBooking = null;
+
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
         }
 
-        function showTyping() {
-            const div = document.createElement('div');
-            div.className = 'typing';
-            div.id = 'typing';
-            div.textContent = 'Luka is typing...';
-            messagesEl.appendChild(div);
-            messagesEl.scrollTop = messagesEl.scrollHeight;
+        function addMessage(text, isUser = false) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            if (isUser) {
+                bubble.textContent = text;
+            } else {
+                bubble.innerHTML = marked.parse(text);
+            }
+            msgDiv.appendChild(bubble);
+            chatArea.appendChild(msgDiv);
+            scrollToBottom();
         }
 
-        function hideTyping() {
-            const el = document.getElementById('typing');
+        function showThinking() {
+            const thinking = document.createElement('div');
+            thinking.className = 'message bot';
+            thinking.id = 'thinkingIndicator';
+            thinking.innerHTML = `<div class="bubble" style="font-size:0.85em;color:#999;font-style:italic;">🤔 Thinking...</div>`;
+            chatArea.appendChild(thinking);
+            scrollToBottom();
+        }
+
+        function removeThinking() {
+            const el = document.getElementById('thinkingIndicator');
             if (el) el.remove();
         }
 
+        function createConfirmationCard(booking) {
+            const card = document.createElement('div');
+            card.className = 'booking-card';
+            card.innerHTML = `
+                <div style="font-weight:600;margin-bottom:8px;">📋 Booking Confirmation</div>
+                <div>Guest: <strong>${booking.guest_name}</strong></div>
+                <div>Check-in: ${booking.check_in}</div>
+                <div>Check-out: ${booking.check_out}</div>
+                <div>Room: <strong>${booking.room_name}</strong></div>
+                <div class="confirmation-buttons">
+                    <button class="btn btn-yes" onclick="confirmBooking(true)">✓ Yes, Confirm</button>
+                    <button class="btn btn-no" onclick="confirmBooking(false)">✗ No, Cancel</button>
+                </div>
+            `;
+            return card;
+        }
+
         async function sendMessage() {
-            const text = inputEl.value.trim();
+            const text = messageInput.value.trim();
             if (!text) return;
-            addMessage(text, 'user');
-            inputEl.value = '';
-            sendBtn.disabled = true;
-            showTyping();
+
+            messageInput.value = '';
+            addMessage(text, true);
+            showThinking();
+
             try {
-                const res = await fetch('/api/chat', {
+                const response = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({session_id: sessionId, message: text})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, message: text })
                 });
-                const data = await res.json();
-                hideTyping();
-                if (data.replies) {
-                    data.replies.forEach(reply => {
-                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
-                    });
+
+                const data = await response.json();
+                removeThinking();
+
+                for (const reply of data.replies) {
+                    if (reply.type === 'text') {
+                        addMessage(reply.content);
+                    } else if (reply.type === 'confirmation_request') {
+                        addMessage(reply.content);
+                    }
                 }
-            } catch (e) {
-                hideTyping();
-                addMessage("I'm sorry, I'm having trouble connecting right now. Please try again!", 'bot');
+
+            } catch (error) {
+                removeThinking();
+                addMessage("⚠️ Connection error. Please refresh.");
             }
-            sendBtn.disabled = false;
-            inputEl.focus();
         }
 
-        function sendQuick(text) {
-            inputEl.value = text;
-            sendMessage();
-        }
+        async function confirmBooking(confirmed) {
+            const card = document.querySelector('.booking-card');
+            if (card) card.remove();
 
-        // ── Human Agent Modal ──
-        function showHumanModal() {
-            document.getElementById('humanModal').classList.add('active');
-        }
-        function hideHumanModal() {
-            document.getElementById('humanModal').classList.remove('active');
-        }
-        async function confirmHumanAgent() {
-            hideHumanModal();
-            addMessage('I\'d like to speak with a human agent, please.', 'user');
-            sendBtn.disabled = true;
-            showTyping();
+            showThinking();
+
             try {
-                const res = await fetch('/api/chat', {
+                const response = await fetch('/api/confirm', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({session_id: sessionId, message: 'Please connect me with a human agent.'})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, confirmed: confirmed })
                 });
-                const data = await res.json();
-                hideTyping();
-                if (data.replies) {
-                    data.replies.forEach(reply => {
-                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
-                    });
-                }
-                // Show the persistent banner
-                document.getElementById('humanBanner').classList.add('active');
-                // Also show the banner above the messages area
-                const bannerClone = document.getElementById('humanBanner').cloneNode(true);
-                bannerClone.id = 'humanBannerInline';
-                bannerClone.style.marginBottom = '0.5rem';
-                const container = document.querySelector('.chat-container');
-                container.insertBefore(bannerClone, container.firstChild);
-            } catch (e) {
-                hideTyping();
-                addMessage("I'm having trouble connecting. Please call us at +386 51 603 858.", 'bot');
+
+                const data = await response.json();
+                removeThinking();
+                addMessage(data.reply.content);
+
+            } catch (error) {
+                removeThinking();
+                addMessage("⚠️ Error processing confirmation.");
             }
-            sendBtn.disabled = false;
-            inputEl.focus();
         }
 
-        // Welcome message
-        window.addEventListener('load', () => {
-            addMessage("Hello! I'm Luka, your digital concierge at Villa Adora Bled. How can I help you today? 😊", 'bot');
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
 
-        // Close modal on overlay click
-        document.getElementById('humanModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) hideHumanModal();
+        document.querySelectorAll('.suggestion').forEach(el => {
+            el.addEventListener('click', () => {
+                messageInput.value = el.dataset.q;
+                sendMessage();
+            });
         });
+
+        messageInput.focus();
     </script>
 </body>
 </html>

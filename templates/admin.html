@@ -48,7 +48,7 @@
             </tbody>
         </table>
 
-        <h2>🛏️ Room Bookings</h2>
+        <h2>🛏️ Bookings</h2>
         <table id="bookingsTable">
             <thead>
                 <tr>
@@ -61,43 +61,6 @@
             </thead>
             <tbody id="bookingsBody">
                 <tr><td colspan="5" class="empty">Loading bookings...</td></tr>
-            </tbody>
-        </table>
-
-        <h2>🚐 Shuttle Bookings</h2>
-        <table id="shuttleTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Guest</th>
-                    <th>Pickup</th>
-                    <th>Drop-off</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Pax</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                </tr>
-            </thead>
-            <tbody id="shuttleBody">
-                <tr><td colspan="9" class="empty">Loading shuttle bookings...</td></tr>
-            </tbody>
-        </table>
-
-        <h2>🧑‍💼 Human Agent Requests</h2>
-        <table id="agentTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Reason</th>
-                    <th>Guest</th>
-                    <th>Summary</th>
-                    <th>Status</th>
-                    <th>Created</th>
-                </tr>
-            </thead>
-            <tbody id="agentBody">
-                <tr><td colspan="6" class="empty">Loading requests...</td></tr>
             </tbody>
         </table>
     </div>
@@ -167,71 +130,8 @@
             }
         }
 
-        async function loadShuttles() {
-            const tbody = document.getElementById('shuttleBody');
-            tbody.innerHTML = '<tr><td colspan="9" class="empty">Loading...</td></tr>';
-            try {
-                const res = await fetch('/api/shuttles');
-                const data = await res.json();
-                tbody.innerHTML = '';
-                if (data.shuttles.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="9" class="empty">No shuttle bookings yet.</td></tr>';
-                    return;
-                }
-                data.shuttles.forEach(s => {
-                    const tr = document.createElement('tr');
-                    const created = s.created_at ? new Date(s.created_at).toLocaleString() : '-';
-                    tr.innerHTML = `
-                        <td>#${s.id}</td>
-                        <td>${s.guest_name || 'Guest'}</td>
-                        <td>${s.pickup_location || '-'}</td>
-                        <td>${s.dropoff_location || '-'}</td>
-                        <td>${s.date || '-'}</td>
-                        <td>${s.time || '-'}</td>
-                        <td>${s.passengers || 1}</td>
-                        <td><span class="badge">${s.status || 'pending'}</span></td>
-                        <td>${created}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="9" class="empty">Error loading shuttle bookings.</td></tr>';
-                console.error(e);
-            }
-        }
-
-        async function loadAgentRequests() {
-            const tbody = document.getElementById('agentBody');
-            tbody.innerHTML = '<tr><td colspan="6" class="empty">Loading...</td></tr>';
-            try {
-                const res = await fetch('/api/human-requests');
-                const data = await res.json();
-                tbody.innerHTML = '';
-                if (data.requests.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="empty">No human agent requests yet.</td></tr>';
-                    return;
-                }
-                data.requests.forEach(r => {
-                    const tr = document.createElement('tr');
-                    const created = r.created_at ? new Date(r.created_at).toLocaleString() : '-';
-                    tr.innerHTML = `
-                        <td>#${r.id}</td>
-                        <td>${r.reason || '-'}</td>
-                        <td>${r.guest_name || 'Guest'}</td>
-                        <td class="notes" title="${r.summary || ''}">${r.summary || '-'}</td>
-                        <td><span class="badge">${r.status || 'pending'}</span></td>
-                        <td>${created}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="6" class="empty">Error loading requests.</td></tr>';
-                console.error(e);
-            }
-        }
-
         async function loadAll() {
-            await Promise.all([loadCalendar(), loadBookings(), loadShuttles(), loadAgentRequests()]);
+            await Promise.all([loadCalendar(), loadBookings()]);
         }
 
         loadAll();
