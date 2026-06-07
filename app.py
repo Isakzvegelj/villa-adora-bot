@@ -923,12 +923,17 @@ def api_chat():
 
         # For non-English messages with tool calls, make a second LLM call to generate translated response
         if force_tool and tool_calls and not replies:
+            # Add language instruction before second LLM call
+            second_messages = messages + [{
+                "role": "system",
+                "content": f"CRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information to {detected_lang}. Do NOT use English except for proper nouns."
+            }]
             second_params = {
                 "model": MODEL,
-                "messages": messages,
+                "messages": second_messages,
                 "temperature": 0.5,
-                "max_tokens": 1200,
-                "timeout": 25,
+                "max_tokens": 800,
+                "timeout": 20,
             }
             second_response = client.chat.completions.create(**second_params)
             second_choice = second_response.choices[0] if second_response.choices else None
