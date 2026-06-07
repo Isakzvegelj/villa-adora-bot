@@ -170,14 +170,16 @@ def fix_spacing(text):
     text = re.sub(r'\binhouse\b', 'in-house', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcheckout\b', 'check-out', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcheckin\b', 'check-in', text, flags=re.IGNORECASE)
-    text = re.sub(r'\blatecheck-out\b', 'late check-out', text, flags=re.IGNORECASE)
-    text = re.sub(r'\blatecheck-in\b', 'late check-in', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheck\b(?!out|in|[- ])', 'late check', text, flags=re.IGNORECASE)
     text = re.sub(r'\blatecheckout\b', 'late check-out', text, flags=re.IGNORECASE)
     text = re.sub(r'\blatecheckin\b', 'late check-in', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheck-out\b', 'late check-out', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheck-in\b', 'late check-in', text, flags=re.IGNORECASE)
     text = re.sub(r'\babar\b', 'a bar', text, flags=re.IGNORECASE)
     text = re.sub(r'\blakeview\b', 'lake view', text, flags=re.IGNORECASE)
     text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
-    text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bglutenfree\b', 'gluten-free', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bveganoptions\b', 'vegan options', text, flags=re.IGNORECASE)
     text = re.sub(r'\barrangea\b', 'arrange a', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcanoffer\b', 'can offer', text, flags=re.IGNORECASE)
     text = re.sub(r'\btheviews\b', 'the views', text, flags=re.IGNORECASE)
@@ -395,7 +397,7 @@ def get_hotel_info_response(topic, question):
                 break
 
     # Override: dietary questions should always go to breakfast/dining
-    if topic in ("general", "policies") and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
         actual_topic = "breakfast"
 
     # Check-in / Check-out
@@ -621,7 +623,7 @@ def get_hotel_info_response(topic, question):
     # Fallback
     return (
         f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "
-        f"right on Lake Bled. We have 6 unique suites with panoramic lake views. "
+        f"right on Lake Bled. We have 7 unique suites with panoramic lake views. "
         f"What would you like to know — rooms, booking, or things to do in Bled?"
     )
 
@@ -852,7 +854,7 @@ def api_chat():
                     replies[-1]["content"] += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar for the hotel staff."
             else:
                 # Guest mentioned late check-in/out but no specific time found
-                if replies:
+                if replies and not replies[-1]["content"].rstrip().endswith("?"):
                     replies[-1]["content"] += " What time would you like to check out? I can note it in our calendar."
 
         # Clean up any model reasoning text from responses
