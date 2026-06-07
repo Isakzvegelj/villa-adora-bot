@@ -154,6 +154,8 @@ def fix_spacing(text):
     text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
     # Fix missing space between number and word: "11.What" -> "11. What"
     text = re.sub(r'(\d)([A-Z])', r'\1 \2', text)
+    # Fix digit followed by lowercase letter (e.g. phone numbers followed by words): "858we're" -> "858 we're"
+    text = re.sub(r'(\d)([a-z])', r'\1 \2', text)
     # Fix missing space after punctuation: "word.Word" -> "word. Word"
     text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     # Fix missing space after comma: "word,word" -> "word, word"
@@ -164,12 +166,9 @@ def fix_spacing(text):
     text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
     # But be careful not to break intentional camelCase or common patterns
-    # First, protect known compound words from being split
-    text = re.sub(r'\bWiFi\b', 'WiFi_PLACEHOLDER', text)
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
-    text = text.replace('WiFi_PLACEHOLDER', 'WiFi')
     # Fix common LLM spacing glitches
-    text = re.sub(r'\bwewelcome\b', 'we welcome', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bWi Fi\b', 'WiFi', text)
     text = re.sub(r'\barriveat\b', 'arrive at', text, flags=re.IGNORECASE)
     text = re.sub(r'\binhouse\b', 'in-house', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcheckout\b', 'check-out', text, flags=re.IGNORECASE)
