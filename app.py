@@ -96,6 +96,7 @@ query_hotel_info_function = {
                         "bar",
                         "late_check_in",
                         "late_check_out",
+                        "shuttle",
                     ],
                 },
                 "question": {"type": "string"},
@@ -163,7 +164,10 @@ def fix_spacing(text):
     text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
     # But be careful not to break intentional camelCase or common patterns
+    # First, protect known compound words from being split
+    text = re.sub(r'\bWiFi\b', 'WiFi_PLACEHOLDER', text)
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    text = text.replace('WiFi_PLACEHOLDER', 'WiFi')
     # Fix common LLM spacing glitches
     text = re.sub(r'\bwewelcome\b', 'we welcome', text, flags=re.IGNORECASE)
     text = re.sub(r'\barriveat\b', 'arrive at', text, flags=re.IGNORECASE)
@@ -487,6 +491,7 @@ def get_hotel_info_response(topic, question):
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
+        "shuttle": ["shuttle", "airport transfer", "airport shuttle", "transfer", "taxi", "pickup", "pick-up", "drop-off", "dropoff", "transport", "transportation", "ride", "drive from", "drive to", "from the airport", "to the airport", "ljubljana airport"],
         "general": ["general", "info", "information", "about", "tell me"],
     }
 
@@ -652,15 +657,18 @@ def get_hotel_info_response(topic, question):
     # Pets
     if actual_topic == "pets":
         return (
-            f"{h['policies']['pets']} "
+            f"Pets are welcome on request for €35 per pet per night. "
+            f"Just let us know when you book and we'll make the arrangements! "
             f"Are you planning to bring a furry friend along?"
         )
 
     # Cancellation
     if actual_topic == "cancellation":
         return (
-            f"{h['policies']['cancellation']} "
-            f"Would you like me to note any special conditions for your booking?"
+            f"Direct bookings enjoy free cancellation up to 48 hours before arrival. "
+            f"For third-party bookings, the provider's cancellation policy applies. "
+            f"If you have any questions about your specific booking terms, "
+            f"feel free to contact us at +386 51 603 858 — we're happy to help!"
         )
 
     # Payment
@@ -691,6 +699,18 @@ def get_hotel_info_response(topic, question):
             f"{h['location']['description']} "
             f"Phone: {h['location']['phone']}. "
             f"Would you like directions or tips on getting here?"
+        )
+
+    # Shuttle
+    if actual_topic == "shuttle":
+        return (
+            f"We offer a convenient shuttle service for our guests! "
+            f"Airport transfers from Ljubljana are approximately €60, "
+            f"and local transport to Bled town center is around €15. "
+            f"Custom routes are also available. "
+            f"I can book a shuttle for you directly — just tell me your name, "
+            f"pickup location, date, and preferred time. "
+            f"Would you like to arrange a transfer?"
         )
 
     # Experiences
@@ -725,11 +745,11 @@ def get_hotel_info_response(topic, question):
     if "villa pomona" in q or "pomona" in q:
         vp = h.get("villa_pomona", {})
         return (
-            f"We also offer {vp.get('name', 'Villa Pomona')} — {vp.get('type', 'a luxury villa retreat')}. "
-            f"Located on {vp.get('location', 'the most picturesque street in Bled')}. "
-            f"It features {vp.get('accommodations', {}).get('bedrooms', 3)} bedrooms with ensuite bathrooms, "
-            f"a swimming pool, sauna, and garden. "
-            f"Perfect for families or groups seeking a private retreat. "
+            f"We also offer Villa Pomona — a luxury design boutique villa retreat. "
+            f"It's located on the most picturesque street in Bled, just a 3-minute walk from the lake and town center. "
+            f"The villa features 3 spacious bedrooms with ensuite bathrooms, a swimming pool with pool house, sauna, and a sprawling garden. "
+            f"Additional services include a private chef, daily cleaning, massage, yoga, and personal coaching. "
+            f"It's perfect for families, friends, or small groups seeking a private retreat. "
             f"Would you like more details or to make an inquiry?"
         )
 
