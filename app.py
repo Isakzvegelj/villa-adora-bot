@@ -787,25 +787,24 @@ def api_chat():
                     "content": f"CRITICAL: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question."
                 })
         
-        # For English messages, use the standard tool-based flow
-        # For non-English messages, use auto tool choice (LLM can decide)
+        # For non-English messages, exclude query_hotel_info tool since we provide
+        # hotel data via RAG context. This prevents the LLM from calling the tool
+        # and getting English responses. Keep booking/shuttle tools available.
+        if is_non_english:
+            available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
+        else:
+            available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
+        
         tool_params = {
             "model": MODEL,
             "messages": lang_messages,
-            "tools": [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
+            "tools": available_tools,
             "temperature": 0.5,
             "max_tokens": 1200,
             "timeout": 50,
         }
-        # Only force tool choice for English factual queries
-        # For non-English, let the LLM respond directly with RAG data
-        if not is_non_english:
-            tool_params["tool_choice"] = "auto"
-        else:
-            # For non-English, don't force tools — the RAG context should be enough
-            # But allow tools for booking/shuttle if needed
-            tool_params["tool_choice"] = "auto"
-            
+        tool_params["tool_choice"] = "auto"
+        
         response = client.chat.completions.create(**tool_params)
         choice = response.choices[0] if response.choices else None
         if choice is None:
