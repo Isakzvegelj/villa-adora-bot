@@ -747,7 +747,7 @@ def get_hotel_info_response(topic, question):
     # Cancellation
     if actual_topic == "cancellation":
         return (
-            f"{h['policies']['cancellation']}. "
+            f"{h['policies']['cancellation']} "
             f"Would you like me to note any special conditions for your booking?"
         )
 
