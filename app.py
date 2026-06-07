@@ -69,7 +69,7 @@ query_hotel_info_function = {
     "type": "function",
     "function": {
         "name": "query_hotel_info",
-        "description": "Look up hotel information.",
+        "description": "Look up hotel information. Call this for ANY factual question about the hotel. Choose the most specific topic: 'rooms' for room types/sizes, 'bar' for cocktails/drinks/aperitivos, 'restaurant' for dining/chef/menu, 'wine' for wine list/pairing, 'breakfast' for morning meal/dietary needs, 'experiences' for activities/things to do/nearby, 'location' for address/directions, 'parking' for car parking, 'pets' for animals, 'policies' for rules, 'amenities' for room facilities, 'contact' for phone/email.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -91,6 +91,11 @@ query_hotel_info_function = {
                         "smoking",
                         "contact",
                         "general",
+                        "restaurant",
+                        "wine",
+                        "bar",
+                        "late_check_in",
+                        "late_check_out",
                     ],
                 },
                 "question": {"type": "string"},
@@ -278,7 +283,8 @@ def build_system_prompt() -> str:
         "- Always end with a follow-up question to keep the guest engaged.\n"
         "- NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "- NEVER mention room prices unless the guest specifically asks about pricing.\n"
-        "- If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n\n"
+        "- If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
+        "- ALWAYS use the query_hotel_info tool for factual questions (rooms, policies, location, parking, pets, breakfast, restaurant, bar, wine, activities, etc.) — do NOT answer from your own knowledge, use the tool to get accurate data.\n\n"
         "RESPONSE QUALITY:\n"
         "- Ensure proper spacing between words. Avoid run-on words like 'wewe' or 'abar'.\n"
         "- Never output raw dictionary values or technical data structures.\n"
@@ -387,6 +393,10 @@ def get_hotel_info_response(topic, question):
             if any(a in q for a in aliases):
                 actual_topic = t
                 break
+
+    # Override: dietary questions should always go to breakfast/dining
+    if topic in ("general", "policies") and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+        actual_topic = "breakfast"
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
@@ -571,8 +581,15 @@ def get_hotel_info_response(topic, question):
     # Experiences
     if actual_topic == "experiences":
         return (
-            f"There's so much to do! Popular options: {', '.join(h['experiences'][:5])}. "
-            f"Would you like more details on any of these, or shall I help with booking activities?"
+            f"There's so much to do around Bled! Here are some highlights:\n"
+            f"• Row to Bled Island & visit the Church of the Assumption\n"
+            f"• Swimming, paddleboarding, kayaking, and boat tours on the lake\n"
+            f"• Vintgar Gorge walk (2.4 km away)\n"
+            f"• Bled Castle visit (30 min walk)\n"
+            f"• 6 km lakeside walking path & 15 signposted hikes\n"
+            f"• Day trips to Lake Bohinj, Ljubljana, Postojna Cave\n"
+            f"• In-room massage, garden evenings with wine\n"
+            f"Would you like more details on any of these?"
         )
 
     # Contact
@@ -643,7 +660,8 @@ def api_chat():
             messages=messages,
             tools=[book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
             temperature=0.7,
-            max_tokens=800,
+            max_tokens=1000,
+            timeout=25,
         )
         choice = response.choices[0] if response.choices else None
         if choice is None:
@@ -861,7 +879,9 @@ def api_chat():
 
         return jsonify({"replies": replies})
     except Exception as e:
-        return jsonify({"replies": [{"type": "text", "content": f"Error: {str(e)}"}]}), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({"replies": [{"type": "text", "content": "I'm sorry, I'm having trouble connecting right now. Please try again in a moment, or call us at +386 51 603 858. Is there anything else I can help with?"}]}), 200
 
 
 @app.route("/api/confirm", methods=["POST"])
