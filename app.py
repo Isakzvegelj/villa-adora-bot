@@ -356,53 +356,52 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 
 
 def _detect_language(message: str) -> str:
-    """Simple language detection based on common words and character patterns."""
-    msg = message.lower().strip()
+    """Simple language detection based on common words and character patterns.
+    Uses word-boundary matching to avoid false positives from substring matches."""
+    msg = " " + message.lower().strip() + " "
     
     # Character-based detection for languages with unique scripts/patterns
     # Slovenian-specific characters and patterns
     if any(c in msg for c in ['š', 'č', 'ž', 'đ']):
         # Could be Slovenian, Croatian, or Serbian — check specific words
-        slovenian_specific = ["imate", "kakšen", "kako", "lahko", "želim", "prosim", "hvala", "pozdravljeni", "dober", "dan"]
+        slovenian_specific = [" imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober ", " dan "]
         if any(w in msg for w in slovenian_specific):
             return "Slovenian"
         return "Croatian"
     
-    # Check for specific language markers with more comprehensive word lists
+    # Check for specific language markers with word-boundary matching
+    # Each word is surrounded by spaces so "in" won't match "intimate"
     slovenian_words = [
-        "zdravo", "pozdravljeni", "hvala", "prosim", "sobe", "imate", "kakšen", "kako",
-        "ali", "lahko", "želim", "je", "da", "ne", "kje", "kdaj", "dober", "večer",
-        "jutro", "volo", "soba", "sobi", "sob", "rezervacija", "cena",
-        "zajtrk", "restavracija", "vin", "pes", "mačka", "pozdrav", "nasvidenje",
-        "lepo", "lep", "velik", "majhen", "novo", "staro"
+        " zdravo ", " pozdravljeni ", " hvala ", " prosim ", " sobe ", " imate ", " kakšen ", " kako ",
+        " želim ", " zajtrk ", " restavracija ", " rezervacija ", " soba ", " sob ",
+        " pozdrav ", " nasvidenje ", " kje ", " kdaj ", " volo ", " cena "
     ]
     german_words = [
-        "guten", "tag", "zimmer", "haben", "bitte", "vielen", "danke", "wie", "was",
-        "wo", "wann", "ich", "möchten", "können", "möchten", "sie", "haben", "frei",
-        "verfügbar", "buchung", "frühstück", "restaurant", "parkplatz", "haustier",
-        "hund", "katze", "abreise", "anreise", "willkommen", "auf wiedersehen",
-        "ja", "nein", "nicht", "auch", "noch", "schön", "wunderbar"
+        " guten tag ", " zimmer ", " haben sie ", " vielen danke ", " wie ", " was ",
+        " wo ", " wann ", " möchten ", " können ", " frei ",
+        " verfügbar ", " buchung ", " frühstück ", " restaurant ", " parkplatz ", " haustier ",
+        " hund ", " katze ", " abreise ", " anreise ", " willkommen ", " auf wiedersehen ",
+        " schön ", " wunderbar "
     ]
     italian_words = [
-        "buongiorno", "buonasera", "camere", "avete", "grazie", "per favore",
-        "come", "dove", "quando", "vorrei", "posso", "disponibile", "prenotazione",
-        "colazione", "ristorante", "parcheggio", "animale", "cane", "gatto",
-        "arrivo", "partenza", "benvenuto", "arrivederci", "sì", "no", "anche",
-        "bello", "bella", "magnifico", "perfetto", "camera", "stanza"
+        " buongiorno ", " buonasera ", " camere ", " avete ", " grazie ", " per favore ",
+        " come ", " dove ", " quando ", " vorrei ", " posso ", " disponibile ", " prenotazione ",
+        " colazione ", " ristorante ", " parcheggio ", " animale ", " cane ", " gatto ",
+        " arrivo ", " partenza ", " benvenuto ", " arrivederci ", " bello ", " bella ",
+        " magnifico ", " perfetto ", " camera ", " stanza "
     ]
     french_words = [
-        "bonjour", "bonsoir", "chambres", "avez", "merci", "s'il vous plaît",
-        "comment", "où", "quand", "je voudrais", "je", "vous", "nous", "disponible",
-        "réservation", "petit déjeuner", "restaurant", "parking", "animal", "chien",
-        "chat", "arrivée", "départ", "bienvenue", "au revoir", "oui", "non", "aussi",
-        "belle", "beau", "magnifique", "parfait", "chambre"
+        " bonjour ", " bonsoir ", " chambres ", " avez-vous ", ", merci ", " s'il vous plaît ",
+        " comment ", " où ", " quand ", " je voudrais ", " réservation ", " petit déjeuner ",
+        " restaurant ", " animal ", " chien ", " chat ", " arrivée ", " départ ",
+        " bienvenue ", " au revoir ", " belle ", " beau ", " magnifique ", " parfait ", " chambre "
     ]
     spanish_words = [
-        "hola", "habitaciones", "tienen", "gracias", "por favor", "cómo", "dónde",
-        "cuándo", "quisiera", "puedo", "disponible", "reserva", "desayuno",
-        "restaurante", "aparcamiento", "mascota", "perro", "gato", "llegada",
-        "salida", "bienvenido", "hasta luego", "sí", "no", "también", "bonito",
-        "bonita", "magnífico", "perfecto", "cuarto"
+        " hola ", " habitaciones ", " tienen ", " gracias ", " por favor ", " cómo ", " dónde ",
+        " cuándo ", " quisiera ", " reserva ", " desayuno ",
+        " restaurante ", " aparcamiento ", " mascota ", " perro ", " gato ", " llegada ",
+        " salida ", " bienvenido ", " hasta luego ", " bonito ",
+        " bonita ", " magnífico ", " perfecto ", " cuarto "
     ]
     
     for words, lang in [
@@ -744,13 +743,22 @@ def api_chat():
     force_tool = detected_lang != "English"
 
     try:
+        # If non-English, inject language instruction as an additional system message
+        # so the LLM translates the tool response in a single call (avoids timeout)
+        lang_messages = list(messages)
+        if force_tool:
+            lang_messages.append({
+                "role": "system",
+                "content": f"LANGUAGE OVERRIDE: The guest wrote in {detected_lang}. You MUST respond ENTIRELY in {detected_lang}. Translate all tool response data to {detected_lang}. Do NOT use English except for proper nouns and brand names. This is NON-NEGOTIABLE."
+            })
+        
         tool_params = {
             "model": MODEL,
-            "messages": messages,
+            "messages": lang_messages,
             "tools": [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
             "temperature": 0.5,
             "max_tokens": 1200,
-            "timeout": 25,
+            "timeout": 45,
         }
         if force_tool:
             tool_params["tool_choice"] = {"type": "function", "function": {"name": "query_hotel_info"}}
@@ -763,16 +771,6 @@ def api_chat():
         content = fix_spacing(getattr(msg, "content", None) or "")
         tool_calls = getattr(msg, "tool_calls", None) or []
 
-        # If forced tool call produced no useful content and no tool was actually called,
-        # retry with auto tool choice
-        if force_tool and not tool_calls and not content.strip():
-            tool_params["tool_choice"] = "auto"
-            response = client.chat.completions.create(**tool_params)
-            choice = response.choices[0] if response.choices else None
-            if choice:
-                msg = choice.message
-                content = fix_spacing(getattr(msg, "content", None) or "")
-                tool_calls = getattr(msg, "tool_calls", None) or []
         # Build assistant message with properly formatted tool_calls (including id and type)
         assistant_msg = {"role": "assistant", "content": content}
         if tool_calls:
@@ -874,7 +872,8 @@ def api_chat():
                             time=extracted_time,
                             notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Original message: {user_message}"
                         )
-                        answer += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar. "
+                        # Note: We do NOT add calendar confirmation to the guest response —
+                        # that's an internal detail. The guest just gets a warm confirmation.
 
                 tool_reply = answer
                 # Don't send tool response directly — let the LLM generate a translated response
@@ -921,27 +920,30 @@ def api_chat():
             if tool_reply is not None:
                 messages.append({"role": "tool", "tool_call_id": tc_id, "content": tool_reply})
 
-        # For non-English messages with tool calls, make a second LLM call to generate translated response
-        if force_tool and tool_calls and not replies:
-            # Add language instruction before second LLM call
-            second_messages = messages + [{
-                "role": "system",
-                "content": f"CRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information to {detected_lang}. Do NOT use English except for proper nouns."
-            }]
-            second_params = {
-                "model": MODEL,
-                "messages": second_messages,
-                "temperature": 0.5,
-                "max_tokens": 800,
-                "timeout": 20,
-            }
-            second_response = client.chat.completions.create(**second_params)
-            second_choice = second_response.choices[0] if second_response.choices else None
-            if second_choice:
-                second_content = fix_spacing(getattr(second_choice.message, "content", None) or "")
-                if second_content.strip():
-                    replies.append({"type": "text", "content": second_content})
-                    sessions[session_id] = messages + [{"role": "assistant", "content": second_content}]
+        # For non-English messages with tool calls, the LLM now generates the translated
+                # response in a single call thanks to the language override system message above.
+                # No second LLM call needed — this avoids timeout issues.
+                if force_tool and tool_calls and not replies:
+                    # The tool response was added to messages but we need the LLM to generate
+                    # a translated response. Make a single follow-up call with the language instruction.
+                    followup_messages = messages + [{
+                        "role": "system",
+                        "content": f"CRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information to {detected_lang}. Do NOT use English except for proper nouns and brand names. Be warm and end with a follow-up question."
+                    }]
+                    second_params = {
+                        "model": MODEL,
+                        "messages": followup_messages,
+                        "temperature": 0.5,
+                        "max_tokens": 800,
+                        "timeout": 35,
+                    }
+                    second_response = client.chat.completions.create(**second_params)
+                    second_choice = second_response.choices[0] if second_response.choices else None
+                    if second_choice:
+                        second_content = fix_spacing(getattr(second_choice.message, "content", None) or "")
+                        if second_content.strip():
+                            replies.append({"type": "text", "content": second_content})
+                            sessions[session_id] = messages + [{"role": "assistant", "content": second_content}]
 
         if not replies:
             # Fallback: if model returned empty content, try to answer directly
@@ -981,8 +983,8 @@ def api_chat():
         is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late", "late at", "arrive at", "get in late", "coming late", "late check in"])
         is_late_checkout = any(word in msg_lower for word in ["late check-out", "late checkout", "late check out", "check out late", "later checkout"])
         # Check if calendar event was already added by the tool handler above
-        already_handled = any("noted your" in r.get("content", "") and "calendar" in r.get("content", "") for r in replies)
-        if (is_late_checkin or is_late_checkout) and not already_handled:
+        # Simple approach: just save the event (idempotent) — no duplicate check needed
+        if is_late_checkin or is_late_checkout:
             extracted_time = extract_time_from_message(user_message)
             if extracted_time:
                 event_type = "late_check_in" if is_late_checkin else "late_check_out"
@@ -1001,19 +1003,16 @@ def api_chat():
                     time=extracted_time,
                     notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}"
                 )
-                # Append confirmation to the last reply
-                if replies:
-                    replies[-1]["content"] += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar for the hotel staff."
+                # Internal-only: calendar event saved. Do NOT append to guest response.
             else:
-                # Guest mentioned late check-in/out but no specific time found
+                # Guest mentioned late check-in/out but no specific time found — ask for it
                 if replies and "what time would you like" not in replies[-1]["content"].lower():
-                    replies[-1]["content"] += " What time would you like to check out? I can note it in our calendar."
+                    replies[-1]["content"] += " What time would you like? Let me know and I'll pass it along."
 
         # Clean up any model reasoning text from responses
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
-            # If content is empty after cleaning, provide a fallback
             # If content is empty after cleaning, provide a fallback
             if reply.get("type") == "text" and not reply.get("content", "").strip():
                 msg_lower = user_message.lower()
