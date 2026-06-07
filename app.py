@@ -1021,9 +1021,47 @@ def api_chat():
                     "dietary", "allergy", "amenity", "facility", "service", "book",
                     "reservation", "available", "offer", "have", "provide"
                 ]
+                # Non-English factual keywords (Slovenian, German, French, Italian, Spanish)
+                non_english_factual = [
+                    # Slovenian
+                    "soba", "sobe", "zajtrk", "restavracija", "vin", "pijača",
+                    "parkir", "pes", "macka", "lokacija", "naslov", "kjer", "kje",
+                    "aktivnost", "wifi", "internet", "transfer", "politika",
+                    "preklic", "plačilo", "cena", "ura", "čas", "kontakt",
+                    "telefon", "email", "smer", "bližina", "vegetarijansko",
+                    "brez glutena", "alergija", "udobje", "storitev", "rezervacija",
+                    "razpoložljiv", "ponudba", "imeti", "koliko", "stane", "najvišja",
+                    "najvecja", "najdražja", "najcenejša",
+                    # German
+                    "zimmer", "frühstück", "restaurant", "wein", "parkplatz",
+                    "haustier", "adresse", "wo", "aktivität", "internet",
+                    "transfer", "stornierung", "zahlung", "preis", "kosten",
+                    "zeit", "kontakt", "telefon", "richtung", "vegetarisch",
+                    "glutenfrei", "allergie", "buchung", "verfügbar",
+                    # French
+                    "chambre", "petit déjeuner", "restaurant", "vin", "parking",
+                    "animal", "adresse", "où", "activité", "internet",
+                    "transfert", "annulation", "paiement", "prix", "coût",
+                    "heure", "contact", "téléphone", "direction", "végétarien",
+                    "sans gluten", "allergie", "réservation", "disponible",
+                    # Italian
+                    "camera", "colazione", "ristorante", "vino", "parcheggio",
+                    "animale", "indirizzo", "dove", "attività", "internet",
+                    "trasferimento", "cancellazione", "pagamento", "prezzo",
+                    "costo", "ora", "contatto", "telefono", "direzione",
+                    "vegetariano", "senza glutine", "allergia", "prenotazione",
+                    "disponibile",
+                    # Spanish
+                    "habitación", "desayuno", "restaurante", "vino", "aparcamiento",
+                    "mascota", "dirección", "donde", "actividad", "internet",
+                    "transferencia", "cancelación", "pago", "precio", "costo",
+                    "hora", "contacto", "teléfono", "dirección", "vegetariano",
+                    "sin gluten", "alergia", "reserva", "disponible",
+                ]
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
-                if is_factual:
+                is_factual_non_eng = any(kw in msg_lower for kw in non_english_factual)
+                if is_factual or is_factual_non_eng:
                     # LLM didn't use tool for factual question — get data ourselves
                     fallback = get_hotel_info_response("general", user_message)
                     # Only use fallback if LLM response is short/empty (likely wrong)
