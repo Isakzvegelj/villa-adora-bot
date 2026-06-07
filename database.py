@@ -15,6 +15,26 @@ def init_db():
                   date TEXT,
                   notes TEXT,
                   created_at TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS shuttle_bookings
+                 (id INTEGER PRIMARY KEY,
+                  session_id TEXT,
+                  guest_name TEXT,
+                  pickup_location TEXT,
+                  dropoff_location TEXT,
+                  date TEXT,
+                  time TEXT,
+                  passengers INTEGER,
+                  notes TEXT,
+                  status TEXT DEFAULT 'pending',
+                  created_at TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS human_agent_requests
+                 (id INTEGER PRIMARY KEY,
+                  session_id TEXT,
+                  reason TEXT,
+                  guest_name TEXT,
+                  summary TEXT,
+                  status TEXT DEFAULT 'pending',
+                  created_at TEXT)''')
     conn.commit()
     conn.close()
 
@@ -58,6 +78,34 @@ def get_calendar_events(event_type=None, date=None):
     rows = c.fetchall()
     conn.close()
     return rows
+
+def add_shuttle_booking(session_id, guest_name, pickup_location, dropoff_location, date, time, passengers=1, notes=None):
+    """Add a shuttle booking."""
+    conn = sqlite3.connect('hotel.db')
+    c = conn.cursor()
+    created_at = datetime.now().isoformat()
+    c.execute("""INSERT INTO shuttle_bookings 
+                 (session_id, guest_name, pickup_location, dropoff_location, date, time, passengers, notes, created_at)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+              (session_id, guest_name, pickup_location, dropoff_location, date, time, passengers, notes, created_at))
+    conn.commit()
+    booking_id = c.lastrowid
+    conn.close()
+    return booking_id
+
+def add_human_agent_request(session_id, reason, guest_name="Guest", summary=""):
+    """Log a human agent request."""
+    conn = sqlite3.connect('hotel.db')
+    c = conn.cursor()
+    created_at = datetime.now().isoformat()
+    c.execute("""INSERT INTO human_agent_requests 
+                 (session_id, reason, guest_name, summary, created_at)
+                 VALUES (?, ?, ?, ?, ?)""",
+              (session_id, reason, guest_name, summary, created_at))
+    conn.commit()
+    request_id = c.lastrowid
+    conn.close()
+    return request_id
 
 def get_all_calendar_events():
     """Get all calendar events."""

@@ -100,6 +100,44 @@ query_hotel_info_function = {
     },
 }
 
+book_shuttle_function = {
+    "type": "function",
+    "function": {
+        "name": "book_shuttle",
+        "description": "Book a shuttle service for the guest. Collect all required details before calling.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "guest_name": {"type": "string", "description": "Name of the guest"},
+                "pickup_location": {"type": "string", "description": "Where to pick up the guest (e.g. 'Ljubljana airport', 'Bled town center', 'train station')"},
+                "dropoff_location": {"type": "string", "description": "Where to drop off (usually 'Villa Adora Bled')"},
+                "date": {"type": "string", "description": "Date of shuttle in YYYY-MM-DD format"},
+                "time": {"type": "string", "description": "Pickup time (e.g. '14:00')"},
+                "passengers": {"type": "integer", "description": "Number of passengers", "default": 1},
+                "notes": {"type": "string", "description": "Any special requests or notes"},
+            },
+            "required": ["guest_name", "pickup_location", "date", "time"],
+        },
+    },
+}
+
+request_human_agent_function = {
+    "type": "function",
+    "function": {
+        "name": "request_human_agent",
+        "description": "Transfer the guest to a human agent. Use when: guest is frustrated, explicitly asks for a human, has a complex complaint, or the bot cannot resolve the issue.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "reason": {"type": "string", "description": "Why the guest needs a human agent"},
+                "guest_name": {"type": "string", "description": "Name of the guest if known"},
+                "summary": {"type": "string", "description": "Brief summary of the issue"},
+            },
+            "required": ["reason"],
+        },
+    },
+}
+
 
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
@@ -147,8 +185,10 @@ def fix_spacing(text):
     text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before "The" or other common words
     text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
+    # Fix missing space after period in other languages
+    text = re.sub(r'\.(Il|La|Le|Les|Un|Une|El|Los|Las|Der|Die|Das|Ein|Una|Lo|Gli)', r'. \1', text)
     # Fix missing space before parentheses
-    text = re.sub(r'([a-zA-Z])\(', r'\1 (', text)
+    text = re.sub(r'([a-zA-Z])\(', r' \1 (', text)
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
@@ -239,6 +279,7 @@ def build_system_prompt() -> str:
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
+        "- Shuttle service available — airport transfer, local transport, custom routes. Book directly in this chat. Ljubljana airport ~€60, Bled town center ~€15."
         "- Free parking and WiFi (8 parking spots in front of the hotel)"
         "- Pets allowed on request\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
@@ -583,9 +624,9 @@ def api_chat():
         response = client.chat.completions.create(
             model=MODEL,
             messages=messages,
-            tools=[book_room_function, query_hotel_info_function],
+            tools=[book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
             temperature=0.7,
-            max_tokens=500,
+            max_tokens=800,
         )
         choice = response.choices[0] if response.choices else None
         if choice is None:
@@ -598,12 +639,14 @@ def api_chat():
         if tool_calls:
             assistant_msg["tool_calls"] = [
                 {
+                    "id": tc.id if hasattr(tc, "id") else tc.get("id", f"call_{i}"),
+                    "type": "function",
                     "function": {
                         "name": tc.function.name if hasattr(tc.function, "name") else tc.get("function", {}).get("name"),
                         "arguments": tc.function.arguments if hasattr(tc.function, "arguments") else tc.get("function", {}).get("arguments"),
                     }
                 }
-                for tc in tool_calls
+                for i, tc in enumerate(tool_calls)
             ]
         messages.append(assistant_msg)
         replies = []
@@ -689,6 +732,44 @@ def api_chat():
 
                 replies.append({"type": "text", "content": answer})
                 messages.append({"role": "tool", "content": answer})
+            elif fn == "book_shuttle":
+                # Save shuttle booking to database
+                from database import add_shuttle_booking
+                add_shuttle_booking(
+                    session_id=session_id,
+                    guest_name=args.get("guest_name", "Guest"),
+                    pickup_location=args.get("pickup_location", ""),
+                    dropoff_location=args.get("dropoff_location", "Villa Adora Bled"),
+                    date=args.get("date", ""),
+                    time=args.get("time", ""),
+                    passengers=args.get("passengers", 1),
+                    notes=args.get("notes", ""),
+                )
+                reply = (
+                    f"Shuttle booked for {args.get('guest_name', 'the guest')}! "
+                    f"Pickup: {args.get('pickup_location', 'TBD')} on {args.get('date', 'TBD')} at {args.get('time', 'TBD')}. "
+                    f"Passengers: {args.get('passengers', 1)}. "
+                    f"Our team will confirm shortly. Is there anything else I can help you with?"
+                )
+                replies.append({"type": "text", "content": reply})
+                messages.append({"role": "tool", "content": reply})
+            elif fn == "request_human_agent":
+                # Log the human agent request
+                from database import add_human_agent_request
+                add_human_agent_request(
+                    session_id=session_id,
+                    reason=args.get("reason", "Guest requested human agent"),
+                    guest_name=args.get("guest_name", "Guest"),
+                    summary=args.get("summary", ""),
+                )
+                reply = (
+                    f"I understand you'd like to speak with a human agent. "
+                    f"I've notified our reception team — they'll be with you shortly. "
+                    f"You can also call us directly at +386 51 603 858. "
+                    f"Thank you for your patience!"
+                )
+                replies.append({"type": "text", "content": reply})
+                messages.append({"role": "tool", "content": reply})
         if not replies:
             # Fallback: if model returned empty content, try to answer directly
             if tool_calls:
