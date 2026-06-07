@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel_name }} — Digital Concierge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #e8e8e8;
+        }
+        .header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            max-width: 600px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 0.3rem;
+            color: #f0e6d3;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: #a8b2c1;
+            font-style: italic;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 1rem 1rem;
+        }
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            min-height: 300px;
+            max-height: 60vh;
+        }
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1.1rem;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e8e8e8;
+            border-bottom-left-radius: 4px;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: rgba(94, 129, 172, 0.4);
+            color: #f0e6d3;
+            border-bottom-right-radius: 4px;
+        }
+        .message.confirmation {
+            align-self: flex-start;
+            background: rgba(240, 230, 211, 0.15);
+            border: 1px solid rgba(240, 230, 211, 0.3);
+            color: #f0e6d3;
+            border-bottom-left-radius: 4px;
+        }
+        .input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .input-area input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e8e8e8;
+            font-size: 0.95rem;
+            padding: 0.3rem 0.5rem;
+            font-family: inherit;
+        }
+        .input-area input::placeholder { color: #6b7b8d; }
+        .input-area button {
+            background: rgba(94, 129, 172, 0.6);
+            border: none;
+            color: #f0e6d3;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+        .input-area button:hover { background: rgba(94, 129, 172, 0.8); }
+        .input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .typing { font-style: italic; color: #6b7b8d; padding: 0.5rem; }
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding: 0.5rem 0;
+        }
+        .quick-reply {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #a8b2c1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .quick-reply:hover {
+            background: rgba(255,255,255,0.15);
+            color: #e8e8e8;
+        }
+        @media (max-width: 640px) {
+            .header h1 { font-size: 1.4rem; }
+            .message { max-width: 90%; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ hotel_name }}</h1>
+        <p>Your digital concierge — ask me anything about your stay</p>
+    </div>
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="quick-replies" id="quickReplies">
+            <span class="quick-reply" onclick="sendQuick('What rooms do you have?')">🏨 Rooms</span>
+            <span class="quick-reply" onclick="sendQuick('Tell me about breakfast')">🍳 Breakfast</span>
+            <span class="quick-reply" onclick="sendQuick('What activities are nearby?')">🏔️ Activities</span>
+            <span class="quick-reply" onclick="sendQuick('I want to book a room')">📅 Book</span>
+            <span class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</span>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendMessage()" />
+            <button onclick="sendMessage()" id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const sessionId = 'web_' + Math.random().toString(36).substr(2, 9);
+        const messagesEl = document.getElementById('messages');
+        const inputEl = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function addMessage(text, role) {
+            const div = document.createElement('div');
+            div.className = 'message ' + role;
+            div.textContent = text;
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'typing';
+            div.id = 'typing';
+            div.textContent = 'Luka is typing...';
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+
+        async function sendMessage() {
+            const text = inputEl.value.trim();
+            if (!text) return;
+            addMessage(text, 'user');
+            inputEl.value = '';
+            sendBtn.disabled = true;
+            showTyping();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, message: text})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.replies) {
+                    data.replies.forEach(reply => {
+                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
+                    });
+                }
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm sorry, I'm having trouble connecting right now. Please try again!", 'bot');
+            }
+            sendBtn.disabled = false;
+            inputEl.focus();
+        }
+
+        function sendQuick(text) {
+            inputEl.value = text;
+            sendMessage();
+        }
+
+        // Welcome message
+        window.addEventListener('load', () => {
+            addMessage("Hello! I'm Luka, your digital concierge at Villa Adora Bled. How can I help you today? 😊", 'bot');
+        });
+    </script>
+</body>
+</html>

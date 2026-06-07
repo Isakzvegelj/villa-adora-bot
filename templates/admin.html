@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel_name }} — Admin Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            padding: 2rem;
+        }
+        h1 { margin-bottom: 1.5rem; color: #1a1a2e; }
+        h2 { margin: 1.5rem 0 0.8rem; color: #333; font-size: 1.1rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #1a1a2e; color: #f0e6d3; font-weight: 500; }
+        tr:hover { background: #f8f8f8; }
+        .empty { color: #999; font-style: italic; padding: 1rem; }
+        .refresh-btn {
+            background: #1a1a2e;
+            color: #f0e6d3;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        .refresh-btn:hover { background: #2a2a4e; }
+    </style>
+</head>
+<body>
+    <h1>{{ hotel_name }} — Admin Dashboard</h1>
+    <button class="refresh-btn" onclick="loadAll()">🔄 Refresh</button>
+
+    <h2>📅 Bookings</h2>
+    <table id="bookingsTable">
+        <thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>🗓️ Calendar Events</h2>
+    <table id="calendarTable">
+        <thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th><th>Created</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function loadBookings() {
+            try {
+                const res = await fetch('/api/bookings');
+                const data = await res.json();
+                const tbody = document.querySelector('#bookingsTable tbody');
+                if (!data.bookings || data.bookings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.bookings.map(b =>
+                    `<tr><td>${b.id}</td><td>${b.guest}</td><td>${b.room}</td><td>${b.check_in}</td><td>${b.check_out}</td></tr>`
+                ).join('');
+            } catch (e) {
+                console.error('Failed to load bookings:', e);
+            }
+        }
+
+        async function loadCalendar() {
+            try {
+                const res = await fetch('/api/calendar');
+                const data = await res.json();
+                const tbody = document.querySelector('#calendarTable tbody');
+                if (!data.events || data.events.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty">No calendar events yet</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.events.map(e =>
+                    `<tr><td>${e.id}</td><td>${e.event_type}</td><td>${e.guest_name}</td><td>${e.time}</td><td>${e.notes || ''}</td><td>${e.created_at}</td></tr>`
+                ).join('');
+            } catch (e) {
+                console.error('Failed to load calendar:', e);
+            }
+        }
+
+        function loadAll() { loadBookings(); loadCalendar(); }
+        loadAll();
+    </script>
+</body>
+</html>
