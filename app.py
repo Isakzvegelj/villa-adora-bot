@@ -1136,6 +1136,15 @@ def api_chat():
                         f"What would you like to know more about?"
                     )
 
+        # Merge consecutive text replies into one to avoid duplicate/fragmented responses
+        merged_replies = []
+        for reply in replies:
+            if reply.get("type") == "text" and merged_replies and merged_replies[-1].get("type") == "text":
+                merged_replies[-1]["content"] += "\n\n" + reply["content"]
+            else:
+                merged_replies.append(reply)
+        replies = merged_replies
+
         return jsonify({"replies": replies})
     except Exception as e:
         import traceback
