@@ -817,16 +817,24 @@ def api_chat():
         if is_non_english:
             # Get relevant hotel data via RAG
             rag_docs = maybe_retrieve_hotel_facts(user_message, max_facts=3)
+            # Build a strong language instruction
+            lang_instruction = (
+                f"CRITICAL LANGUAGE INSTRUCTION: The guest is writing in {detected_lang}. "
+                f"You MUST respond ENTIRELY in {detected_lang}. "
+                f"Translate ALL information to {detected_lang}. "
+                f"Do NOT use English except for proper nouns (like 'Lake Bled', 'Villa Adora'). "
+                f"Be warm, concise, and end with a follow-up question in {detected_lang}."
+            )
             if rag_docs:
                 rag_context = format_rag_context(rag_docs)
                 lang_messages.append({
                     "role": "system",
-                    "content": f"HOTEL DATA (respond in {detected_lang}):\n\n{rag_context}\n\nCRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question. Do NOT use English except for proper nouns and brand names."
+                    "content": f"HOTEL DATA:\n\n{rag_context}\n\n{lang_instruction}"
                 })
             else:
                 lang_messages.append({
                     "role": "system",
-                    "content": f"CRITICAL: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question."
+                    "content": lang_instruction
                 })
         
         # For non-English messages, exclude query_hotel_info tool since we provide
@@ -1068,7 +1076,17 @@ def api_chat():
                     if len(content.strip()) < 100:
                         replies.append({"type": "text", "content": fallback})
                     else:
-                        replies.append({"type": "text", "content": content})
+                        # For non-English factual questions, check if LLM actually translated
+                        if is_factual_non_eng and detected_lang != "English":
+                            has_non_ascii = any(ord(c) > 127 for c in content)
+                            if not has_non_ascii:
+                                # LLM responded in English to a non-English factual question
+                                # Use the fallback (at least it's factually correct)
+                                replies.append({"type": "text", "content": fallback})
+                            else:
+                                replies.append({"type": "text", "content": content})
+                        else:
+                            replies.append({"type": "text", "content": content})
                 else:
                     replies.append({"type": "text", "content": content})
 
