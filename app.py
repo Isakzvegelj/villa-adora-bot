@@ -232,6 +232,11 @@ def clean_response(text):
     text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
     # Remove any remaining JSON-like blocks that look like tool definitions
     text = _re.sub(r'\{.*?"type":\s*"object".*?"properties".*?\}', '', text, flags=_re.DOTALL)
+    # Remove trailing incomplete tags or JSON (e.g. "</" or '{"key":' at the end)
+    text = _re.sub(r'[<\[][\w:/]*$', '', text)
+    text = _re.sub(r'\{"[^"]*":?\s*$', '', text)
+    # Remove trailing incomplete sentences (ending with comma or conjunction)
+    text = _re.sub(r',\s*$', '.', text)
     # If the text contains what looks like reasoning followed by a final answer,
     # extract only the final answer portion
     # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
