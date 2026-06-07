@@ -658,11 +658,11 @@ def get_hotel_info_response(topic, question):
                 lines.extend(suitable)
                 lines.append("\nAll our suites:")
                 lines.extend(all_rooms)
-                lines.append("Which one catches your eye?")
+                lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
                 return "\n".join(lines)
             lines = ["We have 7 beautiful suites, all with stunning lake views:"]
             lines.extend(all_rooms)
-            lines.append("Which one catches your eye? I can tell you more about any of them!")
+            lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
             return "\n".join(lines)
         lines = ["We have 7 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
@@ -671,7 +671,7 @@ def get_hotel_info_response(topic, question):
             price_str = f" — €{r['price']}/night" if r.get("price") and is_price_query else ""
             feat = ", ".join(r.get("features", [])[:2])
             lines.append(f"• {r['name']}{size}{cap}{price_str} — {feat}")
-        lines.append("Which one catches your eye? I can tell you more about any of them!")
+        lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
         return "\n".join(lines)
 
     # Policies
@@ -738,7 +738,7 @@ def get_hotel_info_response(topic, question):
         return (
             f"Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
             f"It's the perfect spot for sunset drinks! The terrace is open every day.{wine_mention}"
-            f"Would you like to know about our pop-up dining events too?"
+            f"Would you like me to reserve a table for dinner, or shall I tell you about our pop-up dining events?"
         )
 
     # Parking
@@ -810,7 +810,7 @@ def get_hotel_info_response(topic, question):
             f"• 6 km lakeside walking path & 15 signposted hikes\n"
             f"• Day trips to Lake Bohinj, Ljubljana, Postojna Cave\n"
             f"• In-room massage, garden evenings with wine\n"
-            f"Would you like more details on any of these?"
+            f"I can help you book any of these — just let me know which interests you!"
         )
 
     # Contact
