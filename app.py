@@ -154,8 +154,6 @@ def fix_spacing(text):
     text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
     # Fix missing space between number and word: "11.What" -> "11. What"
     text = re.sub(r'(\d)([A-Z])', r'\1 \2', text)
-    # Fix digit followed by lowercase letter (e.g. phone numbers followed by words): "858we're" -> "858 we're"
-    text = re.sub(r'(\d)([a-z])', r'\1 \2', text)
     # Fix missing space after punctuation: "word.Word" -> "word. Word"
     text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     # Fix missing space after comma: "word,word" -> "word, word"
@@ -667,7 +665,7 @@ def get_hotel_info_response(topic, question):
             f"Direct bookings enjoy free cancellation up to 48 hours before arrival. "
             f"For third-party bookings, the provider's cancellation policy applies. "
             f"If you have any questions about your specific booking terms, "
-            f"feel free to contact us at +386 51 603 858 — we're happy to help!"
+            f"feel free to contact us at +386 51 603 858. We're happy to help!"
         )
 
     # Payment
