@@ -332,8 +332,8 @@ def build_system_prompt() -> str:
         "- Late check-in/out: Available on request, contact reception\n"
         "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
-        "- Wine list: curated Slovenian and international wines by in-house expert\n"
-        "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
+        "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
+        "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"
         "- Shuttle service available — airport transfer, local transport, custom routes. Book directly in this chat. Ljubljana airport ~€60, Bled town center ~€15.\n"
         "- Free parking and WiFi (8 parking spots in front of the hotel)\n"
         "- Pets allowed on request — €35 per pet per night\n"
@@ -375,7 +375,9 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 
 def _detect_language(message: str) -> str:
     """Simple language detection based on common words and character patterns."""
-    msg = " " + message.lower().strip() + " "
+    import re as _re
+    # Normalize: add spaces around punctuation for word boundary matching
+    msg = " " + _re.sub(r'([!?,.;])', r' \1 ', message.lower().strip()) + " "
 
     # Character-based detection for languages with unique characters
     # Slovenian/Croatian specific characters
@@ -750,7 +752,7 @@ def get_hotel_info_response(topic, question):
     # Cancellation
     if actual_topic == "cancellation":
         return (
-            f"{h['policies']['cancellation']} "
+            f"{h['policies']['cancellation']}. "
             f"Would you like me to note any special conditions for your booking?"
         )
 
