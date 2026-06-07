@@ -372,9 +372,9 @@ def _detect_language(message: str) -> str:
     slovenian_words = [
         "zdravo", "pozdravljeni", "hvala", "prosim", "sobe", "imate", "kakšen", "kako",
         "ali", "lahko", "želim", "je", "da", "ne", "kje", "kdaj", "dober", "večer",
-        "jutro", "na", "volo", "soba", "sobi", "sob", "rezervacija", "cena", "parking",
+        "jutro", "volo", "soba", "sobi", "sob", "rezervacija", "cena",
         "zajtrk", "restavracija", "vin", "pes", "mačka", "pozdrav", "nasvidenje",
-        "dober", "lepo", "lep", "velik", "majhen", "novo", "staro"
+        "lepo", "lep", "velik", "majhen", "novo", "staro"
     ]
     german_words = [
         "guten", "tag", "zimmer", "haben", "bitte", "vielen", "danke", "wie", "was",
@@ -1006,7 +1006,7 @@ def api_chat():
                     replies[-1]["content"] += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar for the hotel staff."
             else:
                 # Guest mentioned late check-in/out but no specific time found
-                if replies and not replies[-1]["content"].rstrip().endswith("?"):
+                if replies and "what time would you like" not in replies[-1]["content"].lower():
                     replies[-1]["content"] += " What time would you like to check out? I can note it in our calendar."
 
         # Clean up any model reasoning text from responses
