@@ -154,6 +154,8 @@ def fix_spacing(text):
     text = re.sub(r',([a-zA-Z])', r', \1', text)
     # Fix missing space after colon: "word:word" -> "word: word"
     text = re.sub(r':([a-zA-Z])', r': \1', text)
+    # Fix "from 8 10 AM" -> "from 8-10 AM" (missing dash in time ranges)
+    text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
     # But be careful not to break intentional camelCase or common patterns
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
@@ -163,6 +165,10 @@ def fix_spacing(text):
     text = re.sub(r'\binhouse\b', 'in-house', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcheckout\b', 'check-out', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcheckin\b', 'check-in', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheck-out\b', 'late check-out', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheck-in\b', 'late check-in', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheckout\b', 'late check-out', text, flags=re.IGNORECASE)
+    text = re.sub(r'\blatecheckin\b', 'late check-in', text, flags=re.IGNORECASE)
     text = re.sub(r'\babar\b', 'a bar', text, flags=re.IGNORECASE)
     text = re.sub(r'\blakeview\b', 'lake view', text, flags=re.IGNORECASE)
     text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
@@ -196,6 +202,12 @@ def fix_spacing(text):
 
 def clean_response(text):
     """Remove model reasoning/chain-of-thought text from responses."""
+    import re as _re
+    # Remove any leaked tool definitions or JSON schemas
+    text = _re.sub(r'<tools>.*?</tools>', '', text, flags=_re.DOTALL | _re.IGNORECASE)
+    text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
+    # Remove any remaining JSON-like blocks that look like tool definitions
+    text = _re.sub(r'\{.*?"type":\s*"object".*?"properties".*?\}', '', text, flags=_re.DOTALL)
     # If the text contains what looks like reasoning followed by a final answer,
     # extract only the final answer portion
     # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
