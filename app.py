@@ -231,9 +231,6 @@ def clean_response(text):
     text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
     # Remove any remaining JSON-like blocks that look like tool definitions
     text = _re.sub(r'\{.*?"type":\s*"object".*?"properties".*?\}', '', text, flags=_re.DOTALL)
-    # Remove translation instruction tags that might leak through
-    text = _re.sub(r'\[RESPOND IN \w+\]', '', text, flags=_re.IGNORECASE)
-    text = _re.sub(r'\[END \w+ RESPONSE\]', '', text, flags=_re.IGNORECASE)
     # If the text contains what looks like reasoning followed by a final answer,
     # extract only the final answer portion
     # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
@@ -857,10 +854,6 @@ def api_chat():
                     )
                 answer = fix_spacing(answer)
 
-                # For non-English guests, append a clear translation instruction as part of the tool data
-                if force_tool and detected_lang != "English":
-                    answer = f"[RESPOND IN {detected_lang}] {answer} [END {detected_lang} RESPONSE]"
-
                 # If guest provided a specific time for late check-in/out, save to calendar
                 if topic in ("late_check_in", "late_check_out", "check_in", "check_out"):
                     extracted_time = extract_time_from_message(user_message)
@@ -884,7 +877,10 @@ def api_chat():
                         answer += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar. "
 
                 tool_reply = answer
-                replies.append({"type": "text", "content": answer})
+                # Don't send tool response directly — let the LLM generate a translated response
+                # The tool_reply will be added to messages below, and a second LLM call will generate the final response
+                if not force_tool:
+                    replies.append({"type": "text", "content": answer})
             elif fn == "book_shuttle":
                 # Save shuttle booking to database
                 from database import add_shuttle_booking
@@ -924,6 +920,24 @@ def api_chat():
             # Append tool response message with proper tool_call_id
             if tool_reply is not None:
                 messages.append({"role": "tool", "tool_call_id": tc_id, "content": tool_reply})
+
+        # For non-English messages with tool calls, make a second LLM call to generate translated response
+        if force_tool and tool_calls and not replies:
+            second_params = {
+                "model": MODEL,
+                "messages": messages,
+                "temperature": 0.5,
+                "max_tokens": 1200,
+                "timeout": 25,
+            }
+            second_response = client.chat.completions.create(**second_params)
+            second_choice = second_response.choices[0] if second_response.choices else None
+            if second_choice:
+                second_content = fix_spacing(getattr(second_choice.message, "content", None) or "")
+                if second_content.strip():
+                    replies.append({"type": "text", "content": second_content})
+                    sessions[session_id] = messages + [{"role": "assistant", "content": second_content}]
+
         if not replies:
             # Fallback: if model returned empty content, try to answer directly
             if tool_calls:
