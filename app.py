@@ -412,7 +412,11 @@ def _detect_language(message: str) -> str:
         "Italian": [
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
             " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
-            " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere "
+            " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere ",
+            " camera ", " albergo ", " parcheggio ", " pranzo ", " cena ",
+            " buona notte ", " quanto costa ", " camere disponibili ",
+            " una camera ", " due camere ", " il camera ", " la camera ",
+            " il ristorante ", " il parcheggio ", " la colazione "
         ],
         "Spanish": [
             " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
@@ -421,7 +425,16 @@ def _detect_language(message: str) -> str:
         ],
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
-            " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk "
+            " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
+            " imate ", " sobe ", " soba ", " koliko ", " stane ", " najvišja ",
+            " najvecja ", " lahko ", " zelim ", " prosim ", " hvala ",
+            " zdravo ", " nasvidenje ", " kje ", " kdaj ", " zakaj ", " kako ",
+            " brezplacen ", " brezplačen ", " wifi ", " restoran ", " jedilnik ",
+            " pijača ", " pijaca ", " sobe ", " apartma ", " apartmajev ",
+            " prenočišče ", " prenocisce ", " hotel ", " gostilna ",
+            " ali ", " zelo ", " dobro ", " slabo ", " lepo ", " cudovito ",
+            " odlicno ", " odlično ", " super ", " hvala ", " prosim ",
+            " da ", " ne ", " ja ", " prosim ", " oprostite "
         ],
     }
     
@@ -431,12 +444,15 @@ def _detect_language(message: str) -> str:
         score = sum(1 for p in phrases if p in msg)
         if score > 0:
             scores[lang] = score
-    
+
     if scores:
         best_lang = max(scores, key=scores.get)
-        if scores[best_lang] >= 1:
+        # Slovenian needs at least 2 matches to avoid false positives
+        # (many Slovenian words without diacritics overlap with other languages)
+        min_scores = {"Slovenian": 2, "German": 1, "French": 1, "Italian": 1, "Spanish": 1}
+        if scores[best_lang] >= min_scores.get(best_lang, 1):
             return best_lang
-    
+
     return "English"
 
 
