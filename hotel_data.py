@@ -104,7 +104,7 @@ hotel_info = {
         "late_check_out": "Available on request, subject to availability. Additional fees may apply. Contact reception to arrange",
         "breakfast": "Breakfast served daily 8:00-10:00 AM. €22 per person. Fresh pastries, bread, local Slovenian products served in dining room with lake views. High quality — described as 'absolutely delicious'",
         "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
-        "wifi": "Complimentary high-speed WiFi throughout the property",
+        "wifi": "Complimentary high-speed WiFi throughout the property.",
         "pets": "Pets allowed on request — €35 per pet per night. Please contact us to arrange",
         "cancellation": "Direct bookings: free cancellation up to 48 hours before arrival. Third-party bookings: provider's cancellation policy applies. Contact us at +386 51 603 858 for specific conditions",
         "payment": "Visa, MasterCard, Maestro, and Cash accepted",
