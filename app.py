@@ -814,7 +814,7 @@ def api_chat():
             if hotel_answer and hotel_answer.strip():
                 lang_messages.append({
                     "role": "system",
-                    "content": f"HOTEL DATA (respond in {detected_lang}):\n\n{hotel_answer}\n\nCRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question. Do NOT use English except for proper nouns and brand names like 'Villa Adora', 'Lake Bled', 'Chef Domen Demšar'."
+                    "content": f"MANDATORY: Respond ENTIRELY in {detected_lang}. Do NOT use English except for proper nouns and brand names like 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n\nHOTEL DATA (translate to {detected_lang}):\n\n{hotel_answer}\n\nTranslate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
                 })
             else:
                 lang_messages.append({
