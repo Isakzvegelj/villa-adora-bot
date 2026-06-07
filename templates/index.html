@@ -131,6 +131,140 @@
             background: rgba(255,255,255,0.15);
             color: #e8e8e8;
         }
+        .human-agent-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
+            background: rgba(180, 140, 80, 0.15);
+            border: 1px solid rgba(180, 140, 80, 0.35);
+            color: #d4b87a;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .human-agent-btn:hover {
+            background: rgba(180, 140, 80, 0.25);
+            border-color: rgba(180, 140, 80, 0.5);
+        }
+        .human-agent-btn svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #1e2a3a;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+        .modal h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #f0e6d3;
+            margin-bottom: 0.6rem;
+        }
+        .modal p {
+            font-size: 0.88rem;
+            color: #a8b2c1;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .modal .warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            background: rgba(180, 140, 80, 0.12);
+            border: 1px solid rgba(180, 140, 80, 0.25);
+            border-radius: 10px;
+            padding: 0.7rem 0.8rem;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        .modal .warning svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            color: #d4b87a;
+        }
+        .modal .warning span {
+            font-size: 0.82rem;
+            color: #c8b88a;
+            line-height: 1.45;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.55rem 1rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .modal-buttons .btn-cancel {
+            background: rgba(255,255,255,0.08);
+            color: #a8b2c1;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .modal-buttons .btn-cancel:hover { background: rgba(255,255,255,0.14); }
+        .modal-buttons .btn-confirm {
+            background: rgba(180, 140, 80, 0.3);
+            color: #f0e6d3;
+            border: 1px solid rgba(180, 140, 80, 0.4);
+        }
+        .modal-buttons .btn-confirm:hover { background: rgba(180, 140, 80, 0.45); }
+        /* Human agent active banner */
+        .human-banner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            background: rgba(180, 140, 80, 0.12);
+            border: 1px solid rgba(180, 140, 80, 0.25);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            font-size: 0.82rem;
+            color: #c8b88a;
+        }
+        .human-banner.active { display: flex; }
+        .human-banner .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #d4b87a;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
         @media (max-width: 640px) {
             .header h1 { font-size: 1.4rem; }
             .message { max-width: 90%; font-size: 0.9rem; }
@@ -151,10 +285,36 @@
             <span class="quick-reply" onclick="sendQuick('I want to book a room')">📅 Book</span>
             <span class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</span>
         </div>
+        <button class="human-agent-btn" onclick="showHumanModal()" id="humanBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Speak to a Human Agent
+        </button>
         <div class="input-area">
             <input type="text" id="userInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendMessage()" />
             <button onclick="sendMessage()" id="sendBtn">Send</button>
         </div>
+    </div>
+
+    <!-- Human Agent Modal -->
+    <div class="modal-overlay" id="humanModal">
+        <div class="modal">
+            <h3>Speak to a Human Agent</h3>
+            <p>Our reception team will be notified and will respond to you here in the chat.</p>
+            <div class="warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span><strong>Please note:</strong> Responses from a human agent may take longer than the instant bot replies. For urgent matters, you can also call us directly at <strong>+386 51 603 858</strong>.</span>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="hideHumanModal()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmHumanAgent()">Yes, connect me</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Human Agent Active Banner -->
+    <div class="human-banner" id="humanBanner">
+        <span class="dot"></span>
+        <span>A human agent has been notified and will respond shortly.</span>
     </div>
 
     <script>
@@ -218,9 +378,55 @@
             sendMessage();
         }
 
+        // ── Human Agent Modal ──
+        function showHumanModal() {
+            document.getElementById('humanModal').classList.add('active');
+        }
+        function hideHumanModal() {
+            document.getElementById('humanModal').classList.remove('active');
+        }
+        async function confirmHumanAgent() {
+            hideHumanModal();
+            addMessage('I\'d like to speak with a human agent, please.', 'user');
+            sendBtn.disabled = true;
+            showTyping();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, message: 'Please connect me with a human agent.'})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.replies) {
+                    data.replies.forEach(reply => {
+                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
+                    });
+                }
+                // Show the persistent banner
+                document.getElementById('humanBanner').classList.add('active');
+                // Also show the banner above the messages area
+                const bannerClone = document.getElementById('humanBanner').cloneNode(true);
+                bannerClone.id = 'humanBannerInline';
+                bannerClone.style.marginBottom = '0.5rem';
+                const container = document.querySelector('.chat-container');
+                container.insertBefore(bannerClone, container.firstChild);
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm having trouble connecting. Please call us at +386 51 603 858.", 'bot');
+            }
+            sendBtn.disabled = false;
+            inputEl.focus();
+        }
+
         // Welcome message
         window.addEventListener('load', () => {
             addMessage("Hello! I'm Luka, your digital concierge at Villa Adora Bled. How can I help you today? 😊", 'bot');
+        });
+
+        // Close modal on overlay click
+        document.getElementById('humanModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) hideHumanModal();
         });
     </script>
 </body>
