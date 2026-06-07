@@ -739,6 +739,10 @@ def api_chat():
 
     messages.append({"role": "user", "content": user_message})
 
+    # For non-English messages, force tool use to ensure the LLM gets structured data it can translate
+    detected_lang = _detect_language(user_message)
+    force_tool = detected_lang != "English"
+
     try:
         tool_params = {
             "model": MODEL,
@@ -748,7 +752,8 @@ def api_chat():
             "max_tokens": 1200,
             "timeout": 25,
         }
-        # Force tool use for factual questions by setting tool_choice
+        if force_tool:
+            tool_params["tool_choice"] = {"type": "function", "function": {"name": "query_hotel_info"}}
         response = client.chat.completions.create(**tool_params)
         choice = response.choices[0] if response.choices else None
         if choice is None:
@@ -757,6 +762,17 @@ def api_chat():
         msg = choice.message
         content = fix_spacing(getattr(msg, "content", None) or "")
         tool_calls = getattr(msg, "tool_calls", None) or []
+
+        # If forced tool call produced no useful content and no tool was actually called,
+        # retry with auto tool choice
+        if force_tool and not tool_calls and not content.strip():
+            tool_params["tool_choice"] = "auto"
+            response = client.chat.completions.create(**tool_params)
+            choice = response.choices[0] if response.choices else None
+            if choice:
+                msg = choice.message
+                content = fix_spacing(getattr(msg, "content", None) or "")
+                tool_calls = getattr(msg, "tool_calls", None) or []
         # Build assistant message with properly formatted tool_calls (including id and type)
         assistant_msg = {"role": "assistant", "content": content}
         if tool_calls:
