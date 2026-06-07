@@ -846,10 +846,6 @@ def api_chat():
                     )
                 answer = fix_spacing(answer)
 
-                # If user's language is not English, append translation instruction to tool response
-                if detected_lang != "English":
-                    answer += f"\n\n[TRANSLATION REQUIRED: Translate the above information to {detected_lang}. Respond entirely in {detected_lang}.]"
-
                 # If guest provided a specific time for late check-in/out, save to calendar
                 if topic in ("late_check_in", "late_check_out", "check_in", "check_out"):
                     extracted_time = extract_time_from_message(user_message)
