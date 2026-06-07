@@ -196,6 +196,20 @@ def fix_spacing(text):
     text = re.sub(r'\bweare\b', 'we are', text, flags=re.IGNORECASE)
     text = re.sub(r'\bthebest\b', 'the best', text, flags=re.IGNORECASE)
     text = re.sub(r'\bthemost\b', 'the most', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bnousavons\b', 'nous avons', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bdeschambres\b', 'des chambres', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bilya\b', 'il y a', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bmercibeaucoup\b', 'merci beaucoup', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bgraziemolto\b', 'grazie molto', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bperfavore\b', 'per favore', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bsehrguten\b', 'sehr guten', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bvielendank\b', 'vielen Dank', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhabenzimmer\b', 'haben Zimmer', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bmolto\b', ' molto', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bprosim\b', ' prosim', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bimate\b', ' imate', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhvala\b', ' hvala', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
     # Fix missing space/question mark before question words: "today are you" -> "today? Are you"
     text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before "The" or other common words
@@ -281,13 +295,14 @@ def build_system_prompt() -> str:
         "- If the guest writes in Slovenian, respond in Slovenian. If in German, respond in German, etc.\n"
         "- Keep the same warm, concise style regardless of language.\n"
         "- IMPORTANT: When a tool returns English information (like a room list), you MUST translate it to the guest's language before sending. NEVER send English responses to non-English guests.\n\n"
-        "STYLE:\n"
-        "- Be warm, concise, and conversational — like a real human concierge.\n"
-        "- Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\n"
-        "- Always end with a follow-up question to keep the guest engaged.\n"
-        "- NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
-        "- NEVER mention room prices unless the guest specifically asks about pricing.\n"
-        "- If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
+        "STYLE:\\n"
+        "Be warm, concise, and conversational — like a real human concierge.\\n"
+        "Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\\n"
+        "Always end with a follow-up question to keep the guest engaged.\\n"
+        "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\\n"
+        "NEVER mention room prices unless the guest specifically asks about pricing.\\n"
+        "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\\n"
+        "If asked about weather, say: 'I don't have real-time weather data, but I'd recommend checking a weather app for the latest forecast. Bled has beautiful summers and snowy winters!'\\n"
         "- ALWAYS use the query_hotel_info tool for factual questions (rooms, policies, location, parking, pets, breakfast, restaurant, bar, wine, activities, etc.) — do NOT answer from your own knowledge, use the tool to get accurate data.\n\n"
         "RESPONSE QUALITY:\n"
         "- Ensure proper spacing between words. Avoid run-on words like 'wewe' or 'abar'.\n"
@@ -341,16 +356,62 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 
 
 def _detect_language(message: str) -> str:
-    """Simple language detection based on common words."""
-    msg = message.lower()
-    # Check for specific language markers
-    slovenian_words = ["zdravo", "hvala", "prosim", "sobe", "imate", "kakšen", "kako", "ali", "lahko", "želim", "je", "da", "ne", "kje", "kdaj"]
-    german_words = ["guten", "tag", "zimmer", "haben", "bitte", "vielen", "danke", "wie", "was", "wo", "wann", "ich", "möchten", "können"]
-    italian_words = ["buongiorno", "camere", "avete", "grazie", "per favore", "come", "dove", "quando", "vorrei", "posso"]
-    french_words = ["bonjour", "chambrez", "avez", "merci", "s'il vous plaît", "comment", "où", "quand", "je voudrais"]
-    spanish_words = ["hola", "habitaciones", "tienen", "gracias", "por favor", "cómo", "dónde", "cuándo", "quisiera"]
+    """Simple language detection based on common words and character patterns."""
+    msg = message.lower().strip()
     
-    for words, lang in [(slovenian_words, "Slovenian"), (german_words, "German"), (italian_words, "Italian"), (french_words, "French"), (spanish_words, "Spanish")]:
+    # Character-based detection for languages with unique scripts/patterns
+    # Slovenian-specific characters and patterns
+    if any(c in msg for c in ['š', 'č', 'ž', 'đ']):
+        # Could be Slovenian, Croatian, or Serbian — check specific words
+        slovenian_specific = ["imate", "kakšen", "kako", "lahko", "želim", "prosim", "hvala", "pozdravljeni", "dober", "dan"]
+        if any(w in msg for w in slovenian_specific):
+            return "Slovenian"
+        return "Croatian"
+    
+    # Check for specific language markers with more comprehensive word lists
+    slovenian_words = [
+        "zdravo", "pozdravljeni", "hvala", "prosim", "sobe", "imate", "kakšen", "kako",
+        "ali", "lahko", "želim", "je", "da", "ne", "kje", "kdaj", "dober", "večer",
+        "jutro", "na", "volo", "soba", "sobi", "sob", "rezervacija", "cena", "parking",
+        "zajtrk", "restavracija", "vin", "pes", "mačka", "pozdrav", "nasvidenje",
+        "dober", "lepo", "lep", "velik", "majhen", "novo", "staro"
+    ]
+    german_words = [
+        "guten", "tag", "zimmer", "haben", "bitte", "vielen", "danke", "wie", "was",
+        "wo", "wann", "ich", "möchten", "können", "möchten", "sie", "haben", "frei",
+        "verfügbar", "buchung", "frühstück", "restaurant", "parkplatz", "haustier",
+        "hund", "katze", "abreise", "anreise", "willkommen", "auf wiedersehen",
+        "ja", "nein", "nicht", "auch", "noch", "schön", "wunderbar"
+    ]
+    italian_words = [
+        "buongiorno", "buonasera", "camere", "avete", "grazie", "per favore",
+        "come", "dove", "quando", "vorrei", "posso", "disponibile", "prenotazione",
+        "colazione", "ristorante", "parcheggio", "animale", "cane", "gatto",
+        "arrivo", "partenza", "benvenuto", "arrivederci", "sì", "no", "anche",
+        "bello", "bella", "magnifico", "perfetto", "camera", "stanza"
+    ]
+    french_words = [
+        "bonjour", "bonsoir", "chambres", "avez", "merci", "s'il vous plaît",
+        "comment", "où", "quand", "je voudrais", "je", "vous", "nous", "disponible",
+        "réservation", "petit déjeuner", "restaurant", "parking", "animal", "chien",
+        "chat", "arrivée", "départ", "bienvenue", "au revoir", "oui", "non", "aussi",
+        "belle", "beau", "magnifique", "parfait", "chambre"
+    ]
+    spanish_words = [
+        "hola", "habitaciones", "tienen", "gracias", "por favor", "cómo", "dónde",
+        "cuándo", "quisiera", "puedo", "disponible", "reserva", "desayuno",
+        "restaurante", "aparcamiento", "mascota", "perro", "gato", "llegada",
+        "salida", "bienvenido", "hasta luego", "sí", "no", "también", "bonito",
+        "bonita", "magnífico", "perfecto", "cuarto"
+    ]
+    
+    for words, lang in [
+        (slovenian_words, "Slovenian"),
+        (german_words, "German"),
+        (italian_words, "Italian"),
+        (french_words, "French"),
+        (spanish_words, "Spanish"),
+    ]:
         if any(w in msg for w in words):
             return lang
     return "English"
@@ -544,7 +605,7 @@ def get_hotel_info_response(topic, question):
     # Parking
     if actual_topic == "parking":
         return (
-            f"{h['policies']['parking']} "
+            f"{h['policies']['parking']}. "
             f"Will you be driving to Bled, or would you like tips on public transport?"
         )
 
@@ -680,7 +741,7 @@ def api_chat():
     if detected_lang != "English":
         messages.append({
             "role": "system",
-            "content": f"IMPORTANT: The guest is writing in {detected_lang}. You MUST respond entirely in {detected_lang}. Translate all tool output to {detected_lang} before sending to the guest."
+            "content": f"MANDATORY: The guest is writing in {detected_lang}. You MUST respond ENTIRELY in {detected_lang}. Translate ALL information — including room names, features, policies, and any tool output — into {detected_lang}. Do NOT include any English words except proper nouns (like 'Bled', 'Lake Bled', 'Villa Adora'). This is a hard requirement."
         })
 
     try:
@@ -878,11 +939,13 @@ def api_chat():
                     replies.append({"type": "text", "content": content})
 
         # Check if guest mentioned a late check-in or check-out time in this message
-        # and save to calendar for hotel staff awareness
+        # and save to calendar for hotel staff awareness (only if not already handled by tool)
         msg_lower = user_message.lower()
         is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late", "late at", "arrive at", "get in late", "coming late", "late check in"])
         is_late_checkout = any(word in msg_lower for word in ["late check-out", "late checkout", "late check out", "check out late", "later checkout"])
-        if is_late_checkin or is_late_checkout:
+        # Check if calendar event was already added by the tool handler above
+        already_handled = any("noted your" in r.get("content", "") and "calendar" in r.get("content", "") for r in replies)
+        if (is_late_checkin or is_late_checkout) and not already_handled:
             extracted_time = extract_time_from_message(user_message)
             if extracted_time:
                 event_type = "late_check_in" if is_late_checkin else "late_check_out"

@@ -253,4 +253,9 @@
 - Regular pop-up dining events with special themed menus
 - 8-course special event menus available for celebrations
 - Guest satisfaction: Cleanliness 9.2, Comfort 9.4, Staff 9.2 (Booking.com)
+- **TripAdvisor:** 4.7/5 rating (275 reviews), Travelers' Choice award (top 10%), #4 of 71 B&Bs in Bled
+- **TripAdvisor ratings:** Location 4.9, Cleanliness 4.8, Rooms 4.7, Service 4.7, Sleep Quality 4.7
+- **Free shuttle service** to Bled center during off-season when walkways are inaccessible
+- **Languages spoken:** English, Russian, Croatian, German, and 3 others
+- **Room features:** Allergy-free rooms, bathrobes, fireplace, minibar, bidet, housekeeping
 
