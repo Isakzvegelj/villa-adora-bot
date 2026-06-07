@@ -118,7 +118,7 @@
 - €22 per person (good breakfast — Continental, Vegetarian, Gluten-free options)
 - Fresh pastries, bread, local Slovenian products, coffee & tea
 - Served in dining room with lake views
-- **Dietary options:** Vegan, vegetarian, and gluten-free options available on request
+- **Dietary options:** Vegan, vegetarian, gluten-free, and dairy-free options available on request
 - Please inform us of any allergies or dietary requirements when booking
 
 ### Adora Pop Up Restaurant
@@ -145,6 +145,7 @@
 - Locally sourced Slovenian specialties
 - Signature Kremšnita — a fresh twist on Bled's iconic cream cake
 - Dietary preferences and allergies accommodated with advance notice
+- Vegan, vegetarian, gluten-free, and dairy-free options available on request
 - Regular pop-up dining events with special menus
 
 ### Wine List
@@ -174,7 +175,9 @@
 - No age restriction for check-in
 - Quiet hours: 22:00-07:00
 - Parties and events not allowed
-- Cancellation policy varies by room type and booking terms
+- Direct bookings: free cancellation up to 48 hours before arrival
+- Third-party bookings: their cancellation policies apply
+- Contact +386 51 603 858 for personalized assistance
 - Visa, MasterCard, Maestro, and Cash accepted
 
 ## Nearby Attractions & Activities
@@ -237,6 +240,9 @@
 - "Adora is beautifully situated in a quiet part of Bled, yet still close to everything"
 - "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom"
 - "The most expensive hotel of our 2-week trip but worth it"
+- "Small restaurant with limited space — quality over quantity. The tasting menu was extraordinary"
+- "Perfect romantic getaway — the tower room is unlike anything we've experienced"
+- "Breakfast was absolutely delicious with fresh local products and homemade pastries"
 - "Right across the street from Lake Bled. Beautiful outdoor patio. Stunning views and decor. Fabulous four-course dinner. Breakfast was awesome."
 - "The location of this hotel and the view from it are unparalleled! Spectacular!"
 - "A very beautiful hotel from start to finish. The decor is immaculate. The views are why you go to Bled!"
