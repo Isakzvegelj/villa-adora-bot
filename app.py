@@ -69,17 +69,33 @@ query_hotel_info_function = {
     "type": "function",
     "function": {
         "name": "query_hotel_info",
-        "description": "Look up hotel information. Call this for ANY factual question about the hotel. Choose the most specific topic: 'rooms' for room types/sizes/pricing, 'bar' for cocktails/drinks/aperitivos, 'restaurant' for dining/chef/menu, 'wine' for wine list/pairing, 'breakfast' for morning meal/dietary needs, 'experiences' for activities/things to do/nearby, 'location' for address/directions, 'parking' for car parking, 'pets' for animals, 'policies' for rules, 'amenities' for room facilities, 'contact' for phone/email.",
+        "description": "Look up hotel information. Call this for ANY factual question about the hotel. Choose the most specific topic: 'rooms' for room types/sizes, 'bar' for cocktails/drinks/aperitivos, 'restaurant' for dining/chef/menu, 'wine' for wine list/pairing, 'breakfast' for morning meal/dietary needs, 'experiences' for activities/things to do/nearby, 'location' for address/directions, 'parking' for car parking, 'pets' for animals, 'policies' for rules, 'amenities' for room facilities, 'contact' for phone/email.",
         "parameters": {
             "type": "object",
             "properties": {
                 "topic": {
                     "type": "string",
                     "enum": [
-                        "rooms", "policies", "amenities", "location", "experiences",
-                        "breakfast", "parking", "wifi", "pets", "cancellation",
-                        "payment", "children", "smoking", "contact", "general",
-                        "restaurant", "wine", "bar", "late_check_in", "late_check_out",
+                        "rooms",
+                        "policies",
+                        "amenities",
+                        "location",
+                        "experiences",
+                        "breakfast",
+                        "parking",
+                        "wifi",
+                        "pets",
+                        "cancellation",
+                        "payment",
+                        "children",
+                        "smoking",
+                        "contact",
+                        "general",
+                        "restaurant",
+                        "wine",
+                        "bar",
+                        "late_check_in",
+                        "late_check_out",
                     ],
                 },
                 "question": {"type": "string"},
@@ -98,8 +114,8 @@ book_shuttle_function = {
             "type": "object",
             "properties": {
                 "guest_name": {"type": "string", "description": "Name of the guest"},
-                "pickup_location": {"type": "string", "description": "Where to pick up the guest"},
-                "dropoff_location": {"type": "string", "description": "Where to drop off"},
+                "pickup_location": {"type": "string", "description": "Where to pick up the guest (e.g. 'Ljubljana airport', 'Bled town center', 'train station')"},
+                "dropoff_location": {"type": "string", "description": "Where to drop off (usually 'Villa Adora Bled')"},
                 "date": {"type": "string", "description": "Date of shuttle in YYYY-MM-DD format"},
                 "time": {"type": "string", "description": "Pickup time (e.g. '14:00')"},
                 "passengers": {"type": "integer", "description": "Number of passengers", "default": 1},
@@ -128,56 +144,11 @@ request_human_agent_function = {
 }
 
 
-def _get_localized_fallback(lang: str, user_message: str) -> str:
-    """Return a localized fallback response when the LLM responds in English for non-English queries."""
-    q = user_message.lower()
-    # Detect topic for a more relevant fallback
-    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
-        fallbacks = {
-            "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov!",
-            "German": "Wir haben 7 wundersöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen!",
-            "French": "Nous avons 7 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus!",
-            "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli!",
-            "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles!",
-            "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja!",
-        }
-    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"]):
-        fallbacks = {
-            "Slovenian": "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Nudimo tudi veganska, vegetarijanska in brezglutenska jed. Želite dodati zajtrk k vaši rezervaciji?",
-            "German": "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Wir bieten auch vegane, vegetäre und glutenfreie Optionen. Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?",
-            "French": "Le petit-déjeuner est disponible pour 22 € par personne, servi de 8h à 10h. Nous proposons également des options végétaliennes, végétariennes et sans gluten. Souhaitez-vous ajouter le petit-déjeuner à votre réservation?",
-            "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
-            "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
-            "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
-        }
-    elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
-        fallbacks = {
-            "Slovenian": "Imamo restavracijo Adora Pop Up kar v hotelu! Ustvarjena kuhinja z lokalnimi slovenskimi sestavinami pod vodstvom šefa kuhinje Domena Demšara. Terasa ima ene najlepših razgledov na jezero. Rezervacija: +386 40 558 158. Želite rezervirati mizo?",
-            "German": "Wir haben das Adora Pop Up Restaurant direkt im Hotel! Kreative Küche mit lokalen slowenischen Zutaten unter der Leitung von Küchenchef Domen Demšar. Die Terrasse bietet einen der besten Ausblicke auf den See. Reservierung: +386 40 558 158. Möchten Sie einen Tisch reservieren?",
-            "French": "Nous avons le restaurant Adora Pop Up directement à l'hôtel! Cuisine créative avec des ingrédients slovènes locaux sous la direction du chef Domen Demšar. La terrasse offre l'une des meilleures vues sur le lac. Réservation: +386 40 558 158. Souhaitez-vous réserver une table?",
-            "Italian": "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Cucina creativa con ingredienti sloveni locali sotto la guida dello chef Domen Demšar. La terrazza offre una delle migliori viste sul lago. Prenotazione: +386 40 558 158. Vuoi riservare un tavolo?",
-            "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terraza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
-            "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
-        }
-    else:
-        fallbacks = {
-            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 7 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam!",
-            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 7 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne!",
-            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 7 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider!",
-            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti!",
-            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte!",
-            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći!",
-        }
-    return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
-
-
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
-    # Replace unicode whitespace variants with normal space
+    # Replace all unicode whitespace variants with normal space
     text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011\u2012\u2013\u2014]', ' ', text)
-    # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run before the general uppercase split)
-    text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
     # Fix missing space between word and number: "from14:00" -> "from 14:00"
     text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
     # Fix missing space between number and word: "11.What" -> "11. What"
@@ -188,11 +159,10 @@ def fix_spacing(text):
     text = re.sub(r',([a-zA-Z])', r', \1', text)
     # Fix missing space after colon: "word:word" -> "word: word"
     text = re.sub(r':([a-zA-Z])', r': \1', text)
-    # Fix "from 8 10 AM" -> "from 8-10 AM"
+    # Fix "from 8 10 AM" -> "from 8-10 AM" (missing dash in time ranges)
     text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
-    # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run before the general uppercase split)
-    text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
+    # But be careful not to break intentional camelCase or common patterns
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
     # Fix common LLM spacing glitches
     text = re.sub(r'\bwewelcome\b', 'we welcome', text, flags=re.IGNORECASE)
@@ -219,6 +189,7 @@ def fix_spacing(text):
     text = re.sub(r'\bwealso\b', 'we also', text, flags=re.IGNORECASE)
     text = re.sub(r'\bwehave\b', 'we have', text, flags=re.IGNORECASE)
     text = re.sub(r'\bwedon\b', "we don", text, flags=re.IGNORECASE)
+    text = re.sub(r'\btheviews\b', 'the views', text, flags=re.IGNORECASE)
     text = re.sub(r'\byoucan\b', 'you can', text, flags=re.IGNORECASE)
     text = re.sub(r'\bweoffer\b', 'we offer', text, flags=re.IGNORECASE)
     text = re.sub(r'\bIcan\b', 'I can', text, flags=re.IGNORECASE)
@@ -234,26 +205,14 @@ def fix_spacing(text):
     text = re.sub(r'\bsehrguten\b', 'sehr guten', text, flags=re.IGNORECASE)
     text = re.sub(r'\bvielendank\b', 'vielen Dank', text, flags=re.IGNORECASE)
     text = re.sub(r'\bhabenzimmer\b', 'haben Zimmer', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bmolto\b', ' molto', text, flags=re.IGNORECASE)
     text = re.sub(r'\bprosim\b', ' prosim', text, flags=re.IGNORECASE)
     text = re.sub(r'\bimate\b', ' imate', text, flags=re.IGNORECASE)
     text = re.sub(r'\bhvala\b', ' hvala', text, flags=re.IGNORECASE)
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
-    # Fix "Suiteis" -> "Suite is" and similar suite-name run-ons
-    text = re.sub(r'\bSuiteis\b', 'Suite is', text, flags=re.IGNORECASE)
-    text = re.sub(r'\bPrincessSuite\b', 'Princess Suite', text)
-    text = re.sub(r'\bLuxurySuite\b', 'Luxury Suite', text)
-    text = re.sub(r'\bPenthouseSuite\b', 'Penthouse Suite', text)
-    text = re.sub(r'\bSwanSuite\b', 'Swan Suite', text)
-    text = re.sub(r'\bIslandSuite\b', 'Island Suite', text)
-    text = re.sub(r'\bPrestigeSuite\b', 'Prestige Suite', text)
-    text = re.sub(r'\bCastleSuite\b', 'Castle Suite', text)
-    # Fix "isserved" -> "is served"
-    text = re.sub(r'\bisserved\b', 'is served', text, flags=re.IGNORECASE)
-    # Fix "Howcan" -> "How can"
-    text = re.sub(r'\bHowcan\b', 'How can', text)
-    # Fix missing space/question mark before question words
+    # Fix missing space/question mark before question words: "today are you" -> "today? Are you"
     text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
-    # Fix missing space after period before common words
+    # Fix missing space after period before "The" or other common words
     text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
     # Fix missing space after period in other languages
     text = re.sub(r'\.(Il|La|Le|Les|Un|Une|El|Los|Las|Der|Die|Das|Ein|Una|Lo|Gli)', r'. \1', text)
@@ -267,29 +226,43 @@ def fix_spacing(text):
 def clean_response(text):
     """Remove model reasoning/chain-of-thought text from responses."""
     import re as _re
+    # Remove any leaked tool definitions or JSON schemas
     text = _re.sub(r'<tools>.*?</tools>', '', text, flags=_re.DOTALL | _re.IGNORECASE)
     text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
-    text = _re.sub(r'\{.*?"type":\s*".*?".*?"properties".*?\}', '', text, flags=_re.DOTALL)
-    text = _re.sub(r'<think>.*?</think>', '', text, flags=_re.DOTALL | _re.IGNORECASE)
-    text = _re.sub(r'</?[a-zA-Z][a-zA-Z0-9]*>', '', text)
+    # Remove any remaining JSON-like blocks that look like tool definitions
+    text = _re.sub(r'\{.*?"type":\s*"object".*?"properties".*?\}', '', text, flags=_re.DOTALL)
+    # If the text contains what looks like reasoning followed by a final answer,
+    # extract only the final answer portion
+    # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
+    # Also handle cases where the model outputs reasoning in quotes
     lines = text.split('\n')
+    
+    # If the response is very long and contains reasoning markers, trim it
     reasoning_markers = [
         "we need to respond:", "according to the rules:", "so we can say:",
         "let's craft:", "thus:", "therefore:", "i should", "we should",
         "the guest says", "they already gave", "we can confirm",
         "end with a follow-up", "i've noted your"
     ]
+    
+    # Check if the text has reasoning mixed in
     has_reasoning = any(marker in text.lower() for marker in reasoning_markers)
+    
     if has_reasoning and len(text) > 200:
+        # Try to find the actual response after reasoning
+        # Look for the last substantial sentence that sounds like a response
         for i in range(len(lines) - 1, -1, -1):
             line = lines[i].strip()
             if line and len(line) > 20 and not any(m in line.lower() for m in reasoning_markers):
+                # Found a clean line, return from here
                 return '\n'.join(lines[i:]).strip()
+    
     return text
 
 
 def extract_time_from_message(message):
-    """Extract time from a natural language message."""
+    """Extract time from a natural language message like 'I'll arrive at 10pm' or 'around 22:30'."""
+    # Match patterns like "10pm", "10 pm", "10:30pm", "22:30", "10:00 PM", "at 10", "around 10pm"
     patterns = [
         r'(?:at|around|about|by|before|after)\s+(\d{1,2}):?(\d{2})?\s*(am|pm|AM|PM)?',
         r'(\d{1,2}):(\d{2})\s*(am|pm|AM|PM)?',
@@ -321,17 +294,11 @@ def build_system_prompt() -> str:
         "- Supported languages: English, Slovenian (Slovenščina), German (Deutsch), Italian (Italiano), French (Français), Spanish (Español), Croatian (Hrvatski), Serbian (Srpski).\n"
         "- When a tool returns English information, you MUST translate it to the guest's language. This is NON-NEGOTIABLE.\n"
         "- Example: If guest writes in Slovenian and the tool returns 'We have 7 beautiful suites', you must respond with 'Imamo 7 čudovitih apartmajev' — NOT the English text.\n"
-        "- If the guest writes in French, you must respond in French. If in German, respond in German. ALWAYS match the guest's language.\n"
         "- Keep the same warm, concise style regardless of language.\n\n"
         "STYLE:\n"
         "Be warm, concise, and conversational — like a real human concierge.\n"
         "Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\n"
         "Always end with a follow-up question to keep the guest engaged.\n"
-        "PROACTIVE BOOKING: After answering about activities, restaurant, rooms, or experiences, ALWAYS offer to help the guest book it. For example:\n"
-        "  - After listing activities: 'I can help you book any of these — just let me know which interests you!' or 'Would you like me to arrange that for you?'\n"
-        "  - After restaurant info: 'Shall I book a table for you? Just tell me the date and time!'\n"
-        "  - After room info: 'Would you like me to start a booking for you? I just need your name and dates.'\n"
-        "  - After wine tasting info: 'Shall I reserve a wine pairing experience for you?'\n"
         "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
         "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
@@ -346,18 +313,17 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free, and dairy-free options available on request."
+        "- Breakfast: €22/person, served 8-10 AM. Vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
-        "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
-        "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"
+        "- Wine list: curated Slovenian and international wines by in-house expert\n"
+        "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
         "- Shuttle service available — airport transfer, local transport, custom routes. Book directly in this chat. Ljubljana airport ~€60, Bled town center ~€15.\n"
         "- Free parking and WiFi (8 parking spots in front of the hotel)\n"
         "- Pets allowed on request — €35 per pet per night\n"
         "- Quiet hours: 22:00-07:00 | Parties/events not allowed\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
-        "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
-        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
-        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (lake view), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
+        "- Phone: +386 51 603 858\n\n"
+        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite, Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
@@ -390,136 +356,87 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 
 
 def _detect_language(message: str) -> str:
-    """Simple language detection based on common words and character patterns."""
-    import re as _re
-    msg_raw = " " + message.lower().strip() + " "
-    # For word matching, create a version with punctuation replaced by spaces
-    msg = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', message.lower().strip()) + " "
-    # Collapse multiple spaces
-    msg = _re.sub(r'  +', ' ', msg)
-
+    """Simple language detection based on common words and character patterns.
+    Uses word-boundary matching and scoring to avoid false positives."""
+    msg = " " + message.lower().strip() + " "
+    
     # Character-based detection for languages with unique characters
-    # Slovenian/Croatian specific characters
+    has_diacritics = {
+        'š': 'sl', 'č': 'sl', 'ž': 'sl',  # Slovenian/Croatian
+        'đ': 'hr', 'ć': 'hr',  # Croatian/Serbian
+        'ß': 'de', 'ä': 'de', 'ö': 'de', 'ü': 'de',  # German
+        'ñ': 'es', 'á': 'es', 'é': 'es', 'í': 'es', 'ó': 'es', 'ú': 'es',  # Spanish
+        'à': 'fr', 'â': 'fr', 'ç': 'fr', 'è': 'fr', 'é': 'fr', 'ê': 'fr', 'î': 'fr', 'ô': 'fr', 'ù': 'fr', 'û': 'fr', 'ë': 'fr', 'ï': 'fr',  # French
+        'à': 'it', 'è': 'it', 'é': 'it', 'ì': 'it', 'ò': 'it', 'ù': 'it',  # Italian
+    }
+    
+    # Count diacritics per language
+    lang_scores = {}
+    for char, lang in has_diacritics.items():
+        if char in msg:
+            lang_scores[lang] = lang_scores.get(lang, 0) + 1
+    
+    # If Slovenian-specific characters found, likely Slovenian
     if any(c in msg for c in ['š', 'č', 'ž']):
         slovenian_markers = [" imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober dan ", " zdravo ", " sobe ", " soba "]
         if any(w in msg for w in slovenian_markers):
             return "Slovenian"
+        # Even without specific words, š/č/ž strongly suggest Slovenian/Croatian
         if 'đ' in msg or 'ć' in msg:
             return "Croatian"
         return "Slovenian"
-
-    # Word-based Slovenian detection (without diacritics)
-    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom "]
-    if any(w in msg for w in slovenian_words):
-        return "Slovenian"
-
-    # German-specific characters
-    if any(c in msg for c in ['ß', 'ä', 'ö', 'ü']):
-        return "German"
-
-    # French-specific characters (check unique French chars first)
-    if any(c in msg for c in ['ç', 'ê', 'î', 'ô', 'û', 'ë', 'ï', 'œ', 'æ']):
-        return "French"
-    # French word-based detection for shared accented chars (é, è, à, ù)
-    if any(c in msg for c in ['é', 'è', 'à', 'ù']):
-        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec "]
-        if any(w in msg for w in french_words):
-            return "French"
-
-    # Spanish-specific characters
-    if any(c in msg for c in ['ñ', 'á', 'í', 'ó', 'ú', '¿', '¡']):
-        return "Spanish"
-
-    # Italian-specific characters (check AFTER French since they share some)
-    if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
-        # Could be French or Italian - check words
-        italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere "]
-        if any(w in msg for w in italian_words):
-            return "Italian"
-
-    # Word-based detection for languages without unique characters
-    # French word patterns
-    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais "]
-    if any(w in msg for w in french_words):
-        return "French"
-
+    
+    # If strong diacritic signal, return that language
+    if lang_scores:
+        best_lang = max(lang_scores, key=lang_scores.get)
+        lang_map = {'de': 'German', 'fr': 'French', 'es': 'Spanish', 'it': 'Italian', 'hr': 'Croatian', 'sl': 'Slovenian'}
+        if lang_scores[best_lang] >= 2:  # Need at least 2 diacritics
+            return lang_map.get(best_lang, 'English')
+    
     # Multi-word phrases that are highly distinctive per language
+    # These are phrases that would NOT appear in English
     distinctive_phrases = {
         "German": [
             " guten tag ", " guten morgen ", " guten abend ", " vielen danke ",
             " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
             " können wir ", " ich hätte ", " buchung ", " zimmer ", " frühstück ",
-            " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
-            " buchen ", " reservierung ", " kammer ", " schlafzimmer "
+            " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar "
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
             " je voudrais ", " avez-vous ", " nous avons ", " les chambres ",
             " petit déjeuner ", " au revoir ", " bienvenue ", " c'est magnifique ",
-            " je suis ", " vous êtes ", " réservation ", " chambre "
+            " je suis ", " vous êtes "
         ],
         "Italian": [
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
             " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
-            " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere ",
-            " camera ", " alloggio "
+            " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere "
         ],
         "Spanish": [
             " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
             " quisiera ", " tienen ", " habitaciones ", " desayuno ", " restaurante ",
-            " bienvenido ", " hasta luego ", " magnífico ", " perfecto ", " reservación "
+            " bienvenido ", " hasta luego ", " magnífico ", " perfecto "
         ],
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
-            " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
-            " soba ", " sobe ", " apartma "
+            " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk "
         ],
     }
-
+    
+    # Score each language by counting matching distinctive phrases
     scores = {}
     for lang, phrases in distinctive_phrases.items():
         score = sum(1 for p in phrases if p in msg)
         if score > 0:
             scores[lang] = score
-
+    
     if scores:
         best_lang = max(scores, key=scores.get)
         if scores[best_lang] >= 1:
             return best_lang
-
+    
     return "English"
-
-
-def _detect_topic(message: str) -> str:
-    """Detect the hotel info topic from a message (language-independent)."""
-    msg = message.lower()
-
-    topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
-        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
-        "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fru00fchstu00fcck", "colazione", "petit du00e9jeuner", "desayuno"],
-        "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
-        "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "du00e9part", "salida"],
-        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
-        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
-        "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
-        "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
-        "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
-        "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
-        "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o"],
-        "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
-    }
-
-    for topic, keywords in topic_keywords.items():
-        if any(kw in msg for kw in keywords):
-            return topic
-    return "general"
 
 
 def apply_rag_to_messages(messages: list[dict], user_query: str) -> list[dict]:
@@ -532,6 +449,7 @@ def apply_rag_to_messages(messages: list[dict], user_query: str) -> list[dict]:
         "role": "system",
         "content": f"HOTEL_KNOWLEDGE_BLOCK:\n\n{format_rag_context(context_docs)}\n\nUse only the facts above when answering.",
     }
+    # Insert just before the last user turn if available.
     last_user_idx = None
     for idx in range(len(messages) - 1, -1, -1):
         if messages[idx].get("role") == "user":
@@ -586,6 +504,7 @@ def get_hotel_info_response(topic, question):
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
+        # Check if asking about late arrival/departure
         if any(word in q for word in ["late", "later", "after", "early", "before", "outside"]):
             if actual_topic == "check_out" or "depart" in q or "check out" in q or "checkout" in q or "leave" in q:
                 return (
@@ -622,66 +541,31 @@ def get_hotel_info_response(topic, question):
 
     # Rooms
     if actual_topic == "rooms":
-        # Check if asking about pricing
-        is_price_query = any(word in q for word in ["price", "cost", "how much", "rate", "pricing", "expensive", "cheap", "cena", "preis", "prix", "precio", "prezzo"])
-        # Check if asking about capacity/groups
-        is_capacity_query = any(word in q for word in ["people", "person", "group", "family", "children", "kids", "sleeps", "capacity", "many", "3", "4", "5", "6", "oseb", "oseba", "osebi", "osebo", "skupina", "družina", "otroci", "leži", "kapacita", "gostje", "gostov", "personen", "person", "gruppe", "familie", "kinder", "schläft", "personas", "persona", "grupo", "familia", "niños", "capacidad", "personnes", "groupe", "famille", "enfants", "capacité", "persone", "gruppo", "famiglia", "bambini", "capacità"])
         # Check if asking about a specific room
+        # Use more precise matching: require the unique part of the room name
+        # (excluding common words like "suite") to match
         for room in h["rooms"].values():
-            room_words = room["name"].lower().split()
-            if any(word in q for word in room_words if len(word) > 3):
+            name_lower = room["name"].lower()
+            # Get distinctive words (e.g., "princess" from "Princess Suite")
+            # Exclude common words like "suite" that appear in all room names
+            common_words = {"suite", "the", "and"}
+            distinctive_words = [w for w in name_lower.split() if w not in common_words and len(w) > 2]
+            # Match if ALL distinctive words appear in the query
+            if distinctive_words and all(word in q for word in distinctive_words):
                 features = ", ".join(room.get("features", [])[:3])
-                price_str = ""
-                if is_price_query and room.get("price"):
-                    price_str = f" — €{room['price']}/night"
                 return (
-                    f"{room['name']}{price_str} — {room['description']} "
+                    f"{room['name']} — {room['description']} "
                     f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
-        # Check if asking about capacity - highlight suitable rooms
-        if is_capacity_query:
-            # Extract number of people
-            num_people = None
-            for num_word, num_val in [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6),
-                                       ("one", 1), ("two", 2), ("three", 3), ("four", 4), ("five", 5), ("six", 6),
-                                       ("ena", 1), ("dve", 2), ("tri", 3), ("štiri", 4), ("pet", 5), ("šest", 6),
-                                       ("ein", 1), ("eine", 1), ("zwei", 2), ("drei", 3), ("vier", 4), ("fünf", 5), ("sechs", 6),
-                                       ("uno", 1), ("una", 1), ("due", 2), ("tre", 3), ("quattro", 4), ("cinque", 5), ("sei", 6),
-                                       ("un", 1), ("une", 1), ("deux", 2), ("trois", 3), ("quatre", 4), ("cinq", 5), ("six", 6),
-                                       ("uno", 1), ("una", 1), ("dos", 2), ("tres", 3), ("cuatro", 4), ("cinco", 5), ("seis", 6)]:
-                if num_word + " " in q or " " + num_word + " " in q:
-                    num_people = num_val
-                    break
-            suitable = []
-            all_rooms = []
-            for r in h["rooms"].values():
-                cap = r.get("capacity", 2)
-                size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
-                price_str = f" — €{r['price']}/night" if r.get("price") and is_price_query else ""
-                feat = ", ".join(r.get("features", [])[:2])
-                line = f"• {r['name']}{size} (sleeps {cap}){price_str} — {feat}"
-                all_rooms.append(line)
-                if num_people and cap >= num_people:
-                    suitable.append(line)
-            if suitable and num_people:
-                lines = [f"For {num_people} guest{'s' if num_people > 1 else ''}, I'd especially recommend:"]
-                lines.extend(suitable)
-                lines.append("\nAll our suites:")
-                lines.extend(all_rooms)
-                lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
-                return "\n".join(lines)
-            lines = ["We have 7 beautiful suites, all with stunning lake views:"]
-            lines.extend(all_rooms)
-            lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
-            return "\n".join(lines)
         lines = ["We have 7 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
             size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
-            price_str = f" — €{r['price']}/night" if r.get("price") and is_price_query else ""
             feat = ", ".join(r.get("features", [])[:2])
-            lines.append(f"• {r['name']}{size}{cap}{price_str} — {feat}")
+            name_lower = r['name'].lower()
+            # Use markdown-style bullets for proper HTML rendering
+            lines.append(f"• **{r['name']}**{size}{cap} — {feat}")
         lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
         return "\n".join(lines)
 
@@ -698,6 +582,7 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
+            # Check if asking about dietary needs
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
@@ -711,6 +596,7 @@ def get_hotel_info_response(topic, question):
                 f"We also offer vegan, vegetarian, and gluten-free options on request. "
                 f"Shall I add breakfast to your booking?"
             )
+        # Fallback for old string format
         return (
             f"{b} "
             f"Vegan, vegetarian, and gluten-free options are available on request. "
@@ -743,66 +629,58 @@ def get_hotel_info_response(topic, question):
 
     # Bar
     if actual_topic == "bar":
-        wine_mention = ""
-        if any(word in q for word in ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"]):
-            wine_mention = " Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines from vineyards near Bled alongside selected international labels. Wine pairing is available with our tasting menu (approximately €35/person). "
         return (
             f"Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
-            f"It's the perfect spot for sunset drinks! The terrace is open every day.{wine_mention}"
+            f"It's the perfect spot for sunset drinks! The terrace has arguably the best views in Bled. "
             f"Would you like me to reserve a table for dinner, or shall I tell you about our pop-up dining events?"
         )
 
     # Parking
     if actual_topic == "parking":
         return (
-            f"{h['policies']['parking']}. "
+            f"Yes! {h['policies']['parking']}. "
             f"Will you be driving to Bled, or would you like tips on public transport?"
         )
 
     # WiFi
     if actual_topic == "wifi":
         return (
-            f"Complimentary high-speed WiFi is available throughout the entire property — all suites, "
-            f"the restaurant, terrace, and garden. The connection is fast and reliable for both work and streaming. "
+            f"{h['policies']['wifi']} "
             f"Anything else you'd like to know about our amenities?"
         )
 
     # Pets
     if actual_topic == "pets":
         return (
-            f"{h['policies']['pets']}. "
+            f"{h['policies']['pets']} "
             f"Are you planning to bring a furry friend along?"
         )
 
     # Cancellation
     if actual_topic == "cancellation":
         return (
-            f"We offer flexible cancellation options depending on your booking type. "
-            f"Direct bookings can typically be cancelled free of charge up to 48 hours before arrival. "
-            f"For bookings made through third-party sites, their cancellation policies apply. "
-            f"I'd recommend checking your booking confirmation for specific terms, or contact us at "
-            f"+386 51 603 858 for personalized assistance. "
-            f"Would you like me to help with anything else?"
+            f"{h['policies']['cancellation']} "
+            f"Would you like me to note any special conditions for your booking?"
         )
 
     # Payment
     if actual_topic == "payment":
         return (
-            f"{h['policies']['payment']}. "
+            f"{h['policies']['payment']} "
             f"Would you like to proceed with a booking?"
         )
 
     # Children
     if actual_topic == "children":
         return (
-            f"{h['policies']['children']}. "
+            f"{h['policies']['children']} "
             f"Traveling with family? I can help find the best room for everyone!"
         )
 
     # Smoking
     if actual_topic == "smoking":
         return (
-            f"{h['policies']['smoking']}. "
+            f"{h['policies']['smoking']} "
             f"Is there anything else I can help you with?"
         )
 
@@ -826,13 +704,13 @@ def get_hotel_info_response(topic, question):
             f"• 6 km lakeside walking path & 15 signposted hikes\n"
             f"• Day trips to Lake Bohinj, Ljubljana, Postojna Cave\n"
             f"• In-room massage, garden evenings with wine\n"
-            f"I can help you book any of these — just let me know which interests you!"
+            f"Would you like more details on any of these?"
         )
 
     # Contact
     if actual_topic == "contact":
         return (
-            f"You can reach us at {h['location']['phone']} or {h['location']['email']}. "
+            f"You reach us at {h['location']['phone']} or {h['location']['email']}. "
             f"Or just keep chatting with me — I'm here to help! What else would you like to know?"
         )
 
@@ -897,40 +775,45 @@ def api_chat():
     is_non_english = detected_lang != "English"
 
     try:
+        # For non-English messages, we use a single-call approach:
+        # 1. Retrieve relevant hotel facts via RAG
+        # 2. Inject them as a system message with language instruction
+        # 3. Let the LLM respond directly (no forced tool call, no second LLM call)
+        # This avoids the timeout from the two-call pattern (tool call + translation).
         lang_messages = list(messages)
         if is_non_english:
-            # For non-English messages, detect topic and fetch hotel data directly.
-            topic = _detect_topic(user_message)
-            hotel_answer = get_hotel_info_response(topic, user_message)
-            if hotel_answer and hotel_answer.strip():
+            # Get relevant hotel data via RAG
+            rag_docs = maybe_retrieve_hotel_facts(user_message, max_facts=3)
+            if rag_docs:
+                rag_context = format_rag_context(rag_docs)
                 lang_messages.append({
                     "role": "system",
-                    "content": f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n3. Translate ALL hotel information below to {detected_lang}.\n4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n\nHOTEL DATA TO TRANSLATE:\n{hotel_answer}"
+                    "content": f"HOTEL DATA (respond in {detected_lang}):\n\n{rag_context}\n\nCRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question. Do NOT use English except for proper nouns and brand names."
                 })
             else:
                 lang_messages.append({
                     "role": "system",
-                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
+                    "content": f"CRITICAL: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question."
                 })
-
+        
         # For non-English messages, exclude query_hotel_info tool since we provide
-        # hotel data via context. This prevents the LLM from calling the tool
+        # hotel data via RAG context. This prevents the LLM from calling the tool
         # and getting English responses. Keep booking/shuttle tools available.
         if is_non_english:
             available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
-
+        
         tool_params = {
             "model": MODEL,
             "messages": lang_messages,
             "tools": available_tools,
             "temperature": 0.5,
-            "max_tokens": 1500,
+            "max_tokens": 1200,
             "timeout": 50,
         }
         tool_params["tool_choice"] = "auto"
-
+        
         response = client.chat.completions.create(**tool_params)
         choice = response.choices[0] if response.choices else None
         if choice is None:
@@ -940,7 +823,7 @@ def api_chat():
         content = fix_spacing(getattr(msg, "content", None) or "")
         tool_calls = getattr(msg, "tool_calls", None) or []
 
-        # Build assistant message with properly formatted tool_calls
+        # Build assistant message with properly formatted tool_calls (including id and type)
         assistant_msg = {"role": "assistant", "content": content}
         if tool_calls:
             assistant_msg["tool_calls"] = [
@@ -1020,6 +903,7 @@ def api_chat():
                     extracted_time = extract_time_from_message(user_message)
                     if extracted_time:
                         event_type = "late_check_in" if "check_in" in topic or "arrival" in user_message.lower() else "late_check_out"
+                        # Try to get guest name from session messages
                         guest_name = "Guest"
                         for msg in messages:
                             if isinstance(msg, dict) and msg.get("role") == "user":
@@ -1034,10 +918,16 @@ def api_chat():
                             time=extracted_time,
                             notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Original message: {user_message}"
                         )
+                        # Note: We do NOT add calendar confirmation to the guest response —
+                        # that's an internal detail. The guest just gets a warm confirmation.
 
                 tool_reply = answer
+                # Send tool response directly — for non-English messages, the LLM
+                # should have already responded based on RAG context above.
+                # If the LLM still called the tool, send the English response as fallback.
                 replies.append({"type": "text", "content": answer})
             elif fn == "book_shuttle":
+                # Save shuttle booking to database
                 from database import add_shuttle_booking
                 add_shuttle_booking(
                     session_id=session_id,
@@ -1057,6 +947,7 @@ def api_chat():
                 )
                 replies.append({"type": "text", "content": tool_reply})
             elif fn == "request_human_agent":
+                # Log the human agent request
                 from database import add_human_agent_request
                 add_human_agent_request(
                     session_id=session_id,
@@ -1071,14 +962,22 @@ def api_chat():
                     f"Thank you for your patience!"
                 )
                 replies.append({"type": "text", "content": tool_reply})
+            # Append tool response message with proper tool_call_id
             if tool_reply is not None:
                 messages.append({"role": "tool", "tool_call_id": tc_id, "content": tool_reply})
 
+        # Note: No second LLM call needed anymore.
+        # Non-English messages use RAG context + language instruction in a single call.
+
         if not replies:
+            # Fallback: if model returned empty content, try to answer directly
             if tool_calls:
+                # Try to answer from hotel data directly
                 fallback = get_hotel_info_response("general", user_message)
                 replies.append({"type": "text", "content": fallback})
             else:
+                # LLM didn't call any tool — check if this is a factual question
+                # that should have used query_hotel_info
                 factual_keywords = [
                     "room", "suite", "check", "breakfast", "restaurant", "bar",
                     "wine", "parking", "pet", "dog", "cat", "location", "address",
@@ -1092,7 +991,9 @@ def api_chat():
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
                 if is_factual:
+                    # LLM didn't use tool for factual question — get data ourselves
                     fallback = get_hotel_info_response("general", user_message)
+                    # Only use fallback if LLM response is short/empty (likely wrong)
                     if len(content.strip()) < 100:
                         replies.append({"type": "text", "content": fallback})
                     else:
@@ -1100,14 +1001,18 @@ def api_chat():
                 else:
                     replies.append({"type": "text", "content": content})
 
-        # Check if guest mentioned a late check-in or check-out time
+        # Check if guest mentioned a late check-in or check-out time in this message
+        # and save to calendar for hotel staff awareness (only if not already handled by tool)
         msg_lower = user_message.lower()
         is_late_checkin = any(word in msg_lower for word in ["late check-in", "late checkin", "arrive late", "late arrival", "arriving late", "late at", "arrive at", "get in late", "coming late", "late check in"])
         is_late_checkout = any(word in msg_lower for word in ["late check-out", "late checkout", "late check out", "check out late", "later checkout"])
+        # Check if calendar event was already added by the tool handler above
+        # Simple approach: just save the event (idempotent) — no duplicate check needed
         if is_late_checkin or is_late_checkout:
             extracted_time = extract_time_from_message(user_message)
             if extracted_time:
                 event_type = "late_check_in" if is_late_checkin else "late_check_out"
+                # Try to get guest name from session messages
                 guest_name = "Guest"
                 for msg in messages:
                     if isinstance(msg, dict) and msg.get("role") == "user":
@@ -1122,33 +1027,17 @@ def api_chat():
                     time=extracted_time,
                     notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}"
                 )
+                # Internal-only: calendar event saved. Do NOT append to guest response.
             else:
-                if replies and "what time would you like" not in replies[-1]["content"].lower() and "what time were you planning" not in replies[-1]["content"].lower():
+                # Guest mentioned late check-in/out but no specific time found — ask for it
+                if replies and "what time would you like" not in replies[-1]["content"].lower():
                     replies[-1]["content"] += " What time would you like? Let me know and I'll pass it along."
 
         # Clean up any model reasoning text from responses
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
-                # Post-process: if response was supposed to be non-English but came back in English,
-                # append a language correction note for the next turn
-                if is_non_english and reply.get("content"):
-                    content = reply["content"]
-                    # Check if response is still mostly English (simple heuristic)
-                    english_words = ["the ", "we ", "our ", "you ", "have ", "are ", "with ", "and ", "for ", "this ", "that ", "here ", "there ", "would ", "could ", "should ", "will ", "can ", "your"]
-                    non_english_indicators = {
-                        "Slovenian": ["imo", "vas", "prosim", "hvala", "sobe", "apartma", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid"],
-                        "German": ["ich ", "sie ", "das ", "die ", "der ", "und ", "für ", "mit ", "haben ", "sind ", "können ", "möchten ", "guten", "vielen"],
-                        "French": ["nous ", "vous ", "les ", "des ", "est ", "une ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais "],
-                        "Italian": ["nostro", "nostra", "grazie", "buongiorno", "camera", "camere", "abbiamo", "avete", "vorrei", "posso", "belliss"],
-                        "Spanish": ["nuestro", "nuestra", "gracias", "habitaciones", "tenemos", "quiere", "puede", "buenos", "buenas", "por favor"],
-                    }
-                    eng_count = sum(1 for w in english_words if w in content.lower())
-                    non_eng_count = sum(1 for w in non_english_indicators.get(detected_lang, []) if w in content.lower())
-                    # If lots of English words and very few non-English indicators, it's probably still English
-                    if eng_count > 3 and non_eng_count < 2 and len(content) > 50:
-                        # Replace with a translated fallback
-                        reply["content"] = _get_localized_fallback(detected_lang, user_message)
+            # If content is empty after cleaning, provide a fallback
             if reply.get("type") == "text" and not reply.get("content", "").strip():
                 msg_lower = user_message.lower()
                 if any(word in msg_lower for word in ["restaurant", "menu", "dining", "chef", "food", "eat", "meal", "wine", "bar", "cocktail"]):
@@ -1164,15 +1053,6 @@ def api_chat():
                         f"We have 7 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
                         f"What would you like to know more about?"
                     )
-
-        # Merge consecutive text replies into one to avoid duplicate/fragmented responses
-        merged_replies = []
-        for reply in replies:
-            if reply.get("type") == "text" and merged_replies and merged_replies[-1].get("type") == "text":
-                merged_replies[-1]["content"] += "\n\n" + reply["content"]
-            else:
-                merged_replies.append(reply)
-        replies = merged_replies
 
         return jsonify({"replies": replies})
     except Exception as e:
@@ -1247,6 +1127,7 @@ def admin():
 
 @app.route("/static/images/<path:filename>")
 def serve_images(filename):
+    """Serve hotel images."""
     import os
     from flask import send_from_directory
     image_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "images")
@@ -1255,6 +1136,7 @@ def serve_images(filename):
 
 @app.route("/api/calendar", methods=["GET"])
 def api_calendar():
+    """Get all calendar events (late check-in/out, etc.)."""
     events = get_all_calendar_events()
     return jsonify({
         "events": [
@@ -1269,6 +1151,58 @@ def api_calendar():
                 "created_at": e[7],
             }
             for e in events
+        ]
+    })
+
+
+@app.route("/api/shuttles", methods=["GET"])
+def api_shuttles():
+    """Get all shuttle bookings."""
+    conn = sqlite3.connect("hotel.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM shuttle_bookings ORDER BY id DESC")
+    rows = c.fetchall()
+    conn.close()
+    return jsonify({
+        "shuttles": [
+            {
+                "id": r[0],
+                "session_id": r[1],
+                "guest_name": r[2],
+                "pickup_location": r[3],
+                "dropoff_location": r[4],
+                "date": r[5],
+                "time": r[6],
+                "passengers": r[7],
+                "notes": r[8],
+                "status": r[9],
+                "created_at": r[10],
+            }
+            for r in rows
+        ]
+    })
+
+
+@app.route("/api/human-requests", methods=["GET"])
+def api_human_requests():
+    """Get all human agent requests."""
+    conn = sqlite3.connect("hotel.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM human_agent_requests ORDER BY id DESC")
+    rows = c.fetchall()
+    conn.close()
+    return jsonify({
+        "requests": [
+            {
+                "id": r[0],
+                "session_id": r[1],
+                "reason": r[2],
+                "guest_name": r[3],
+                "summary": r[4],
+                "status": r[5],
+                "created_at": r[6],
+            }
+            for r in rows
         ]
     })
 

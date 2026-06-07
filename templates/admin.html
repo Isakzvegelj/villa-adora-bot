@@ -6,93 +6,236 @@
     <title>{{ hotel_name }} — Admin Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            padding: 2rem;
-        }
-        h1 { margin-bottom: 1.5rem; color: #1a1a2e; }
-        h2 { margin: 1.5rem 0 0.8rem; color: #333; font-size: 1.1rem; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #1a1a2e; color: #f0e6d3; font-weight: 500; }
-        tr:hover { background: #f8f8f8; }
-        .empty { color: #999; font-style: italic; padding: 1rem; }
-        .refresh-btn {
-            background: #1a1a2e;
-            color: #f0e6d3;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-        .refresh-btn:hover { background: #2a2a4e; }
+        body { font-family: -apple-system, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #1e3c72; margin-bottom: 20px; }
+        h2 { color: #1e3c72; margin: 30px 0 15px 0; font-size: 1.2em; }
+        .refresh-btn { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; margin-right: 10px; }
+        .refresh-btn:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #1e3c72; color: white; font-weight: 600; }
+        tr:hover { background: #f8f9fa; }
+        .empty { text-align: center; padding: 40px; color: #666; }
+        .badge { display: inline-block; padding: 4px 10px; background: #e8f5e9; color: #2e7d32; border-radius: 12px; font-size: 0.85em; }
+        .badge-late-in { display: inline-block; padding: 4px 10px; background: #fff3e0; color: #e65100; border-radius: 12px; font-size: 0.85em; }
+        .badge-late-out { display: inline-block; padding: 4px 10px; background: #e3f2fd; color: #1565c0; border-radius: 12px; font-size: 0.85em; }
+        .meta { color: #555; margin-bottom: 12px; font-size: 0.95em; }
+        .notes { color: #666; font-size: 0.85em; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     </style>
 </head>
 <body>
-    <h1>{{ hotel_name }} — Admin Dashboard</h1>
-    <button class="refresh-btn" onclick="loadAll()">🔄 Refresh</button>
+    <div class="container">
+        <h1>📋 Admin Dashboard — {{ hotel_name }}</h1>
+        <p class="meta">Last updated: <span id="lastUpdated">Never</span></p>
+        <button class="refresh-btn" onclick="loadAll()">Refresh All</button>
 
-    <h2>📅 Bookings</h2>
-    <table id="bookingsTable">
-        <thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead>
-        <tbody></tbody>
-    </table>
+        <h2>📅 Late Check-in / Check-out Calendar</h2>
+        <table id="calendarTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Guest</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <tr><td colspan="7" class="empty">Loading calendar...</td></tr>
+            </tbody>
+        </table>
 
-    <h2>🗓️ Calendar Events</h2>
-    <table id="calendarTable">
-        <thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th><th>Created</th></tr></thead>
-        <tbody></tbody>
-    </table>
+        <h2>🛏️ Room Bookings</h2>
+        <table id="bookingsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                </tr>
+            </thead>
+            <tbody id="bookingsBody">
+                <tr><td colspan="5" class="empty">Loading bookings...</td></tr>
+            </tbody>
+        </table>
+
+        <h2>🚐 Shuttle Bookings</h2>
+        <table id="shuttleTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Guest</th>
+                    <th>Pickup</th>
+                    <th>Drop-off</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Pax</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody id="shuttleBody">
+                <tr><td colspan="9" class="empty">Loading shuttle bookings...</td></tr>
+            </tbody>
+        </table>
+
+        <h2>🧑‍💼 Human Agent Requests</h2>
+        <table id="agentTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Reason</th>
+                    <th>Guest</th>
+                    <th>Summary</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody id="agentBody">
+                <tr><td colspan="6" class="empty">Loading requests...</td></tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
-        async function loadBookings() {
-            try {
-                const res = await fetch('/api/bookings');
-                const data = await res.json();
-                const tbody = document.querySelector('#bookingsTable tbody');
-                if (!data.bookings || data.bookings.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = data.bookings.map(b =>
-                    `<tr><td>${b.id}</td><td>${b.guest}</td><td>${b.room}</td><td>${b.check_in}</td><td>${b.check_out}</td></tr>`
-                ).join('');
-            } catch (e) {
-                console.error('Failed to load bookings:', e);
-            }
-        }
-
         async function loadCalendar() {
+            const tbody = document.getElementById('calendarBody');
+            tbody.innerHTML = '<tr><td colspan="7" class="empty">Loading...</td></tr>';
             try {
                 const res = await fetch('/api/calendar');
                 const data = await res.json();
-                const tbody = document.querySelector('#calendarTable tbody');
-                if (!data.events || data.events.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="empty">No calendar events yet</td></tr>';
+                tbody.innerHTML = '';
+                if (data.events.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="empty">No calendar events yet.</td></tr>';
                     return;
                 }
-                tbody.innerHTML = data.events.map(e =>
-                    `<tr><td>${e.id}</td><td>${e.event_type}</td><td>${e.guest_name}</td><td>${e.time}</td><td>${e.notes || ''}</td><td>${e.created_at}</td></tr>`
-                ).join('');
+                data.events.forEach(e => {
+                    const tr = document.createElement('tr');
+                    const badgeClass = e.event_type === 'late_check_in' ? 'badge-late-in' : 'badge-late-out';
+                    const typeLabel = e.event_type === 'late_check_in' ? 'Late Check-in' : 'Late Check-out';
+                    const created = e.created_at ? new Date(e.created_at).toLocaleString() : '-';
+                    tr.innerHTML = `
+                        <td>#${e.id}</td>
+                        <td><span class="${badgeClass}">${typeLabel}</span></td>
+                        <td>${e.guest_name || 'Guest'}</td>
+                        <td><strong>${e.time || '-'}</strong></td>
+                        <td>${e.date || '-'}</td>
+                        <td class="notes" title="${e.notes || ''}">${e.notes || '-'}</td>
+                        <td>${created}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             } catch (e) {
-                console.error('Failed to load calendar:', e);
+                tbody.innerHTML = '<tr><td colspan="7" class="empty">Error loading calendar.</td></tr>';
+                console.error(e);
             }
         }
 
-        function loadAll() { loadBookings(); loadCalendar(); }
+        async function loadBookings() {
+            const tbody = document.getElementById('bookingsBody');
+            const lastUpdated = document.getElementById('lastUpdated');
+            tbody.innerHTML = '<tr><td colspan="5" class="empty">Loading...</td></tr>';
+            try {
+                const res = await fetch('/api/bookings');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.bookings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet.</td></tr>';
+                    if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
+                    return;
+                }
+                data.bookings.forEach(b => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${b.id}</td>
+                        <td>${b.guest}</td>
+                        <td><span class="badge">${b.room}</span></td>
+                        <td>${b.check_in}</td>
+                        <td>${b.check_out}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                if (lastUpdated) lastUpdated.textContent = new Date().toLocaleString();
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty">Error loading bookings.</td></tr>';
+                console.error(e);
+            }
+        }
+
+        async function loadShuttles() {
+            const tbody = document.getElementById('shuttleBody');
+            tbody.innerHTML = '<tr><td colspan="9" class="empty">Loading...</td></tr>';
+            try {
+                const res = await fetch('/api/shuttles');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.shuttles.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="empty">No shuttle bookings yet.</td></tr>';
+                    return;
+                }
+                data.shuttles.forEach(s => {
+                    const tr = document.createElement('tr');
+                    const created = s.created_at ? new Date(s.created_at).toLocaleString() : '-';
+                    tr.innerHTML = `
+                        <td>#${s.id}</td>
+                        <td>${s.guest_name || 'Guest'}</td>
+                        <td>${s.pickup_location || '-'}</td>
+                        <td>${s.dropoff_location || '-'}</td>
+                        <td>${s.date || '-'}</td>
+                        <td>${s.time || '-'}</td>
+                        <td>${s.passengers || 1}</td>
+                        <td><span class="badge">${s.status || 'pending'}</span></td>
+                        <td>${created}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="9" class="empty">Error loading shuttle bookings.</td></tr>';
+                console.error(e);
+            }
+        }
+
+        async function loadAgentRequests() {
+            const tbody = document.getElementById('agentBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="empty">Loading...</td></tr>';
+            try {
+                const res = await fetch('/api/human-requests');
+                const data = await res.json();
+                tbody.innerHTML = '';
+                if (data.requests.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty">No human agent requests yet.</td></tr>';
+                    return;
+                }
+                data.requests.forEach(r => {
+                    const tr = document.createElement('tr');
+                    const created = r.created_at ? new Date(r.created_at).toLocaleString() : '-';
+                    tr.innerHTML = `
+                        <td>#${r.id}</td>
+                        <td>${r.reason || '-'}</td>
+                        <td>${r.guest_name || 'Guest'}</td>
+                        <td class="notes" title="${r.summary || ''}">${r.summary || '-'}</td>
+                        <td><span class="badge">${r.status || 'pending'}</span></td>
+                        <td>${created}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty">Error loading requests.</td></tr>';
+                console.error(e);
+            }
+        }
+
+        async function loadAll() {
+            await Promise.all([loadCalendar(), loadBookings(), loadShuttles(), loadAgentRequests()]);
+        }
+
         loadAll();
+        setInterval(loadAll, 30000);
     </script>
 </body>
 </html>

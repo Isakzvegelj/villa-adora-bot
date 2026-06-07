@@ -86,14 +86,14 @@ hotel_info = {
         },
         "castle_suite": {
             "name": "Castle Suite",
-            "price": None,
+            "price": 350,
             "currency": "EUR",
-            "size_sqm": None,
+            "size_sqm": 50,
             "capacity": 2,
-            "bed": None,
+            "bed": "King",
             "view": "Castle views",
-            "features": ["Stylish luxury suite", "Castle views"],
-            "description": "Stylish luxury suite with castle views."
+            "features": ["Stylish luxury suite", "Castle views", "King bed", "Elegant design"],
+            "description": "A stylish luxury suite with beautiful views of Bled Castle. Features elegant design and modern comforts.",
         }
     },
     "policies": {

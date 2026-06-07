@@ -72,8 +72,9 @@
 - Unforgettable lake view through all windows
 - Absolute harmony of artful decor, elegance and spaciousness
 
-### Castle Suite
-- Stylish luxury suite with castle views
+### Castle Suite — €350/night
+- 50 sq m, King bed
+- Castle views, elegant design
 - Part of the 7-suite collection
 
 ## Amenities
