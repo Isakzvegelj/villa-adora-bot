@@ -290,7 +290,11 @@ def build_system_prompt() -> str:
         "- Mention prices unless asked\n"
         "- Ask for booking reference or reservation ID\n"
         "- Give bare answers without a follow-up question\n"
-        "- Send multiple separate replies to a single question"
+        "- Send multiple separate replies to a single question\n"
+        "- If guest is frustrated, unsatisfied, or explicitly asks for a human, use request_human_agent() to transfer them\n"
+        "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
+        "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
+        "- Human agent: use request_human_agent() when guest needs human help. Always offer this as an option if the guest seems unhappy.\n"
     )
 
 
