@@ -55,12 +55,12 @@ hotel_info = {
             "name": "Swan Suite",
             "price": 370,
             "currency": "EUR",
-            "size_sqm": None,
+            "size_sqm": 67,
             "capacity": 2,
-            "bed": None,
+            "bed": "King",
             "view": "Lake view",
-            "features": ["Lake view", "Luxury furnishings", "Elegant suite"],
-            "description": "An elegant suite with stunning lake views and luxury furnishings."
+            "features": ["Lake view", "King bed", "Luxury furnishings", "Elegant suite"],
+            "description": "An elegant 67 sqm suite with a king bed, stunning lake views and luxury furnishings."
         },
         "island_suite": {
             "name": "Island Suite",
@@ -184,7 +184,7 @@ hotel_info = {
                 "Locally sourced Slovenian specialties",
                 "Signature Kremšnita — a fresh twist on Bled's iconic cream cake"
             ],
-            "dietary": "Dietary preferences and allergies accommodated with advance notice",
+            "dietary": "Dietary preferences and allergies accommodated with advance notice. We offer vegan, vegetarian, gluten-free, and dairy-free options.",
             "pricing": {
                 "tasting_menu": "€65 per person (approximate)",
                 "wine_pairing": "€35 per person (approximate)",
@@ -251,7 +251,10 @@ hotel_info = {
         "The attention to detail by the staff was astounding. They made us feel right at home",
         "Adora is beautifully situated in a quiet part of Bled, yet still close to everything",
         "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom",
-        "The most expensive hotel of our 2-week trip but worth it"
+        "The most expensive hotel of our 2-week trip but worth it",
+        "Small restaurant with limited space — quality over quantity. The tasting menu was extraordinary",
+        "Perfect romantic getaway — the tower room is unlike anything we've experienced",
+        "Breakfast was absolutely delicious with fresh local products and homemade pastries"
     ],
     "best_for": [
         "Couples and romantic breaks",

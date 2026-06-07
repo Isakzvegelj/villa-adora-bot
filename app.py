@@ -238,6 +238,17 @@ def fix_spacing(text):
     text = re.sub(r'\bimate\b', ' imate', text, flags=re.IGNORECASE)
     text = re.sub(r'\bhvala\b', ' hvala', text, flags=re.IGNORECASE)
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
+    # Fix "Suiteis" -> "Suite is" and similar suite-name run-ons
+    text = re.sub(r'\bSuiteis\b', 'Suite is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bPrincessSuite\b', 'Princess Suite', text)
+    text = re.sub(r'\bLuxurySuite\b', 'Luxury Suite', text)
+    text = re.sub(r'\bPenthouseSuite\b', 'Penthouse Suite', text)
+    text = re.sub(r'\bSwanSuite\b', 'Swan Suite', text)
+    text = re.sub(r'\bIslandSuite\b', 'Island Suite', text)
+    text = re.sub(r'\bPrestigeSuite\b', 'Prestige Suite', text)
+    text = re.sub(r'\bCastleSuite\b', 'Castle Suite', text)
+    # Fix "isserved" -> "is served"
+    text = re.sub(r'\bisserved\b', 'is served', text, flags=re.IGNORECASE)
     # Fix "Howcan" -> "How can"
     text = re.sub(r'\bHowcan\b', 'How can', text)
     # Fix missing space/question mark before question words
@@ -335,7 +346,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
+        "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free, and dairy-free options available on request."
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"
@@ -751,7 +762,8 @@ def get_hotel_info_response(topic, question):
     # WiFi
     if actual_topic == "wifi":
         return (
-            f"{h['policies']['wifi']}. "
+            f"Complimentary high-speed WiFi is available throughout the entire property — all suites, "
+            f"the restaurant, terrace, and garden. The connection is fast and reliable for both work and streaming. "
             f"Anything else you'd like to know about our amenities?"
         )
 
@@ -765,8 +777,12 @@ def get_hotel_info_response(topic, question):
     # Cancellation
     if actual_topic == "cancellation":
         return (
-            f"{h['policies']['cancellation']}. "
-            f"Would you like me to note any special conditions for your booking?"
+            f"We offer flexible cancellation options depending on your booking type. "
+            f"Direct bookings can typically be cancelled free of charge up to 48 hours before arrival. "
+            f"For bookings made through third-party sites, their cancellation policies apply. "
+            f"I'd recommend checking your booking confirmation for specific terms, or contact us at "
+            f"+386 51 603 858 for personalized assistance. "
+            f"Would you like me to help with anything else?"
         )
 
     # Payment
