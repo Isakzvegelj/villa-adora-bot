@@ -128,6 +128,49 @@ request_human_agent_function = {
 }
 
 
+def _get_localized_fallback(lang: str, user_message: str) -> str:
+    """Return a localized fallback response when the LLM responds in English for non-English queries."""
+    q = user_message.lower()
+    # Detect topic for a more relevant fallback
+    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
+        fallbacks = {
+            "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov!",
+            "German": "Wir haben 7 wundersöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen!",
+            "French": "Nous avons 7 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus!",
+            "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli!",
+            "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles!",
+            "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja!",
+        }
+    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"]):
+        fallbacks = {
+            "Slovenian": "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Nudimo tudi veganska, vegetarijanska in brezglutenska jed. Želite dodati zajtrk k vaši rezervaciji?",
+            "German": "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Wir bieten auch vegane, vegetäre und glutenfreie Optionen. Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?",
+            "French": "Le petit-déjeuner est disponible pour 22 € par personne, servi de 8h à 10h. Nous proposons également des options végétaliennes, végétariennes et sans gluten. Souhaitez-vous ajouter le petit-déjeuner à votre réservation?",
+            "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
+            "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
+            "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
+        }
+    elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
+        fallbacks = {
+            "Slovenian": "Imamo restavracijo Adora Pop Up kar v hotelu! Ustvarjena kuhinja z lokalnimi slovenskimi sestavinami pod vodstvom šefa kuhinje Domena Demšara. Terasa ima ene najlepših razgledov na jezero. Rezervacija: +386 40 558 158. Želite rezervirati mizo?",
+            "German": "Wir haben das Adora Pop Up Restaurant direkt im Hotel! Kreative Küche mit lokalen slowenischen Zutaten unter der Leitung von Küchenchef Domen Demšar. Die Terrasse bietet einen der besten Ausblicke auf den See. Reservierung: +386 40 558 158. Möchten Sie einen Tisch reservieren?",
+            "French": "Nous avons le restaurant Adora Pop Up directement à l'hôtel! Cuisine créative avec des ingrédients slovènes locaux sous la direction du chef Domen Demšar. La terrasse offre l'une des meilleures vues sur le lac. Réservation: +386 40 558 158. Souhaitez-vous réserver une table?",
+            "Italian": "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Cucina creativa con ingredienti sloveni locali sotto la guida dello chef Domen Demšar. La terrazza offre una delle migliori viste sul lago. Prenotazione: +386 40 558 158. Vuoi riservare un tavolo?",
+            "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terraza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
+            "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
+        }
+    else:
+        fallbacks = {
+            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 7 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam!",
+            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 7 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne!",
+            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 7 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider!",
+            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti!",
+            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte!",
+            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći!",
+        }
+    return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
+
+
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
@@ -195,6 +238,8 @@ def fix_spacing(text):
     text = re.sub(r'\bimate\b', ' imate', text, flags=re.IGNORECASE)
     text = re.sub(r'\bhvala\b', ' hvala', text, flags=re.IGNORECASE)
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
+    # Fix "Howcan" -> "How can"
+    text = re.sub(r'\bHowcan\b', 'How can', text)
     # Fix missing space/question mark before question words
     text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before common words
@@ -265,6 +310,7 @@ def build_system_prompt() -> str:
         "- Supported languages: English, Slovenian (Slovenščina), German (Deutsch), Italian (Italiano), French (Français), Spanish (Español), Croatian (Hrvatski), Serbian (Srpski).\n"
         "- When a tool returns English information, you MUST translate it to the guest's language. This is NON-NEGOTIABLE.\n"
         "- Example: If guest writes in Slovenian and the tool returns 'We have 7 beautiful suites', you must respond with 'Imamo 7 čudovitih apartmajev' — NOT the English text.\n"
+        "- If the guest writes in French, you must respond in French. If in German, respond in German. ALWAYS match the guest's language.\n"
         "- Keep the same warm, concise style regardless of language.\n\n"
         "STYLE:\n"
         "Be warm, concise, and conversational — like a real human concierge.\n"
@@ -341,6 +387,11 @@ def _detect_language(message: str) -> str:
             return "Croatian"
         return "Slovenian"
 
+    # Word-based Slovenian detection (without diacritics)
+    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom "]
+    if any(w in msg for w in slovenian_words):
+        return "Slovenian"
+
     # German-specific characters
     if any(c in msg for c in ['ß', 'ä', 'ö', 'ü']):
         return "German"
@@ -353,12 +404,18 @@ def _detect_language(message: str) -> str:
     if any(c in msg for c in ['à', 'â', 'ç', 'è', 'é', 'ê', 'î', 'ô', 'ù', 'û', 'ë', 'ï']):
         return "French"
 
-    # Italian-specific characters
+    # Italian-specific characters (check AFTER French since they share some)
     if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
         # Could be French or Italian - check words
         italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere "]
         if any(w in msg for w in italian_words):
             return "Italian"
+
+    # Word-based detection for languages without unique characters
+    # French word patterns
+    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais "]
+    if any(w in msg for w in french_words):
+        return "French"
 
     # Multi-word phrases that are highly distinctive per language
     distinctive_phrases = {
@@ -814,12 +871,12 @@ def api_chat():
             if hotel_answer and hotel_answer.strip():
                 lang_messages.append({
                     "role": "system",
-                    "content": f"MANDATORY: Respond ENTIRELY in {detected_lang}. Do NOT use English except for proper nouns and brand names like 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n\nHOTEL DATA (translate to {detected_lang}):\n\n{hotel_answer}\n\nTranslate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
+                    "content": f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n3. Translate ALL hotel information below to {detected_lang}.\n4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n\nHOTEL DATA TO TRANSLATE:\n{hotel_answer}"
                 })
             else:
                 lang_messages.append({
                     "role": "system",
-                    "content": f"CRITICAL: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question."
+                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
                 })
 
         # For non-English messages, exclude query_hotel_info tool since we provide
@@ -835,7 +892,7 @@ def api_chat():
             "messages": lang_messages,
             "tools": available_tools,
             "temperature": 0.5,
-            "max_tokens": 1200,
+            "max_tokens": 1500,
             "timeout": 50,
         }
         tool_params["tool_choice"] = "auto"
@@ -1039,6 +1096,25 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
+                # Post-process: if response was supposed to be non-English but came back in English,
+                # append a language correction note for the next turn
+                if is_non_english and reply.get("content"):
+                    content = reply["content"]
+                    # Check if response is still mostly English (simple heuristic)
+                    english_words = ["the ", "we ", "our ", "you ", "have ", "are ", "with ", "and ", "for ", "this ", "that ", "here ", "there ", "would ", "could ", "should ", "will ", "can ", "your"]
+                    non_english_indicators = {
+                        "Slovenian": ["imo", "vas", "prosim", "hvala", "sobe", "apartma", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid"],
+                        "German": ["ich ", "sie ", "das ", "die ", "der ", "und ", "für ", "mit ", "haben ", "sind ", "können ", "möchten ", "guten", "vielen"],
+                        "French": ["nous ", "vous ", "les ", "des ", "est ", "une ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais "],
+                        "Italian": ["nostro", "nostra", "grazie", "buongiorno", "camera", "camere", "abbiamo", "avete", "vorrei", "posso", "belliss"],
+                        "Spanish": ["nuestro", "nuestra", "gracias", "habitaciones", "tenemos", "quiere", "puede", "buenos", "buenas", "por favor"],
+                    }
+                    eng_count = sum(1 for w in english_words if w in content.lower())
+                    non_eng_count = sum(1 for w in non_english_indicators.get(detected_lang, []) if w in content.lower())
+                    # If lots of English words and very few non-English indicators, it's probably still English
+                    if eng_count > 3 and non_eng_count < 2 and len(content) > 50:
+                        # Replace with a translated fallback
+                        reply["content"] = _get_localized_fallback(detected_lang, user_message)
             if reply.get("type") == "text" and not reply.get("content", "").strip():
                 msg_lower = user_message.lower()
                 if any(word in msg_lower for word in ["restaurant", "menu", "dining", "chef", "food", "eat", "meal", "wine", "bar", "cocktail"]):
