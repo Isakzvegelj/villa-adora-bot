@@ -20,11 +20,13 @@
 - Views of Bled Island, Bled Castle, and Triglav Mountains
 
 ## Check-in / Check-out
-- **Check-in:** 14:00 (2:00 PM)
+- **Check-in:** 14:00 (2:00 PM) — check-in window until 23:00 (photo ID and credit card required)
 - **Check-out:** 11:00 (11:00 AM)
 - **Late check-in:** Available on request, contact reception to arrange. Can accommodate late arrivals with advance notice.
 - **Late check-out:** Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.
 - 16h reception service, 24h guest support
+- **Quiet hours:** 22:00-07:00
+- **Parties/events:** Not allowed
 
 ## Room Types (7 suites)
 
@@ -116,7 +118,7 @@
 ### Adora Pop Up Restaurant
 - **Location:** Inside Adora Luxury Hotel, on the shores of Lake Bled
 - **Terrace:** Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails
-- **Cuisine:** Creative, locally inspired Slovenian dishes using top-quality regional ingredients
+- **Cuisine:** Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional ingredients
 - **Chef:** Led by renowned Chef Domen Demšar, known for innovation and accommodating dietary needs
 - **Experience:** More than a meal — a curated moment combining food, view, and ambiance
 - **Hours:**
@@ -157,11 +159,13 @@
 ## Policies
 - Children of all ages welcome
 - Cribs and extra beds not available
-- Pets allowed on request (contact for details and fees)
+- Pets allowed on request — €35 per pet per night
 - Non-smoking property
-- Main guest must be at least 18 years old at check-in
+- No age restriction for check-in
+- Quiet hours: 22:00-07:00
+- Parties and events not allowed
 - Cancellation policy varies by room type and booking terms
-- Visa, MasterCard accepted
+- Visa, MasterCard, Maestro, and Cash accepted
 
 ## Nearby Attractions & Activities
 

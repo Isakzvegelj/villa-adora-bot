@@ -99,17 +99,20 @@ hotel_info = {
     "policies": {
         "check_in": "14:00 (2:00 PM)",
         "check_out": "11:00 (11:00 AM)",
+        "check_in_window": "14:00-23:00 (photo ID and credit card required at check-in)",
         "late_check_in": "Available on request. Contact reception to arrange. We can accommodate late arrivals with advance notice.",
         "late_check_out": "Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.",
         "breakfast": "Breakfast served daily 8:00-10:00 AM. €22 per person. Fresh pastries, bread, local Slovenian products served in dining room with lake views. High quality — described as 'absolutely delicious'.",
         "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
         "wifi": "Complimentary high-speed WiFi throughout the property",
-        "pets": "Pets allowed on request. Please contact us for details and fees.",
+        "pets": "Pets allowed on request — €35 per pet per night. Please contact us to arrange.",
         "cancellation": "Cancellation policy varies by room type and booking terms. Please contact us for specific conditions.",
-        "payment": "Visa, MasterCard accepted",
+        "payment": "Visa, MasterCard, Maestro, and Cash accepted",
         "children": "Children of all ages are welcome. Cribs and extra beds are not available.",
         "smoking": "Non-smoking property",
-        "minimum_age": "Main guest must be at least 18 years old at check-in",
+        "minimum_age": "No age restriction for check-in",
+        "quiet_hours": "Quiet hours: 22:00-07:00",
+        "parties": "Parties and events are not allowed",
         "shuttle": "Shuttle service available — airport transfer, local transport, and custom routes. Book directly in this chat. Prices vary by route (Ljubljana airport ~€60, Bled town center ~€15). Contact reception for availability.",
         "reception": "16h reception service, 24h guest support"
     },
@@ -152,7 +155,8 @@ hotel_info = {
         },
         "restaurant": {
             "name": "Adora Pop Up Restaurant",
-            "description": "Exclusive dining destination inside Adora Luxury Hotel. Creative, locally inspired Slovenian dishes using top-quality regional ingredients. Led by renowned Chef Domen Demšar.",
+            "description": "Exclusive dining destination inside Adora Luxury Hotel. Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional ingredients. Led by renowned Chef Domen Demšar.",
+            "cuisine": ["French", "Italian", "Seafood", "Steakhouse", "Local Slovenian"],
             "terrace": "Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails",
             "hours": {
                 "lunch": "Tuesday – Sunday",
@@ -240,6 +244,12 @@ hotel_info = {
         "Old world charm, impressive views",
         "Fairytale-like setting",
         "Staff are so helpful and genuine — rare in a place as beautiful as Bled",
+        "AMAZING VIEWS FROM BOTH SIDES OF OUR CORNER ROOM. Dinner was superb and the staff very kind and accommodating",
+        "The property is located on the best location in Bled",
+        "Gorgeous boutique hotel with beautiful outdoor patio and stunning views",
+        "The attention to detail by the staff was astounding. They made us feel right at home",
+        "Adora is beautifully situated in a quiet part of Bled, yet still close to everything",
+        "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom",
         "The most expensive hotel of our 2-week trip but worth it"
     ],
     "best_for": [
