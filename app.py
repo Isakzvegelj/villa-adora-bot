@@ -231,6 +231,9 @@ def clean_response(text):
     text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
     # Remove any remaining JSON-like blocks that look like tool definitions
     text = _re.sub(r'\{.*?"type":\s*"object".*?"properties".*?\}', '', text, flags=_re.DOTALL)
+    # Remove translation instruction tags that might leak through
+    text = _re.sub(r'\[RESPOND IN \w+\]', '', text, flags=_re.IGNORECASE)
+    text = _re.sub(r'\[END \w+ RESPONSE\]', '', text, flags=_re.IGNORECASE)
     # If the text contains what looks like reasoning followed by a final answer,
     # extract only the final answer portion
     # Common patterns: "Thus:", "Therefore:", "So we can say:", "Let's craft:"
@@ -853,6 +856,10 @@ def api_chat():
                         "I can assist with rooms, check-in times, breakfast, parking, and more."
                     )
                 answer = fix_spacing(answer)
+
+                # For non-English guests, append a clear translation instruction as part of the tool data
+                if force_tool and detected_lang != "English":
+                    answer = f"[RESPOND IN {detected_lang}] {answer} [END {detected_lang} RESPONSE]"
 
                 # If guest provided a specific time for late check-in/out, save to calendar
                 if topic in ("late_check_in", "late_check_out", "check_in", "check_out"):
