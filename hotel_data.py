@@ -110,6 +110,7 @@ hotel_info = {
         "children": "Children of all ages are welcome. Cribs and extra beds are not available.",
         "smoking": "Non-smoking property",
         "minimum_age": "Main guest must be at least 18 years old at check-in",
+        "shuttle": "Shuttle service available — airport transfer, local transport, and custom routes. Book directly in this chat. Prices vary by route (Ljubljana airport ~€60, Bled town center ~€15). Contact reception for availability.",
         "reception": "16h reception service, 24h guest support"
     },
     "amenities": [
