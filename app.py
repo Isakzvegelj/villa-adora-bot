@@ -717,9 +717,12 @@ def get_hotel_info_response(topic, question):
 
     # Bar
     if actual_topic == "bar":
+        wine_mention = ""
+        if any(word in q for word in ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"]):
+            wine_mention = " Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines from vineyards near Bled alongside selected international labels. Wine pairing is available with our tasting menu (approximately €35/person). "
         return (
             f"Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
-            f"It's the perfect spot for sunset drinks! The terrace is open every day. "
+            f"It's the perfect spot for sunset drinks! The terrace is open every day.{wine_mention}"
             f"Would you like to know about our pop-up dining events too?"
         )
 
