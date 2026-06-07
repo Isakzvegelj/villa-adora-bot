@@ -70,7 +70,7 @@
 
 ## Amenities
 - Free WiFi throughout
-- Free private parking on-site
+- Free private parking on-site — 8 parking spots in front of the hotel
 - Air conditioning
 - Flat-screen TV with cable/satellite channels
 - Mini-fridge bar

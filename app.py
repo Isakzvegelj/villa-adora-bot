@@ -129,6 +129,22 @@ def fix_spacing(text):
     text = re.sub(r'\blakeview\b', 'lake view', text, flags=re.IGNORECASE)
     text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
     text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
+    text = re.sub(r'\barrangea\b', 'arrange a', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcanoffer\b', 'can offer', text, flags=re.IGNORECASE)
+    text = re.sub(r'\btheviews\b', 'the views', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bguestcan\b', 'guest can', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwealso\b', 'we also', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwehave\b', 'we have', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwedon\b', "we don", text, flags=re.IGNORECASE)
+    text = re.sub(r'\btheviews\b', 'the views', text, flags=re.IGNORECASE)
+    text = re.sub(r'\byoucan\b', 'you can', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bweoffer\b', 'we offer', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bIcan\b', 'I can', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bweare\b', 'we are', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthebest\b', 'the best', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthemost\b', 'the most', text, flags=re.IGNORECASE)
+    # Fix missing space/question mark before question words: "today are you" -> "today? Are you"
+    text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before "The" or other common words
     text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
     # Fix missing space before parentheses
@@ -223,7 +239,7 @@ def build_system_prompt() -> str:
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
-        "- Free parking and WiFi\n"
+        "- Free parking and WiFi (8 parking spots in front of the hotel)"
         "- Pets allowed on request\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858\n\n"

@@ -102,7 +102,7 @@ hotel_info = {
         "late_check_in": "Available on request. Contact reception to arrange. We can accommodate late arrivals with advance notice.",
         "late_check_out": "Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.",
         "breakfast": "Breakfast served daily 8:00-10:00 AM. €22 per person. Fresh pastries, bread, local Slovenian products served in dining room with lake views. High quality — described as 'absolutely delicious'.",
-        "parking": "Free private parking available on-site",
+        "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
         "wifi": "Complimentary high-speed WiFi throughout the property",
         "pets": "Pets allowed on request. Please contact us for details and fees.",
         "cancellation": "Cancellation policy varies by room type and booking terms. Please contact us for specific conditions.",
