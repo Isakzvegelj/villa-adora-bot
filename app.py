@@ -761,30 +761,51 @@ def api_chat():
 
     messages.append({"role": "user", "content": user_message})
 
-    # For non-English messages, force tool use to ensure the LLM gets structured data it can translate
+    # Detect language and prepare language-specific handling
     detected_lang = _detect_language(user_message)
-    force_tool = detected_lang != "English"
+    is_non_english = detected_lang != "English"
 
     try:
-        # If non-English, inject language instruction as an additional system message
-        # so the LLM translates the tool response in a single call (avoids timeout)
+        # For non-English messages, we use a single-call approach:
+        # 1. Retrieve relevant hotel facts via RAG
+        # 2. Inject them as a system message with language instruction
+        # 3. Let the LLM respond directly (no forced tool call, no second LLM call)
+        # This avoids the timeout from the two-call pattern (tool call + translation).
         lang_messages = list(messages)
-        if force_tool:
-            lang_messages.append({
-                "role": "system",
-                "content": f"LANGUAGE OVERRIDE: The guest wrote in {detected_lang}. You MUST respond ENTIRELY in {detected_lang}. Translate all tool response data to {detected_lang}. Do NOT use English except for proper nouns and brand names. This is NON-NEGOTIABLE."
-            })
+        if is_non_english:
+            # Get relevant hotel data via RAG
+            rag_docs = maybe_retrieve_hotel_facts(user_message, max_facts=3)
+            if rag_docs:
+                rag_context = format_rag_context(rag_docs)
+                lang_messages.append({
+                    "role": "system",
+                    "content": f"HOTEL DATA (respond in {detected_lang}):\n\n{rag_context}\n\nCRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information above to {detected_lang}. Be warm, concise, and end with a follow-up question. Do NOT use English except for proper nouns and brand names."
+                })
+            else:
+                lang_messages.append({
+                    "role": "system",
+                    "content": f"CRITICAL: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question."
+                })
         
+        # For English messages, use the standard tool-based flow
+        # For non-English messages, use auto tool choice (LLM can decide)
         tool_params = {
             "model": MODEL,
             "messages": lang_messages,
             "tools": [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
             "temperature": 0.5,
             "max_tokens": 1200,
-            "timeout": 45,
+            "timeout": 50,
         }
-        if force_tool:
-            tool_params["tool_choice"] = {"type": "function", "function": {"name": "query_hotel_info"}}
+        # Only force tool choice for English factual queries
+        # For non-English, let the LLM respond directly with RAG data
+        if not is_non_english:
+            tool_params["tool_choice"] = "auto"
+        else:
+            # For non-English, don't force tools — the RAG context should be enough
+            # But allow tools for booking/shuttle if needed
+            tool_params["tool_choice"] = "auto"
+            
         response = client.chat.completions.create(**tool_params)
         choice = response.choices[0] if response.choices else None
         if choice is None:
@@ -810,12 +831,6 @@ def api_chat():
             ]
         messages.append(assistant_msg)
         replies = []
-        # Build a map of tool_call_id -> name for matching tool responses
-        tc_id_map = {
-            (tc.id if hasattr(tc, "id") else tc.get("id", f"call_{i}")):
-            (tc.function.name if hasattr(tc.function, "name") else tc.get("function", {}).get("name"))
-            for i, tc in enumerate(tool_calls)
-        }
         for i, tc in enumerate(tool_calls):
             tc_id = tc.id if hasattr(tc, "id") else tc.get("id", f"call_{i}")
             fn = (
@@ -899,10 +914,10 @@ def api_chat():
                         # that's an internal detail. The guest just gets a warm confirmation.
 
                 tool_reply = answer
-                # Don't send tool response directly — let the LLM generate a translated response
-                # The tool_reply will be added to messages below, and a second LLM call will generate the final response
-                if not force_tool:
-                    replies.append({"type": "text", "content": answer})
+                # Send tool response directly — for non-English messages, the LLM
+                # should have already responded based on RAG context above.
+                # If the LLM still called the tool, send the English response as fallback.
+                replies.append({"type": "text", "content": answer})
             elif fn == "book_shuttle":
                 # Save shuttle booking to database
                 from database import add_shuttle_booking
@@ -943,30 +958,8 @@ def api_chat():
             if tool_reply is not None:
                 messages.append({"role": "tool", "tool_call_id": tc_id, "content": tool_reply})
 
-        # For non-English messages with tool calls, the LLM now generates the translated
-                # response in a single call thanks to the language override system message above.
-                # No second LLM call needed — this avoids timeout issues.
-                if force_tool and tool_calls and not replies:
-                    # The tool response was added to messages but we need the LLM to generate
-                    # a translated response. Make a single follow-up call with the language instruction.
-                    followup_messages = messages + [{
-                        "role": "system",
-                        "content": f"CRITICAL: Respond ENTIRELY in {detected_lang}. Translate all information to {detected_lang}. Do NOT use English except for proper nouns and brand names. Be warm and end with a follow-up question."
-                    }]
-                    second_params = {
-                        "model": MODEL,
-                        "messages": followup_messages,
-                        "temperature": 0.5,
-                        "max_tokens": 800,
-                        "timeout": 35,
-                    }
-                    second_response = client.chat.completions.create(**second_params)
-                    second_choice = second_response.choices[0] if second_response.choices else None
-                    if second_choice:
-                        second_content = fix_spacing(getattr(second_choice.message, "content", None) or "")
-                        if second_content.strip():
-                            replies.append({"type": "text", "content": second_content})
-                            sessions[session_id] = messages + [{"role": "assistant", "content": second_content}]
+        # Note: No second LLM call needed anymore.
+        # Non-English messages use RAG context + language instruction in a single call.
 
         if not replies:
             # Fallback: if model returned empty content, try to answer directly
