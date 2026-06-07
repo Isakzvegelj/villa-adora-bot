@@ -284,7 +284,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "- Breakfast: €22/person, served 8-10 AM. Vegan, vegetarian, gluten-free options available on request.\n"
+        "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views\n"
@@ -293,8 +293,9 @@ def build_system_prompt() -> str:
         "- Pets allowed on request — €35 per pet per night\n"
         "- Quiet hours: 22:00-07:00 | Parties/events not allowed\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
-        "- Phone: +386 51 603 858\n\n"
-        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (67 m²), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
+        "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
+        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
+        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (lake view), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
@@ -1026,7 +1027,7 @@ def api_chat():
                     notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}"
                 )
             else:
-                if replies and "what time would you like" not in replies[-1]["content"].lower():
+                if replies and "what time would you like" not in replies[-1]["content"].lower() and "what time were you planning" not in replies[-1]["content"].lower():
                     replies[-1]["content"] += " What time would you like? Let me know and I'll pass it along."
 
         # Clean up any model reasoning text from responses

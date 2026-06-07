@@ -2,22 +2,27 @@
 
 ## Hotel Overview
 - **Name:** Villa Adora Bled (formerly Vila Istra, now Adora Luxury Hotel)
-- **Type:** Small luxury boutique hotel, 7-8 suites
+- **Type:** Small luxury boutique hotel, 7 suites
 - **Location:** Cesta svobode 35, 4260 Bled, Slovenia — directly on the shore of Lake Bled
 - **Built:** 1878, heritage-protected villa converted into a luxury design hotel
 - **Atmosphere:** Intimate, secluded, quiet, romantic, charming, luxury
 - **Rating:** ★★★★ (4 stars)
+- **Booking.com Score:** 9.1/10 "Wonderful" (698 reviews) — Location 9.7, Comfort 9.4, Cleanliness 9.2, Staff 9.2
+- **TripAdvisor:** 4.7/5 (275 reviews), Travelers' Choice award, #4 of 71 B&Bs in Bled
 - **Email:** evita.vilebled@gmail.com
 - **Phone:** +386 51 603 858
+- **WhatsApp:** +386 51 603 858
 - **Booking:** Booking.com or direct email
 
 ## Location Details
 - Directly on the shores of Lake Bled — one of the few hotels with this prime position
 - 2-minute walk to nearest boat station (for island access and lake tours)
 - Easy access to the 6 km lakeside walking path
-- 15-minute walk to Bled town center (restaurants, bars, casino)
-- 30-minute walk to Bled Castle
+- 10-minute walk to Bled town center (restaurants, bars, casino)
+- 30-minute walk to Bled Castle (or 5 min by car)
+- 1-minute walk to Straža cable car station
 - Views of Bled Island, Bled Castle, and Triglav Mountains
+- 19 miles (30 km) from Ljubljana Airport
 
 ## Check-in / Check-out
 - **Check-in:** 14:00 (2:00 PM) — check-in window until 23:00 (photo ID and credit card required)
@@ -76,7 +81,7 @@
 - Free private parking on-site — 8 parking spots in front of the hotel
 - Air conditioning
 - Flat-screen TV with cable/satellite channels
-- Mini-fridge bar
+- Mini-fridge bar and fridge in room
 - Coffee & tea making equipment
 - Hairdryer
 - Private bathroom with shower
@@ -88,7 +93,7 @@
 - Shuttle service / Airport transfer
 - 24h guest support
 - Business center, meeting room
-- Garden with lake views
+- Garden with lake views and small pavilion
 - Terrace, outdoor sitting area
 - Hotel boats for hire
 - Bicycle rental
@@ -110,17 +115,18 @@
 
 ### Breakfast
 - Served daily 8:00-10:00 AM
-- €22 per person
-- Fresh pastries, bread, local Slovenian products
+- €22 per person (good breakfast — Continental, Vegetarian, Gluten-free options)
+- Fresh pastries, bread, local Slovenian products, coffee & tea
 - Served in dining room with lake views
 - **Dietary options:** Vegan, vegetarian, and gluten-free options available on request
 - Please inform us of any allergies or dietary requirements when booking
 
 ### Adora Pop Up Restaurant
 - **Location:** Inside Adora Luxury Hotel, on the shores of Lake Bled
-- **Terrace:** Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails
-- **Cuisine:** Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional ingredients
-- **Chef:** Led by renowned Chef Domen Demšar, known for innovation and accommodating dietary needs
+- **Philosophy:** Small restaurant with limited space, intentionally focused on quality over quantity — crafting next-level culinary experiences
+- **Terrace:** Arguably the best terrace in Bled — perfect for sunset views, aperitivos, cocktails, and peaceful moments
+- **Cuisine:** Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional and seasonal ingredients
+- **Chef:** Led by renowned Chef Domen Demšar — known for creativity, flexibility, accommodating dietary needs, and using local farmers/artisans
 - **Experience:** More than a meal — a curated moment blending food, view, and ambiance
 - **Hours:**
   - Lunch: Tuesday – Sunday
@@ -128,6 +134,7 @@
   - Brunch: Thursday, Friday, Saturday
   - Drinks: Every day
 - **Must-Try:** Signature Kremšnita — a fresh, elevated take on Bled's iconic cream cake
+- **Pop-up Events:** Regular pop-up dining events with special themed menus (seasonal menus, 4-course degustation, 8-course special events)
 - **Note:** Small restaurant with limited space — intentionally focused on quality over quantity. Reservations recommended.
 - **Booking:** Reservations required (small restaurant with limited space)
 - **Contact:** +386 40 558 158 / +386 51 603 858 | evita.vilebled@gmail.com | WhatsApp: +386 51 603 858
@@ -222,6 +229,17 @@
 - "A wonderful lakeside villa with lush gardens leading down to the shore"
 - "Old world charm, impressive views"
 - "Fairytale-like setting"
+- "Staff are so helpful and genuine — rare in a place as beautiful as Bled"
+- "AMAZING VIEWS FROM BOTH SIDES OF OUR CORNER ROOM. Dinner was superb and the staff very kind and accommodating"
+- "The property is located on the best location in Bled"
+- "Gorgeous boutique hotel with beautiful outdoor patio and stunning views"
+- "The attention to detail by the staff was astounding. They made us feel right at home"
+- "Adora is beautifully situated in a quiet part of Bled, yet still close to everything"
+- "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom"
+- "The most expensive hotel of our 2-week trip but worth it"
+- "Right across the street from Lake Bled. Beautiful outdoor patio. Stunning views and decor. Fabulous four-course dinner. Breakfast was awesome."
+- "The location of this hotel and the view from it are unparalleled! Spectacular!"
+- "A very beautiful hotel from start to finish. The decor is immaculate. The views are why you go to Bled!"
 
 ## Best For
 - Couples and romantic breaks
@@ -233,13 +251,14 @@
 
 ## Tips
 - Best season: Summer (full services), Spring/Autumn (fewer crowds)
-- Book via Booking.com or direct email
+- Book via Booking.com or direct email (sign in to Booking.com for potential discounts)
 - In-room massage is highly recommended
-- Garden is perfect for relaxing with wine
-- Walk to Bled town center for dinner options
+- Garden with small pavilion is perfect for relaxing with wine
+- Walk to Bled town center (10 min) for additional dinner options
 - The 6 km lakeside walk is a must-do
 - Vintgar Gorge is worth the short trip
-- Bled cream cake is a local specialty — try it in town
+- Bled cream cake is a local specialty — try it in town (or try Adora's signature Kremšnita!)
+- Straža cable car station is just 1 min walk away
 
 ## Villa Pomona — Luxury Villa Retreat
 - **Type:** Design boutique villa, separate from the hotel
