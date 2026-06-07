@@ -178,7 +178,8 @@ def fix_spacing(text):
     text = re.sub(r'\babar\b', 'a bar', text, flags=re.IGNORECASE)
     text = re.sub(r'\blakeview\b', 'lake view', text, flags=re.IGNORECASE)
     text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
-    text = re.sub(r'\bglutenfree\b', 'gluten-free', text, flags=re.IGNORECASE)
+    text = re.sub(r'\balate\b', 'a late', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhelpyou\b', 'help you', text, flags=re.IGNORECASE)
     text = re.sub(r'\bveganoptions\b', 'vegan options', text, flags=re.IGNORECASE)
     text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
     text = re.sub(r'\barrangea\b', 'arrange a', text, flags=re.IGNORECASE)
@@ -337,6 +338,22 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
         return rag_retrieve(query=query, top_k=max_facts)
     except Exception:
         return []
+
+
+def _detect_language(message: str) -> str:
+    """Simple language detection based on common words."""
+    msg = message.lower()
+    # Check for specific language markers
+    slovenian_words = ["zdravo", "hvala", "prosim", "sobe", "imate", "kakšen", "kako", "ali", "lahko", "želim", "je", "da", "ne", "kje", "kdaj"]
+    german_words = ["guten", "tag", "zimmer", "haben", "bitte", "vielen", "danke", "wie", "was", "wo", "wann", "ich", "möchten", "können"]
+    italian_words = ["buongiorno", "camere", "avete", "grazie", "per favore", "come", "dove", "quando", "vorrei", "posso"]
+    french_words = ["bonjour", "chambrez", "avez", "merci", "s'il vous plaît", "comment", "où", "quand", "je voudrais"]
+    spanish_words = ["hola", "habitaciones", "tienen", "gracias", "por favor", "cómo", "dónde", "cuándo", "quisiera"]
+    
+    for words, lang in [(slovenian_words, "Slovenian"), (german_words, "German"), (italian_words, "Italian"), (french_words, "French"), (spanish_words, "Spanish")]:
+        if any(w in msg for w in words):
+            return lang
+    return "English"
 
 
 def apply_rag_to_messages(messages: list[dict], user_query: str) -> list[dict]:
@@ -658,6 +675,14 @@ def api_chat():
         messages = [messages[0]] + messages[-10:]
         sessions[session_id] = messages
 
+    # Add translation reminder for non-English messages
+    detected_lang = _detect_language(user_message)
+    if detected_lang != "English":
+        messages.append({
+            "role": "system",
+            "content": f"IMPORTANT: The guest is writing in {detected_lang}. You MUST respond entirely in {detected_lang}. Translate all tool output to {detected_lang} before sending to the guest."
+        })
+
     try:
         tool_params = {
             "model": MODEL,
@@ -841,10 +866,14 @@ def api_chat():
                 ]
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
-                if is_factual and len(content.strip()) < 50:
-                    # LLM gave a short non-tool response to a factual question — use tool data
+                if is_factual:
+                    # LLM didn't use tool for factual question — get data ourselves
                     fallback = get_hotel_info_response("general", user_message)
-                    replies.append({"type": "text", "content": fallback})
+                    # Only use fallback if LLM response is short/empty (likely wrong)
+                    if len(content.strip()) < 100:
+                        replies.append({"type": "text", "content": fallback})
+                    else:
+                        replies.append({"type": "text", "content": content})
                 else:
                     replies.append({"type": "text", "content": content})
 
