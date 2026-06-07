@@ -376,8 +376,11 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 def _detect_language(message: str) -> str:
     """Simple language detection based on common words and character patterns."""
     import re as _re
-    # Normalize: add spaces around punctuation for word boundary matching
-    msg = " " + _re.sub(r'([!?,.;])', r' \1 ', message.lower().strip()) + " "
+    msg_raw = " " + message.lower().strip() + " "
+    # For word matching, create a version with punctuation replaced by spaces
+    msg = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', message.lower().strip()) + " "
+    # Collapse multiple spaces
+    msg = _re.sub(r'  +', ' ', msg)
 
     # Character-based detection for languages with unique characters
     # Slovenian/Croatian specific characters
