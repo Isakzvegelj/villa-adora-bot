@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: villa-adora-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: LLM_BASE_URL
+        value: https://openrouter.ai/api/v1
+      - key: LLM_MODEL
+        value: openrouter/free
+      - key: LLM_API_KEY
+        sync: false
+    healthCheckPath: /
