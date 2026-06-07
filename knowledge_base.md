@@ -50,6 +50,7 @@
 - Extremely comfortable
 
 ### Swan Suite — €370/night
+- 67 sq m, King bed
 - Lake view, luxury furnishings
 - Elegant suite with stunning lake views
 
@@ -120,12 +121,14 @@
 - **Terrace:** Arguably the best terrace in Bled — perfect for sunset views, aperitivos, and cocktails
 - **Cuisine:** Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional ingredients
 - **Chef:** Led by renowned Chef Domen Demšar, known for innovation and accommodating dietary needs
-- **Experience:** More than a meal — a curated moment combining food, view, and ambiance
+- **Experience:** More than a meal — a curated moment blending food, view, and ambiance
 - **Hours:**
   - Lunch: Tuesday – Sunday
   - Dinner: Tuesday – Sunday
-  - Brunch: Thursday – Saturday
+  - Brunch: Thursday, Friday, Saturday
   - Drinks: Every day
+- **Must-Try:** Signature Kremšnita — a fresh, elevated take on Bled's iconic cream cake
+- **Note:** Small restaurant with limited space — intentionally focused on quality over quantity. Reservations recommended.
 - **Booking:** Reservations required (small restaurant with limited space)
 - **Contact:** +386 40 558 158 / +386 51 603 858 | evita.vilebled@gmail.com | WhatsApp: +386 51 603 858
 

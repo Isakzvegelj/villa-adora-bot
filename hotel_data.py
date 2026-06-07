@@ -55,12 +55,12 @@ hotel_info = {
             "name": "Swan Suite",
             "price": 370,
             "currency": "EUR",
-            "size_sqm": None,
+            "size_sqm": 67,
             "capacity": 2,
-            "bed": None,
+            "bed": "King",
             "view": "Lake view",
-            "features": ["Lake view", "Luxury furnishings", "Elegant suite"],
-            "description": "An elegant suite with stunning lake views and luxury furnishings."
+            "features": ["Lake view", "Luxury furnishings", "Elegant suite", "67 sq m", "King bed"],
+            "description": "An elegant suite with stunning lake views and luxury furnishings. 67 sq m with a King bed."
         },
         "island_suite": {
             "name": "Island Suite",
@@ -68,7 +68,7 @@ hotel_info = {
             "currency": "EUR",
             "size_sqm": 65,
             "capacity": 4,
-            "bed": "2 luxury bedrooms",
+            "bed": "2 Single + 1 King",
             "view": "Stunning lake and island view",
             "features": ["First floor", "2 luxury bedrooms", "Big living area", "2 balconies", "Stunning lake & island view"],
             "description": "Stylish luxury suite extending over 65 sq m on the first floor. Stunning view of the lake and Bled Island. Perfect for couples, groups of friends, or families. Features 2 luxury bedrooms, a big living area and 2 balconies."

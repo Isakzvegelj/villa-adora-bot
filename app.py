@@ -542,9 +542,16 @@ def get_hotel_info_response(topic, question):
     # Rooms
     if actual_topic == "rooms":
         # Check if asking about a specific room
+        # Use more precise matching: require the unique part of the room name
+        # (excluding common words like "suite") to match
         for room in h["rooms"].values():
-            room_words = room["name"].lower().split()
-            if any(word in q for word in room_words if len(word) > 3):
+            name_lower = room["name"].lower()
+            # Get distinctive words (e.g., "princess" from "Princess Suite")
+            # Exclude common words like "suite" that appear in all room names
+            common_words = {"suite", "the", "and"}
+            distinctive_words = [w for w in name_lower.split() if w not in common_words and len(w) > 2]
+            # Match if ALL distinctive words appear in the query
+            if distinctive_words and all(word in q for word in distinctive_words):
                 features = ", ".join(room.get("features", [])[:3])
                 return (
                     f"{room['name']} — {room['description']} "
