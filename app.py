@@ -542,7 +542,7 @@ def get_hotel_info_response(topic, question):
         # Check if asking about pricing
         is_price_query = any(word in q for word in ["price", "cost", "how much", "rate", "pricing", "expensive", "cheap", "cena", "preis", "prix", "precio", "prezzo"])
         # Check if asking about capacity/groups
-        is_capacity_query = any(word in q for word in ["people", "person", "group", "family", "children", "kids", "sleeps", "capacity", "many", "3", "4", "5", "6"])
+        is_capacity_query = any(word in q for word in ["people", "person", "group", "family", "children", "kids", "sleeps", "capacity", "many", "3", "4", "5", "6", "oseb", "oseba", "osebi", "osebo", "skupina", "družina", "otroci", "leži", "kapacita", "gostje", "gostov", "personen", "person", "gruppe", "familie", "kinder", "schläft", "personas", "persona", "grupo", "familia", "niños", "capacidad", "personnes", "groupe", "famille", "enfants", "capacité", "persone", "gruppo", "famiglia", "bambini", "capacità"])
         # Check if asking about a specific room
         for room in h["rooms"].values():
             room_words = room["name"].lower().split()
@@ -561,7 +561,12 @@ def get_hotel_info_response(topic, question):
             # Extract number of people
             num_people = None
             for num_word, num_val in [("1", 1), ("2", 2), ("3", 3), ("4", 4), ("5", 5), ("6", 6),
-                                       ("one", 1), ("two", 2), ("three", 3), ("four", 4), ("five", 5), ("six", 6)]:
+                                       ("one", 1), ("two", 2), ("three", 3), ("four", 4), ("five", 5), ("six", 6),
+                                       ("ena", 1), ("dve", 2), ("tri", 3), ("štiri", 4), ("pet", 5), ("šest", 6),
+                                       ("ein", 1), ("eine", 1), ("zwei", 2), ("drei", 3), ("vier", 4), ("fünf", 5), ("sechs", 6),
+                                       ("uno", 1), ("una", 1), ("due", 2), ("tre", 3), ("quattro", 4), ("cinque", 5), ("sei", 6),
+                                       ("un", 1), ("une", 1), ("deux", 2), ("trois", 3), ("quatre", 4), ("cinq", 5), ("six", 6),
+                                       ("uno", 1), ("una", 1), ("dos", 2), ("tres", 3), ("cuatro", 4), ("cinco", 5), ("seis", 6)]:
                 if num_word + " " in q or " " + num_word + " " in q:
                     num_people = num_val
                     break
