@@ -362,7 +362,7 @@ def get_hotel_info_response(topic, question):
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
-        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim"],
+        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
         "breakfast": ["breakfast", "morning meal", "brunch"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
@@ -392,17 +392,17 @@ def get_hotel_info_response(topic, question):
     if actual_topic in ("check_in", "check_out"):
         # Check if asking about late arrival/departure
         if any(word in q for word in ["late", "later", "after", "early", "before", "outside"]):
-            if actual_topic == "check_in" or "late" in q or "arrival" in q or "arrive" in q:
-                return (
-                    f"Our standard check-in is {h['policies']['check_in']}, but late check-in is available on request! "
-                    f"Just contact our reception to arrange. We can accommodate late arrivals with advance notice. "
-                    f"What time were you planning to arrive?"
-                )
-            else:
+            if actual_topic == "check_out" or "depart" in q or "check out" in q or "checkout" in q or "leave" in q:
                 return (
                     f"Our standard check-out is {h['policies']['check_out']}, but late check-out is available on request! "
                     f"It's subject to availability and additional fees may apply. Contact reception to arrange. "
                     f"What time would you like to check out?"
+                )
+            else:
+                return (
+                    f"Our standard check-in is {h['policies']['check_in']}, but late check-in is available on request! "
+                    f"Just contact our reception to arrange. We can accommodate late arrivals with advance notice. "
+                    f"What time were you planning to arrive?"
                 )
         return (
             f"Check-in is from {h['policies']['check_in']}, and check-out is between {h['policies']['check_out']}. "
@@ -652,6 +652,7 @@ def api_chat():
         msg = choice.message
         content = fix_spacing(getattr(msg, "content", None) or "")
         tool_calls = getattr(msg, "tool_calls", None) or []
+        # Build assistant message with properly formatted tool_calls (including id and type)
         assistant_msg = {"role": "assistant", "content": content}
         if tool_calls:
             assistant_msg["tool_calls"] = [
@@ -667,7 +668,14 @@ def api_chat():
             ]
         messages.append(assistant_msg)
         replies = []
-        for tc in tool_calls:
+        # Build a map of tool_call_id -> name for matching tool responses
+        tc_id_map = {
+            (tc.id if hasattr(tc, "id") else tc.get("id", f"call_{i}")):
+            (tc.function.name if hasattr(tc.function, "name") else tc.get("function", {}).get("name"))
+            for i, tc in enumerate(tool_calls)
+        }
+        for i, tc in enumerate(tool_calls):
+            tc_id = tc.id if hasattr(tc, "id") else tc.get("id", f"call_{i}")
             fn = (
                 tc.function.name
                 if hasattr(tc, "function") and hasattr(tc.function, "name")
@@ -691,6 +699,7 @@ def api_chat():
                 args = {}
             if not isinstance(args, dict):
                 continue
+            tool_reply = None
             if fn == "book_room":
                 room_key = args["room_name"].lower().replace(" ", "_")
                 price = hotel_info["rooms"].get(room_key, {}).get("price", "")
@@ -733,7 +742,6 @@ def api_chat():
                         guest_name = "Guest"
                         for msg in messages:
                             if isinstance(msg, dict) and msg.get("role") == "user":
-                                # Simple name extraction — look for patterns like "my name is X" or "I'm X"
                                 name_match = re.search(r"(?:my name is|i'm|i am|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)", msg.get("content", ""), re.IGNORECASE)
                                 if name_match:
                                     guest_name = name_match.group(1)
@@ -747,8 +755,8 @@ def api_chat():
                         )
                         answer += f" I've noted your {event_type.replace('_', ' ')} time of {extracted_time} in our calendar. "
 
+                tool_reply = answer
                 replies.append({"type": "text", "content": answer})
-                messages.append({"role": "tool", "content": answer})
             elif fn == "book_shuttle":
                 # Save shuttle booking to database
                 from database import add_shuttle_booking
@@ -762,14 +770,13 @@ def api_chat():
                     passengers=args.get("passengers", 1),
                     notes=args.get("notes", ""),
                 )
-                reply = (
+                tool_reply = (
                     f"Shuttle booked for {args.get('guest_name', 'the guest')}! "
                     f"Pickup: {args.get('pickup_location', 'TBD')} on {args.get('date', 'TBD')} at {args.get('time', 'TBD')}. "
                     f"Passengers: {args.get('passengers', 1)}. "
                     f"Our team will confirm shortly. Is there anything else I can help you with?"
                 )
-                replies.append({"type": "text", "content": reply})
-                messages.append({"role": "tool", "content": reply})
+                replies.append({"type": "text", "content": tool_reply})
             elif fn == "request_human_agent":
                 # Log the human agent request
                 from database import add_human_agent_request
@@ -779,14 +786,16 @@ def api_chat():
                     guest_name=args.get("guest_name", "Guest"),
                     summary=args.get("summary", ""),
                 )
-                reply = (
+                tool_reply = (
                     f"I understand you'd like to speak with a human agent. "
                     f"I've notified our reception team — they'll be with you shortly. "
                     f"You can also call us directly at +386 51 603 858. "
                     f"Thank you for your patience!"
                 )
-                replies.append({"type": "text", "content": reply})
-                messages.append({"role": "tool", "content": reply})
+                replies.append({"type": "text", "content": tool_reply})
+            # Append tool response message with proper tool_call_id
+            if tool_reply is not None:
+                messages.append({"role": "tool", "tool_call_id": tc_id, "content": tool_reply})
         if not replies:
             # Fallback: if model returned empty content, try to answer directly
             if tool_calls:
