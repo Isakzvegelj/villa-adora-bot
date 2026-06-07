@@ -401,13 +401,18 @@ def _detect_language(message: str) -> str:
     if any(c in msg for c in ['ß', 'ä', 'ö', 'ü']):
         return "German"
 
-    # Spanish-specific characters
-    if any(c in msg for c in ['ñ', 'á', 'é', 'í', 'ó', 'ú']):
-        return "Spanish"
-
-    # French-specific characters
-    if any(c in msg for c in ['à', 'â', 'ç', 'è', 'é', 'ê', 'î', 'ô', 'ù', 'û', 'ë', 'ï']):
+    # French-specific characters (check unique French chars first)
+    if any(c in msg for c in ['ç', 'ê', 'î', 'ô', 'û', 'ë', 'ï', 'œ', 'æ']):
         return "French"
+    # French word-based detection for shared accented chars (é, è, à, ù)
+    if any(c in msg for c in ['é', 'è', 'à', 'ù']):
+        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec "]
+        if any(w in msg for w in french_words):
+            return "French"
+
+    # Spanish-specific characters
+    if any(c in msg for c in ['ñ', 'á', 'í', 'ó', 'ú', '¿', '¡']):
+        return "Spanish"
 
     # Italian-specific characters (check AFTER French since they share some)
     if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
