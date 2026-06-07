@@ -357,62 +357,85 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
 
 def _detect_language(message: str) -> str:
     """Simple language detection based on common words and character patterns.
-    Uses word-boundary matching to avoid false positives from substring matches."""
+    Uses word-boundary matching and scoring to avoid false positives."""
     msg = " " + message.lower().strip() + " "
     
-    # Character-based detection for languages with unique scripts/patterns
-    # Slovenian-specific characters and patterns
-    if any(c in msg for c in ['š', 'č', 'ž', 'đ']):
-        # Could be Slovenian, Croatian, or Serbian — check specific words
-        slovenian_specific = [" imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober ", " dan "]
-        if any(w in msg for w in slovenian_specific):
+    # Character-based detection for languages with unique characters
+    has_diacritics = {
+        'š': 'sl', 'č': 'sl', 'ž': 'sl',  # Slovenian/Croatian
+        'đ': 'hr', 'ć': 'hr',  # Croatian/Serbian
+        'ß': 'de', 'ä': 'de', 'ö': 'de', 'ü': 'de',  # German
+        'ñ': 'es', 'á': 'es', 'é': 'es', 'í': 'es', 'ó': 'es', 'ú': 'es',  # Spanish
+        'à': 'fr', 'â': 'fr', 'ç': 'fr', 'è': 'fr', 'é': 'fr', 'ê': 'fr', 'î': 'fr', 'ô': 'fr', 'ù': 'fr', 'û': 'fr', 'ë': 'fr', 'ï': 'fr',  # French
+        'à': 'it', 'è': 'it', 'é': 'it', 'ì': 'it', 'ò': 'it', 'ù': 'it',  # Italian
+    }
+    
+    # Count diacritics per language
+    lang_scores = {}
+    for char, lang in has_diacritics.items():
+        if char in msg:
+            lang_scores[lang] = lang_scores.get(lang, 0) + 1
+    
+    # If Slovenian-specific characters found, likely Slovenian
+    if any(c in msg for c in ['š', 'č', 'ž']):
+        slovenian_markers = [" imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober dan ", " zdravo ", " sobe ", " soba "]
+        if any(w in msg for w in slovenian_markers):
             return "Slovenian"
-        return "Croatian"
+        # Even without specific words, š/č/ž strongly suggest Slovenian/Croatian
+        if 'đ' in msg or 'ć' in msg:
+            return "Croatian"
+        return "Slovenian"
     
-    # Check for specific language markers with word-boundary matching
-    # Each word is surrounded by spaces so "in" won't match "intimate"
-    slovenian_words = [
-        " zdravo ", " pozdravljeni ", " hvala ", " prosim ", " sobe ", " imate ", " kakšen ", " kako ",
-        " želim ", " zajtrk ", " restavracija ", " rezervacija ", " soba ", " sob ",
-        " pozdrav ", " nasvidenje ", " kje ", " kdaj ", " volo ", " cena "
-    ]
-    german_words = [
-        " guten tag ", " zimmer ", " haben sie ", " vielen danke ", " wie ", " was ",
-        " wo ", " wann ", " möchten ", " können ", " frei ",
-        " verfügbar ", " buchung ", " frühstück ", " restaurant ", " parkplatz ", " haustier ",
-        " hund ", " katze ", " abreise ", " anreise ", " willkommen ", " auf wiedersehen ",
-        " schön ", " wunderbar "
-    ]
-    italian_words = [
-        " buongiorno ", " buonasera ", " camere ", " avete ", " grazie ", " per favore ",
-        " come ", " dove ", " quando ", " vorrei ", " posso ", " disponibile ", " prenotazione ",
-        " colazione ", " ristorante ", " parcheggio ", " animale ", " cane ", " gatto ",
-        " arrivo ", " partenza ", " benvenuto ", " arrivederci ", " bello ", " bella ",
-        " magnifico ", " perfetto ", " camera ", " stanza "
-    ]
-    french_words = [
-        " bonjour ", " bonsoir ", " chambres ", " avez-vous ", ", merci ", " s'il vous plaît ",
-        " comment ", " où ", " quand ", " je voudrais ", " réservation ", " petit déjeuner ",
-        " restaurant ", " animal ", " chien ", " chat ", " arrivée ", " départ ",
-        " bienvenue ", " au revoir ", " belle ", " beau ", " magnifique ", " parfait ", " chambre "
-    ]
-    spanish_words = [
-        " hola ", " habitaciones ", " tienen ", " gracias ", " por favor ", " cómo ", " dónde ",
-        " cuándo ", " quisiera ", " reserva ", " desayuno ",
-        " restaurante ", " aparcamiento ", " mascota ", " perro ", " gato ", " llegada ",
-        " salida ", " bienvenido ", " hasta luego ", " bonito ",
-        " bonita ", " magnífico ", " perfecto ", " cuarto "
-    ]
+    # If strong diacritic signal, return that language
+    if lang_scores:
+        best_lang = max(lang_scores, key=lang_scores.get)
+        lang_map = {'de': 'German', 'fr': 'French', 'es': 'Spanish', 'it': 'Italian', 'hr': 'Croatian', 'sl': 'Slovenian'}
+        if lang_scores[best_lang] >= 2:  # Need at least 2 diacritics
+            return lang_map.get(best_lang, 'English')
     
-    for words, lang in [
-        (slovenian_words, "Slovenian"),
-        (german_words, "German"),
-        (italian_words, "Italian"),
-        (french_words, "French"),
-        (spanish_words, "Spanish"),
-    ]:
-        if any(w in msg for w in words):
-            return lang
+    # Multi-word phrases that are highly distinctive per language
+    # These are phrases that would NOT appear in English
+    distinctive_phrases = {
+        "German": [
+            " guten tag ", " guten morgen ", " guten abend ", " vielen danke ",
+            " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
+            " können wir ", " ich hätte ", " buchung ", " zimmer ", " frühstück ",
+            " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar "
+        ],
+        "French": [
+            " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
+            " je voudrais ", " avez-vous ", " nous avons ", " les chambres ",
+            " petit déjeuner ", " au revoir ", " bienvenue ", " c'est magnifique ",
+            " je suis ", " vous êtes "
+        ],
+        "Italian": [
+            " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
+            " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
+            " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere "
+        ],
+        "Spanish": [
+            " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
+            " quisiera ", " tienen ", " habitaciones ", " desayuno ", " restaurante ",
+            " bienvenido ", " hasta luego ", " magnífico ", " perfecto "
+        ],
+        "Slovenian": [
+            " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
+            " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk "
+        ],
+    }
+    
+    # Score each language by counting matching distinctive phrases
+    scores = {}
+    for lang, phrases in distinctive_phrases.items():
+        score = sum(1 for p in phrases if p in msg)
+        if score > 0:
+            scores[lang] = score
+    
+    if scores:
+        best_lang = max(scores, key=scores.get)
+        if scores[best_lang] >= 1:
+            return best_lang
+    
     return "English"
 
 
