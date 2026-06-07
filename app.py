@@ -519,8 +519,10 @@ def get_hotel_info_response(topic, question):
 
     # Rooms
     if actual_topic == "rooms":
+        # Check if asking about a specific room
         for room in h["rooms"].values():
-            if any(word in q for word in room["name"].lower().split()):
+            room_words = room["name"].lower().split()
+            if any(word in q for word in room_words if len(word) > 3):
                 features = ", ".join(room.get("features", [])[:3])
                 return (
                     f"{room['name']} — {room['description']} "
@@ -533,7 +535,7 @@ def get_hotel_info_response(topic, question):
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
             feat = ", ".join(r.get("features", [])[:2])
             lines.append(f"• {r['name']}{size}{cap} — {feat}")
-        lines.append("\nWhich one catches your eye? I can tell you more about any of them!")
+        lines.append("Which one catches your eye? I can tell you more about any of them!")
         return "\n".join(lines)
 
     # Policies
@@ -729,27 +731,28 @@ def api_chat():
     messages = sessions[session_id]
     messages = apply_rag_to_messages(messages, user_message)
     sessions[session_id] = messages
-    messages.append({"role": "user", "content": user_message})
 
-    # Trim conversation to last 10 messages to avoid token limits
-    if len(messages) > 12:
-        messages = [messages[0]] + messages[-10:]
+    # Trim conversation to last 6 messages to reduce latency
+    if len(messages) > 8:
+        messages = [messages[0]] + messages[-6:]
         sessions[session_id] = messages
 
-    # Add translation reminder for non-English messages
+    # Add translation reminder for non-English messages (BEFORE user message so LLM sees it first)
     detected_lang = _detect_language(user_message)
     if detected_lang != "English":
         messages.append({
             "role": "system",
-            "content": f"MANDATORY: The guest is writing in {detected_lang}. You MUST respond ENTIRELY in {detected_lang}. Translate ALL information — including room names, features, policies, and any tool output — into {detected_lang}. Do NOT include any English words except proper nouns (like 'Bled', 'Lake Bled', 'Villa Adora'). This is a hard requirement."
+            "content": f"MANDATORY LANGUAGE RULE: The guest is writing in {detected_lang}. You MUST respond ENTIRELY in {detected_lang}. Translate ALL tool output to {detected_lang}. Keep the same warm, concise style. Do NOT output any English except proper nouns (Bled, Lake Bled, Villa Adora, Chef Domen Demšar)."
         })
+    
+    messages.append({"role": "user", "content": user_message})
 
     try:
         tool_params = {
             "model": MODEL,
             "messages": messages,
             "tools": [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function],
-            "temperature": 0.7,
+            "temperature": 0.5,
             "max_tokens": 1200,
             "timeout": 25,
         }
@@ -842,6 +845,10 @@ def api_chat():
                         "I can assist with rooms, check-in times, breakfast, parking, and more."
                     )
                 answer = fix_spacing(answer)
+
+                # If user's language is not English, append translation instruction to tool response
+                if detected_lang != "English":
+                    answer += f"\n\n[TRANSLATION REQUIRED: Translate the above information to {detected_lang}. Respond entirely in {detected_lang}.]"
 
                 # If guest provided a specific time for late check-in/out, save to calendar
                 if topic in ("late_check_in", "late_check_out", "check_in", "check_out"):
