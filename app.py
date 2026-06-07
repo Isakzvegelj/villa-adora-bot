@@ -515,6 +515,18 @@ def get_hotel_info_response(topic, question):
             f"Would you like the full list, or is there something specific you're looking for?"
         )
 
+    # Villa Pomona
+    if "villa pomona" in q or "pomona" in q:
+        vp = h.get("villa_pomona", {})
+        return (
+            f"We also offer {vp.get('name', 'Villa Pomona')} — {vp.get('type', 'a luxury villa retreat')}. "
+            f"Located on {vp.get('location', 'the most picturesque street in Bled')}. "
+            f"It features {vp.get('accommodations', {}).get('bedrooms', 3)} bedrooms with ensuite bathrooms, "
+            f"a swimming pool, sauna, and garden. "
+            f"Perfect for families or groups seeking a private retreat. "
+            f"Would you like more details or to make an inquiry?"
+        )
+
     # Fallback
     return (
         f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "

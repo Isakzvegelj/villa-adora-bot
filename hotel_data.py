@@ -237,7 +237,9 @@ hotel_info = {
         "Perfectly positioned just a short distance from the town centre",
         "A wonderful lakeside villa with lush gardens leading down to the shore",
         "Old world charm, impressive views",
-        "Fairytale-like setting"
+        "Fairytale-like setting",
+        "Staff are so helpful and genuine — rare in a place as beautiful as Bled",
+        "The most expensive hotel of our 2-week trip but worth it"
     ],
     "best_for": [
         "Couples and romantic breaks",
@@ -256,5 +258,40 @@ hotel_info = {
         "The 6 km lakeside walk is a must-do",
         "Vintgar Gorge is worth the short trip",
         "Bled cream cake is a local specialty — try it in town"
+    ],
+    "villa_pomona": {
+        "name": "Villa Pomona",
+        "type": "Design boutique villa — luxury retreat",
+        "location": "Most picturesque street in Bled, 3-minute walk from Lake Bled and town center",
+        "description": "A luxurious and serene retreat with swimming pool, pool house, sprawling garden, and sauna. Offers a 'home away from home' feeling with full-service amenities.",
+        "accommodations": {
+            "bedrooms": 3,
+            "bathrooms": "3 ensuite bedrooms",
+            "style": "Modern aesthetics with traditional charm"
+        },
+        "amenities": [
+            "Swimming pool with pool house",
+            "Sauna",
+            "Sprawling garden",
+            "Daily cleaning by dedicated villa maid",
+            "Breakfast option available",
+            "Private chef (lunch, dinner, BBQ)",
+            "Masseur services",
+            "Yoga sessions",
+            "Personal coach guidance"
+        ],
+        "ideal_for": [
+            "Friends seeking a relaxing getaway",
+            "Families wanting quality time",
+            "Smaller groups looking for a retreat",
+            "Wellness and rejuvenation-focused stays"
+        ],
+        "contact": "info@adorabled.com"
+    },
+    "additional_services": [
+        "Signature Kremšnita — a creative twist on Bled's iconic cream cake",
+        "Restaurant PDF menus available for download",
+        "Regular pop-up dining events with special menus",
+        "8-course special event menus for celebrations"
     ]
 }

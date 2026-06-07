@@ -233,3 +233,20 @@
 - The 6 km lakeside walk is a must-do
 - Vintgar Gorge is worth the short trip
 - Bled cream cake is a local specialty — try it in town
+
+## Villa Pomona — Luxury Villa Retreat
+- **Type:** Design boutique villa, separate from the hotel
+- **Location:** Most picturesque street in Bled, 3-minute walk from Lake Bled and town center
+- **Accommodation:** 3 spacious bedrooms, each with ensuite bathroom
+- **Amenities:** Swimming pool with pool house, sauna, sprawling garden, daily cleaning
+- **Services:** Private chef (lunch, dinner, BBQ), breakfast option, masseur, yoga sessions, personal coach
+- **Ideal for:** Families, friends, small groups, wellness retreats
+- **Contact:** info@adorabled.com
+
+## Additional Highlights
+- Signature Kremšnita — a creative twist on Bled's iconic cream cake
+- Restaurant PDF menus available for download at adorabled.com
+- Regular pop-up dining events with special themed menus
+- 8-course special event menus available for celebrations
+- Guest satisfaction: Cleanliness 9.2, Comfort 9.4, Staff 9.2 (Booking.com)
+
