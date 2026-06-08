@@ -1,5 +1,5 @@
 /* ============================================
-   Villa Pomona — Enhanced JavaScript
+   Villa Pomona — Enhanced JavaScript v2.0
    ============================================ */
 
 (function() {
@@ -11,6 +11,7 @@
     let currentTestimonial = 0;
     let currentLightboxIndex = 0;
     let isChatOpen = false;
+    let isSubmitting = false;
 
     const galleryImages = [
         'assets/images/gallery-1.jpg',
@@ -67,6 +68,10 @@
         initScrollReveal();
         initDateInputs();
         initPlaceholders();
+        initScrollSpy();
+        initBackToTop();
+        initCounterAnimation();
+        initFooterYear();
     });
 
     // ===== Header Scroll Effect =====
@@ -99,6 +104,130 @@
         btn.classList.toggle('active');
         btn.setAttribute('aria-expanded', btn.classList.contains('active'));
     };
+
+    // Close mobile menu on link click
+    document.addEventListener('click', function(e) {
+        const navLink = e.target.closest('.nav-menu a');
+        if (navLink) {
+            const menu = document.getElementById('navMenu');
+            const btn = document.querySelector('.mobile-menu-btn');
+            if (menu) menu.classList.remove('open');
+            if (btn) {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+
+    // ===== Scroll Spy =====
+    function initScrollSpy() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a[data-section]');
+        
+        if (sections.length === 0 || navLinks.length === 0) return;
+        
+        function updateActiveSection() {
+            const scrollY = window.scrollY + 100;
+            
+            let currentSection = '';
+            sections.forEach(function(section) {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            // Special case: at the very top, highlight home
+            if (window.scrollY < 100) {
+                currentSection = 'home';
+            }
+            
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveSection, { passive: true });
+        // Run once on load
+        updateActiveSection();
+    }
+
+    // ===== Back to Top Button =====
+    function initBackToTop() {
+        const btn = document.getElementById('backToTop');
+        if (!btn) return;
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 500) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        }, { passive: true });
+    }
+
+    window.scrollToTop = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // ===== Counter Animation =====
+    function initCounterAnimation() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        if (statNumbers.length === 0) return;
+        
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(function(el) {
+                observer.observe(el);
+            });
+        } else {
+            statNumbers.forEach(function(el) {
+                animateCounter(el);
+            });
+        }
+    }
+
+    function animateCounter(el) {
+        const target = parseFloat(el.textContent);
+        const isFloat = el.textContent.includes('.');
+        const suffix = el.textContent.replace(/[0-9.]/g, '');
+        const duration = 2000;
+        const start = performance.now();
+        
+        function update(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            // Ease out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+            
+            if (isFloat) {
+                el.textContent = current.toFixed(1) + suffix;
+            } else {
+                el.textContent = Math.floor(current) + suffix;
+            }
+            
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            } else {
+                el.textContent = target + suffix;
+            }
+        }
+        
+        requestAnimationFrame(update);
+    }
 
     // ===== Hero Slider =====
     function initHeroSlider() {
@@ -230,21 +359,19 @@
 
     // ===== Scroll Reveal =====
     function initScrollReveal() {
-        const elements = document.querySelectorAll('.room-card, .contact-card, .feature-item, .wellness-item, .reservation-form, .room-card');
+        const elements = document.querySelectorAll('.room-card, .contact-card, .feature-item, .wellness-item, .reservation-form, .attraction-card, .testimonial-card');
         
         if ('IntersectionObserver' in window) {
             const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry, i) {
+                entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        setTimeout(function() {
-                            entry.target.classList.add('visible');
-                        }, (i % 3) * 150);
+                        entry.target.classList.add('visible');
                         observer.unobserve(entry.target);
                     }
                 });
             }, {
                 threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
+                rootMargin: '0px 0px -30px 0px'
             });
             
             elements.forEach(function(el) {
@@ -291,6 +418,14 @@
         });
     }
 
+    // ===== Footer Year =====
+    function initFooterYear() {
+        const yearEl = document.getElementById('footerYear');
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+    }
+
     // ===== Language Switching =====
     window.switchLanguage = function(lang) {
         currentLang = lang;
@@ -316,46 +451,77 @@
         
         // Update placeholders
         applyPlaceholders(lang);
-        
-        // Update chat messages
-        const chatMessages = document.querySelectorAll('.chat-message.bot p');
-        if (chatMessages.length > 0) {
-            var welcomeMsg = chatResponses[lang].default.split('.')[0];
-            // Only update the first bot message
-            if (chatMessages[0].getAttribute('data-lang-' + lang)) {
-                chatMessages[0].textContent = chatMessages[0].getAttribute('data-lang-' + lang);
-            }
-        }
     };
 
     // ===== Reservation Form =====
     window.handleReservationSubmit = function(e) {
         e.preventDefault();
         
+        if (isSubmitting) return;
+        
         const form = document.getElementById('reservationForm');
         const btn = document.getElementById('submitBtn');
+        const feedback = document.getElementById('formFeedback');
         if (!form || !btn) return;
         
         // Validate
         const checkIn = document.getElementById('checkIn').value;
         const checkOut = document.getElementById('checkOut').value;
+        const email = document.getElementById('email').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
         
-        if (checkIn && checkOut && checkIn >= checkOut) {
-            alert(currentLang === 'sl' ? 'Datum odhoda mora biti po datumu prihoda.' : 'Check-out must be after check-in.');
+        if (!firstName || !lastName || !email || !checkIn || !checkOut) {
+            showFormFeedback(feedback, currentLang === 'sl' ? 'Prosimo izpolnite vsa obvezna polja.' : 'Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        if (checkIn >= checkOut) {
+            showFormFeedback(feedback, currentLang === 'sl' ? 'Datum odhoda mora biti po datumu prihoda.' : 'Check-out must be after check-in.', 'error');
+            return;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showFormFeedback(feedback, currentLang === 'sl' ? 'Prosimo vnesite veljaven e-poštni naslov.' : 'Please enter a valid email address.', 'error');
             return;
         }
         
         // Show loading
+        isSubmitting = true;
         const originalText = btn.textContent;
         btn.textContent = currentLang === 'sl' ? 'Pošiljanje...' : 'Sending...';
         btn.disabled = true;
         btn.style.opacity = '0.7';
         
-        // Simulate submission
+        // Collect form data
+        const formData = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: document.getElementById('phone').value,
+            checkIn: checkIn,
+            checkOut: checkOut,
+            adults: document.getElementById('adults').value,
+            roomType: document.getElementById('roomType').value,
+            message: document.getElementById('message').value
+        };
+        
+        // Simulate submission (replace with actual API call)
         setTimeout(function() {
+            console.log('Reservation submitted:', formData);
+            
             btn.textContent = currentLang === 'sl' ? '✓ Poslano!' : '✓ Sent!';
             btn.style.background = '#2d8a4e';
             btn.style.borderColor = '#2d8a4e';
+            
+            showFormFeedback(feedback, 
+                currentLang === 'sl' 
+                    ? 'Hvala! Vaša rezervacija je bila poslana. Odgovorimo vam v 24 urah.' 
+                    : 'Thank you! Your reservation has been sent. We will respond within 24 hours.', 
+                'success'
+            );
             
             setTimeout(function() {
                 btn.textContent = originalText;
@@ -364,9 +530,40 @@
                 btn.style.background = '';
                 btn.style.borderColor = '';
                 form.reset();
-            }, 3000);
+                isSubmitting = false;
+                
+                if (feedback) {
+                    feedback.className = 'form-feedback';
+                    feedback.style.display = 'none';
+                }
+            }, 4000);
         }, 1500);
     };
+
+    function showFormFeedback(el, message, type) {
+        if (!el) {
+            // Create feedback element if it doesn't exist
+            const form = document.getElementById('reservationForm');
+            if (!form) return;
+            const newEl = document.createElement('div');
+            newEl.id = 'formFeedback';
+            newEl.className = 'form-feedback';
+            form.appendChild(newEl);
+            showFormFeedback(newEl, message, type);
+            return;
+        }
+        
+        el.textContent = message;
+        el.className = 'form-feedback ' + type;
+        el.style.display = 'block';
+        
+        // Auto-hide error messages after 5 seconds
+        if (type === 'error') {
+            setTimeout(function() {
+                el.style.display = 'none';
+            }, 5000);
+        }
+    }
 
     // ===== Chat Widget =====
     window.toggleChat = function() {
@@ -399,20 +596,30 @@
         userDiv.className = 'chat-message user';
         userDiv.innerHTML = '<p>' + escapeHtml(userMsg) + '</p>';
         messages.appendChild(userDiv);
+        messages.scrollTop = messages.scrollHeight;
+        
+        // Show typing indicator
+        var typingDiv = document.createElement('div');
+        typingDiv.className = 'chat-message bot typing';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<p><span class="typing-dot">.</span><span class="typing-dot">.</span><span class="typing-dot">.</span></p>';
+        messages.appendChild(typingDiv);
+        messages.scrollTop = messages.scrollHeight;
         
         // Find response
         var response = getBotResponse(userMsg.toLowerCase());
         
-        // Add bot response with delay
+        // Replace typing with actual response
         setTimeout(function() {
+            var indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+            
             var botDiv = document.createElement('div');
             botDiv.className = 'chat-message bot';
             botDiv.innerHTML = '<p>' + response + '</p>';
             messages.appendChild(botDiv);
             messages.scrollTop = messages.scrollHeight;
-        }, 800);
-        
-        messages.scrollTop = messages.scrollHeight;
+        }, 800 + Math.random() * 400);
     };
 
     window.handleChatKeypress = function(e) {
@@ -507,8 +714,7 @@
         
         var target = document.querySelector(targetId);
         if (target) {
-            // Don't prevent default for reservation - let the form work
-            // But do smooth scroll
+            e.preventDefault();
             
             var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 70;
             var targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;

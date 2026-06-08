@@ -46,7 +46,7 @@
             "postalCode": "4260",
             "addressCountry": "SI"
         },
-        "telephone": "+38651603858",
+        "telephone": "+386****3858",
         "email": "evita.vilebled@gmail.com",
         "url": "https://villapomona.si",
         "priceRange": "€€",
@@ -436,7 +436,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone" data-lang-sl="Telefon" data-lang-en="Phone">Phone</label>
-                                <input type="tel" id="phone" name="phone" required placeholder="" data-placeholder-sl="Vnesite telefon" data-placeholder-en="Enter phone number">
+                                <input type="tel" id="phone" name="phone" placeholder="" data-placeholder-sl="Vnesite telefon" data-placeholder-en="Enter phone number">
                             </div>
                             <div class="form-group">
                                 <label for="checkIn" data-lang-sl="Datum prihoda" data-lang-en="Check-in">Check-in</label>
@@ -468,6 +468,7 @@
                                 <textarea id="message" name="message" rows="3" data-placeholder-sl="Vnesite sporočilo..." data-placeholder-en="Enter message..."></textarea>
                             </div>
                         </div>
+                        <div id="formFeedback" class="form-feedback" style="display:none;" role="alert" aria-live="polite"></div>
                         <button type="submit" class="btn btn-primary btn-full" id="submitBtn" data-lang-sl="Pošlji rezervacijo" data-lang-en="Submit Reservation">Submit Reservation</button>
                     </form>
                 </div>
@@ -490,7 +491,7 @@
                     </div>
                     <div class="attraction-content">
                         <h3 data-lang-sl="Jezero Bled" data-lang-en="Lake Bled">Lake Bled</h3>
-                        <p data-lang-sl="Legendarno jezero z otokom in cerkvico. 3 min hoje od vile." data-lang-en="The iconic lake with its island church. 3 min walk from the villa.">The iconic lake with its island church. 3 min walk from the villa.</p>
+                        <p data-lang-sl="Legendarno jezero z otokom in cerkvico. 3 min heute od vile." data-lang-en="The iconic lake with its island church. 3 min walk from the villa.">The iconic lake with its island church. 3 min walk from the villa.</p>
                         <span class="attraction-distance"><i class="fas fa-walking"></i> <span data-lang-sl="3 min hoje" data-lang-en="3 min walk">3 min walk</span></span>
                     </div>
                 </div>
@@ -587,7 +588,7 @@
                         <i class="fas fa-phone"></i>
                         <div>
                             <h4 data-lang-sl="Telefon" data-lang-en="Phone">Phone</h4>
-                            <p><a href="tel:+38651603858">+386 51 603 858</a></p>
+                            <p><a href="tel:+386****3858">+386 51 603 858</a></p>
                         </div>
                     </div>
                     <div class="contact-card">
@@ -640,7 +641,7 @@
                 </div>
                 <div class="footer-section">
                     <h4 data-lang-sl="Kontaktni podatki" data-lang-en="Contact Info">Contact Info</h4>
-                    <p>Črtomirova ulica 2<br>4260 Bled, Slovenia<br><a href="tel:+38651603858">+386 51 603 858</a><br><a href="mailto:evita.vilebled@gmail.com">evita.vilebled@gmail.com</a></p>
+                    <p>Črtomirova ulica 2<br>4260 Bled, Slovenia<br><a href="tel:+386****3858">+386 51 603 858</a><br><a href="mailto:evita.vilebled@gmail.com">evita.vilebled@gmail.com</a></p>
                 </div>
                 <div class="footer-section">
                     <h4 data-lang-sl="Sledite nam" data-lang-en="Follow Us">Follow Us</h4>
@@ -652,7 +653,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Villa Pomona. <span data-lang-sl="Vse pravice pridržane." data-lang-en="All rights reserved.">All rights reserved.</span></p>
+                <p>&copy; <span id="footerYear">2025</span> Villa Pomona. <span data-lang-sl="Vse pravice pridržane." data-lang-en="All rights reserved.">All rights reserved.</span></p>
             </div>
         </div>
     </footer>
@@ -664,6 +665,11 @@
         <button class="lightbox-next" onclick="event.stopPropagation(); changeLightbox(1)"><i class="fas fa-chevron-right"></i></button>
         <img id="lightboxImg" src="" alt="Gallery image">
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <!-- Virtual Agent Widget -->
     <div class="chat-widget" id="chatWidget">
