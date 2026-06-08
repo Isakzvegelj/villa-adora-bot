@@ -736,8 +736,19 @@ def _detect_topic(message: str) -> str:
         "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
         "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niño"],
         "room_service": ["room_service", "room service", "in-room dining", "food to room"],
-        "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
+        "shuttle": ["shuttle", "transfer", "airport", "prevoz", "navette", "transporte"],
     }
+
+    # Check for check-in/check-out FIRST (before general keyword matching)
+    # to ensure these specific phrases are not missed
+    if "check-in" in msg or "check in" in msg or "checkin" in msg:
+        if "late" in msg:
+            return "late_check_in"
+        return "check_in"
+    if "check-out" in msg or "check out" in msg or "checkout" in msg:
+        if "late" in msg:
+            return "late_check_out"
+        return "check_out"
 
     for topic, keywords in topic_keywords.items():
         if any(kw in msg for kw in keywords):
