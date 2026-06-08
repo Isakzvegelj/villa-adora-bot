@@ -31,6 +31,12 @@
             parking: "Free private parking is available on-site for all guests.",
             wifi: "Free high-speed WiFi is available throughout the villa.",
             cancellation: "Free cancellation is available up to 48 hours before check-in. Late check-out is available upon request.",
+            hiking: "Bled is a hiker's paradise! Popular trails include the 6 km lakeside path, the trail to Ojstrica viewpoint (30 min), and the Vintgar Gorge walk (25 min drive). The Julian Alps offer world-class trekking for all levels.",
+            restaurants: "Bled has excellent dining options nearby. Try the famous Bled cream cake at Park Hotel, fresh fish at Ribca, or fine dining at Grad. The town center is just a 3-minute walk from the villa.",
+            weather: "Bled has a mild continental climate. Summers (Jun-Aug) are warm (20-28°C) with occasional rain. Winters (Dec-Feb) are cold (-2 to 5°C) with snow. Spring and autumn are mild and beautiful for hiking.",
+            pets: "We love pets! Please let us know in advance if you're bringing a furry friend. There's a small additional cleaning fee. The garden and lakeside paths are perfect for walks with your dog.",
+            children: "Children are very welcome! We can provide extra beds, high chairs, and baby cots on request. The garden is safe for kids to play, and the lake is just a short walk away.",
+            transport: "The nearest airport is Ljubljana Jože Pučnik (35 km). Bled has a train station on the Ljubljana-Jesenice line. Buses run regularly to Ljubljana (45 min). We can arrange airport transfers on request.",
             default: "Thank you for your message! For immediate assistance, please call +386 51 603 858 or email evita.vilebled@gmail.com. Is there anything specific I can help you with?"
         },
         sl: {
@@ -42,6 +48,12 @@
             parking: "Brezplačno parkirišče je na voljo na lokaciji za vse goste.",
             wifi: "Brezplačen hitri WiFi je na voljo po celotni vili.",
             cancellation: "Brezplačna odpoved je možna do 48 ur pred prihodom. Pozen odhod je na voljo na zahtevo.",
+            hiking: "Bled je raj za pohodnike! Priljubljene poti vključujejo 6 km ob jezeru, pot do razgledne točke Ojstrica (30 min) in sprehod po soteski Vintgar (25 min vožnje). Julijske Alpe ponujajo vrhunske pohodniške možnosti.",
+            restaurants: "Bled ima odlične restavracije v bližini. Poskusite sladico Blejska kremšnita v Park Hotelu, sveže ribe v Ribci ali fino kuhinjo v Gradu. Center mesta je le 3 min hoje od vile.",
+            weather: "Bled ima zmerno celinsko podnebje. Poletja (jun-avg) so topla (20-28°C) z občasnimi deževji. Zime (dec-feb) so hladne (-2 do 5°C) s snegom. Pomlad in jesen sta mirna in lepa za pohodništvo.",
+            pets: "Imamo radi živali! Prosimo, obvestite nas vnaprej, če bostes psa. Obstaja majhna dodatna pristojbina za čiščenje. Vrt in obalne poti so popolni za sprehode s psom.",
+            children: "Otroci so dobrodošli! Na zahtevo lahko zagotovimo dodatne postelje, visoke stole in otroške posteljice. Vrt je varen za igro, jezero pa je le kratka hoja stran.",
+            transport: "Najbližje letališče je Ljubljana Jože Pučnik (35 km). Bled ima železniško postajo na progi Ljubljana-Jesenice. Avtobusi vozijo redno do Ljubljane (45 min). Prevoz od letališča lahko uredimo na zahtevo.",
             default: "Hvala za vaše sporočilo! Za takojšnjo pomoč pokličite +386 51 603 858 ali pišite na evita.vilebled@gmail.com. Vam lahko pomagam s čim?"
         }
     };
@@ -443,9 +455,47 @@
         if (msg.indexOf('cancel') !== -1 || msg.indexOf('odpov') !== -1 || msg.indexOf('refund') !== -1) {
             return responses.cancellation;
         }
+        if (msg.indexOf('hiking') !== -1 || msg.indexOf('walk') !== -1 || msg.indexOf('trail') !== -1 || msg.indexOf('pohod') !== -1 || msg.indexOf('pot') !== -1 || msg.indexOf('gore') !== -1 || msg.indexOf('mountain') !== -1) {
+            return responses.hiking;
+        }
+        if (msg.indexOf('restaurant') !== -1 || msg.indexOf('eat') !== -1 || msg.indexOf('dinner') !== -1 || msg.indexOf('lunch') !== -1 || msg.indexOf('restavrac') !== -1 || msg.indexOf('jest') !== -1 || msg.indexOf('večerja') !== -1) {
+            return responses.restaurants;
+        }
+        if (msg.indexOf('weather') !== -1 || msg.indexOf('temperature') !== -1 || msg.indexOf('climate') !== -1 || msg.indexOf('vreme') !== -1) {
+            return responses.weather;
+        }
+        if (msg.indexOf('dog') !== -1 || msg.indexOf('pet') !== -1 || msg.indexOf('pes') !== -1 || msg.indexOf('pesek') !== -1) {
+            return responses.pets;
+        }
+        if (msg.indexOf('child') !== -1 || msg.indexOf('kid') !== -1 || msg.indexOf('baby') !== -1 || msg.indexOf('otro') !== -1 || msg.indexOf('družin') !== -1) {
+            return responses.children;
+        }
+        if (msg.indexOf('transport') !== -1 || msg.indexOf('bus') !== -1 || msg.indexOf('train') !== -1 || msg.indexOf('airport') !== -1 || msg.indexOf('prevoz') !== -1 || msg.indexOf('letali') !== -1) {
+            return responses.transport;
+        }
         
         return responses.default;
     }
+
+    // ===== Newsletter Form =====
+    window.handleNewsletterSubmit = function(e) {
+        e.preventDefault();
+        const email = document.getElementById('newsletterEmail').value;
+        if (!email) return;
+
+        const btn = e.target.querySelector('button');
+        const originalText = btn.textContent;
+        btn.textContent = currentLang === 'sl' ? '✓ Prijavljeni!' : '✓ Subscribed!';
+        btn.style.background = '#2d8a4e';
+        btn.style.borderColor = '#2d8a4e';
+
+        setTimeout(function() {
+            btn.textContent = originalText;
+            btn.style.background = '';
+            btn.style.borderColor = '';
+            document.getElementById('newsletterEmail').value = '';
+        }, 3000);
+    };
 
     // ===== Smooth Scroll for Anchor Links =====
     document.addEventListener('click', function(e) {
