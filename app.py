@@ -474,16 +474,44 @@ def _detect_language(message: str) -> str:
     }
     
     # Score each language by counting matching distinctive phrases
-    # Use word-level matching (strip punctuation from msg words, then check phrases)
+    # Use word-level matching: check both original and punctuation-stripped versions
     import re as _re
-    msg_words_no_punct = _re.sub(r'[^\w\s]', ' ', msg)
+    msg_clean = _re.sub(r'[^\w\s]', ' ', msg)
     scores = {}
     for lang, phrases in distinctive_phrases.items():
         score = 0
         for p in phrases:
-            # Check with original msg (punctuation-aware) AND cleaned msg (punctuation-stripped)
-            if p in msg or p in " " + msg_words_no_punct + " ":
+            if p in msg or p in " " + msg_clean + " ":
                 score += 1
+            else:
+                # Also try matching: strip the spaces from phrase and check if all words appear
+                phrase_words = p.strip().split()
+                if len(phrase_words) == 1:
+                    # Single word phrase — check word boundary match
+                    # Handle plurals: "chambre" should match "chambres"
+                    pw = phrase_words[0]
+                    # Check if word appears as prefix of any word in msg
+                    for w in msg_clean.split():
+                        if w.startswith(pw) or pw.startswith(w):
+                            if len(pw) >= 4 and len(w) >= 4:  # Avoid short word false matches
+                                score += 1
+                                break
+                            elif pw == w:  # Exact match for short words
+                                score += 1
+                                break
+                elif len(phrase_words) >= 2:
+                    # Multi-word phrase: check if all words appear in order (with fuzzy matching)
+                    clean_words = msg_clean.split()
+                    phrase_stems = [w[:4] for w in phrase_words]  # Use 4-char stems
+                    for i in range(len(clean_words) - len(phrase_words) + 1):
+                        match = True
+                        for j, ps in enumerate(phrase_stems):
+                            if not clean_words[i+j].startswith(ps):
+                                match = False
+                                break
+                        if match:
+                            score += 1
+                            break
         if score > 0:
             scores[lang] = score
 
