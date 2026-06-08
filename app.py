@@ -903,34 +903,124 @@ def api_chat():
         if is_non_english:
             # Get relevant hotel data via RAG
             rag_docs = maybe_retrieve_hotel_facts(user_message, max_facts=3)
-            # Build a strong language instruction
+            # Build a forceful language instruction with examples
             lang_instruction = (
-                f"CRITICAL LANGUAGE INSTRUCTION: The guest is writing in {detected_lang}. "
-                f"You MUST respond ENTIRELY in {detected_lang}. "
-                f"Translate ALL information to {detected_lang}. "
-                f"Do NOT use English except for proper nouns (like 'Lake Bled', 'Villa Adora'). "
-                f"Be warm, concise, and end with a follow-up question in {detected_lang}. "
-                f"REMEMBER: The guest cannot understand English. Every word must be in {detected_lang}."
+                f"IMPORTANT: The guest wrote in {detected_lang}. "
+                f"You MUST write your ENTIRE response in {detected_lang}. "
+                f"DO NOT use English (except for proper nouns like 'Lake Bled', 'Villa Adora', 'Chef Domen Demšar'). "
+                f"Every sentence must be in {detected_lang}. "
+                f"After reading this message, confirm you will respond in {detected_lang}.\n\n"
+                f"Respond in {detected_lang} only!"
             )
+            # Pre-translated hotel facts for common languages
+            HOTEL_FACTS_TRANSLATED = {
+                "German": (
+                    "HOTEL-FAKTEN:\n"
+                    "- Villa Adora Bled: Luxus-Boutique-Hotel am Bleder See, Slowenien\n"
+                    "- 7 Suiten mit Seeblick: Princess Suite (55 m²), Luxury Suite, Penthouse Suite (60 m², 2 Etagen), Swan Suite, Island Suite (4 Personen, 65 m²), Prestige Suite (72 m²), Castle Suite\n"
+                    "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
+                    "- Frühstück: €22/Person, 8-10 Uhr. Vegane, vegetarische und glutenfreie Optionen auf Anfrage.\n"
+                    "- Restaurant: Adora Pop Up Restaurant — kreative slowenische Küche von Küchenchef Domen Demšar. Mittag- und Abendessen Di-Sonntag, Brunch Do-Samstag. Terasse mit Blick auf den See.\n"
+                    "- Weinkarte: Slowenische und internationale Weine\n"
+                    "- Bar: Cocktails und Aperitivos auf der Terrasse\n"
+                    "- Shuttle-Service: Flughafen Ljubljana ~€60, Bled Stadtzentrum ~€15\n"
+                    "- Kostenloses Parken (8 Plätze) und WiFi\n"
+                    "- Haustiere auf Anfrage — €35 pro Tier pro Nacht\n"
+                    "- Adresse: Cesta svobode 35, 4260 Bled, Slowenien\n"
+                    "- Telefon: +386 51 603 858"
+                ),
+                "French": (
+                    "FAITS DE L'HÔTEL:\n"
+                    "- Villa Adora Bled: Hôtel boutique de luxe au lac de Bled, Slovénie\n"
+                    "- 7 suites avec vue sur le lac: Princess Suite (55 m²), Luxury Suite, Penthouse Suite (60 m², 2 étages), Swan Suite, Island Suite (4 personnes, 65 m²), Prestige Suite (72 m²), Castle Suite\n"
+                    "- Arrivée: 14:00-23:00 | Départ: 07:00-11:00\n"
+                    "- Petit-déjeuner: €22/personne, 8-10h. Options végétariennes, végétaliennes et sans gluten sur demande.\n"
+                    "- Restaurant: Adora Pop Up Restaurant — cuisine slovène créative par le Chef Domen Demšar. Déjeuner/dîner mar-dimanche, brunch jeu-samedi. Terrasse avec vue sur le lac.\n"
+                    "- Carte des vins: vins slovènes et internationaux\n"
+                    "- Bar: cocktails et apéritifs sur la terrasse\n"
+                    "- Service de navette: aéroport de Ljubljana ~€60, centre-ville de Bled ~€15\n"
+                    "- Parking gratuit (8 places) et WiFi\n"
+                    "- Animaux acceptés sur demande — €35 par animal par nuit\n"
+                    "- Adresse: Cesta svobode 35, 4260 Bled, Slovénie\n"
+                    "- Téléphone: +386 51 603 858"
+                ),
+                "Italian": (
+                    "FATTI DELL'HOTEL:\n"
+                    "- Villa Adora Bled: Hotel boutique di lusso sul lago di Bled, Slovenia\n"
+                    "- 7 suite con vista sul lago: Princess Suite (55 m²), Luxury Suite, Penthouse Suite (60 m², 2 piani), Swan Suite, Island Suite (4 persone, 65 m²), Prestige Suite (72 m²), Castle Suite\n"
+                    "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
+                    "- Colazione: €22/persona, 8-10. Opzioni vegane, vegetariane e senza glutine su richiesta.\n"
+                    "- Ristorante: Adora Pop Up Restaurant — cucina slovena creativa dello Chef Domen Demšar. Pranzo/cena mar-domenica, brunch gio-sabato. Terrazza con vista sul lago.\n"
+                    "- Lista dei vini: vini sloveni e internazionali\n"
+                    "- Bar: cocktail e aperitivi sulla terrazza\n"
+                    "- Servizio navetta: aeroporto di Lubiana ~€60, centro di Bled ~€15\n"
+                    "- Parcheggio gratuito (8 posti) e WiFi\n"
+                    "- Animali ammessi su richiesta — €35 per animale per notte\n"
+                    "- Indirizzo: Cesta svobode 35, 4260 Bled, Slovenia\n"
+                    "- Telefono: +386 51 603 858"
+                ),
+                "Spanish": (
+                    "DATOS DEL HOTEL:\n"
+                    "- Villa Adora Bled: Hotel boutique de lujo en el lago Bled, Eslovenia\n"
+                    "- 7 suites con vista al lago: Princess Suite (55 m²), Luxury Suite, Penthouse Suite (60 m², 2 pisos), Swan Suite, Island Suite (4 personas, 65 m²), Prestige Suite (72 m²), Castle Suite\n"
+                    "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
+                    "- Desayuno: €22/persona, 8-10h. Opciones veganas, vegetarianas y sin gluten bajo solicitud.\n"
+                    "- Restaurante: Adora Pop Up Restaurant — cocina eslovena creativa del Chef Domen Demšar. Almuerza/cena mar-domingo, brunch jue-sábado. Terraza con vista al lago.\n"
+                    "- Lista de vinos: vinos eslovenos e internacionales\n"
+                    "- Bar: cócteles y aperitivos en la terrazza\n"
+                    "- Servicio de traslado: aeropuerto de Ljubljana ~€60, centro de Bled ~€15\n"
+                    "- Estacionamiento gratuito (8 plazas) y WiFi\n"
+                    "- Mascotas permitidas bajo solicitud — €35 por mascota por noche\n"
+                    "- Dirección: Cesta svobode 35, 4260 Bled, Eslovenia\n"
+                    "- Teléfono: +386 51 603 858"
+                ),
+                "Slovenian": (
+                    "PODATKI O HOTELU:\n"
+                    "- Villa Adora Bled: butični luksuzni hotel ob Blejskem jezeru, Slovenija\n"
+                    "- 7 apartmajev z pogledom na jezero: Princess Suite (55 m²), Luxury Suite, Penthouse Suite (60 m², 2 nadstropja), Swan Suite, Island Suite (4 osebe, 65 m²), Prestige Suite (72 m²), Castle Suite\n"
+                    "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
+                    "- Zajtrk: €22/oseba, 8-10h. Veganski, vegetarijanski in brezglutenski obroki na zahtevo.\n"
+                    "- Restavracija: Adora Pop Up Restaurant — kreativna slovenska kuhinja pod vodstvom kuharja Domena Demšarja. Kosilo/večerja tor-nedelja, brujč čet-terasa s pogledom na jezero.\n"
+                    "- Seznamin vin: slovenska in mednarodna vina\n"
+                    "- Bar: koktaji in aperitivi na terasi\n"
+                    "- Prevoz: letališče Ljubljana ~€60, center Bleda ~€15\n"
+                    "- Brezplačno parkiranje (8 mest) in WiFi\n"
+                    "- Hišne živali na zahtevo — €35 na žival na noč\n"
+                    "- Naslov: Cesta svobode 35, 4260 Bled, Slovenija\n"
+                    "- Telefon: +386 51 603 858"
+                ),
+            }
+            translated_facts = HOTEL_FACTS_TRANSLATED.get(detected_lang, "")
             if rag_docs:
                 rag_context = format_rag_context(rag_docs)
-                lang_messages.append({
-                    "role": "system",
-                    "content": f"HOTEL DATA:\n\n{rag_context}\n\n{lang_instruction}"
-                })
+                if translated_facts:
+                    lang_messages.append({
+                        "role": "system",
+                        "content": f"THIS IS INFORMATION ABOUT THE HOTEL:\n\n{translated_facts}\n\nADDITIONAL DETAILS:\n{rag_context}\n\n{lang_instruction}"
+                    })
+                else:
+                    lang_messages.append({
+                        "role": "system",
+                        "content": f"HOTEL DATA:\n\n{rag_context}\n\n{lang_instruction}"
+                    })
             else:
-                lang_messages.append({
-                    "role": "system",
-                    "content": lang_instruction
-                })
+                if translated_facts:
+                    lang_messages.append({
+                        "role": "system",
+                        "content": f"THIS IS INFORMATION ABOUT THE HOTEL:\n\n{translated_facts}\n\n{lang_instruction}"
+                    })
+                else:
+                    lang_messages.append({
+                        "role": "system",
+                        "content": lang_instruction
+                    })
         
         # For non-English messages, exclude query_hotel_info tool since we provide
         # hotel data via RAG context. This prevents the LLM from calling the tool
         # and getting English responses. Keep booking/shuttle tools available.
         if is_non_english:
             available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
-            # Add a forceful language instruction as a user message right before the actual user message
-            # This is more likely to be followed than a system message
+            # Add a forceful language instruction as a system message right before the actual user message
             lang_prefix = (
                 f"[SYSTEM OVERRIDE: You MUST respond in {detected_lang}. "
                 f"Translate ALL information to {detected_lang}. "
@@ -950,7 +1040,7 @@ def api_chat():
             "model": MODEL,
             "messages": lang_messages,
             "tools": available_tools,
-            "temperature": 0.5,
+            "temperature": 0.3,
             "max_tokens": 1200,
             "timeout": 50,
         }
