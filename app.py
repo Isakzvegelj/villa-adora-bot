@@ -1140,9 +1140,7 @@ def api_chat():
     try:
         lang_messages = list(messages)
 
-        # For ALL languages, detect topic and fetch hotel data directly.
-        # This prevents the LLM from ignoring the query_hotel_info tool
-        # and responding from its own knowledge in the wrong language.
+        # Detect topic and fetch hotel data directly.
         topic = _detect_topic(user_message)
         hotel_answer = get_hotel_info_response(topic, user_message)
 
@@ -1152,48 +1150,52 @@ def api_chat():
         if topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
             hotel_answer = _EXPERIENCES_TRANSLATED[detected_lang]
 
-        if hotel_answer and hotel_answer.strip():
-            if is_non_english:
-                lang_messages.append({
-                    "role": "system",
-                    "content": (
-                        f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n"
-                        f"1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n"
-                        f"2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n"
-                        f"3. Translate ALL hotel information below to {detected_lang}.\n"
-                        f"4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n\n"
-                        f"HOTEL DATA TO TRANSLATE:\n{hotel_answer}"
-                    ),
-                })
-            else:
-                # For English: inject the answer directly so the LLM doesn't
-                # wander off into another language or ignore the tool.
-                lang_messages.append({
-                    "role": "system",
-                    "content": (
-                        f"CRITICAL LANGUAGE RULE: The guest wrote in English. You MUST respond ENTIRELY in English. "
-                        f"Do NOT translate any part of your response into French, German, Italian, Spanish, or any other language. "
-                        f"Use ONLY the hotel data below to answer. Be warm, concise, and end with a follow-up question — all in English.\n\n"
-                        f"HOTEL DATA:\n{hotel_answer}"
-                    ),
-                })
+        # For factual hotel queries (where we have a direct answer), return it
+        # immediately without calling the LLM. This eliminates language mismatch
+        # and significantly reduces latency.
+        factual_topics = {
+            "rooms", "policies", "amenities", "location", "experiences",
+            "breakfast", "parking", "wifi", "pets", "cancellation",
+            "payment", "children", "smoking", "contact", "restaurant",
+            "bar", "wine", "late_check_in", "late_check_out", "shuttle",
+            "room_service",
+        }
+        if hotel_answer and hotel_answer.strip() and topic in factual_topics:
+            # Apply post-processing
+            reply_content = fix_spacing(hotel_answer)
+            reply_content = _ensure_follow_up(reply_content, topic)
+
+            replies = [{"type": "text", "content": reply_content}]
+            # Don't add to conversation history for simple factual responses
+            return jsonify({"replies": replies})
+
+        # For non-factual queries (greetings, general chat, booking flow),
+        # use the LLM with language enforcement
+        if hotel_answer and hotel_answer.strip() and is_non_english:
+            lang_messages.append({
+                "role": "system",
+                "content": (
+                    f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n"
+                    f"1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n"
+                    f"2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n"
+                    f"3. Translate ALL hotel information below to {detected_lang}.\n"
+                    f"4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n\n"
+                    f"HOTEL DATA TO TRANSLATE:\n{hotel_answer}"
+                ),
+            })
         elif is_non_english:
             lang_messages.append({
                 "role": "system",
                 "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
             })
 
-        # For non-English messages, exclude query_hotel_info tool since we provide
-        # hotel data via context. This prevents the LLM from calling the tool
-        # and getting English responses. Keep booking/shuttle tools available.
-        # For English messages, also exclude query_hotel_info since we inject data directly.
+        # Only use booking/shuttle/human-agent tools (no query_hotel_info since we handle that above)
         available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
 
-        # Add a language reinforcement message right before the LLM call.
-        # This is the last message the LLM sees before generating its response.
+        # Add a language reinforcement message right before the LLM call
         lang_reinforce = {
             "role": "system",
-            "content": f"REMINDER: The user's message is in {'English' if not is_non_english else detected_lang}. Respond entirely in {'English' if not is_non_english else detected_lang}. Do not switch to any other language.",
+            "content": f"REMINDER: The user's message is in {'English' if not is_non_english else detected_lang}. Respond entirely in {'English' if not is_non_english else detected_lang}.",
         }
         final_messages = list(lang_messages) + [lang_reinforce]
 
