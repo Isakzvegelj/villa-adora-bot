@@ -1161,8 +1161,15 @@ def api_chat():
             "room_service",
         }
         if hotel_answer and hotel_answer.strip() and topic in factual_topics:
-            # Apply post-processing
-            reply_content = fix_spacing(hotel_answer)
+            # For non-English queries, try to get a translated response
+            if is_non_english:
+                translated = _get_localized_fallback(detected_lang, user_message)
+                if translated:
+                    reply_content = fix_spacing(translated)
+                else:
+                    reply_content = fix_spacing(hotel_answer)
+            else:
+                reply_content = fix_spacing(hotel_answer)
             reply_content = _ensure_follow_up(reply_content, topic)
 
             replies = [{"type": "text", "content": reply_content}]
