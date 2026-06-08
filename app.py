@@ -496,23 +496,23 @@ def _detect_topic(message: str) -> str:
 
     topic_keywords = {
         "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
-        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "küche", "cucina", "manger", "nourriture"],
+        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijača", "getränk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fru00fchstu00fcck", "colazione", "petit du00e9jeuner", "desayuno"],
-        "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
-        "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "du00e9part", "salida"],
-        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
-        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"],
+        "parking": ["parking", "park", "car", "parkirišče", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
+        "pets": ["pet", "dog", "cat", "animal", "pes", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
+        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci"],
+        "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attività", "activité", "actividad"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivée", "llegada", "check in time", "check-in time", "arrival time", "when can i arrive", "when do i arrive", "what time do i check"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "départ", "salida", "check out time", "check-out time", "departure time", "when do i leave", "when do i need to leave", "what time do i check", "leave time", "leaving time"],
+        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spät ankommen", "arrivo tardif", "arrivée tardive"],
+        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spät abreise", "partenza tardif", "départ tardif"],
         "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
         "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
-        "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
-        "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
-        "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o"],
+        "policies": ["policy", "rule", "regulation", "pravilo", "regel", "règle", "regla"],
+        "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "anulaci"],
+        "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niño"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
     }
 
@@ -549,13 +549,13 @@ def get_hotel_info_response(topic, question):
     # Map common synonyms to topics
     topic_aliases = {
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "leave", "leaving"],
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
-        "breakfast": ["breakfast", "morning meal", "brunch"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "dairy"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
         "bar": ["bar", "cocktail", "cocktails", "aperitivo", "drinks", "mixologist"],
@@ -581,7 +581,7 @@ def get_hotel_info_response(topic, question):
                 break
 
     # Override: dietary questions should always go to breakfast/dining
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "dairy"]):
         actual_topic = "breakfast"
 
     # Check-in / Check-out
@@ -698,22 +698,22 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
-            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "dairy", "lactose", "intolerant"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
-                    f"We offer vegan, vegetarian, and gluten-free options on request, "
+                    f"We offer vegan, vegetarian, gluten-free, and dairy-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
                     f"Would you like to add breakfast to your booking?"
                 )
             return (
                 f"Breakfast is €22/person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
-                f"We also offer vegan, vegetarian, and gluten-free options on request. "
+                f"We also offer vegan, vegetarian, gluten-free, and dairy-free options on request. "
                 f"Shall I add breakfast to your booking?"
             )
         return (
             f"{b} "
-            f"Vegan, vegetarian, and gluten-free options are available on request. "
+            f"Vegan, vegetarian, gluten-free, and dairy-free options are available on request. "
             f"Shall I add breakfast to your booking?"
         )
 
@@ -1086,13 +1086,14 @@ def api_chat():
                     "transfer", "policy", "cancel", "payment", "price", "cost",
                     "hour", "time", "contact", "phone", "email", "direction",
                     "nearby", "around", "do here", "vegan", "vegetarian", "gluten",
-                    "dietary", "allergy", "amenity", "facility", "service", "book",
-                    "reservation", "available", "offer", "have", "provide"
+                    "dietary", "allergy", "dairy", "amenity", "facility", "service", "book",
+                    "reservation", "available", "offer", "have", "provide", "leave", "depart"
                 ]
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
                 if is_factual:
-                    fallback = get_hotel_info_response("general", user_message)
+                    detected_topic = _detect_topic(user_message)
+                    fallback = get_hotel_info_response(detected_topic, user_message)
                     if len(content.strip()) < 100:
                         replies.append({"type": "text", "content": fallback})
                     else:
