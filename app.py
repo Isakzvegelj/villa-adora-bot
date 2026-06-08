@@ -901,6 +901,20 @@ def api_chat():
         # and getting English responses. Keep booking/shuttle tools available.
         if is_non_english:
             available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
+            # Add a forceful language instruction as a user message right before the actual user message
+            # This is more likely to be followed than a system message
+            lang_prefix = (
+                f"[SYSTEM OVERRIDE: You MUST respond in {detected_lang}. "
+                f"Translate ALL information to {detected_lang}. "
+                f"The guest only understands {detected_lang}. "
+                f"Respond ENTIRELY in {detected_lang}. "
+                f"End with a follow-up question in {detected_lang}.]"
+            )
+            # Insert language instruction as a system message right before the user's message
+            lang_messages.insert(-1, {
+                "role": "system",
+                "content": lang_prefix
+            })
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
         
