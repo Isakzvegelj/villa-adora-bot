@@ -765,26 +765,41 @@ def get_hotel_info_response(topic, question):
         # Check if asking about capacity/groups
         is_capacity_query = any(word in q for word in ["people", "person", "group", "family", "children", "kids", "sleeps", "capacity", "many", "3", "4", "5", "6", "oseb", "oseba", "osebi", "osebo", "skupina", "družina", "otroci", "leži", "kapacita", "gostje", "gostov", "personen", "person", "gruppe", "familie", "kinder", "schläft", "personas", "persona", "grupo", "familia", "niños", "capacidad", "personnes", "groupe", "famille", "enfants", "capacité", "persone", "gruppo", "famiglia", "bambini", "capacità"])
         # Check if asking about a specific room
+        # FIXED: Match on distinctive room name words, not "suite" which is in every room name
+        best_match = None
+        best_score = 0
         for room in h["rooms"].values():
-            room_words = room["name"].lower().split()
-            if any(word in q for word in room_words if len(word) > 3):
-                features = ", ".join(room.get("features", [])[:3])
-                price_str = ""
-                if is_price_query and room.get("price"):
-                    price_str = f" — €{room['price']}/night"
-                desc = room.get("description", "")
-                # If no price, use em-dash separator; if price, price_str already has the dash
-                if price_str:
-                    return (
-                        f"{room['name']}{price_str}. {desc} "
-                        f"Features: {features}. "
-                        f"Would you like to book this suite or see other options?"
-                    )
+            room_name_lower = room["name"].lower()
+            # Full name match gets highest priority
+            if room_name_lower in q:
+                best_match = room
+                best_score = 100
+                break
+            # Match on distinctive words (not "suite" which is shared by all)
+            distinctive_words = [w for w in room_name_lower.split() if len(w) > 3 and w != "suite"]
+            score = sum(2 for w in distinctive_words if w in q)
+            if score > best_score:
+                best_score = score
+                best_match = room
+        if best_match and best_score > 0:
+            room = best_match
+            features = ", ".join(room.get("features", [])[:3])
+            price_str = ""
+            if is_price_query and room.get("price"):
+                price_str = f" — €{room['price']}/night"
+            desc = room.get("description", "")
+            # If no price, use em-dash separator; if price, price_str already has the dash
+            if price_str:
                 return (
-                    f"{room['name']} — {desc} "
+                    f"{room['name']}{price_str}. {desc} "
                     f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
+            return (
+                f"{room['name']} — {desc} "
+                f"Features: {features}. "
+                f"Would you like to book this suite or see other options?"
+            )
         # Check if asking about capacity - highlight suitable rooms
         if is_capacity_query:
             # Extract number of people
