@@ -539,7 +539,7 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
 
     # Word-based Slovenian detection (without diacritics)
-    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom "]
+    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane"]
     if any(w in msg for w in slovenian_words):
         return "Slovenian"
 
@@ -1057,6 +1057,10 @@ def api_chat():
             # For non-English messages, detect topic and fetch hotel data directly.
             topic = _detect_topic(user_message)
             hotel_answer = get_hotel_info_response(topic, user_message)
+            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
+                hotel_answer = _ROOM_LISTINGS_TRANSLATED[detected_lang]
+            if topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
+                hotel_answer = _EXPERIENCES_TRANSLATED[detected_lang]
             if hotel_answer and hotel_answer.strip():
                 lang_messages.append({
                     "role": "system",
