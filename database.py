@@ -38,7 +38,6 @@ def init_db():
             time TEXT,
             passengers INTEGER DEFAULT 1,
             notes TEXT,
-            status TEXT DEFAULT 'pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -49,7 +48,6 @@ def init_db():
             reason TEXT,
             guest_name TEXT,
             summary TEXT,
-            status TEXT DEFAULT 'pending',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)

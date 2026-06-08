@@ -69,7 +69,7 @@ query_hotel_info_function = {
     "type": "function",
     "function": {
         "name": "query_hotel_info",
-        "description": "Look up hotel information. Call this for ANY factual question about the hotel. Choose the most specific topic: 'rooms' for room types/sizes/pricing, 'bar' for cocktails/drinks/aperitivos, 'restaurant' for dining/chef/menu, 'wine' for wine list/pairing, 'breakfast' for morning meal/dietary needs, 'experiences' for activities/things to do/nearby, 'location' for address/directions, 'parking' for car parking, 'pets' for animals, 'policies' for rules, 'amenities' for room facilities, 'contact' for phone/email.",
+        "description": "Look up hotel information. Call this for ANY factual question about the hotel. Choose the most specific topic: 'rooms' for room types/sizes/pricing, 'bar' for cocktails/drinks/aperitivos, 'restaurant' for dining/chef/menu, 'wine' for wine list/pairing, 'breakfast' for morning meal/dietary needs, 'experiences' for activities/things to do/nearby, 'location' for address/directions, 'parking' for car parking, 'pets' for animals, 'policies' for rules, 'amenities' for room facilities, 'contact' for phone/email, 'shuttle' for airport transfers/transport, 'room_service' for in-room dining.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -80,6 +80,7 @@ query_hotel_info_function = {
                         "breakfast", "parking", "wifi", "pets", "cancellation",
                         "payment", "children", "smoking", "contact", "general",
                         "restaurant", "wine", "bar", "late_check_in", "late_check_out",
+                        "shuttle", "room_service",
                     ],
                 },
                 "question": {"type": "string"},
@@ -316,7 +317,10 @@ def build_system_prompt() -> str:
         "STYLE:\n"
         "Be warm, concise, and conversational — like a real human concierge.\n"
         "Keep responses to 2-3 sentences max for simple answers. For listings (rooms, experiences), use bullet points.\n"
-        "Always end with a follow-up question to keep the guest engaged.\n"
+        "ALWAYS end with a follow-up question to keep the guest engaged. This is MANDATORY for ALL responses — including greetings, thank-yous, and goodbyes. Examples:\n"
+        "  - Greeting: 'Hello! How can I help you today?' or 'Welcome! What would you like to know about Villa Adora?'\n"
+        "  - Thank you: 'You're welcome! Is there anything else I can help you with?' or 'My pleasure! What else would you like to know?'\n"
+        "  - Goodbye: 'Goodbye! Safe travels, and we hope to see you soon — is there anything else before you go?'\n"
         "PROACTIVE BOOKING: After answering about activities, restaurant, rooms, or experiences, ALWAYS offer to help the guest book it. For example:\n"
         "  - After listing activities: 'I can help you book any of these — just let me know which interests you!' or 'Would you like me to arrange that for you?'\n"
         "  - After restaurant info: 'Shall I book a table for you? Just tell me the date and time!'\n"
@@ -508,6 +512,7 @@ def _detect_topic(message: str) -> str:
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
         "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
         "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o"],
+        "room_service": ["room_service", "room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
     }
 
@@ -564,6 +569,8 @@ def get_hotel_info_response(topic, question):
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
+        "room_service": ["room service", "in-room dining", "food to room"],
+        "shuttle": ["shuttle", "transfer", "airport"],
         "general": ["general", "info", "information", "about", "tell me"],
     }
 
@@ -746,13 +753,10 @@ def get_hotel_info_response(topic, question):
 
     # Bar
     if actual_topic == "bar":
-        wine_mention = ""
-        if any(word in q for word in ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"]):
-            wine_mention = " Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines from vineyards near Bled alongside selected international labels. Wine pairing is available with our tasting menu (approximately €35/person). "
         return (
-            f"Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
-            f"It's the perfect spot for sunset drinks! The terrace is open every day.{wine_mention}"
-            f"Would you like me to reserve a table for dinner, or shall I tell you about our pop-up dining events?"
+            "Our bar serves elegant cocktails and aperitivos daily on the terrace with panoramic lake views. "
+            "It's the perfect spot for sunset drinks! "
+            "Would you like me to tell you more about our drinks menu, or shall I help you with a restaurant reservation?"
         )
 
     # Parking
@@ -839,6 +843,23 @@ def get_hotel_info_response(topic, question):
         return (
             f"We offer: {', '.join(h['amenities'][:8])}. "
             f"Would you like the full list, or is there something specific you're looking for?"
+        )
+
+    # Room Service
+    if actual_topic == "room_service":
+        return (
+            "Room service is available! You can enjoy meals and drinks in the comfort of your suite. "
+            "Our kitchen can accommodate dietary requirements — just let us know your preferences. "
+            "Would you like to know about our dining options or restaurant menu as well?"
+        )
+
+    # Shuttle / Airport Transfer
+    if actual_topic == "shuttle":
+        return (
+            "We offer shuttle service for airport transfers, local transport, and custom routes! "
+            "Popular routes: Ljubljana airport (~€60), Bled town center (~€15). "
+            "To book, just tell me your name, pickup location, date, and time. "
+            "Where would you like to be picked up?"
         )
 
     # Villa Pomona
@@ -1081,11 +1102,12 @@ def api_chat():
                     "room", "suite", "check", "breakfast", "restaurant", "bar",
                     "wine", "parking", "pet", "dog", "cat", "location", "address",
                     "where", "activity", "activities", "wifi", "internet", "shuttle",
-                    "transfer", "policy", "cancel", "payment", "price", "cost",
+                    "transfer", "airport", "policy", "cancel", "payment", "price", "cost",
                     "hour", "time", "contact", "phone", "email", "direction",
                     "nearby", "around", "do here", "vegan", "vegetarian", "gluten",
                     "dietary", "allergy", "amenity", "facility", "service", "book",
-                    "reservation", "available", "offer", "have", "provide"
+                    "reservation", "available", "offer", "have", "provide",
+                    "room service", "massage", "spa",
                 ]
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
