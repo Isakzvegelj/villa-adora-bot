@@ -249,7 +249,8 @@ _EXPERIENCES_TRANSLATED = {
 
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
-    q = user_message.lower().strip()
+    # Pad with spaces to ensure word-boundary matching works for first/last words
+    q = " " + user_message.lower().strip() + " "
     # Handle thank-you messages
     thank_you_words = ["hvala", "danke", "merci", "grazie", "gracias", "thank", "thanks", "hvala lepo", "vielen dank", "merci beaucoup", "grazie mille", "muchas gracias", "dankon", "hvala vam", "danke schön", "je vous remercie", "le agradezco", "ti ringrazio"]
     if any(w in q for w in thank_you_words) and len(q) < 60:
@@ -1161,13 +1162,11 @@ def api_chat():
             "room_service",
         }
         if hotel_answer and hotel_answer.strip() and topic in factual_topics:
-            # For non-English queries, try to get a translated response
+            # For non-English queries, return a translated response
             if is_non_english:
+                # Always try to get a localized response first
                 translated = _get_localized_fallback(detected_lang, user_message)
-                if translated:
-                    reply_content = fix_spacing(translated)
-                else:
-                    reply_content = fix_spacing(hotel_answer)
+                reply_content = fix_spacing(translated) if translated else fix_spacing(hotel_answer)
             else:
                 reply_content = fix_spacing(hotel_answer)
             reply_content = _ensure_follow_up(reply_content, topic)
