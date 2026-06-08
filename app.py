@@ -255,6 +255,24 @@ def fix_spacing(text):
     return text.strip()
 
 
+
+
+def _ensure_follow_up(text: str, topic: str = "") -> str:
+    """Ensure the response ends with a follow-up question. If not, append one."""
+    if not text or not text.strip():
+        return text
+    text = text.strip()
+    if text.endswith("?"):
+        return text
+    if "?" in text[-60:]:
+        return text
+    questions = {
+        "rooms": " Which one catches your eye? I can start a booking for you \u2014 just tell me your name and dates!",
+        "experiences": " Which of these sounds most appealing to you? I'd love to help you plan it!",
+        "activities": " Which of these sounds most appealing to you? I'd love to help you plan it!",
+    }
+    return text + questions.get(topic, " Is there anything else I can help you with?")
+
 def clean_response(text):
     """Remove model reasoning/chain-of-thought text from responses."""
     import re as _re
@@ -828,7 +846,7 @@ def get_hotel_info_response(topic, question):
             f"• 6 km lakeside walking path & 15 signposted hikes\n"
             f"• Day trips to Lake Bohinj, Ljubljana, Postojna Cave\n"
             f"• In-room massage, garden evenings with wine\n"
-            f"I can help you book any of these — just let me know which interests you!"
+            f"I can help you book any of these — just let me know which interests you. What sounds most appealing to you?"
         )
 
     # Contact
@@ -1150,6 +1168,8 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
+                if reply.get("type") == "text" and reply.get("content"):
+                    reply["content"] = _ensure_follow_up(reply["content"], "")
                 # Post-process: if response was supposed to be non-English but came back in English,
                 # append a language correction note for the next turn
                 if is_non_english and reply.get("content"):
