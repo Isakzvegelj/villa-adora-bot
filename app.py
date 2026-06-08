@@ -249,7 +249,33 @@ _EXPERIENCES_TRANSLATED = {
 
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
-    q = user_message.lower()
+    q = user_message.lower().strip()
+    # Handle thank-you messages
+    thank_you_words = ["hvala", "danke", "merci", "grazie", "gracias", "thank", "thanks", "hvala lepo", "vielen dank", "merci beaucoup", "grazie mille", "muchas gracias", "dankon", "hvala vam", "danke schön", "je vous remercie", "le agradezco", "ti ringrazio"]
+    if any(w in q for w in thank_you_words) and len(q) < 60:
+        fallbacks = {
+            "Slovenian": "Ni za kaj! Z veseljem pomagam. Kaj še lahko storim za vas?",
+            "German": "Gern geschehen! Kann ich sonst noch etwas für Sie tun?",
+            "French": "De rien ! Je suis à votre disposition. Puis-je faire autre chose pour vous ?",
+            "Italian": "Prego! Sono qui per aiutarti. Posso fare altro per te?",
+            "Spanish": "¡De nada! Estoy aquí para ayudar. ¿Hay algo más que pueda hacer por ti?",
+            "Croatian": "Nema na čemu! Rado ću vam pomoći. Mogu li još nešto učiniti za vas?",
+            "English": "You're welcome! Is there anything else I can help you with?",
+        }
+        return fallbacks.get(lang, fallbacks["English"])
+    # Handle greetings
+    greeting_words = ["zdravo", "pozdravljeni", "dober dan", "lahko noč", "nasvidenje", "ciao", "salve", "buongiorno", "buonasera", "arrivederci", "hallo", "guten tag", "guten morgen", "guten abend", "auf wiedersehen", "tschüss", "bonjour", "bonsoir", "au revoir", "salut", "hola", "buenos días", "buenas tardes", "hasta luego", "adios", "hello", "hi", "hey", "good morning", "good evening", "goodbye", "bye"]
+    if any(w in q for w in greeting_words) and len(q) < 40:
+        fallbacks = {
+            "Slovenian": "Zdravo! Sem Luka, vaš concierge v Villa Adora Bled. Kako vam lahko pomagam?",
+            "German": "Hallo! Ich bin Luka, Ihr Concierge im Villa Adora Bled. Wie kann ich Ihnen helfen?",
+            "French": "Bonjour ! Je suis Luka, votre concierge au Villa Adora Bled. Comment puis-je vous aider ?",
+            "Italian": "Ciao! Sono Luka, il vostro concierge al Villa Adora Bled. Come posso aiutarvi?",
+            "Spanish": "¡Hola! Soy Luka, su conserje en Villa Adora Bled. ¿Cómo puedo ayudarle?",
+            "Croatian": "Zdravo! Ja sam Luka, vaš concierge u Villa Adora Bled. Kako vam mogu pomoći?",
+            "English": "Hello! I'm Luka, your concierge at Villa Adora Bled. How can I help you today?",
+        }
+        return fallbacks.get(lang, fallbacks["English"])
     # Detect topic for a more relevant fallback
     if any(w in q for w in ["pet", "dog", "cat", "animal", "pes", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot", "psa", "žival", "haustier", "tier", "tierk"]):
         fallbacks = {
@@ -398,12 +424,17 @@ def _ensure_follow_up(text: str, topic: str = "") -> str:
     if not text or not text.strip():
         return text
     text = text.strip()
+    # Check if already ends with a question mark
     if text.endswith("?"):
         return text
-    if "?" in text[-60:]:
+    # Check if there's a question mark in the last 80 chars (already has a follow-up)
+    if "?" in text[-80:]:
+        return text
+    # Check if already ends with a question in other languages
+    if text.endswith("？") or text.endswith("¿"):
         return text
     questions = {
-        "rooms": " Which one catches your eye? I can start a booking for you \u2014 just tell me your name and dates!",
+        "rooms": " Which one catches your eye? I can start a booking for you — just tell me your name and dates!",
         "experiences": " Which of these sounds most appealing to you? I'd love to help you plan it!",
         "activities": " Which of these sounds most appealing to you? I'd love to help you plan it!",
     }
@@ -475,11 +506,12 @@ def build_system_prompt() -> str:
         "  - Greeting: 'Hello! How can I help you today?' or 'Welcome! What would you like to know about Villa Adora?'\n"
         "  - Thank you: 'You're welcome! Is there anything else I can help you with?' or 'My pleasure! What else would you like to know?'\n"
         "  - Goodbye: 'Goodbye! Safe travels, and we hope to see you soon — is there anything else before you go?'\n"
+        "  - For non-English thank-yous/greetings: respond naturally in the same language (e.g., Slovenian 'Hvala!' → 'Ni za kaj! Kaj še lahko storim za vas?', German 'Danke!' → 'Gern geschehen! Kann ich sonst noch helfen?').\n"
         "PROACTIVE BOOKING: After answering about activities, restaurant, rooms, or experiences, ALWAYS offer to help the guest book it. For example:\n"
         "  - After listing activities: 'I can help you book any of these — just let me know which interests you!' or 'Would you like me to arrange that for you?'\n"
         "  - After restaurant info: 'Shall I book a table for you? Just tell me the date and time!'\n"
         "  - After room info: 'Would you like me to start a booking for you? I just need your name and dates.'\n"
-        "  - After wine tasting info: 'Shall I reserve a wine pairing experience for you?'\n"
+        "BOOKING TOOL: When the guest provides their name, dates, and a room name, you MUST call the book_room() tool. Do NOT just say 'I can help you book' — actually call the tool with the details. If any required info is missing, ask for it first, then call the tool once you have all details.\n"
         "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
         "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
@@ -504,8 +536,9 @@ def build_system_prompt() -> str:
         "- Quiet hours: 22:00-07:00 | Parties/events not allowed\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
-        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
-        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (lake view), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
+        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n"
+        "- Cancellation: Direct bookings free cancellation up to 48h before check-in. No-shows charged first night.\n\n"
+        "ROOMS: Princess Suite (55 m², tower view, €250), Luxury Suite (lake view, €270), Penthouse Suite (60 m², 2 floors, €300), Swan Suite (67 m², lake view, €370), Island Suite (sleeps 4, 65 m², €380), Prestige Suite (72 m², ground floor, €420), Castle Suite — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
