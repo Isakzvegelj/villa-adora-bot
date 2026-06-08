@@ -165,6 +165,30 @@ def fix_spacing(text):
     # Fix run-on words: lowercase followed by uppercase with no space
     # But be careful not to break intentional camelCase or common patterns
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # Fix common all-lowercase merged words from LLM output
+    text = re.sub(r'\bbutthe\b', 'but the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bandthe\b', 'and the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bforthe\b', 'for the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\btothe\b', 'to the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bonthe\b', 'on the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\batthe\b', 'at the', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthisis\b', 'this is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthatis\b', 'that is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwhatis\b', 'what is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhowto\b', 'how to', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthereis\b', 'there is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhereis\b', 'here is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcani\b', 'can I', text)
+    text = re.sub(r'\bdoyou\b', 'do you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bareyou\b', 'are you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwouldyou\b', 'would you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcouldyou\b', 'could you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bhaveyou\b', 'have you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bisit\b', 'is it', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bitis\b', 'it is', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bweare\b', 'we are', text, flags=re.IGNORECASE)
+    text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
+    text = re.sub(r'\btheyare\b', 'they are', text, flags=re.IGNORECASE)
     # Fix common LLM spacing glitches
     text = re.sub(r'\bWi Fi\b', 'WiFi', text)
     text = re.sub(r'\barriveat\b', 'arrive at', text, flags=re.IGNORECASE)
@@ -493,8 +517,6 @@ def get_hotel_info_response(topic, question):
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
-        "location": ["location", "address", "where", "direction", "map", "find", "located"],
-        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
         "breakfast": ["breakfast", "morning meal", "brunch"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
@@ -509,8 +531,10 @@ def get_hotel_info_response(topic, question):
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
-        "shuttle": ["shuttle", "airport transfer", "airport shuttle", "transfer", "taxi", "pickup", "pick-up", "drop-off", "dropoff", "transport", "transportation", "ride", "drive from", "drive to", "from the airport", "to the airport", "ljubljana airport"],
+        "shuttle": ["shuttle", "airport transfer", "airport shuttle", "book shuttle", "shuttle booking", "airport pickup", "shuttle service"],
         "general": ["general", "info", "information", "about", "tell me"],
+        "location": ["location", "address", "where", "direction", "map", "find", "located", "get to", "how do i get", "how to get", "directions to", "transport to", "travel to"],
+        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to", "day trip", "day trips", "excursion"],
     }
 
     # Detect actual topic from question if topic is generic
@@ -564,32 +588,40 @@ def get_hotel_info_response(topic, question):
 
     # Rooms
     if actual_topic == "rooms":
+        # Check if asking about pricing
+        is_price_query = any(word in q for word in ["price", "prices", "cost", "how much", "rate", "rates", "expensive", "cheap", "affordable", "cheapest", "pricing", "€", "eur", "euro"])
+        
         # Check if asking about a specific room
-        # Use more precise matching: require the unique part of the room name
-        # (excluding common words like "suite") to match
         for room in h["rooms"].values():
             name_lower = room["name"].lower()
-            # Get distinctive words (e.g., "princess" from "Princess Suite")
-            # Exclude common words like "suite" that appear in all room names
             common_words = {"suite", "the", "and"}
             distinctive_words = [w for w in name_lower.split() if w not in common_words and len(w) > 2]
-            # Match if ALL distinctive words appear in the query
             if distinctive_words and all(word in q for word in distinctive_words):
                 features = ", ".join(room.get("features", [])[:3])
+                price_str = f" — €{room['price']}/night" if room.get("price") else ""
                 return (
-                    f"{room['name']} — {room['description']} "
+                    f"{room['name']}{price_str}. {room['description']} "
                     f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
-        lines = ["We have 7 beautiful suites, all with stunning lake views:"]
-        for r in h["rooms"].values():
-            size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
-            cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
-            feat = ", ".join(r.get("features", [])[:2])
-            name_lower = r['name'].lower()
-            # Use markdown-style bullets for proper HTML rendering
-            lines.append(f"• **{r['name']}**{size}{cap} — {feat}")
-        lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
+        
+        if is_price_query:
+            # Show rooms with prices
+            lines = ["Here are our suites with nightly rates:"]
+            for r in h["rooms"].values():
+                size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
+                cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
+                price = f"€{r['price']}/night" if r.get("price") else "Price on request"
+                lines.append(f"• **{r['name']}** — {price}{size}{cap}")
+            lines.append("Would you like to book one of these, or do you need more details about a specific suite?")
+        else:
+            lines = ["We have 7 beautiful suites, all with stunning lake views:"]
+            for r in h["rooms"].values():
+                size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
+                cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
+                feat = ", ".join(r.get("features", [])[:2])
+                lines.append(f"• **{r['name']}**{size}{cap} — {feat}")
+            lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
         return "\n".join(lines)
 
     # Policies
