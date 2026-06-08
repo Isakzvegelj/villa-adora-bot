@@ -1260,20 +1260,20 @@ def api_chat():
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
                 is_factual_non_eng = any(kw in msg_lower for kw in non_english_factual)
-                if is_factual or is_factual_non_eng:
+                
+                # Language mismatch detection: if guest wrote in English but LLM responded
+                # in another language, force English fallback
+                content_has_non_ascii = any(ord(c) > 127 for c in content)
+                lang_mismatch = (not is_non_english) and content_has_non_ascii and len(content.strip()) > 50
+                
+                if is_factual or is_factual_non_eng or lang_mismatch:
                     # LLM didn't use tool for factual question — get data ourselves
                     fallback = get_hotel_info_response("general", user_message)
                     # For room/suite/price questions, always use fallback since LLM data may be wrong
                     is_room_query = any(kw in msg_lower for kw in ["room", "suite", "price", "cost", "how much", "rate"])
-                    if is_room_query or len(content.strip()) < 100:
-                        # For non-English, the fallback is English — we need to indicate translation needed
-                        if is_non_english:
-                            # The LLM should have translated, but if it didn't, use fallback
-                            # The response will be in English but the guest needs their language
-                            # Best effort: include the fallback data
-                            replies.append({"type": "text", "content": fallback})
-                        else:
-                            replies.append({"type": "text", "content": fallback})
+                    # If language mismatch, always use fallback (ignore LLM's non-English response to English query)
+                    if lang_mismatch or is_room_query or len(content.strip()) < 100:
+                        replies.append({"type": "text", "content": fallback})
                     else:
                         # For non-English factual questions, check if LLM actually translated
                         if is_factual_non_eng and detected_lang != "English":
@@ -1287,7 +1287,12 @@ def api_chat():
                         else:
                             replies.append({"type": "text", "content": content})
                 else:
-                    replies.append({"type": "text", "content": content})
+                    # Even for non-factual questions, check for language mismatch
+                    if lang_mismatch:
+                        fallback = get_hotel_info_response("general", user_message)
+                        replies.append({"type": "text", "content": fallback})
+                    else:
+                        replies.append({"type": "text", "content": content})
 
         # Check if guest mentioned a late check-in or check-out time in this message
         # and save to calendar for hotel staff awareness (only if not already handled by tool)
