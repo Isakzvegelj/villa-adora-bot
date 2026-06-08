@@ -426,6 +426,7 @@ def _detect_language(message: str) -> str:
     
     # Multi-word phrases that are highly distinctive per language
     # These are phrases that would NOT appear in English
+    # Uses word-boundary matching via regex for robustness
     distinctive_phrases = {
         "German": [
             " guten tag ", " guten morgen ", " guten abend ", " vielen danke ",
@@ -473,9 +474,16 @@ def _detect_language(message: str) -> str:
     }
     
     # Score each language by counting matching distinctive phrases
+    # Use word-level matching (strip punctuation from msg words, then check phrases)
+    import re as _re
+    msg_words_no_punct = _re.sub(r'[^\w\s]', ' ', msg)
     scores = {}
     for lang, phrases in distinctive_phrases.items():
-        score = sum(1 for p in phrases if p in msg)
+        score = 0
+        for p in phrases:
+            # Check with original msg (punctuation-aware) AND cleaned msg (punctuation-stripped)
+            if p in msg or p in " " + msg_words_no_punct + " ":
+                score += 1
         if score > 0:
             scores[lang] = score
 
