@@ -514,7 +514,7 @@ def get_hotel_info_response(topic, question):
     topic_aliases = {
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival"],
         "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure"],
-        "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
+        "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep", "price", "prices", "cost", "rate", "rates", "how much"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "breakfast": ["breakfast", "morning meal", "brunch"],
@@ -548,6 +548,14 @@ def get_hotel_info_response(topic, question):
     # Override: dietary questions should always go to breakfast/dining
     if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
         actual_topic = "breakfast"
+
+    # Override: room price questions should always go to rooms (not payment)
+    if actual_topic == "payment" and any(word in q for word in ["room", "suite", "accommodation"]):
+        actual_topic = "rooms"
+
+    # Override: if topic is general and question mentions room/suite + price, redirect to rooms
+    if actual_topic == "general" and any(word in q for word in ["room", "suite"]) and any(word in q for word in ["price", "prices", "cost", "rate", "rates", "how much"]):
+        actual_topic = "rooms"
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
