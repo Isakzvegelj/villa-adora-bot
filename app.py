@@ -780,13 +780,13 @@ def get_hotel_info_response(topic, question):
     # Map common synonyms to topics
     topic_aliases = {
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "leave", "leaving"],
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
-        "breakfast": ["breakfast", "morning meal", "brunch"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "dairy"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
         "bar": ["bar", "cocktail", "cocktails", "aperitivo", "drinks", "mixologist"],
@@ -814,7 +814,7 @@ def get_hotel_info_response(topic, question):
                 break
 
     # Override: dietary questions should always go to breakfast/dining
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "dairy"]):
         actual_topic = "breakfast"
 
     # Check-in / Check-out
@@ -954,22 +954,22 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
-            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "dairy", "lactose", "intolerant"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
-                    f"We offer vegan, vegetarian, and gluten-free options on request, "
+                    f"We offer vegan, vegetarian, gluten-free, and dairy-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
                     f"Would you like to add breakfast to your booking?"
                 )
             return (
                 f"Breakfast is €22/person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
-                f"We also offer vegan, vegetarian, and gluten-free options on request. "
+                f"We also offer vegan, vegetarian, gluten-free, and dairy-free options on request. "
                 f"Shall I add breakfast to your booking?"
             )
         return (
             f"{b} "
-            f"Vegan, vegetarian, and gluten-free options are available on request. "
+            f"Vegan, vegetarian, gluten-free, and dairy-free options are available on request. "
             f"Shall I add breakfast to your booking?"
         )
 
