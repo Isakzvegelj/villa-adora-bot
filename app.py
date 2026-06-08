@@ -1185,7 +1185,7 @@ def api_chat():
             "breakfast", "parking", "wifi", "pets", "cancellation",
             "payment", "children", "smoking", "contact", "restaurant",
             "bar", "wine", "late_check_in", "late_check_out", "shuttle",
-            "room_service",
+            "room_service", "general",
         }
         if hotel_answer and hotel_answer.strip() and topic in factual_topics:
             # For non-English queries, return a translated response
@@ -1194,7 +1194,12 @@ def api_chat():
                 translated = _get_localized_fallback(detected_lang, user_message)
                 reply_content = fix_spacing(translated) if translated else fix_spacing(hotel_answer)
             else:
-                reply_content = fix_spacing(hotel_answer)
+                # For English, use localized fallback for general/greeting queries
+                if topic == "general":
+                    localized = _get_localized_fallback(detected_lang, user_message)
+                    reply_content = fix_spacing(localized) if localized else fix_spacing(hotel_answer)
+                else:
+                    reply_content = fix_spacing(hotel_answer)
             reply_content = _ensure_follow_up(reply_content, topic)
 
             replies = [{"type": "text", "content": reply_content}]
