@@ -391,14 +391,12 @@ def _detect_language(message: str) -> str:
     msg = " " + message.lower().strip() + " "
     
     # Character-based detection for languages with unique characters
-    # Note: each char maps to exactly one language — carefully chosen to avoid overlap
+    # Only use characters that are unambiguous for a single language
     has_diacritics = {
-        'š': 'sl', 'č': 'sl', 'ž': 'sl',  # Slovenian/Croatian
-        'đ': 'hr', 'ć': 'hr',  # Croatian/Serbian
-        'ß': 'de', 'ä': 'de', 'ö': 'de', 'ü': 'de',  # German
-        'ñ': 'es', 'á': 'es', 'í': 'es', 'ó': 'es', 'ú': 'es',  # Spanish (é shared with FR/IT — not used alone)
-        'â': 'fr', 'ç': 'fr', 'ê': 'fr', 'î': 'fr', 'ô': 'fr', 'û': 'fr', 'ë': 'fr', 'ï': 'fr',  # French-specific
-        'ì': 'it', 'ò': 'it', 'ù': 'it',  # Italian-specific (à/è/é shared — not used alone)
+        'š': 'sl', 'č': 'sl', 'ž': 'sl',  # Slovenian/Croatian (unambiguous)
+        'đ': 'hr',  # Croatian/Serbian (unambiguous)
+        'ß': 'de',  # German (unambiguous)
+        'ñ': 'es',  # Spanish (unambiguous)
     }
     
     # Count diacritics per language
