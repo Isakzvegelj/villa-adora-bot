@@ -1171,8 +1171,9 @@ def api_chat():
                 lang_messages.append({
                     "role": "system",
                     "content": (
-                        f"IMPORTANT: Use the hotel data below to answer the guest's question. "
-                        f"Respond in English. Be warm, concise, and end with a follow-up question.\n\n"
+                        f"CRITICAL LANGUAGE RULE: The guest wrote in English. You MUST respond ENTIRELY in English. "
+                        f"Do NOT translate any part of your response into French, German, Italian, Spanish, or any other language. "
+                        f"Use ONLY the hotel data below to answer. Be warm, concise, and end with a follow-up question — all in English.\n\n"
                         f"HOTEL DATA:\n{hotel_answer}"
                     ),
                 })
@@ -1188,11 +1189,19 @@ def api_chat():
         # For English messages, also exclude query_hotel_info since we inject data directly.
         available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
 
+        # Add a language reinforcement message right before the LLM call.
+        # This is the last message the LLM sees before generating its response.
+        lang_reinforce = {
+            "role": "system",
+            "content": f"REMINDER: The user's message is in {'English' if not is_non_english else detected_lang}. Respond entirely in {'English' if not is_non_english else detected_lang}. Do not switch to any other language.",
+        }
+        final_messages = list(lang_messages) + [lang_reinforce]
+
         tool_params = {
             "model": MODEL,
-            "messages": lang_messages,
+            "messages": final_messages,
             "tools": available_tools,
-            "temperature": 0.5,
+            "temperature": 0.2,
             "max_tokens": 1500,
             "timeout": 50,
         }
