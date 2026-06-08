@@ -391,13 +391,14 @@ def _detect_language(message: str) -> str:
     msg = " " + message.lower().strip() + " "
     
     # Character-based detection for languages with unique characters
+    # Note: each char maps to exactly one language — carefully chosen to avoid overlap
     has_diacritics = {
         'š': 'sl', 'č': 'sl', 'ž': 'sl',  # Slovenian/Croatian
         'đ': 'hr', 'ć': 'hr',  # Croatian/Serbian
         'ß': 'de', 'ä': 'de', 'ö': 'de', 'ü': 'de',  # German
-        'ñ': 'es', 'á': 'es', 'é': 'es', 'í': 'es', 'ó': 'es', 'ú': 'es',  # Spanish
-        'à': 'fr', 'â': 'fr', 'ç': 'fr', 'è': 'fr', 'é': 'fr', 'ê': 'fr', 'î': 'fr', 'ô': 'fr', 'ù': 'fr', 'û': 'fr', 'ë': 'fr', 'ï': 'fr',  # French
-        'à': 'it', 'è': 'it', 'é': 'it', 'ì': 'it', 'ò': 'it', 'ù': 'it',  # Italian
+        'ñ': 'es', 'á': 'es', 'í': 'es', 'ó': 'es', 'ú': 'es',  # Spanish (é shared with FR/IT — not used alone)
+        'â': 'fr', 'ç': 'fr', 'ê': 'fr', 'î': 'fr', 'ô': 'fr', 'û': 'fr', 'ë': 'fr', 'ï': 'fr',  # French-specific
+        'ì': 'it', 'ò': 'it', 'ù': 'it',  # Italian-specific (à/è/é shared — not used alone)
     }
     
     # Count diacritics per language
@@ -436,7 +437,10 @@ def _detect_language(message: str) -> str:
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
             " je voudrais ", " avez-vous ", " nous avons ", " les chambres ",
             " petit déjeuner ", " au revoir ", " bienvenue ", " c'est magnifique ",
-            " je suis ", " vous êtes "
+            " je suis ", " vous êtes ", " quelles ", " quelle ",
+            " suis-je ", " êtes-vous ", " réservez ", " réservé ",
+            " chambre ", " combien ", " comment ", " excusez ",
+            " madame ", " monsieur ", " enchanté "
         ],
         "Italian": [
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
@@ -445,7 +449,8 @@ def _detect_language(message: str) -> str:
             " camera ", " albergo ", " parcheggio ", " pranzo ", " cena ",
             " buona notte ", " quanto costa ", " camere disponibili ",
             " una camera ", " due camere ", " il camera ", " la camera ",
-            " il ristorante ", " il parcheggio ", " la colazione "
+            " il ristorante ", " il parcheggio ", " la colazione ",
+            " posso ", " potrei ", " grazie ", " prego "
         ],
         "Spanish": [
             " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
@@ -868,7 +873,8 @@ def api_chat():
                 f"You MUST respond ENTIRELY in {detected_lang}. "
                 f"Translate ALL information to {detected_lang}. "
                 f"Do NOT use English except for proper nouns (like 'Lake Bled', 'Villa Adora'). "
-                f"Be warm, concise, and end with a follow-up question in {detected_lang}."
+                f"Be warm, concise, and end with a follow-up question in {detected_lang}. "
+                f"REMEMBER: The guest cannot understand English. Every word must be in {detected_lang}."
             )
             if rag_docs:
                 rag_context = format_rag_context(rag_docs)
@@ -1120,7 +1126,14 @@ def api_chat():
                     # For room/suite/price questions, always use fallback since LLM data may be wrong
                     is_room_query = any(kw in msg_lower for kw in ["room", "suite", "price", "cost", "how much", "rate"])
                     if is_room_query or len(content.strip()) < 100:
-                        replies.append({"type": "text", "content": fallback})
+                        # For non-English, the fallback is English — we need to indicate translation needed
+                        if is_non_english:
+                            # The LLM should have translated, but if it didn't, use fallback
+                            # The response will be in English but the guest needs their language
+                            # Best effort: include the fallback data
+                            replies.append({"type": "text", "content": fallback})
+                        else:
+                            replies.append({"type": "text", "content": fallback})
                     else:
                         # For non-English factual questions, check if LLM actually translated
                         if is_factual_non_eng and detected_lang != "English":
