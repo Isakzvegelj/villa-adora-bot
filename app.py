@@ -419,6 +419,11 @@ def _detect_language(message: str) -> str:
     if any(c in msg for c in ['ñ', 'á', 'í', 'ó', 'ú', '¿', '¡']):
         return "Spanish"
 
+    # Spanish word patterns (check BEFORE French/Italian to avoid misclassification)
+    spanish_words = [" hola ", " buenos ", " buenas ", " tienen ", " habitaciones ", " gracias ", " por favor ", " quisiera ", " desayuno ", " restaurante ", " bienvenido ", " hasta luego ", " magnífico ", " perfecto ", " reservación ", " cuarto ", " cuartos ", " noches ", " días "]
+    if any(w in msg for w in spanish_words):
+        return "Spanish"
+
     # Italian-specific characters (check AFTER French since they share some)
     if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
         # Could be French or Italian - check words
@@ -1125,7 +1130,7 @@ def api_chat():
                         "German": ["ich ", "sie ", "das ", "die ", "der ", "und ", "für ", "mit ", "haben ", "sind ", "können ", "möchten ", "guten", "vielen"],
                         "French": ["nous ", "vous ", "les ", "des ", "est ", "une ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais "],
                         "Italian": ["nostro", "nostra", "grazie", "buongiorno", "camera", "camere", "abbiamo", "avete", "vorrei", "posso", "belliss"],
-                        "Spanish": ["nuestro", "nuestra", "gracias", "habitaciones", "tenemos", "quiere", "puede", "buenos", "buenas", "por favor"],
+                        "Spanish": ["hola", "gracias", "buenos", "buenas", "tenemos", "habitaciones", "quiere", "puede", "nuestro", "nuestra", "favor", "también", "estamos", "donde", "cuando", "cuanto", "magnífico", "perfecto"],
                     }
                     eng_count = sum(1 for w in english_words if w in content.lower())
                     non_eng_count = sum(1 for w in non_english_indicators.get(detected_lang, []) if w in content.lower())
