@@ -251,7 +251,16 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
     q = user_message.lower()
     # Detect topic for a more relevant fallback
-    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
+    if any(w in q for w in ["pet", "dog", "cat", "animal", "pes", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot", "psa", "žival", "haustier", "tier", "tierk"]):
+        fallbacks = {
+            "Slovenian": "Živali so dovoljeni na zahtevo — 35 € na žival na noč. Prosimo, da nas obvestite vnaprej, da uredimo vse potrebno. Ali želite dodati hišne živali k vaši rezervaciji?",
+            "German": "Haustiere sind auf Anfrage erlaubt — 35 € pro Tier pro Nacht. Bitte informieren Sie uns im Voraus, damit wir alles arrangieren können. Möchten Sie ein Haustier hinzufügen?",
+            "French": "Les animaux de compagnie sont acceptés sur demande — 35 € par animal et par nuit. Veuillez nous informer à l'avance pour que nous puissions tout organiser. Souhaitez-vous ajouter un animal?",
+            "Italian": "Gli animali domestici sono ammessi su richiesta — 35 € per animale a notte. Per favore informateci in anticipo per organizzare tutto. Vuoi aggiungere un animale?",
+            "Spanish": "Se admiten mascotas bajo petición — 35 € por animal por noche. Por favor, infórmanos con antelación para organizarlo todo. ¿Te gustaría agregar una mascota?",
+            "Croatian": "Kućni ljubimci su dozvoljeni na zahtjev — 35 € za životinju po noći. Molimo obavijestite nas unaprijed kako bismo sve organizirali. Želite li dodati kućnog ljubimca?",
+        }
+    elif any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
         fallbacks = {
             "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov!",
             "German": "Wir haben 7 wundersöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen!",
@@ -268,6 +277,15 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
             "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
             "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
+        }
+    elif any(w in q for w in ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci", "nahajate", "nahaja", "kje se"]):
+        fallbacks = {
+            "Slovenian": "Nahajamo se na Cesta svobode 35, 4260 Bled, Slovenija — neposredno na obali jezera Bled. Pogled na Bledski otok, Blejski grad in Triglav. 2 min hoje do čolnarnice, 15 min do centra Bleda. Želite navodila za pot?",
+            "German": "Wir befinden uns an der Cesta svobode 35, 4260 Bled, Slowenien — direkt am Ufer des Bleder Sees. Blick auf die Bled-Insel, die Bleder Burg und das Triglav-Gebirge. 2 Min. zu Fuß zur Bootsstation, 15 Min. ins Zentrum. Möchten Sie eine Wegbeschreibung?",
+            "French": "Nous sommes situés au Cesta svobode 35, 4260 Bled, Slovénie — directement sur les rives du lac Bled. Vue sur l'île de Bled, le château de Bled et les montagnes du Triglav. 2 min à pied de la station de bateaux, 15 min du centre-ville. Souhaitez-vous un itinéraire?",
+            "Italian": "Ci troviamo a Cesta svobode 35, 4260 Bled, Slovenia — direttamente sulle rive del lago di Bled. Vista sull'isola di Bled, il castello di Bled e le montagne del Triglav. 2 min a piedi dalla stazione dei battelli, 15 min dal centro. Vuoi le indicazioni?",
+            "Spanish": "Estamos ubicados en Cesta svobode 35, 4260 Bled, Eslovenia — directamente en las orillas del lago Bled. Vistas de la isla de Bled, el castillo de Bled y las montañas Triglav. 2 min a pie a la estación de botes, 15 min al centro. ¿Te gustaría indicaciones?",
+            "Croatian": "Nalazimo se na Cesta svobode 35, 4260 Bled, Slovenija — neposredno na obali jezera Bled. Pogled na Bledski otok, Bledski grad i planinu Triglav. 2 min hoda do stanice za brodove, 15 min do centra. Želite upute za put?",
         }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -539,7 +557,7 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
 
     # Word-based Slovenian detection (without diacritics)
-    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane"]
+    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane", " ali ", " smem ", " kje ", " kam ", " kakšne ", " kakšna ", " psa ", " mačka ", " žival ", " nahajate ", " nahaja ", " prihod ", " odhod ", " pozno ", " pozen ", " restavracija ", " jedilnica ", " terasa ", " pogled ", " jezero ", " otok ", " grad ", " recepcija ", " psi ", " kužki ", " dovoljeno ", " cena ", " stane ", " parkWiFi"]
     if any(w in msg for w in slovenian_words):
         return "Slovenian"
 
@@ -585,7 +603,11 @@ def _detect_language(message: str) -> str:
             " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
             " können wir ", " ich hätte ", " buchung ", " zimmer ", " frühstück ",
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
-            " buchen ", " reservierung ", " kammer ", " schlafzimmer "
+            " buchen ", " reservierung ", " kammer ", " schlafzimmer ",
+            " hund ", " katze ", " tier ", " haustier ", " mitbringen ",
+            " kann ich ", " möchten ", " gerne ", " buchen ", " zimmer ",
+            " suiten ", " seeblick ", " lage ", " ankommen ", " abreise ",
+            " parken ", " parkplatz ", " hauntier ", " veganes ", " unzureich"
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
@@ -607,7 +629,8 @@ def _detect_language(message: str) -> str:
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
             " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
-            " soba ", " sobe ", " apartma "
+            " soba ", " sobe ", " apartma ", " ali ", " smem ", " kje ", " kam ",
+            " psa ", " mačka ", " prihod ", " odhod ", " pozno ", " restavracija "
         ],
     }
 
@@ -636,7 +659,7 @@ def _detect_topic(message: str) -> str:
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"],
         "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
+        "pets": ["pet", "dog", "cat", "animal", "pes", "psa", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
         "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
