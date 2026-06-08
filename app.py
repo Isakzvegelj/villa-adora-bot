@@ -1042,19 +1042,24 @@ def api_chat():
         # hotel data via RAG context. Keep booking/shuttle tools available.
         if is_non_english:
             available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
-            # Add a forceful language instruction as a system message right before the actual user message
+            # Prepend language instruction to the user message itself (most forceful)
+            # This ensures the model sees the language requirement as part of the user's input
             lang_prefix = (
-                f"[SYSTEM OVERRIDE: You MUST respond in {detected_lang}. "
+                f"[IMPORTANT: The guest wrote in {detected_lang}. "
+                f"You MUST respond ENTIRELY in {detected_lang}. "
                 f"Translate ALL information to {detected_lang}. "
-                f"The guest only understands {detected_lang}. "
-                f"Respond ENTIRELY in {detected_lang}. "
-                f"End with a follow-up question in {detected_lang}. "
-                f"IMPORTANT: When translating prices, use ONLY the exact prices provided in the hotel facts above. DO NOT invent or guess any prices.]"
+                f"DO NOT respond in English. "
+                f"Every sentence must be in {detected_lang}. "
+                f"End with a follow-up question in {detected_lang}.] "
             )
-            lang_messages.insert(-1, {
-                "role": "system",
-                "content": lang_prefix
-            })
+            # Replace the last user message with language-prefixed version
+            for idx in range(len(lang_messages) - 1, -1, -1):
+                if lang_messages[idx].get("role") == "user":
+                    lang_messages[idx] = {
+                        "role": "user",
+                        "content": lang_prefix + lang_messages[idx]["content"]
+                    }
+                    break
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
 
