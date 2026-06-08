@@ -132,15 +132,15 @@ request_human_agent_function = {
 
 _ROOM_LISTINGS_TRANSLATED = {
     "Slovenian": (
-        "Imamo 7 \u010dudovitih apartmajev, vsi s \u010dudovitim razgledom na jezero:\n"
-        "\u2022 Princesin apartmajj, 55 m\u00b2, za 2 osebi \u2014 Razgled na jezero iz stolpa, dnevna soba\n"
-        "\u2022 Luksuzni apartmajj, za 2 osebi \u2014 Razgled na jezero, elegantna dekoracija\n"
-        "\u2022 Penthouse apartmajj, 60 m\u00b2, za 2 osebi \u2014 2 nadstropji, king-size postelja\n"
-        "\u2022 Labodji apartmajj, za 2 osebi \u2014 Razgled na jezero, luksuzna oprema\n"
-        "\u2022 Oto\u0161ki apartmajj, 65 m\u00b2, za 4 osebi \u2014 2 luksuzni spalnici, 2 balkona\n"
-        "\u2022 Presti\u017eni apartmajj, 72 m\u00b2, za 2 osebi \u2014 Pritli\u010dje, pogled na jezero\n"
-        "\u2022 Grajski apartmajj, za 2 osebi \u2014 Elegantna suita, pogled na grad\n"
-        "Kateri vas najbolj pritegne? Lahko za\u010dnem z rezervacijo \u2014 samo povejte mi va\u0161e ime in datume!"
+        "Imamo 7 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
+        "• Princesin apartma, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
+        "• Luksuzni apartma, za 2 osebi — Razgled na jezero, elegantna dekoracija\n"
+        "• Penthouse apartma, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n"
+        "• Labodji apartma, za 2 osebi — Razgled na jezero, luksuzna oprema\n"
+        "• Otoški apartma, 65 m², za 4 osebi — 2 luksuzni spalnici, 2 balkona\n"
+        "• Prestižni apartma, 72 m², za 2 osebi — Pritličje, pogled na jezero\n"
+        "• Grajski apartma, za 2 osebi — Elegantna suita, pogled na grad\n"
+        "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume!"
     ),
     "German": (
         "Wir haben 7 wundersch\u00f6ne Suiten mit atemberaubendem Seeblick:\n"
