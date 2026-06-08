@@ -141,7 +141,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles!",
             "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja!",
         }
-    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"]):
+    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
             "Slovenian": "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Nudimo tudi veganska, vegetarijanska in brezglutenska jed. Želite dodati zajtrk k vaši rezervaciji?",
             "German": "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Wir bieten auch vegane, vegetäre und glutenfreie Optionen. Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?",
@@ -174,8 +174,8 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
-    # Replace unicode whitespace variants with normal space
-    text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011\u2012\u2013\u2014]', ' ', text)
+    # Replace unicode whitespace variants with normal space (but NOT en-dash/em-dash which are used as separators)
+    text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011]', ' ', text)
     # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run before the general uppercase split)
     text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
     # Fix missing space between word and number: "from14:00" -> "from 14:00"
@@ -190,10 +190,11 @@ def fix_spacing(text):
     text = re.sub(r':([a-zA-Z])', r': \1', text)
     # Fix "from 8 10 AM" -> "from 8-10 AM"
     text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
-    # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run before the general uppercase split)
-    text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
     text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+    # Fix "WiFi" being split by the above rule: "Wi Fi" -> "WiFi" (MUST run after the general uppercase split)
+    text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwi\s+fi\b', 'WiFi', text)
     # Fix common LLM spacing glitches
     text = re.sub(r'\bwewelcome\b', 'we welcome', text, flags=re.IGNORECASE)
     text = re.sub(r'\barriveat\b', 'arrive at', text, flags=re.IGNORECASE)
@@ -489,11 +490,11 @@ def _detect_topic(message: str) -> str:
     msg = message.lower()
 
     topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj"],
+        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj", "koliko", "stane", "cena", "cene", "preis", "prix", "precio", "prezzo", "how much", "price", "cost"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fru00fchstu00fcck", "colazione", "petit du00e9jeuner", "desayuno"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"],
         "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
         "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
@@ -628,8 +629,16 @@ def get_hotel_info_response(topic, question):
                 price_str = ""
                 if is_price_query and room.get("price"):
                     price_str = f" — €{room['price']}/night"
+                desc = room.get("description", "")
+                # If no price, use em-dash separator; if price, price_str already has the dash
+                if price_str:
+                    return (
+                        f"{room['name']}{price_str}. {desc} "
+                        f"Features: {features}. "
+                        f"Would you like to book this suite or see other options?"
+                    )
                 return (
-                    f"{room['name']}{price_str} — {room['description']} "
+                    f"{room['name']} — {desc} "
                     f"Features: {features}. "
                     f"Would you like to book this suite or see other options?"
                 )
