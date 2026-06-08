@@ -129,6 +129,124 @@ request_human_agent_function = {
 }
 
 
+
+_ROOM_LISTINGS_TRANSLATED = {
+    "Slovenian": (
+        "Imamo 7 \u010dudovitih apartmajev, vsi s \u010dudovitim razgledom na jezero:\n"
+        "\u2022 Princesin apartmajj, 55 m\u00b2, za 2 osebi \u2014 Razgled na jezero iz stolpa, dnevna soba\n"
+        "\u2022 Luksuzni apartmajj, za 2 osebi \u2014 Razgled na jezero, elegantna dekoracija\n"
+        "\u2022 Penthouse apartmajj, 60 m\u00b2, za 2 osebi \u2014 2 nadstropji, king-size postelja\n"
+        "\u2022 Labodji apartmajj, za 2 osebi \u2014 Razgled na jezero, luksuzna oprema\n"
+        "\u2022 Oto\u0161ki apartmajj, 65 m\u00b2, za 4 osebi \u2014 2 luksuzni spalnici, 2 balkona\n"
+        "\u2022 Presti\u017eni apartmajj, 72 m\u00b2, za 2 osebi \u2014 Pritli\u010dje, pogled na jezero\n"
+        "\u2022 Grajski apartmajj, za 2 osebi \u2014 Elegantna suita, pogled na grad\n"
+        "Kateri vas najbolj pritegne? Lahko za\u010dnem z rezervacijo \u2014 samo povejte mi va\u0161e ime in datume!"
+    ),
+    "German": (
+        "Wir haben 7 wundersch\u00f6ne Suiten mit atemberaubendem Seeblick:\n"
+        "\u2022 Prinzessin Suite, 55 m\u00b2, f\u00fcr 2 G\u00e4ste \u2014 Seeblick vom Turm, Wohnbereich\n"
+        "\u2022 Luxus Suite, f\u00fcr 2 G\u00e4ste \u2014 Seeblick, elegante Einrichtung\n"
+        "\u2022 Penthouse Suite, 60 m\u00b2, f\u00fcr 2 G\u00e4ste \u2014 2 Etagen, Kingsize-Bett\n"
+        "\u2022 Schwanen Suite, f\u00fcr 2 G\u00e4ste \u2014 Seeblick, luxuri\u00f6se Ausstattung\n"
+        "\u2022 Insel Suite, 65 m\u00b2, f\u00fcr 4 G\u00e4ste \u2014 2 Luxusschlafzimmer, 2 Balkone\n"
+        "\u2022 Prestige Suite, 72 m\u00b2, f\u00fcr 2 G\u00e4ste \u2014 Erdgeschoss, Seeblick\n"
+        "\u2022 Burg Suite, f\u00fcr 2 G\u00e4ste \u2014 Stilvolle Luxussuite, Blick auf die Burg\n"
+        "Welche Suite gef\u00e4llt Ihnen am besten? Ich starte gerne eine Buchung \u2014 ich brauche nur Ihren Namen und Ihre Reisedaten!"
+    ),
+    "French": (
+        "Nous avons 7 magnifiques suites avec vue imprenable sur le lac:\n"
+        "\u2022 Suite Princesse, 55 m\u00b2, pour 2 personnes \u2014 Vue sur le lac depuis la tour, salon\n"
+        "\u2022 Suite de Luxe, pour 2 personnes \u2014 Vue sur le lac, d\u00e9coration \u00e9l\u00e9gante\n"
+        "\u2022 Suite Penthouse, 60 m\u00b2, pour 2 personnes \u2014 2 \u00e9tages, lit king-size\n"
+        "\u2022 Suite Cygne, pour 2 personnes \u2014 Vue sur le lac, mobilier de luxe\n"
+        "\u2022 Suite \u00cele, 65 m\u00b2, pour 4 personnes \u2014 2 chambres de luxe, 2 balcons\n"
+        "\u2022 Suite Prestige, 72 m\u00b2, pour 2 personnes \u2014 Rez-de-chauss\u00e9e, salon\n"
+        "\u2022 Suite Ch\u00e2teau, pour 2 personnes \u2014 Suite de luxe \u00e9l\u00e9gante, vue sur le ch\u00e2teau\n"
+        "Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates!"
+    ),
+    "Italian": (
+        "Abbiamo 7 splendide suite con vista mozzafiato sul lago:\n"
+        "\u2022 Suite Principessa, 55 m\u00b2, per 2 persone \u2014 Vista lago dalla torre, zona living\n"
+        "\u2022 Suite Luxury, per 2 persone \u2014 Vista lago, arredi eleganti\n"
+        "\u2022 Suite Penthouse, 60 m\u00b2, per 2 persone \u2014 2 piani, letto king size\n"
+        "\u2022 Suite Cigno, per 2 persone \u2014 Vista lago, arredi di lusso\n"
+        "\u2022 Suite Isola, 65 m\u00b2, per 4 persone \u2014 2 camere da letto di lusso, 2 balconi\n"
+        "\u2022 Suite Prestige, 72 m\u00b2, per 2 persone \u2014 Piano terra, vista lago\n"
+        "\u2022 Suite Castello, per 2 persone \u2014 Suite di lusso elegante, vista sul castello\n"
+        "Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date!"
+    ),
+    "Spanish": (
+        "Tenemos 7 hermosas suites con vistas impresionantes al lago:\n"
+        "\u2022 Suite Princesa, 55 m\u00b2, para 2 personas \u2014 Vista al lago desde la torre, zona de estar\n"
+        "\u2022 Suite de Lujo, para 2 personas \u2014 Vista al lago, decoraci\u00f3n elegante\n"
+        "\u2022 Suite Penthouse, 60 m\u00b2, para 2 personas \u2014 2 pisos, cama king size\n"
+        "\u2022 Suite Cisne, para 2 personas \u2014 Vista al lago, mobiliario de lujo\n"
+        "\u2022 Suite Isla, 65 m\u00b2, para 4 personas \u2014 2 habitaciones de lujo, 2 balcones\n"
+        "\u2022 Suite Prestige, 72 m\u00b2, para 2 personas \u2014 Planta baja, vista al lago\n"
+        "\u2022 Suite Castillo, para 2 personas \u2014 Suite de lujo elegante, vistas al castillo\n"
+        "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas!"
+    ),
+}
+
+
+_EXPERIENCES_TRANSLATED = {
+    "Slovenian": (
+        "V Bledu in okoli vas \u010daka veliko zanimivosti!:\n"
+        "\u2022 Kajanje na Bledski otok in obisk cerkve Marijinega vnebovzetja\n"
+        "\u2022 Plavanje, SUP, kajak in ladijske vo\u017enje na jezeru\n"
+        "\u2022 Sprehod po soteski Vintgar (2,4 km)\n"
+        "\u2022 Obisk Blejskega gradu (30 min hoje)\n"
+        "\u2022 6 km potokoli jezera in 15 poti za pohodni\u0161tvo\n"
+        "\u2022 Izleti na Bohinjsko jezero, v Ljubljano, Postojnsko jamo\n"
+        "\u2022 Masa\u017ea v sobi, ve\u010deri z vinom v vrtu\n"
+        "Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati!"
+    ),
+    "German": (
+        "In und um Bled gibt es viel zu erleben!:\n"
+        "\u2022 Fahrt zur Bled-Insel & Besuch der Wallfahrtskirche\n"
+        "\u2022 Schwimmen, SUP, Kajak und Bootstouren\n"
+        "\u2022 Vintgar-Schlucht Spaziergang (2,4 km)\n"
+        "\u2022 Bleder Burg Besuch (30 Min. zu Fu\u00df)\n"
+        "\u2022 6 km Uferweg & 15 Wanderwege\n"
+        "\u2022 Tagesausfl\u00fcche nach Bohinj, Ljubljana, Postojna\n"
+        "\u2022 In-Zimmer Massage, Gartenabende mit Wein\n"
+        "Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!"
+    ),
+    "French": (
+        "\u00c0 Bled, il y a beaucoup \u00e0 faire!:\n"
+        "\u2022 Balade vers l'\u00eele de Bled et visite de l'\u00e9glise\n"
+        "\u2022 Natation, paddle, kayak et excursions en bateau\n"
+        "\u2022 Gorges de Vintgar (2,4 km)\n"
+        "\u2022 Ch\u00e2teau de Bled (30 min \u00e0 pied)\n"
+        "\u2022 Sentier de 6 km autour du lac\n"
+        "\u2022 Excursions \u00e0 Bohinj, Ljubljana, grotte de Postojna\n"
+        "\u2022 Massage en chambre, soir\u00e9es avec vin\n"
+        "Laquelle vous int\u00e9resse le plus? Je serai ravi de vous aider \u00e0 l'organiser!"
+    ),
+    "Italian": (
+        "A Bled c'\u00e8 tanto da fare!:\n"
+        "\u2022 Gita all'Isola di Bled e visita della chiesa\n"
+        "\u2022 Nuoto, SUP, kayak e gite in barca\n"
+        "\u2022 Gole di Vintgar (2,4 km)\n"
+        "\u2022 Castello di Bled (30 min a piedi)\n"
+        "\u2022 Sentiero di 6 km e 15 sentieri segnalati\n"
+        "\u2022 Escursioni a Bohinj, Lubiana, grotta di Postojna\n"
+        "\u2022 Massaggio in camera, serate con vino\n"
+        "Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!"
+    ),
+    "Spanish": (
+        "En Bled hay mucho por hacer!:\n"
+        "\u2022 Paseo a la Isla de Bled y visita de la iglesia\n"
+        "\u2022 Nataci\u00f3n, paddle, kayak y excursiones\n"
+        "\u2022 Gargantas de Vintgar (2,4 km)\n"
+        "\u2022 Castillo de Bled (30 min a pie)\n"
+        "\u2022 Sendero de 6 km y 15 senderos\n"
+        "\u2022 Excursiones a Bohinj, Ljubljana, cueva de Postojna\n"
+        "\u2022 Masaje en habitaci\u00f3n, noches con vino\n"
+        "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!"
+    ),
+}
+
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
     q = user_message.lower()
