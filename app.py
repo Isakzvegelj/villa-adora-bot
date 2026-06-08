@@ -1109,8 +1109,9 @@ def api_chat():
                 if is_factual or is_factual_non_eng:
                     # LLM didn't use tool for factual question — get data ourselves
                     fallback = get_hotel_info_response("general", user_message)
-                    # Only use fallback if LLM response is short/empty (likely wrong)
-                    if len(content.strip()) < 100:
+                    # For room/suite/price questions, always use fallback since LLM data may be wrong
+                    is_room_query = any(kw in msg_lower for kw in ["room", "suite", "price", "cost", "how much", "rate"])
+                    if is_room_query or len(content.strip()) < 100:
                         replies.append({"type": "text", "content": fallback})
                     else:
                         # For non-English factual questions, check if LLM actually translated
