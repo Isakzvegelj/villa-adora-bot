@@ -466,7 +466,7 @@ def _detect_language(message: str) -> str:
             " imate ", " sobe ", " soba ", " koliko ", " stane ", " najvišja ",
             " najvecja ", " lahko ", " zelim ", " prosim ", " hvala ",
             " zdravo ", " nasvidenje ", " kje ", " kdaj ", " zakaj ", " kako ",
-            " brezplacen ", " brezplačen ", " wifi ", " restoran ", " jedilnik ",
+            " brezplacen ", " brezplačen ", " restoran ", " jedilnik ",
             " ali ", " zelo ", " dobro ", " slabo ", " lepo ", " cudovito ",
             " odlicno ", " odlično ", " super ", " hvala ", " prosim ",
             " da ", " ne ", " ja ", " prosim ", " oprostite ",
@@ -485,14 +485,10 @@ def _detect_language(message: str) -> str:
                 phrase_words = p.strip().split()
                 if len(phrase_words) == 1:
                     pw = phrase_words[0]
-                    for w in msg_clean.split():
-                        if w.startswith(pw) or pw.startswith(w):
-                            if len(pw) >= 4 and len(w) >= 4:
-                                score += 1
-                                break
-                            elif pw == w:
-                                score += 1
-                                break
+                    # Only exact match for single words to avoid false positives
+                    # e.g., "restaurant" should not match "restaurante"
+                    if pw in msg_clean.split():
+                        score += 1
                 elif len(phrase_words) >= 2:
                     clean_words = msg_clean.split()
                     phrase_stems = [w[:4] for w in phrase_words]
@@ -510,7 +506,7 @@ def _detect_language(message: str) -> str:
 
     if scores:
         best_lang = max(scores, key=scores.get)
-        min_scores = {"Slovenian": 2, "German": 1, "French": 1, "Italian": 1, "Spanish": 1}
+        min_scores = {"Slovenian": 1, "German": 1, "French": 1, "Italian": 1, "Spanish": 1}
         if scores[best_lang] >= min_scores.get(best_lang, 1):
             return best_lang
 
