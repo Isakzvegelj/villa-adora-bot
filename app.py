@@ -631,9 +631,24 @@ def _detect_language(message: str) -> str:
             return "Italian"
 
     # Word-based detection for languages without unique characters
-    # French word patterns - distinctive words not common in English
-    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " puis-je ", " amener ", " chien ", " chat ", " animaux ", " animal ", " manger ", " nourriture ", " petit-déjeuner ", " déjeuner ", " dîner ", " serveur ", " addition ", " s'il vous plaît ", " excusez ", " pardon ", " madame ", " monsieur ", " merci beaucoup ", " comment allez ", " je suis ", " vous êtes ", " nous sommes ", " ils sont ", " elle est ", " c'est magnifique ", " c'est parfait ", " est-ce que ", " combien ", " quel ", " quelle ", " quels ", " quelles ", " où ", " quand ", " comment ", " pourquoi ", " parce que ", " mais ", " ou ", " et ", " donc ", " car ", " ni ", " ne ", " pas ", " plus ", " jamais ", " rien ", " personne ", " quelque ", " certains ", " plusieurs ", " tout ", " tous ", " toute ", " toutes ", " autre ", " autres ", " même ", " aussi ", " très ", " bien ", " mal ", " mieux ", " moins ", " autant ", " si ", " comme ", " quand ", " lorsque ", " puisque ", " quoique ", " afin ", " pour ", " sans ", " avec ", " chez ", " dans ", " sur ", " sous ", " entre ", " vers ", " parmi ", " depuis ", " pendant ", " durant ", " avant ", " après ", " jusqu ", " voici ", " voilà ", " ici ", " là ", " y ", " en ", " le ", " la ", " les ", " un ", " une ", " des ", " du ", " de ", " mon ", " ma ", " mes ", " ton ", " ta ", " tes ", " son ", " sa ", " ses ", " notre ", " nos ", " votre ", " vos ", " leur ", " leurs ", " ce ", " cet ", " cette ", " ces ", " je ", " tu ", " il ", " elle ", " on ", " nous ", " vous ", " ils ", " elles ", " me ", " te ", " se ", " lui ", " leur ", " moi ", " toi ", " soi ", " qui ", " que ", " quoi ", " dont ", " où ", " est ", " suis ", " es ", " sommes ", " êtes ", " sont ", " ai ", " as ", " a ", " avons ", " avez ", " ont ", " faire ", " aller ", " venir ", " voir ", " savoir ", " pouvoir ", " vouloir ", " devoir ", " falloir ", " pleuvoir ", " neiger ", " chambre ", " chambres ", " suite ", " suites ", " lac ", " vue ", " petit ", " déjeuner ", " déjeuner ", " dîner ", " restaurant ", " hôtel ", " réservation ", " parking ", " wifi ", " internet ", " téléphone ", " email ", " adresse ", " merci ", " bonjour ", " bonsoir ", " au revoir ", " bienvenue ", " s'il ", " plaît ", " excusez-moi ", " pardon ", " madame ", " monsieur "]
-    if any(w in msg for w in french_words):
+    # French word patterns - ONLY highly distinctive multi-word phrases
+    # to avoid false positives from single common words
+    french_phrases = [
+        " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
+        " je voudrais ", " avez-vous ", " nous avons ", " les chambres ",
+        " petit déjeuner ", " au revoir ", " bienvenue ", " c'est magnifique ",
+        " c'est parfait ", " est-ce que ", " je suis ", " vous êtes ",
+        " nous sommes ", " ils sont ", " elles sont ", " comment allez ",
+        " je souhaiterais ", " puis-je ", " madame ", " monsieur ",
+        " merci beaucoup ", " excusez-moi ", " petit-déjeuner ",
+    ]
+    # Require at least 2 French phrase matches to avoid false positives
+    french_score = sum(1 for p in french_phrases if p in msg)
+    if french_score >= 2:
+        return "French"
+    # Also check for single distinctive French words that don't appear in English
+    french_distinctive = [" bonjour ", " bonsoir ", " bienvenue ", " au revoir ", " madame ", " monsieur ", " merci beaucoup ", " s'il vous plaît ", " excusez-moi ", " petit-déjeuner "]
+    if any(w in msg for w in french_distinctive):
         return "French"
 
     # Multi-word phrases that are highly distinctive per language
@@ -708,8 +723,8 @@ def _detect_topic(message: str) -> str:
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"],
         "parking": ["parking", "park", "car", "parkirišče", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "psa", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci", "nahajate", "nahaja", "kje se"],
+        "pets": ["pet", "dog", "cat", "animal", "pes", "psa", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attività", "activité", "actividad"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivée", "llegada"],
         "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "départ", "salida"],
