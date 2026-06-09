@@ -754,12 +754,12 @@ def _detect_topic(message: str) -> str:
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
 
+    # Priority: booking intent should override rooms when both keywords present
+    if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
+        return "booking"
     for topic, keywords in topic_keywords.items():
         if any(kw in msg for kw in keywords):
             return topic
-    # Priority overrides: booking intent should override rooms
-    if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
-        return "booking"
     return "general"
 
 
