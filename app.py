@@ -342,6 +342,7 @@ def fix_spacing(text):
     text = re.sub(r'\byoucan\b', 'you can', text, flags=re.IGNORECASE)
     text = re.sub(r'\bweoffer\b', 'we offer', text, flags=re.IGNORECASE)
     text = re.sub(r'\bIcan\b', 'I can', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwecan\b', 'we can', text, flags=re.IGNORECASE)
     text = re.sub(r'\bweare\b', 'we are', text, flags=re.IGNORECASE)
     text = re.sub(r'\bthebest\b', 'the best', text, flags=re.IGNORECASE)
     text = re.sub(r'\bthemost\b', 'the most', text, flags=re.IGNORECASE)
@@ -360,6 +361,38 @@ def fix_spacing(text):
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
     # Fix "Howcan" -> "How can"
     text = re.sub(r'\bHowcan\b', 'How can', text)
+    # Fix missing space: lowercase-to-uppercase word joints (common LLM glitch)
+    text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
+    text = re.sub(r'\byouhave\b', 'you have', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bIwill\b', 'I will', text)
+    text = re.sub(r'\bIam\b', 'I am', text)
+    text = re.sub(r'\btherestaurant\b', 'the restaurant', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bthehotel\b', 'the hotel', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bourrestaurant\b', 'our restaurant', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bourbar\b', 'our bar', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bforbreakfast\b', 'for breakfast', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bforlunch\b', 'for lunch', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bfordinner\b', 'for dinner', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwithus\b', 'with us', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bwithme\b', 'with me', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bforme\b', 'for me', text, flags=re.IGNORECASE)
+    text = re.sub(r'\btoyou\b', 'to you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\btous\b', 'to us', text, flags=re.IGNORECASE)
+    # Fix missing space between common words and proper nouns
+    text = re.sub(r'\binBled\b', 'in Bled', text)
+    text = re.sub(r'\batBled\b', 'at Bled', text)
+    text = re.sub(r'\bonBled\b', 'on Bled', text)
+    text = re.sub(r'\bofBled\b', 'of Bled', text)
+    text = re.sub(r'\bfromBled\b', 'from Bled', text)
+    text = re.sub(r'\btoBled\b', 'to Bled', text)
+    text = re.sub(r'\bLakeBled\b', 'Lake Bled', text)
+    text = re.sub(r'\bBledCastle\b', 'Bled Castle', text)
+    text = re.sub(r'\bBledIsland\b', 'Bled Island', text)
+    text = re.sub(r'\bLakeBohinj\b', 'Lake Bohinj', text)
+    text = re.sub(r'\bVillaAdora\b', 'Villa Adora', text)
+    text = re.sub(r'\bAdoraPop\b', 'Adora Pop', text)
+    text = re.sub(r'\bChefDomen\b', 'Chef Domen', text)
+    text = re.sub(r'\bDemšar\b', 'Demšar', text)
     # Fix missing space/question mark before question words
     text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before common words
@@ -799,7 +832,7 @@ def get_hotel_info_response(topic, question):
                     f"What time were you planning to arrive?"
                 )
         return (
-            f"Check-in is from {h['policies']['check_in']}, and check-out is between {h['policies']['check_out']}. "
+            f"Check-in is from {h['policies']['check_in']}, and check-out is by {h['policies']['check_out']}. "
             f"Late check-in or check-out can also be arranged on request — just let us know your plans! "
             f"Would you like help with a reservation?"
         )
