@@ -20,7 +20,7 @@ hotel_info = {
     "rooms": {
         "princess_suite": {
             "name": "Princess Suite",
-            "price": 250,
+            "price": 440,
             "currency": "EUR",
             "size_sqm": 55,
             "capacity": 2,
@@ -31,7 +31,7 @@ hotel_info = {
         },
         "luxury_suite": {
             "name": "Luxury Suite",
-            "price": 270,
+            "price": 480,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 2,
@@ -42,7 +42,7 @@ hotel_info = {
         },
         "penthouse_suite": {
             "name": "Penthouse Suite",
-            "price": 300,
+            "price": 430,
             "currency": "EUR",
             "size_sqm": 60,
             "capacity": 2,
@@ -51,20 +51,31 @@ hotel_info = {
             "features": ["2 floors", "King-sized bed", "Breathtaking views", "Most unique place in the house", "Cosy atmosphere"],
             "description": "The most unique place in the house, designed with good taste. 60 sq m in 2 floors. The atmosphere is the most special and cosy. Breathtaking views through the windows. Extremely comfortable King-sized bed provides the best sleep possible."
         },
-        "swan_suite": {
-            "name": "Swan Suite",
-            "price": 370,
+        "deluxe_suite": {
+            "name": "Deluxe Suite",
+            "price": 570,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 2,
             "bed": None,
             "view": "Lake view",
-            "features": ["Lake view", "Luxury furnishings", "Elegant suite"],
-            "description": "An elegant suite with stunning lake views and luxury furnishings."
+            "features": ["Lake view", "Luxury furnishings", "Elegant suite", "Spacious seating area", "Flat-screen TV"],
+            "description": "A deluxe suite featuring a spacious seating area with a flat-screen TV and luxurious amenities. Stunning lake views and elegant decor."
+        },
+        "superior_suite": {
+            "name": "Superior Suite",
+            "price": 570,
+            "currency": "EUR",
+            "size_sqm": None,
+            "capacity": 4,
+            "bed": None,
+            "view": "Lake and castle views",
+            "features": ["Perfect for families", "2 bedrooms", "Spacious", "Lake and castle views"],
+            "description": "Superior suite is a perfect choice for a family or group of friends. It has 2 bedrooms and spacious living areas with beautiful views."
         },
         "island_suite": {
             "name": "Island Suite",
-            "price": 380,
+            "price": 620,
             "currency": "EUR",
             "size_sqm": 65,
             "capacity": 4,
@@ -75,7 +86,7 @@ hotel_info = {
         },
         "prestige_suite": {
             "name": "Prestige Suite",
-            "price": 420,
+            "price": None,
             "currency": "EUR",
             "size_sqm": 72,
             "capacity": 2,
@@ -84,17 +95,6 @@ hotel_info = {
             "features": ["Ground floor", "Living area", "Dining area", "King bed overlooking lake", "Luxury bathroom", "Spacious terrace", "Big flat TV", "Lake view through all windows"],
             "description": "The absolute harmony of artful decor, elegance and spaciousness. 72 sq m with living area, small dining area, the most comfortable bed overlooking Lake Bled, very big luxury bathroom, spacious terrace and big flat TV. Located on the ground floor with unforgettable lake view through all windows."
         },
-        "castle_suite": {
-            "name": "Castle Suite",
-            "price": None,
-            "currency": "EUR",
-            "size_sqm": None,
-            "capacity": 2,
-            "bed": None,
-            "view": "Castle views",
-            "features": ["Stylish luxury suite", "Castle views"],
-            "description": "Stylish luxury suite with castle views."
-        }
     },
     "policies": {
         "check_in": "14:00 (2:00 PM)",
