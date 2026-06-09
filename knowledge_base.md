@@ -356,3 +356,90 @@
 - Additional charges apply
 - Iron and ironing board available on request
 
+## Seasonal Information
+
+### Spring (March - May)
+- Lake Bled begins to thaw, beautiful cherry blossoms
+- Hiking trails in the Julian Alps open up
+- Vintgar Gorge is particularly spectacular with snowmelt
+- Moderate prices, fewer crowds
+- Average temperatures: 8-18°C
+- Wildflowers bloom around the lake
+
+### Summer (June - August)
+- Peak season, warmest weather (20-30°C)
+- Lake swimming is possible (water temp 22-26°C)
+- Pletna boat rides to the island are daily
+- Open-air concerts and events in Bled
+- Highest rates apply (July-August)
+- Book well in advance for July-August
+- All outdoor activities available
+
+### Autumn (September - November)
+- Beautiful fall foliage around the lake
+- Triglav National Park is spectacular in autumn colors
+- Wine season in nearby Goriška Brda region
+- Moderate crowds, good value
+- Average temperatures: 6-16°C
+- Some outdoor activities wind down in late October
+
+### Winter (December - February)
+- Christmas market in Bled (December)
+- Magical snowy landscapes
+- Skiing available at Vogel Ski Resort (20 min drive)
+- Lakeside walks are peaceful and scenic
+- Lowest rates apply (except Christmas/New Year)
+- Average temperatures: -3 to 5°C
+- Possible to walk on frozen Lake Bled in very cold winters
+
+## Special Events & Experiences
+
+### Wedding & Celebration Packages
+- Villa Adora is available for intimate weddings and celebrations
+- Maximum 30 guests for garden events
+- In-house catering available
+- Wedding coordinator on request
+- Prestige Suite is popular for wedding nights
+
+### Corporate Retreats
+- Meeting room available for up to 20 people
+- Team-building activities can be arranged
+- Full villa buyout possible for groups
+- Catering and AV equipment available
+
+### Romantic Packages
+- Rose petals, champagne, and chocolates on arrival
+- Couples massage in wellness center
+- Private dinner on the terrace
+- Pletna boat ride to the island at sunset
+- Contact concierge to arrange
+
+## Frequently Asked Questions (Extended)
+
+### Is there a restaurant on-site?
+- Villa Adora offers in-room dining and terrace dining
+- Several excellent restaurants within 5-minute walk
+- Concierge can make restaurant reservations
+- Room service available during breakfast hours
+
+### What is the weather like in Bled?
+- Continental climate with warm summers and cold winters
+- Summer: 20-30°C, perfect for swimming and hiking
+- Winter: -3 to 5°C, possible snow, scenic frozen lake
+- Spring/Autumn: 6-18°C, ideal for sightseeing
+
+### What makes Villa Adora different from other Bled hotels?
+- Only 7 suites - intimate boutique experience
+- Directly on the lake shore
+- Heritage villa from 1878 with modern luxury
+- Personalized concierge service
+- Complimentary bike rental and wellness access
+
+### Is Villa Adora suitable for business travelers?
+- Yes, all suites have work desks
+- Reliable high-speed WiFi throughout
+- Meeting room available
+- Business center services
+- Airport transfer available
+- Quiet environment ideal for focused work
+
