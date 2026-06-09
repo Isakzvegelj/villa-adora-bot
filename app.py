@@ -1754,6 +1754,51 @@ def api_bookings():
     )
 
 
+@app.route("/api/health")
+def api_health():
+    """Health check endpoint."""
+    from datetime import datetime as _dt
+    return jsonify({
+        "status": "healthy",
+        "hotel": hotel_info["name"],
+        "timestamp": _dt.utcnow().isoformat(),
+    })
+
+
+@app.route("/api/suites")
+def api_suites():
+    """Return suite/room information."""
+    from datetime import datetime
+    suites = []
+    for key, room in hotel_info.get("rooms", {}).items():
+        suites.append({
+            "id": key,
+            "name": room.get("name", key),
+            "price": room.get("price"),
+            "currency": room.get("currency", "EUR"),
+            "size_sqm": room.get("size_sqm"),
+            "capacity": room.get("capacity"),
+            "bed": room.get("bed"),
+            "view": room.get("view"),
+            "features": room.get("features", []),
+            "description": room.get("description", ""),
+        })
+    return jsonify({"suites": suites, "count": len(suites)})
+
+
+@app.route("/api/info")
+def api_info():
+    """Return general hotel information."""
+    return jsonify({
+        "name": hotel_info.get("name"),
+        "tagline": hotel_info.get("tagline"),
+        "built": hotel_info.get("built"),
+        "heritage": hotel_info.get("heritage"),
+        "location": hotel_info.get("location"),
+        "amenities": hotel_info.get("amenities", []),
+    })
+
+
 @app.route("/admin")
 def admin():
     return render_template("admin.html", hotel_name=hotel_info["name"])
