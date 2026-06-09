@@ -248,10 +248,10 @@ _EXPERIENCES_TRANSLATED = {
 }
 _RESTAURANT_TRANSLATED = {
     "Slovenian": (
-        "Imamo restavracijo Adora Pop Up kar v hotelu! Eksklu\u017eivna restavracija z ustvarjalno kuhinjo "
+        "Imamo restavracijo Adora Pop Up kar v hotelu! Ekskluzivna restavracija z ustvarjalno kuhinjo "
         "z lokalnimi slovenskimi sestavinami pod vodstvom \u0161efa kuhinje Domena Dem\u0161ara. "
         "Terasa ima ene najlep\u0161ih razgledov na jezero. "
-        "Odprto: Kosilo in ve\u010dertja torek\u2013nedelja, brunk \u010detrtek\u2013sobota. "
+        "Odprto: Kosilo in ve\u010derja torek\u2013nedelja, brunk \u010detrtek\u2013sobota. "
         "Rezervacija: +386 40 558 158 / +386 51 603 858 ali evita.vilebled@gmail.com. "
         "\u017delite rezervirati mizo?"
     ),
@@ -323,31 +323,11 @@ _LOCATION_TRANSLATED = {
 }
 
 _BREAKFAST_TRANSLATED = {
-    "Slovenian": (
-        "Zajtrk je na voljo za 22 \u20ac na osebo, postre\u017een med 8. in 10. uro. Sve\u017ee pecivo, kruh in lokalni slovenski izdelki. "
-        "Nudimo tudi veganske, vegetarijanske in brezglutenske mo\u017enosti na zahtevo. "
-        "Ali \u017eelite dodati zajtrk k va\u0161i rezervaciji?"
-    ),
-    "German": (
-        "Fr\u00fchst\u00fcck ist f\u00fcr 22 \u20ac pro Person verf\u00fcgbar, serviert von 8-10 Uhr. Frische Geb\u00e4ck, Brot und lokale slowenische Produkte. "
-        "Wir bieten auch vegane, veget\u00e4re und glutenfreie Optionen auf Anfrage. "
-        "M\u00f6chten Sie Fr\u00fchst\u00fcck zu Ihrer Buchung hinzuf\u00fcgen?"
-    ),
-    "French": (
-        "Le petit-d\u00e9jeuner est disponible pour 22 \u20ac par personne, servi de 8h \u00e0 10h. P\u00e2tisseries fra\u00eeches, pain et produits locaux slov\u00e8nes. "
-        "Nous proposons \u00e9galement des options v\u00e9g\u00e9taliennes, v\u00e9g\u00e9tariennes et sans gluten sur demande. "
-        "Souhaitez-vous ajouter le petit-d\u00e9jeuner \u00e0 votre r\u00e9servation ?"
-    ),
-    "Italian": (
-        "La colazione \u00e8 disponibile a 22 \u20ac a persona, servita dalle 8 alle 10. Pasticceria fresca, pane e prodotti locali sloveni. "
-        "Offriamo anche opzioni vegane, vegetariane e senza glutine su richiesta. "
-        "Vuoi aggiungere la colazione alla tua prenotazione?"
-    ),
-    "Spanish": (
-        "El desayuno est\u00e1 disponible por 22 \u20ac por persona, servido de 8 a 10 AM. Pasteles frescos, pan y productos locales eslovenos. "
-        "Tambi\u00e9n ofrecemos opciones veganas, vegetarianas y sin gluten bajo pedido. "
-        "\u00bfTe gustar\u00eda agregar el desayuno a tu reserva?"
-    ),
+    "Slovenian": ("Zajtrk je na voljo za 22 \u20ac na osebo, postre\u017een med 8. in 10. uro. Sve\u017ee pecivo, kruh in lokalni slovenski izdelki. Nudimo tudi veganske, vegetarijanske in brezglutenske mo\u017enosti na zahtevo. Ali \u017eelite dodati zajtrk k va\u0161i rezervaciji?"),
+    "German": ("Fr\u00fchst\u00fcck ist f\u00fcr 22 \u20ac pro Person verf\u00fcgbar, serviert von 8-10 Uhr. Frische Geb\u00e4ck, Brot und lokale slowenische Produkte. Wir bieten auch vegane, veget\u00e4re und glutenfreie Optionen auf Anfrage. M\u00f6chten Sie Fr\u00fchst\u00fcck zu Ihrer Buchung hinzuf\u00fcgen?"),
+    "French": ("Le petit-d\u00e9jeuner est disponible pour 22 \u20ac par personne, servi de 8h \u00e0 10h. P\u00e2tisseries fra\u00eeches, pain et produits locaux slov\u00e8nes. Nous proposons \u00e9galement des options v\u00e9g\u00e9taliennes, v\u00e9g\u00e9tariennes et sans gluten sur demande. Souhaitez-vous ajouter le petit-d\u00e9jeuner \u00e0 votre r\u00e9servation ?"),
+    "Italian": ("La colazione \u00e8 disponibile a 22 \u20ac a persona, servita dalle 8 alle 10. Pasticceria fresca, pane e prodotti locali sloveni. Offriamo anche opzioni vegane, vegetariane e senza glutine su richiesta. Vuoi aggiungere la colazione alla tua prenotazione?"),
+    "Spanish": ("El desayuno est\u00e1 disponible por 22 \u20ac por persona, servido de 8 a 10 AM. Pasteles frescos, pan y productos locales eslovenos. Tambi\u00e9n ofrecemos opciones veganas, vegetarianas y sin gluten bajo pedido. \u00bfTe gustar\u00eda agregar el desayuno a tu reserva?"),
 }
 
 _PARKING_TRANSLATED = {
@@ -601,7 +581,7 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
         },
         "restaurant": {
             "English": " Would you like to make a reservation?",
-            "Slovenian": "\u017delite rezervirati mizo?",
+            "Slovenian": " \u017delite rezervirati mizo?",
             "German": " M\u00f6chten Sie eine Reservierung vornehmen?",
             "French": " Souhaitez-vous r\u00e9server une table ?",
             "Italian": " Vuoi riservare un tavolo?",
@@ -609,7 +589,7 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
         },
         "location": {
             "English": " Would you like directions or tips on getting here?",
-            "Slovenian": "\u017delite navodila za pot do nas ali nasvete za prihod?",
+            "Slovenian": " \u017delite navodila za pot do nas ali nasvete za prihod?",
             "German": " M\u00f6chten Sie eine Wegbeschreibung oder Tipps f\u00fcr die Anreise?",
             "French": " Souhaitez-vous des indications ou des conseils pour venir ?",
             "Italian": " Vuoi indicazioni o suggerimenti per raggiungerci?",
@@ -817,7 +797,7 @@ def _detect_language(message: str) -> str:
         return "French"
     # French word-based detection for shared accented chars (é, è, à, ù)
     if any(c in msg for c in ['é', 'è', 'à', 'ù']):
-        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec ", " l'hôtel ", " l'hotel ", " où ", " êtes ", " sommes ", " avez-vous "]
+        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec ", " l'hôtel ", " l'hotel ", " où ", " êtes ", " sommes "]
         if any(w in msg for w in french_words):
             return "French"
 
@@ -1415,7 +1395,6 @@ def api_chat():
                 direct_response = topic_direct_map[topic][detected_lang]
 
             if direct_response:
-                # Use pre-translated content directly - update session and return
                 messages.append({"role": "user", "content": user_message})
                 messages.append({"role": "assistant", "content": direct_response})
                 sessions[session_id] = messages
