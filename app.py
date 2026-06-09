@@ -330,6 +330,7 @@ def fix_spacing(text):
     text = re.sub(r'\bfreeWiFi\b', 'free WiFi', text, flags=re.IGNORECASE)
     text = re.sub(r'\balate\b', 'a late', text, flags=re.IGNORECASE)
     text = re.sub(r'\bhelpyou\b', 'help you', text, flags=re.IGNORECASE)
+    text = re.sub(r'\byoushare\b', 'you share', text, flags=re.IGNORECASE)
     text = re.sub(r'\bveganoptions\b', 'vegan options', text, flags=re.IGNORECASE)
     text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
     text = re.sub(r'\barrangea\b', 'arrange a', text, flags=re.IGNORECASE)
