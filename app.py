@@ -286,7 +286,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         "smoking", "smoke", "cigarette", "kajenje", "kaditi", "cigaretta", "rauchen", "fumare", "fumer", "fumar",
         "contact", "phone", "email", "call", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar",
         "late", "pozen", "spät", "tardif", "tardío",
-        "opzioni", "opciones", "options", "optionen", "možnosti",
+        "opzioni", "opciones", "options", "optionen", "možnosti", "tarifs", "preise",
         # Italian/Spanish dietary
         "vegano", "vegana", "vegani", "vegane", "glutine", "senza",
         "vegetariano", "vegetariana", "allergico", "intollerante",
