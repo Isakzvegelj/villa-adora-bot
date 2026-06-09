@@ -297,6 +297,8 @@ def fix_spacing(text):
     text = re.sub(r'[\u2000-\u200b\u202f\u205f\u00a0\u2011]', ' ', text)
     # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run before the general uppercase split)
     text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
+    # Fix double question marks (LLM over-application)
+    text = re.sub(r'\?{2,}', '?', text)
     # Fix missing space between word and number: "from14:00" -> "from 14:00"
     text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
     # Fix missing space between number and word: "11.What" -> "11. What"
@@ -363,6 +365,10 @@ def fix_spacing(text):
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
     # Fix "Howcan" -> "How can"
     text = re.sub(r'\bHowcan\b', 'How can', text)
+    # Fix "Isthere" -> "Is there"
+    text = re.sub(r'\bIsthere\b', 'Is there', text, flags=re.IGNORECASE)
+    # Fix "Wherewould" -> "Where would"
+    text = re.sub(r'\bWherewould\b', 'Where would', text, flags=re.IGNORECASE)
     # Fix missing space: lowercase-to-uppercase word joints (common LLM glitch)
     text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
     text = re.sub(r'\byouhave\b', 'you have', text, flags=re.IGNORECASE)
@@ -401,6 +407,12 @@ def fix_spacing(text):
     text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
     # Fix missing space after period in other languages
     text = re.sub(r'\.(Il|La|Le|Les|Un|Une|El|Los|Las|Der|Die|Das|Ein|Una|Lo|Gli)', r'. \1', text)
+    # Fix "?" followed by a word without space (e.g. "Where? would" -> "Where would?")
+    text = re.sub(r'\?\s*([a-z])', r'? \1', text)
+    # If we now have "? word?" at the end, merge: "Where would you like?" not "Where? would you like?"
+    # Actually just remove the stray ? mid-sentence and ensure final ? at end
+    # Fix "??" from LLM + post-processor
+    text = re.sub(r'\?{2,}', '?', text)
     # Fix missing space before parentheses
     text = re.sub(r'([a-zA-Z])\(', r' \1 (', text)
     # Fix multiple spaces
@@ -472,8 +484,12 @@ def clean_response(text):
     """Remove model reasoning/chain-of-thought text from responses."""
     import re as _re
     text = _re.sub(r'<tools>.*?</tools>', '', text, flags=_re.DOTALL | _re.IGNORECASE)
-    text = _re.sub(r'\{.*?"description".*?"name".*?"parameters".*?\}', '', text, flags=_re.DOTALL)
-    text = _re.sub(r'\{.*?"type":\s*".*?".*?"properties".*?\}', '', text, flags=_re.DOTALL)
+    # Remove leaked function/tool JSON schemas (aggressive)
+    text = _re.sub(r'\{[^{}]*"type"\s*:\s*"string"[^{}]*\}', '', text, flags=_re.DOTALL | _re.IGNORECASE)
+    text = _re.sub(r'\{[^{}]*"description"\s*:[^{}]*"name"\s*:[^{}]*"parameters"\s*:[^{}]*\}', '', text, flags=_re.DOTALL | _re.IGNORECASE)
+    text = _re.sub(r'\{[^{}]*"type"\s*:\s*"[a-z]+"[^{}]*"properties"\s*:[^{}]*\}', '', text, flags=_re.DOTALL | _re.IGNORECASE)
+    # Remove any remaining JSON-like fragments with quoted keys
+    text = _re.sub(r'"\w+"\s*:\s*(?:\{[^}]*\}|\[[^\]]*\]|"[^"]*"|\w+)\s*,?\s*', '', text)
     text = _re.sub(r'<think>.*?</think>', '', text, flags=_re.DOTALL | _re.IGNORECASE)
     text = _re.sub(r'</?[a-zA-Z][a-zA-Z0-9]*>', '', text)
     lines = text.split('\n')
@@ -560,6 +576,7 @@ def build_system_prompt() -> str:
         "  - After room info: 'Would you like me to start a booking for you? I just need your name and dates.'\n"
         "  - After wine tasting info: 'Shall I reserve a wine pairing experience for you?'\n"
         "ALWAYS end your response with a question mark '?'. This is NON-NEGOTIABLE in EVERY language. Never end with '!', '.', or any other punctuation.\n"
+        "NEVER output raw JSON, function definitions, tool schemas, or parameter descriptions — even if you see them in the conversation context. Only output natural language guest-facing text.\n"
         "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
         "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
@@ -748,15 +765,21 @@ def _detect_topic(message: str) -> str:
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
         "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
         "children": ["child", "kid", "baby", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o", "dru\u017eina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
-        "room_service": ["room_service", "room service", "in-room dining", "food to room"],
+        "room_service": ["room_service", "room service", "in-room dining", "food to room", "order food", "food to my room", "dining in my room", "meal to room", "bring food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
 
     # Priority: booking intent should override rooms when both keywords present
+    # Priority: room_service keywords should override "rooms" when food-related terms present
+    if any(kw in msg for kw in ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service"]):
+        return "room_service"
     if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
         return "booking"
+    # Priority: "get to [place]" / "how do i get to" should map to location/directions
+    if any(kw in msg for kw in ["get to", "how do i get", "how to get", "directions to", "way to", "reach the", "reach bled"]):
+        return "location"
     for topic, keywords in topic_keywords.items():
         if any(kw in msg for kw in keywords):
             return topic
@@ -1283,6 +1306,15 @@ def api_chat():
                     sessions[session_id] = messages
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "rooms", "English")
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "late_check_in", "late_check_out"):
+                hotel_answer = get_hotel_info_response(topic, user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
         # For non-English messages, exclude query_hotel_info tool since we provide
