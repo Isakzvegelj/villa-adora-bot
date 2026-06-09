@@ -1565,7 +1565,7 @@ def api_chat():
                 if is_non_english and reply.get("content"):
                     content = reply["content"]
                     # Check if response is still mostly English (simple heuristic)
-                    english_words = ["the ", "we ", "our ", "you ", "have ", "are ", "with ", "and ", "for ", "this ", "that ", "here ", "there ", "would ", "could ", "should ", "will ", "can ", "your"]
+                    english_words = ["the ", "we ", "our ", "you ", "have ", "are ", "with ", "and ", "for ", "this ", "that ", "here ", "there ", "would ", "could ", "should ", "will ", "can ", "your", "is ", "it ", "to ", "of ", "in ", "on ", "at ", "as ", "be ", "do ", "no ", "if ", "my ", "so "]
                     non_english_indicators = {
                         "Slovenian": ["imo", "vas", "prosim", "hvala", "sobe", "apartma", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid"],
                         "German": ["ich ", "sie ", "das ", "die ", "der ", "und ", "für ", "mit ", "haben ", "sind ", "können ", "möchten ", "guten", "vielen"],
