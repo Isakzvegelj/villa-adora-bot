@@ -140,7 +140,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Otoški apartmaj, 65 m², za 4 osebe, 380 €/noč — 2 luksuzni spalnici, 2 balkona\n"
         "• Prestižni apartmaj, 72 m², za 2 osebi, 420 €/noč — Pritličje, pogled na jezero\n"
         "• Grajski apartmaj, za 2 osebi — Elegantna suita, pogled na grad\n"
-        "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume!"
+        "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
     "German": (
         "Wir haben 7 wundersch\u00f6ne Suiten mit atemberaubendem Seeblick:\n"
@@ -151,7 +151,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "\u2022 Insel Suite, 65 m\u00b2, f\u00fcr 4 G\u00e4ste, 380 \u2014 \u20ac/Nacht \u2014 2 Luxusschlafzimmer, 2 Balkone\n"
         "\u2022 Prestige Suite, 72 m\u00b2, f\u00fcr 2 G\u00e4ste, 420 \u2014 \u20ac/Nacht \u2014 Erdgeschoss, Seeblick\n"
         "\u2022 Burg Suite, f\u00fcr 2 G\u00e4ste \u2014 Stilvolle Luxussuite, Blick auf die Burg\n"
-        "Welche Suite gef\u00e4llt Ihnen am besten? Ich starte gerne eine Buchung \u2014 ich brauche nur Ihren Namen und Ihre Reisedaten!"
+        "Welche Suite gef\u00e4llt Ihnen am besten? Ich starte gerne eine Buchung \u2014 ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
     "French": (
         "Nous avons 7 magnifiques suites avec vue imprenable sur le lac:\n"
@@ -162,7 +162,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "\u2022 Suite \u00cele, 65 m\u00b2, pour 4 personnes, 380 \u20ac/nuit \u2014 2 chambres de luxe, 2 balcons\n"
         "\u2022 Suite Prestige, 72 m\u00b2, pour 2 personnes, 420 \u20ac/nuit \u2014 Rez-de-chauss\u00e9e, salon\n"
         "\u2022 Suite Ch\u00e2teau, pour 2 personnes \u2014 Suite de luxe \u00e9l\u00e9gante, vue sur le ch\u00e2teau\n"
-        "Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates!"
+        "Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
         "Abbiamo 7 splendide suite con vista mozzafiato sul lago:\n"
@@ -173,7 +173,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "\u2022 Suite Isola, 65 m\u00b2, per 4 persone, 380 \u20ac/notte \u2014 2 camere da letto di lusso, 2 balconi\n"
         "\u2022 Suite Prestige, 72 m\u00b2, per 2 persone, 420 \u20ac/notte \u2014 Piano terra, vista lago\n"
         "\u2022 Suite Castello, per 2 persone \u2014 Suite di lusso elegante, vista sul castello\n"
-        "Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date!"
+        "Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date?"
     ),
     "Spanish": (
         "Tenemos 7 hermosas suites con vistas impresionantes al lago:\n"
@@ -184,7 +184,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "\u2022 Suite Isla, 65 m\u00b2, para 4 personas, 380 \u20ac/noche \u2014 2 habitaciones de lujo, 2 balcones\n"
         "\u2022 Suite Prestige, 72 m\u00b2, para 2 personas, 420 \u20ac/noche \u2014 Planta baja, vista al lago\n"
         "\u2022 Suite Castillo, para 2 personas \u2014 Suite de lujo elegante, vistas al castillo\n"
-        "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas!"
+        "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas?"
     ),
 }
 
@@ -199,7 +199,7 @@ _EXPERIENCES_TRANSLATED = {
         "\u2022 6 km potokoli jezera in 15 poti za pohodni\u0161tvo\n"
         "\u2022 Izleti na Bohinjsko jezero, v Ljubljano, Postojnsko jamo\n"
         "\u2022 Masa\u017ea v sobi, ve\u010deri z vinom v vrtu\n"
-        "Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati!"
+        "Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati?"
     ),
     "German": (
         "In und um Bled gibt es viel zu erleben!:\n"
@@ -425,30 +425,30 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
     # Localized follow-up questions by topic and language
     questions = {
         "rooms": {
-            "English": " Which one catches your eye? I can start a booking for you \u2014 just tell me your name and dates!",
-            "Slovenian": " Kateri vas najbolj pritegne? Lahko za\u010dnem z rezervacijo \u2014 samo povejte mi va\u0161e ime in datume!",
-            "German": " Welche Suite gef\u00e4llt Ihnen am besten? Ich kann gerne eine Buchung starten \u2014 ich brauche nur Ihren Namen und Ihre Reisedaten!",
-            "French": " Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates !",
-            "Italian": " Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date!",
-            "Spanish": "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas!",
-            "Croatian": " Koji vas najvi\u0161e zanima? Mogu pokrenuti rezervaciju \u2014 samo mi recite va\u0161e ime i datume!",
+            "English": " Which one catches your eye? I can start a booking for you \u2014 just tell me your name and dates?",
+            "Slovenian": " Kateri vas najbolj pritegne? Lahko za\u010dnem z rezervacijo \u2014 samo povejte mi va\u0161e ime in datume?",
+            "German": " Welche Suite gef\u00e4llt Ihnen am besten? Ich kann gerne eine Buchung starten \u2014 ich brauche nur Ihren Namen und Ihre Reisedaten?",
+            "French": " Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates ?",
+            "Italian": " Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date?",
+            "Spanish": "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas?",
+            "Croatian": " Koji vas najvi\u0161e zanima? Mogu pokrenuti rezervaciju \u2014 samo mi recite va\u0161e ime i datume?",
         },
         "experiences": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
-            "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati!",
-            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!",
+            "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati?",
+            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
+            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
         },
         "activities": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
-            "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati!",
-            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!",
+            "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati?",
+            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
+            "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
         },
     }
@@ -934,11 +934,11 @@ def get_hotel_info_response(topic, question):
                 lines.extend(suitable)
                 lines.append("\nAll our suites:")
                 lines.extend(all_rooms)
-                lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
+                lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
                 return "\n".join(lines)
             lines = ["We have 7 beautiful suites, all with stunning lake views:"]
             lines.extend(all_rooms)
-            lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
+            lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
             return "\n".join(lines)
         lines = ["We have 7 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
@@ -947,7 +947,7 @@ def get_hotel_info_response(topic, question):
             price_str = f" — €{r['price']}/night" if r.get("price") and is_price_query else ""
             feat = ", ".join(r.get("features", [])[:2])
             lines.append(f"• {r['name']}{size}{cap}{price_str} — {feat}")
-        lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates!")
+        lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
         return "\n".join(lines)
 
     # Policies
