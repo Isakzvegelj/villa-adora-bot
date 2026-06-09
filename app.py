@@ -191,59 +191,321 @@ _ROOM_LISTINGS_TRANSLATED = {
 
 _EXPERIENCES_TRANSLATED = {
     "Slovenian": (
-        "V Bledu in okoli vas \u010daka veliko zanimivosti!:\n"
-        "\u2022 Kajanje na Bledski otok in obisk cerkve Marijinega vnebovzetja\n"
-        "\u2022 Plavanje, SUP, kajak in ladijske vo\u017enje na jezeru\n"
-        "\u2022 Sprehod po soteski Vintgar (2,4 km)\n"
-        "\u2022 Obisk Blejskega gradu (30 min hoje)\n"
-        "\u2022 6 km potokoli jezera in 15 poti za pohodni\u0161tvo\n"
-        "\u2022 Izleti na Bohinjsko jezero, v Ljubljano, Postojnsko jamo\n"
-        "\u2022 Masa\u017ea v sobi, ve\u010deri z vinom v vrtu\n"
+        "V Bledu in okoli vas čaka veliko zanimivosti!:\n"
+        "• Kajanje na Bledski otok in obisk cerkve Marijinega vnebovzetja\n"
+        "• Plavanje, SUP, kajak in ladijske vožnje na jezeru\n"
+        "• Sprehod po soteski Vintgar (2,4 km)\n"
+        "• Obisk Blejskega gradu (30 min hoje)\n"
+        "• 6 km potokoli jezera in 15 poti za pohodništvo\n"
+        "• Izleti na Bohinjsko jezero, v Ljubljano, Postojnsko jamo\n"
+        "• Masaža v sobi, večeri z vinom v vrtu\n"
         "Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati!"
     ),
     "German": (
         "In und um Bled gibt es viel zu erleben!:\n"
-        "\u2022 Fahrt zur Bled-Insel & Besuch der Wallfahrtskirche\n"
-        "\u2022 Schwimmen, SUP, Kajak und Bootstouren\n"
-        "\u2022 Vintgar-Schlucht Spaziergang (2,4 km)\n"
-        "\u2022 Bleder Burg Besuch (30 Min. zu Fu\u00df)\n"
-        "\u2022 6 km Uferweg & 15 Wanderwege\n"
-        "\u2022 Tagesausfl\u00fcche nach Bohinj, Ljubljana, Postojna\n"
-        "\u2022 In-Zimmer Massage, Gartenabende mit Wein\n"
-        "Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!"
+        "• Fahrt zur Bled-Insel & Besuch der Wallfahrtskirche\n"
+        "• Schwimmen, SUP, Kajak und Bootstouren\n"
+        "• Vintgar-Schlucht Spaziergang (2,4 km)\n"
+        "• Bleder Burg Besuch (30 Min. zu Fuß)\n"
+        "• 6 km Uferweg & 15 Wanderwege\n"
+        "• Tagesausflüge nach Bohinj, Ljubljana, Postojna\n"
+        "• In-Zimmer Massage, Gartenabende mit Wein\n"
+        "Welche Aktivität interessiert Sie am meisten? Ich helfe gerne bei der Organisation!"
     ),
     "French": (
-        "\u00c0 Bled, il y a beaucoup \u00e0 faire!:\n"
-        "\u2022 Balade vers l'\u00eele de Bled et visite de l'\u00e9glise\n"
-        "\u2022 Natation, paddle, kayak et excursions en bateau\n"
-        "\u2022 Gorges de Vintgar (2,4 km)\n"
-        "\u2022 Ch\u00e2teau de Bled (30 min \u00e0 pied)\n"
-        "\u2022 Sentier de 6 km autour du lac\n"
-        "\u2022 Excursions \u00e0 Bohinj, Ljubljana, grotte de Postojna\n"
-        "\u2022 Massage en chambre, soir\u00e9es avec vin\n"
-        "Laquelle vous int\u00e9resse le plus? Je serai ravi de vous aider \u00e0 l'organiser!"
+        "À Bled, il y a beaucoup à faire!:\n"
+        "• Balade vers l'île de Bled et visite de l'église\n"
+        "• Natation, paddle, kayak et excursions en bateau\n"
+        "• Gorges de Vintgar (2,4 km)\n"
+        "• Château de Bled (30 min à pied)\n"
+        "• Sentier de 6 km autour du lac\n"
+        "• Excursions à Bohinj, Ljubljana, grotte de Postojna\n"
+        "• Massage en chambre, soirées avec vin\n"
+        "Laquelle vous intéresse le plus? Je serai ravi de vous aider à l'organiser!"
     ),
     "Italian": (
-        "A Bled c'\u00e8 tanto da fare!:\n"
-        "\u2022 Gita all'Isola di Bled e visita della chiesa\n"
-        "\u2022 Nuoto, SUP, kayak e gite in barca\n"
-        "\u2022 Gole di Vintgar (2,4 km)\n"
-        "\u2022 Castello di Bled (30 min a piedi)\n"
-        "\u2022 Sentiero di 6 km e 15 sentieri segnalati\n"
-        "\u2022 Escursioni a Bohinj, Lubiana, grotta di Postojna\n"
-        "\u2022 Massaggio in camera, serate con vino\n"
-        "Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!"
+        "A Bled c'è tanto da fare!:\n"
+        "• Gita all'Isola di Bled e visita della chiesa\n"
+        "• Nuoto, SUP, kayak e gite in barca\n"
+        "• Gole di Vintgar (2,4 km)\n"
+        "• Castello di Bled (30 min a piedi)\n"
+        "• Sentiero di 6 km e 15 sentieri segnalati\n"
+        "• Escursioni a Bohinj, Lubiana, grotta di Postojna\n"
+        "• Massaggio in camera, serate con vino\n"
+        "Quale ti interessa di più? Sarà un piacere aiutarti!"
     ),
     "Spanish": (
         "En Bled hay mucho por hacer!:\n"
-        "\u2022 Paseo a la Isla de Bled y visita de la iglesia\n"
-        "\u2022 Nataci\u00f3n, paddle, kayak y excursiones\n"
-        "\u2022 Gargantas de Vintgar (2,4 km)\n"
-        "\u2022 Castillo de Bled (30 min a pie)\n"
-        "\u2022 Sendero de 6 km y 15 senderos\n"
-        "\u2022 Excursiones a Bohinj, Ljubljana, cueva de Postojna\n"
-        "\u2022 Masaje en habitaci\u00f3n, noches con vino\n"
-        "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!"
+        "• Paseo a la Isla de Bled y visita de la iglesia\n"
+        "• Natación, paddle, kayak y excursiones\n"
+        "• Gargantas de Vintgar (2,4 km)\n"
+        "• Castillo de Bled (30 min a pie)\n"
+        "• Sendero de 6 km y 15 senderos\n"
+        "• Excursiones a Bohinj, Ljubljana, cueva de Postojna\n"
+        "• Masaje en habitación, noches con vino\n"
+        "¿Cuál te interesa más? ¡Estaré encantado de ayudarte!"
+    ),
+}
+
+_RESTAURANT_TRANSLATED = {
+    "Slovenian": (
+        "Imamo restavracijo Adora Pop Up kar v hotelu! Ekskluzivna restavracija z ustvarjalno kuhinjo "
+        "z lokalnimi slovenskimi sestavinami pod vodstvom šefa kuhinje Domena Demšara. "
+        "Terasa ima ene najlepših razgledov na jezero. "
+        "Odprto: Kosilo in večerja torek–nedelja, brunk četrtek–sobota. "
+        "Rezervacija: +386 40 558 158 / +386 51 603 858 ali evita.vilebled@gmail.com. "
+        "Želite rezervirati mizo?"
+    ),
+    "German": (
+        "Wir haben das Adora Pop Up Restaurant direkt im Hotel! Exklusives kulinarisches Erlebnis "
+        "mit kreativer, lokal inspirierter slowenischer Küche unter der Leitung von Küchenchef Domen Demšar. "
+        "Die Terrasse bietet atemberaubende Sonnenuntergangsaussichten über Bled. "
+        "Geöffnet: Mittagessen & Abendessen Dienstag–Sonntag, Brunch Donnerstag–Samstag. "
+        "Reservierung: +386 40 558 158 / +386 51 603 858 oder evita.vilebled@gmail.com. "
+        "Möchten Sie eine Reservierung vornehmen?"
+    ),
+    "French": (
+        "Nous avons le restaurant Adora Pop Up directement à l'hôtel! Expérience culinaire exclusive "
+        "avec une cuisine créative d'inspiration slovène locale, sous la direction du chef Domen Demšar. "
+        "La terrasse offre des couchers de soleil à couper le souffle sur Bled. "
+        "Ouvert: Déjeuner et dîner du mardi au dimanche, brunch du jeudi au samedi. "
+        "Réservation: +386 40 558 158 / +386 51 603 858 ou evita.vilebled@gmail.com. "
+        "Souhaitez-vous réserver une table ?"
+    ),
+    "Italian": (
+        "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Esperienza culinaria esclusiva "
+        "con cucina creativa di ispirazione slovena locale, sotto la guida dello chef Domen Demšar. "
+        "La terrazza offre tramonti mozzafiato su Bled. "
+        "Aperto: Pranzo e cena da martedì a domenica, brunch da giovedì a sabato. "
+        "Prenotazione: +386 40 558 158 / +386 51 603 858 o evita.vilebled@gmail.com. "
+        "Vuoi riservare un tavolo?"
+    ),
+    "Spanish": (
+        "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Experiencia culinaria exclusiva "
+        "con cocina creativa de inspiración eslovena local, bajo la dirección del chef Domen Demšar. "
+        "La terrazza ofrece atardeceres impresionantes sobre Bled. "
+        "Abierto: Almuerzo y cena de martes a domingo, brunch de jueves a sábado. "
+        "Reserva: +386 40 558 158 / +386 51 603 858 o evita.vilebled@gmail.com. "
+        "¿Te gustaría reservar una mesa?"
+    ),
+}
+
+_LOCATION_TRANSLATED = {
+    "Slovenian": (
+        "Villa Adora je na Cesti svobode 35, 4260 Bled, Slovenija, neposredno na obali jezera Bled — "
+        "med redkimi hoteli na tako odlični lokaciji. Pogledi na Bledski otok, Blejski grad in gore Triglava. "
+        "2 minuti hoje do pristanišča za čolne, 15 minut do središča Bleda, 30 minut do Blejskega gradu. "
+        "Telefon: +386 51 603 858. Želite navodila za pot do nas ali nasvete za prihod?"
+    ),
+    "German": (
+        "Villa Adora befindet sich an der Cesta svobode 35, 4260 Bled, Slowenien, direkt am Ufer des Bleder Sees — "
+        "einer der wenigen Hotels mit dieser erstklassigen Lage. Blick auf die Bled-Insel, die Bleder Burg und die Triglav-Berge. "
+        "2 Minuten zu Fuß zur Bootsanlegestelle, 15 Minuten zum Stadtzentrum von Bled, 30 Minuten zur Bleder Burg. "
+        "Telefon: +386 51 603 858. Möchten Sie eine Wegbeschreibung oder Tipps für die Anreise?"
+    ),
+    "French": (
+        "Villa Adora se trouve au Cesta svobode 35, 4260 Bled, Slovénie, directement au bord du lac de Bled — "
+        "l'un des rares hôtels avec cet emplacement privilégié. Vue sur l'île de Bled, le château de Bled et les montagnes du Triglav. "
+        "2 minutes à pied de la station de bateaux, 15 minutes du centre-ville de Bled, 30 minutes du château de Bled. "
+        "Téléphone: +386 51 603 858. Souhaitez-vous des indications ou des conseils pour venir ?"
+    ),
+    "Italian": (
+        "Villa Adora si trova in Cesta svobode 35, 4260 Bled, Slovenia, direttamente sulle rive del lago di Bled — "
+        "uno dei pochi hotel con questa posizione privilegiata. Vista sull'Isola di Bled, il Castello di Bled e le montagne del Triglav. "
+        "2 minuti a piedi dalla stazione dei battelli, 15 minuti dal centro di Bled, 30 minuti dal Castello di Bled. "
+        "Telefono: +386 51 603 858. Vuoi indicazioni o suggerimenti per raggiungerci?"
+    ),
+    "Spanish": (
+        "Villa Adora se encuentra en Cesta svobode 35, 4260 Bled, Eslovenia, directamente a orillas del lago de Bled — "
+        "uno de los pocos hoteles con esta ubicación privilegiada. Vistas a la Isla de Bled, el Castillo de Bled y las montañas del Triglav. "
+        "2 minutos a pie de la estación de botes, 15 minutos del centro de Bled, 30 minutos del Castillo de Bled. "
+        "Teléfono: +386 51 603 858. ¿Te gustaría recibir indicaciones o consejos para llegar?"
+    ),
+}
+
+_BREAKFAST_TRANSLATED = {
+    "Slovenian": (
+        "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Sveže pecivo, kruh in lokalni slovenski izdelki. "
+        "Nudimo tudi veganske, vegetarijanske in brezglutenske možnosti na zahtevo. "
+        "Ali želite dodati zajtrk k vaši rezervaciji?"
+    ),
+    "German": (
+        "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Frische Gebäck, Brot und lokale slowenische Produkte. "
+        "Wir bieten auch vegane, vegetäre und glutenfreie Optionen auf Anfrage. "
+        "Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?"
+    ),
+    "French": (
+        "Le petit-déjeuner est disponible pour 22 € par personne, servi de 8h à 10h. Pâtisseries fraîches, pain et produits locaux slovènes. "
+        "Nous proposons également des options végétaliennes, végétariennes et sans gluten sur demande. "
+        "Souhaitez-vous ajouter le petit-déjeuner à votre réservation ?"
+    ),
+    "Italian": (
+        "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Pasticceria fresca, pane e prodotti locali sloveni. "
+        "Offriamo anche opzioni vegane, vegetariane e senza glutine su richiesta. "
+        "Vuoi aggiungere la colazione alla tua prenotazione?"
+    ),
+    "Spanish": (
+        "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. Pasteles frescos, pan y productos locales eslovenos. "
+        "También ofrecemos opciones veganas, vegetarianas y sin gluten bajo pedido. "
+        "¿Te gustaría agregar el desayuno a tu reserva?"
+    ),
+}
+
+_PARKING_TRANSLATED = {
+    "Slovenian": (
+        "Imamo brezplačno parkirišče — 8 parkirnih mest pred hotelom. "
+        "Boste vozili v Bled ali želite nasvete za javni prevoz?"
+    ),
+    "German": (
+        "Wir bieten kostenlosen privaten Parkplatz an — 8 Parkplätze direkt vor dem Hotel. "
+        "Kommen Sie mit dem Auto nach Bled, oder benötigen Sie Tipps für den öffentlichen Nahverkehr?"
+    ),
+    "French": (
+        "Nous offrons un parking privé gratuit — 8 places de parking devant l'hôtel. "
+        "Venez-vous à Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?"
+    ),
+    "Italian": (
+        "Offriamo parcheggio privato gratuito — 8 posti auto davanti all'hotel. "
+        "Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?"
+    ),
+    "Spanish": (
+        "Ofrecemos estacionamiento privado gratuito — 8 espacios de estacionamiento frente al hotel. "
+        "¿Vas a venir a Bled en coche, o te gustaría recibir consejos sobre transporte público?"
+    ),
+}
+
+_PETS_TRANSLATED = {
+    "Slovenian": (
+        "Hišne živali so dobrolepo dobrodošle na zahtevo — 35 € na žival na noč. "
+        "Ali načrtujete, da boste pripeljali krznenega prijatelja?"
+    ),
+    "German": (
+        "Haustiere sind auf Anfrage willkommen — 35 € pro Tier pro Nacht. "
+        "Planen Sie, ein pelziges Mitglied mitzubringen?"
+    ),
+    "French": (
+        "Les animaux de compagnie sont acceptés sur demande — 35 € par animal et par nuit. "
+        "Prévoyez-vous d'amener un ami à quatre pattes ?"
+    ),
+    "Italian": (
+        "Gli animali domestici sono benvenuti su richiesta — 35 € per animale a notte. "
+        "Hai intenzione di portare un amico a quattro zampe?"
+    ),
+    "Spanish": (
+        "Las mascotas son bienvenidas bajo petición — 35 € por mascota por noche. "
+        "¿Planeas traer a un amigo peludo?"
+    ),
+}
+
+_CHECKIN_TRANSLATED = {
+    "Slovenian": (
+        "Prijava je od 14:00 do 23:00, odjava do 11:00. "
+        "Pozna prijava/odjava je na voljo na zahtevo — kontaktirajte recepcijo. "
+        "Ob kateri uri načrtujete prihod?"
+    ),
+    "German": (
+        "Check-in ist von 14:00 bis 23:00, Check-out bis 11:00. "
+        "Später Check-in/Check-out ist auf Anfrage möglich — kontaktieren Sie die Rezeption. "
+        "Um welche Uhrzeit planen Sie Ihre Ankunft?"
+    ),
+    "French": (
+        "L'enregistrement est de 14h00 à 23h00, le départ à 11h00. "
+        "L'enregistrement/départ tardif est possible sur demande — contactez la réception. "
+        "À quelle heure prévoyez-vous d'arriver ?"
+    ),
+    "Italian": (
+        "Il check-in è dalle 14:00 alle 23:00, il check-out fino alle 11:00. "
+        "Check-in/check-out tardivo è disponibile su richiesta — contaccia la reception. "
+        "A che ora prevedi di arrivare?"
+    ),
+    "Spanish": (
+        "El check-in es de 14:00 a 23:00, el check-out hasta las 11:00. "
+        "Check-in/check-out tardío está disponible bajo petición — contacte con recepción. "
+        "¿A qué hora planeas llegar?"
+    ),
+}
+
+_WINE_TRANSLATED = {
+    "Slovenian": (
+        "Naša vinska karta je sestavljena iz najboljših slovenskih vin iz okolice Bleda, jih izbira naš strokovnjak. "
+        "Vinarna ponuja tako lokalne kot mednarodne oznake. Vino z združljivostjo z degustacijskim menijem je na voljo (približno 35 € na osebo). "
+        "Želite rezervirati mizo?"
+    ),
+    "German": (
+        "Unsere Weinkarte wird von einem Hausesommelier kuratiert und bietet die besten slowenische Weine aus der Nähe von Bled "
+        "sowie ausgewählte internationale Etiketten. Weinbegleitung zum Degustationsmenü verfügbar (ca. 35 € pro Person). "
+        "Möchten Sie einen Tisch reservieren?"
+    ),
+    "French": (
+        "Notre carte des vins est élaborée par un sommelier interne, proposant les meilleurs vins slovènes près de Bled "
+        "ainsi que des labels internationaux sélectionnés. Accord mets et vins disponible avec le menu dégustation (environ 35 € par personne). "
+        "Souhaitez-vous réserver une table ?"
+    ),
+    "Italian": (
+        "La nostra lista dei vini è curata da un sommelier interno, con i migliori vini sloveni vicino a Bled "
+        "e etichette internazionali selezionate. Abbinamento vini disponibile con il menu degustazione (circa 35 € a persona). "
+        "Vuoi riservare un tavolo?"
+    ),
+    "Spanish": (
+        "Nuestra lista de vinos está curada por un sumiller interno, con los mejores vinos eslovenos cerca de Bled "
+        "y etiquetas internacionales seleccionadas. Maridaje de vinos disponible con el menú degustación (aproximadamente 35 € por persona). "
+        "¿Te gustaría reservar una mesa?"
+    ),
+}
+
+_BAR_TRANSLATED = {
+    "Slovenian": (
+        "Naš bar streže elegantne koktaje in aperitive vsak dan na terasi s panoramskim razgledom na jezero. "
+        "Popoln kraj za večerje s soncem! Želite več informacij o našem jedilniku pijač?"
+    ),
+    "German": (
+        "Unsere Bar serviert elegante Cocktails und Aperitivos täglich auf der Terrasse mit Panoramablick auf den See. "
+        "Der perfekte Ort für Drinks bei Sonnenuntergang! Möchten Sie mehr über unsere Getränkekarte erfahren?"
+    ),
+    "French": (
+        "Notre bar sert des cocktails élégants et des apéritifs quotidiennement sur la terrasse avec vue panoramique sur le lac. "
+        "L'endroit parfait pour les couchers de soleil ! Souhaitez-vous en savoir plus sur notre carte de boissons ?"
+    ),
+    "Italian": (
+        "Il nostro bar serve cocktail eleganti e aperitivi quotidianamente sulla terrazza con vista panoramica sul lago. "
+        "Il posto perfetto per i tramonti! Vuoi saperne di più sul nostro menu delle bevande?"
+    ),
+    "Spanish": (
+        "Nuestro bar sirve cócteles elegantes y aperitivos diariamente en la terrazca con vistas panorámicas al lago. "
+        "¡El lugar perfecto para los atardeceres! ¿Te gustaría saber más sobre nuestra carta de bebidas?"
+    ),
+}
+
+_SHUTTLE_TRANSLATED = {
+    "Slovenian": (
+        "Nudimo prevoz z letališča, lokalni prevoz in poti po meri! "
+        "Priljubljene poti: Letališče Ljubljana (~60 €), središče Bleda (~15 €). "
+        "Za rezervacijo mi povejte ime, kje vas prevzeti, datum in uro. "
+        "Kje bi radi, da vas prevzamemo?"
+    ),
+    "German": (
+        "Wir bieten Flughafentransfers, lokale Transfers und individuelle Routen! "
+        "Beliebte Routen: Flughafen Ljubljana (~60 €), Bled Stadtzentrum (~15 €). "
+        "Zur Buchung benötige ich Ihren Namen, den Abholort, Datum und Uhrzeit. "
+        "Wo möchten Sie abgeholt werden?"
+    ),
+    "French": (
+        "Nous proposons des transferts aéroport, des transports locaux et des itinéraires personnalisés ! "
+        "Itinéraires populaires: Aéroport de Ljubljana (~60 €), centre-ville de Bled (~15 €). "
+        "Pour réserver, dites-moi votre nom, le lieu de prise en charge, la date et l'heure. "
+        "Où souhaitez-vous être pris en charge ?"
+    ),
+    "Italian": (
+        "Offriamo trasferimenti aeroportuali, trasporti locali e percorsi personalizzati! "
+        "Percorsi popolari: Aeroporto di Lubiana (~60 €), centro di Bled (~15 €). "
+        "Per prenotare, dimmi il tuo nome, il luogo di ritiro, la data e l'ora. "
+        "Dove vuoi essere ritirato?"
+    ),
+    "Spanish": (
+        "Ofrecemos traslados al aeropuerto, transporte local y rutas personalizadas. "
+        "Rutas populares: Aeropuerto de Ljubljana (~60 €), centro de Bled (~15 €). "
+        "Para reservar, dime tu nombre, lugar de recogida, fecha y hora. "
+        "¿Dónde te gustaría que te recojamos?"
     ),
 }
 
@@ -410,8 +672,32 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!",
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
+            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+        },
+        "restaurant": {
+            "English": " Would you like to make a reservation?",
+            "Slovenian": "\u017delite rezervirati mizo?",
+            "German": " M\u00f6chten Sie eine Reservierung vornehmen?",
+            "French": " Souhaitez-vous r\u00e9server une table ?",
+            "Italian": " Vuoi riservare un tavolo?",
+            "Spanish": " \u00bfTe gustar\u00eda reservar una mesa?",
+        },
+        "location": {
+            "English": " Would you like directions or tips on getting here?",
+            "Slovenian": "\u017delite navodila za pot do nas ali nasvete za prihod?",
+            "German": " M\u00f6chten Sie eine Wegbeschreibung oder Tipps f\u00fcr die Anreise?",
+            "French": " Souhaitez-vous des indications ou des conseils pour venir ?",
+            "Italian": " Vuoi indicazioni o suggerimenti per raggiungerci?",
+            "Spanish": " \u00bfTe gustar\u00eda recibir indicaciones o consejos para llegar?",
+        },
+        "parking": {
+            "English": " Will you be driving to Bled, or would you like tips on public transport?",
+            "Slovenian": " Boste vozili v Bled ali \u017eelite nasvete za javni prevoz?",
+            "German": " Kommen Sie mit dem Auto nach Bled, oder ben\u00f6tigen Sie Tipps f\u00fcr den \u00f6ffentlichen Nahverkehr?",
+            "French": " Venez-vous \u00e0 Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?",
+            "Italian": " Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?",
+            "Spanish": " \u00bfVas a venir a Bled en coche, o te gustar\u00eda recibir consejos sobre transporte p\u00fablico?",
         },
     }
     # Generic follow-up when topic not matched
@@ -607,7 +893,7 @@ def _detect_language(message: str) -> str:
         return "French"
     # French word-based detection for shared accented chars (é, è, à, ù)
     if any(c in msg for c in ['é', 'è', 'à', 'ù']):
-        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec "]
+        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec ", " l'hôtel ", " l'hotel ", " où ", " êtes ", " sommes ", " avez-vous "]
         if any(w in msg for w in french_words):
             return "French"
 
@@ -687,13 +973,13 @@ def _detect_topic(message: str) -> str:
 
     topic_keywords = {
         "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "parlez-moi du", "parlami del", "hable del", "erzahlen sie mir uber", "govoriti o restavraciji"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
         "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina"],
         "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
+        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci", "situation", "lage", "posizione", "ubicacion", "emplacement", "où est", "dove è", "wo ist", "donde esta", "kje je", "parlez-moi de l'hôtel", "parlami dell'hotel", "hable del hotel", "erzahlen sie mir uber das hotel"],
         "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
         "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "odhod", "abreise", "partenza", "du00e9part", "salida"],
@@ -1181,23 +1467,35 @@ def api_chat():
 
         if is_non_english:
             # For non-English messages, detect topic and fetch hotel data directly.
-            # Check if we have a pre-translated response for rooms/experiences
+            # Check if we have a pre-translated response for common topics
             # Use direct response to bypass LLM and avoid timeout issues
             direct_response = None
-            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
-                direct_response = _ROOM_LISTINGS_TRANSLATED[detected_lang]
-            elif topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
-                direct_response = _EXPERIENCES_TRANSLATED[detected_lang]
+            topic_direct_map = {
+                "rooms": _ROOM_LISTINGS_TRANSLATED,
+                "experiences": _EXPERIENCES_TRANSLATED,
+                "activities": _EXPERIENCES_TRANSLATED,
+                "restaurant": _RESTAURANT_TRANSLATED,
+                "location": _LOCATION_TRANSLATED,
+                "breakfast": _BREAKFAST_TRANSLATED,
+                "parking": _PARKING_TRANSLATED,
+                "pets": _PETS_TRANSLATED,
+                "check_in": _CHECKIN_TRANSLATED,
+                "check_out": _CHECKIN_TRANSLATED,
+                "late_check_in": _CHECKIN_TRANSLATED,
+                "late_check_out": _CHECKIN_TRANSLATED,
+                "wine": _WINE_TRANSLATED,
+                "bar": _BAR_TRANSLATED,
+                "shuttle": _SHUTTLE_TRANSLATED,
+            }
+            if topic in topic_direct_map and detected_lang in topic_direct_map[topic]:
+                direct_response = topic_direct_map[topic][detected_lang]
 
             if direct_response:
                 # Use pre-translated content directly - update session and return
                 messages.append({"role": "user", "content": user_message})
                 messages.append({"role": "assistant", "content": direct_response})
                 sessions[session_id] = messages
-                # Ensure it ends with a question mark
-                response_text = _ensure_ends_with_question(direct_response)
-                response_text = _ensure_follow_up(response_text, topic if topic in ("rooms", "experiences", "activities") else "", detected_lang)
-                return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                return jsonify({"replies": [{"type": "text", "content": direct_response}]})
 
             # For other topics, use LLM with pre-fetched data
             hotel_answer = get_hotel_info_response(topic, user_message)
@@ -1219,18 +1517,14 @@ def api_chat():
                     messages.append({"role": "user", "content": user_message})
                     messages.append({"role": "assistant", "content": hotel_answer})
                     sessions[session_id] = messages
-                    response_text = _ensure_ends_with_question(hotel_answer)
-                    response_text = _ensure_follow_up(response_text, "rooms", "English")
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                    return jsonify({"replies": [{"type": "text", "content": hotel_answer}]})
             elif topic in ("experiences", "activities"):
                 hotel_answer = get_hotel_info_response("experiences", user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
                     messages.append({"role": "assistant", "content": hotel_answer})
                     sessions[session_id] = messages
-                    response_text = _ensure_ends_with_question(hotel_answer)
-                    response_text = _ensure_follow_up(response_text, "experiences", "English")
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                    return jsonify({"replies": [{"type": "text", "content": hotel_answer}]})
 
         # For non-English messages, exclude query_hotel_info tool since we provide
         # hotel data via context. This prevents the LLM from calling the tool
