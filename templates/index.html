@@ -78,6 +78,33 @@
             color: #f0e6d3;
             border-bottom-left-radius: 4px;
         }
+        .confirm-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+        .confirm-btn {
+            flex: 1;
+            padding: 0.45rem 0.8rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .confirm-btn.yes {
+            background: rgba(100, 180, 100, 0.35);
+            color: #c8e6c9;
+            border: 1px solid rgba(100, 180, 100, 0.45);
+        }
+        .confirm-btn.yes:hover { background: rgba(100, 180, 100, 0.5); }
+        .confirm-btn.no {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a8b2c1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .confirm-btn.no:hover { background: rgba(255, 255, 255, 0.14); }
         .input-area {
             display: flex;
             gap: 0.5rem;
@@ -331,6 +358,49 @@
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }
 
+        function addConfirmation(text) {
+            const div = document.createElement('div');
+            div.className = 'message confirmation';
+            const textNode = document.createElement('div');
+            textNode.textContent = text;
+            div.appendChild(textNode);
+            const btnRow = document.createElement('div');
+            btnRow.className = 'confirm-buttons';
+            const yesBtn = document.createElement('button');
+            yesBtn.className = 'confirm-btn yes';
+            yesBtn.textContent = '✓ Yes, confirm';
+            yesBtn.onclick = () => { sendConfirm(true); div.remove(); };
+            const noBtn = document.createElement('button');
+            noBtn.className = 'confirm-btn no';
+            noBtn.textContent = '✗ No, cancel';
+            noBtn.onclick = () => { sendConfirm(false); div.remove(); };
+            btnRow.appendChild(yesBtn);
+            btnRow.appendChild(noBtn);
+            div.appendChild(btnRow);
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        async function sendConfirm(confirmed) {
+            addMessage(confirmed ? 'Yes, confirm' : 'No, cancel', 'user');
+            showTyping();
+            try {
+                const res = await fetch('/api/confirm', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, confirmed: confirmed})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.reply) {
+                    addMessage(data.reply.content, 'bot');
+                }
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm sorry, something went wrong. Please try again!", 'bot');
+            }
+        }
+
         function showTyping() {
             const div = document.createElement('div');
             div.className = 'typing';
@@ -362,7 +432,11 @@
                 hideTyping();
                 if (data.replies) {
                     data.replies.forEach(reply => {
-                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
+                        if (reply.type === 'confirmation_request') {
+                            addConfirmation(reply.content);
+                        } else {
+                            addMessage(reply.content, 'bot');
+                        }
                     });
                 }
             } catch (e) {
@@ -400,7 +474,11 @@
                 hideTyping();
                 if (data.replies) {
                     data.replies.forEach(reply => {
-                        addMessage(reply.content, reply.type === 'confirmation_request' ? 'confirmation' : 'bot');
+                        if (reply.type === 'confirmation_request') {
+                            addConfirmation(reply.content);
+                        } else {
+                            addMessage(reply.content, 'bot');
+                        }
                     });
                 }
                 // Show the persistent banner

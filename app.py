@@ -489,11 +489,16 @@ def clean_response(text):
 
 def _ensure_ends_with_question(text: str) -> str:
     """Post-processor: ensure the response ends with a question mark.
-    Strips trailing whitespace, then replaces trailing '.' or '!' with '?',
-    or appends '?' if the text ends with neither."""
+    Only modifies the text if it doesn't already contain a question mark
+    near the end. This avoids double-questioning when _ensure_follow_up
+    has already appended a question."""
     text = text.rstrip()
     if not text:
         return "Is there anything else I can help you with?"
+    # If there's already a question mark in the last 80 chars, leave as-is
+    if "?" in text[-80:]:
+        return text
+    # Otherwise ensure it ends with ?
     if text[-1] in ('.', '!', ',', ';', ':'):
         text = text[:-1] + '?'
     elif text[-1] != '?':
@@ -1191,6 +1196,8 @@ def api_chat():
     user_message = data.get("message", "")
     if not user_message.strip():
         return jsonify({"replies": [{"type": "text", "content": "Empty input."}]})
+    if len(user_message) > 500:
+        user_message = user_message[:500]
     if session_id not in sessions:
         sessions[session_id] = [{"role": "system", "content": str(build_system_prompt())}]
     messages = sessions[session_id]
@@ -1747,6 +1754,54 @@ def api_calendar():
                 "created_at": e[7],
             }
             for e in events
+        ]
+    })
+
+
+@app.route("/api/shuttles", methods=["GET"])
+def api_shuttles():
+    conn = sqlite3.connect("hotel.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM shuttle_bookings ORDER BY id DESC")
+    rows = c.fetchall()
+    conn.close()
+    return jsonify({
+        "shuttles": [
+            {
+                "id": r[0],
+                "session_id": r[1],
+                "guest_name": r[2],
+                "pickup_location": r[3],
+                "dropoff_location": r[4],
+                "date": r[5],
+                "time": r[6],
+                "passengers": r[7],
+                "notes": r[8],
+                "created_at": r[9],
+            }
+            for r in rows
+        ]
+    })
+
+
+@app.route("/api/human-requests", methods=["GET"])
+def api_human_requests():
+    conn = sqlite3.connect("hotel.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM human_agent_requests ORDER BY id DESC")
+    rows = c.fetchall()
+    conn.close()
+    return jsonify({
+        "requests": [
+            {
+                "id": r[0],
+                "session_id": r[1],
+                "reason": r[2],
+                "guest_name": r[3],
+                "summary": r[4],
+                "created_at": r[5],
+            }
+            for r in rows
         ]
     })
 
