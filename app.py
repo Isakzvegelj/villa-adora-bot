@@ -755,8 +755,13 @@ def _detect_language(message: str) -> str:
 
 
 def _detect_topic(message: str) -> str:
-    """Detect the hotel info topic from a message (language-independent)."""
-    msg = message.lower()
+    """Detect the hotel info topic from a message (language-independent).
+    Uses word-boundary matching to prevent false substrings like 'cat' in 'located'."""
+    import re as _re
+    msg_raw = message.lower()
+    # For word-boundary matching, create a padded version
+    msg_word = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', msg_raw) + " "
+    msg_word = _re.sub(r'  +', ' ', msg_word)
 
     topic_keywords = {
         "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
@@ -783,17 +788,31 @@ def _detect_topic(message: str) -> str:
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
 
+    def _matches(text, keywords):
+        """Check if any keyword matches as a whole word/phrase in text."""
+        for kw in keywords:
+            # Use word boundary for short keywords (<=4 chars) to avoid false matches
+            if len(kw) <= 4:
+                pattern = r'\b' + _re.escape(kw) + r'\b'
+                if _re.search(pattern, text):
+                    return True
+            else:
+                # For longer keywords, substring match is fine (less false positives)
+                if kw in text:
+                    return True
+        return False
+
     # Priority: booking intent should override rooms when both keywords present
     # Priority: room_service keywords should override "rooms" when food-related terms present
-    if any(kw in msg for kw in ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service"]):
+    if _matches(msg_raw, ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service"]):
         return "room_service"
-    if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
+    if _matches(msg_raw, ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and _matches(msg_raw, ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
         return "booking"
     # Priority: "get to [place]" / "how do i get to" should map to location/directions
-    if any(kw in msg for kw in ["get to", "how do i get", "how to get", "directions to", "way to", "reach the", "reach bled"]):
+    if _matches(msg_raw, ["get to", "how do i get", "how to get", "directions to", "way to", "reach the", "reach bled"]):
         return "location"
     for topic, keywords in topic_keywords.items():
-        if any(kw in msg for kw in keywords):
+        if _matches(msg_word, keywords):
             return topic
     return "general"
 
