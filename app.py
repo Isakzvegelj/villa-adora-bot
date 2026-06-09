@@ -246,13 +246,12 @@ _EXPERIENCES_TRANSLATED = {
         "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!"
     ),
 }
-
 _RESTAURANT_TRANSLATED = {
     "Slovenian": (
-        "Imamo restavracijo Adora Pop Up kar v hotelu! Ekskluzivna restavracija z ustvarjalno kuhinjo "
+        "Imamo restavracijo Adora Pop Up kar v hotelu! Eksklu\u017eivna restavracija z ustvarjalno kuhinjo "
         "z lokalnimi slovenskimi sestavinami pod vodstvom \u0161efa kuhinje Domena Dem\u0161ara. "
         "Terasa ima ene najlep\u0161ih razgledov na jezero. "
-        "Odprto: Kosilo in ve\u010derja torek\u2013nedelja, brunk \u010detrtek\u2013sobota. "
+        "Odprto: Kosilo in ve\u010dertja torek\u2013nedelja, brunk \u010detrtek\u2013sobota. "
         "Rezervacija: +386 40 558 158 / +386 51 603 858 ali evita.vilebled@gmail.com. "
         "\u017delite rezervirati mizo?"
     ),
@@ -352,162 +351,53 @@ _BREAKFAST_TRANSLATED = {
 }
 
 _PARKING_TRANSLATED = {
-    "Slovenian": (
-        "Imamo brezpla\u010dno parkiri\u0161\u010de \u2014 8 parkirnih mest pred hotelom. "
-        "Boste vozili v Bled ali \u017eelite nasvete za javni prevoz?"
-    ),
-    "German": (
-        "Wir bieten kostenlosen privaten Parkplatz an \u2014 8 Parkpl\u00e4tze direkt vor dem Hotel. "
-        "Kommen Sie mit dem Auto nach Bled, oder ben\u00f6tigen Sie Tipps f\u00fcr den \u00f6ffentlichen Nahverkehr?"
-    ),
-    "French": (
-        "Nous offrons un parking priv\u00e9 gratuit \u2014 8 places de parking devant l'h\u00f4tel. "
-        "Venez-vous \u00e0 Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?"
-    ),
-    "Italian": (
-        "Offriamo parcheggio privato gratuito \u2014 8 posti auto davanti all'hotel. "
-        "Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?"
-    ),
-    "Spanish": (
-        "Ofrecemos estacionamiento privado gratuito \u2014 8 espacios de estacionamiento frente al hotel. "
-        "\u00bfVas a venir a Bled en coche, o te gustar\u00eda recibir consejos sobre transporte p\u00fablico?"
-    ),
+    "Slovenian": ("Imamo brezpla\u010dno parkiri\u0161\u010de \u2014 8 parkirnih mest pred hotelom. Boste vozili v Bled ali \u017eelite nasvete za javni prevoz?"),
+    "German": ("Wir bieten kostenlosen privaten Parkplatz an \u2014 8 Parkpl\u00e4tze direkt vor dem Hotel. Kommen Sie mit dem Auto nach Bred, oder ben\u00f6tigen Sie Tipps f\u00fcr den \u00f6ffentlichen Nahverkehr?"),
+    "French": ("Nous offrons un parking priv\u00e9 gratuit \u2014 8 places de parking devant l'h\u00f4tel. Venez-vous \u00e0 Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?"),
+    "Italian": ("Offriamo parcheggio privato gratuito \u2014 8 posti auto davanti all'hotel. Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?"),
+    "Spanish": ("Ofrecemos estacionamiento privado gratuito \u2014 8 espacios de estacionamiento frente al hotel. \u00bfVas a venir a Bled en coche, o te gustar\u00eda recibir consejos sobre transporte p\u00fablico?"),
 }
 
 _PETS_TRANSLATED = {
-    "Slovenian": (
-        "Hi\u0161ne \u017eivali so dobrolepo dobrodo\u0161le na zahtevo \u2014 35 \u20ac na \u017eival na no\u010d. "
-        "Ali na\u010drtujete, da boste pripeljali krznenega prijatelja?"
-    ),
-    "German": (
-        "Haustiere sind auf Anfrage willkommen \u2014 35 \u20ac pro Tier pro Nacht. "
-        "Planen Sie, ein pelziges Mitglied mitzubringen?"
-    ),
-    "French": (
-        "Les animaux de compagnie sont accept\u00e9s sur demande \u2014 35 \u20ac par animal et par nuit. "
-        "Pr\u00e9voyez-vous d'amener un ami \u00e0 quatre pattes ?"
-    ),
-    "Italian": (
-        "Gli animali domestici sono benvenuti su richiesta \u2014 35 \u20ac per animale a notte. "
-        "Hai intenzione di portare un amico a quattro zampe?"
-    ),
-    "Spanish": (
-        "Las mascotas son bienvenidas bajo petici\u00f3n \u2014 35 \u20ac por mascota por noche. "
-        "\u00bfPlaneas traer a un amigo peludo?"
-    ),
+    "Slovenian": ("Hi\u0161ne \u017eivali so dobrolepo dobrodo\u0161le na zahtevo \u2014 35 \u20ac na \u017eival na no\u010d. Ali na\u010drtujete, da boste pripeljali krznenega prijatelja?"),
+    "German": ("Haustiere sind auf Anfrage willkommen \u2014 35 \u20ac pro Tier pro Nacht. Planen Sie, ein pelziges Mitglied mitzubringen?"),
+    "French": ("Les animaux de compagnie sont accept\u00e9s sur demande \u2014 35 \u20ac par animal et par nuit. Pr\u00e9voyez-vous d'amener un ami \u00e0 quatre pattes ?"),
+    "Italian": ("Gli animali domestici sono benvenuti su richiesta \u2014 35 \u20ac per animale a notte. Hai intenzione di portare un amico a quattro zampe?"),
+    "Spanish": ("Las mascotas son bienvenidas bajo petici\u00f3n \u2014 35 \u20ac por mascota por noche. \u00bfPlaneas traer a un amigo peludo?"),
 }
 
 _CHECKIN_TRANSLATED = {
-    "Slovenian": (
-        "Prijava je od 14:00 do 23:00, odjava do 11:00. "
-        "Pozna prijava/odjava je na voljo na zahtevo \u2014 kontaktirajte recepcijo. "
-        "Ob kateri uri na\u010drtujete prihod?"
-    ),
-    "German": (
-        "Check-in ist von 14:00 bis 23:00, Check-out bis 11:00. "
-        "Sp\u00e4ter Check-in/Check-out ist auf Anfrage m\u00f6glich \u2014 kontaktieren Sie die Rezeption. "
-        "Um welche Uhrzeit planen Sie Ihre Ankunft?"
-    ),
-    "French": (
-        "L'enregistrement est de 14h00 \u00e0 23h00, le d\u00e9part \u00e0 11h00. "
-        "L'enregistrement/d\u00e9part tardif est possible sur demande \u2014 contactez la r\u00e9ception. "
-        "\u00c0 quelle heure pr\u00e9voyez-vous d'arriver ?"
-    ),
-    "Italian": (
-        "Il check-in \u00e8 dalle 14:00 alle 23:00, il check-out fino alle 11:00. "
-        "Check-in/check-out tardivo \u00e8 disponibile su richiesta \u2014 contaccia la reception. "
-        "A che ora prevedi di arrivare?"
-    ),
-    "Spanish": (
-        "El check-in es de 14:00 a 23:00, el check-out hasta las 11:00. "
-        "Check-in/check-out tard\u00edo est\u00e1 disponible bajo petici\u00f3n \u2014 contacte con recepci\u00f3n. "
-        "\u00bfA qu\u00e9 hora planeas llegar?"
-    ),
+    "Slovenian": ("Prijava je od 14:00 do 23:00, odjava do 11:00. Pozna prijava/odjava je na voljo na zahtevo. Ob kateri uri na\u010drtujete prihod?"),
+    "German": ("Check-in ist von 14:00 bis 23:00, Check-out bis 11:00. Sp\u00e4ter Check-in/Check-out ist auf Anfrage m\u00f6glich. Um welche Uhrzeit planen Sie Ihre Ankunft?"),
+    "French": ("L'enregistrement est de 14h00 \u00e0 23h00, le d\u00e9part \u00e0 11h00. L'enregistrement/d\u00e9part tardif est possible sur demande. \u00c0 quelle heure pr\u00e9voyez-vous d'arriver ?"),
+    "Italian": ("Il check-in \u00e8 dalle 14:00 alle 23:00, il check-out fino alle 11:00. Check-in/check-out tardivo \u00e8 disponibile su richiesta. A che ora prevedi di arrivare?"),
+    "Spanish": ("El check-in es de 14:00 a 23:00, el check-out hasta las 11:00. Check-in/check-out tard\u00edo est\u00e1 disponible bajo petici\u00f3n. \u00bfA qu\u00e9 hora planeas llegar?"),
 }
 
 _WINE_TRANSLATED = {
-    "Slovenian": (
-        "Na\u0161a vinska karta je sestavljena iz najbolj\u0161ih slovenskih vin iz okolice Bleda, jih izbira na\u0161 strokovnjak. "
-        "Vinarna ponuja tako lokalne kot mednarodne oznake. Vino z zdru\u017eljivostjo z degustacijskim menijem je na voljo (pribli\u017eno 35 \u20ac na osebo). "
-        "\u017delite rezervirati mizo?"
-    ),
-    "German": (
-        "Unsere Weinkarte wird von einem Hausesommelier kuratiert und bietet die besten slowenische Weine aus der N\u00e4he von Bled "
-        "sowie ausgew\u00e4hlte internationale Etiketten. Weinbegleitung zum Degustationsmen\u00fc verf\u00fcgbar (ca. 35 \u20ac pro Person). "
-        "M\u00f6chten Sie einen Tisch reservieren?"
-    ),
-    "French": (
-        "Notre carte des vins est \u00e9labor\u00e9e par un sommelier interne, proposant les meilleurs vins slov\u00e8nes pr\u00e8s de Bled "
-        "ainsi que des labels internationaux s\u00e9lectionn\u00e9s. Accord mets et vins disponible avec le menu d\u00e9gustation (environ 35 \u20ac par personne). "
-        "Souhaitez-vous r\u00e9server une table ?"
-    ),
-    "Italian": (
-        "La nostra lista dei vini \u00e8 curata da un sommelier interno, con i migliori vini sloveni vicino a Bled "
-        "e etichette internazionali selezionate. Abbinamento vini disponibile con il menu degustazione (circa 35 \u20ac a persona). "
-        "Vuoi riservare un tavolo?"
-    ),
-    "Spanish": (
-        "Nuestra lista de vinos est\u00e1 curada por un sumiller interno, con los mejores vinos eslovenos cerca de Bled "
-        "y etiquetas internacionales seleccionadas. Maridaje de vinos disponible con el men\u00fa degustaci\u00f3n (aproximadamente 35 \u20ac por persona). "
-        "\u00bfTe gustar\u00eda reservar una mesa?"
-    ),
+    "Slovenian": ("Na\u0161a vinska karta vsebuje najbolj\u0161a slovenska vina iz okolice Bleda, izbrana na\u0161im strokovnjakom, skupaj z mednarodnimi oznakami. Vinarno z degustacijskim menijem je na voljo (pribli\u017eno 35 \u20ac na osebo). \u017delite rezervirati mizo?"),
+    "German": ("Unsere Weinkarte bietet die besten slowenische Weine aus der N\u00e4he von Bred sowie ausgew\u00e4hlte internationale Etiketten, kuratiert von unserem Hausesommelier. Weinbegleitung zum Degustationsmen\u00fc verf\u00fcgbar (ca. 35 \u20ac pro Person). M\u00f6chten Sie einen Tisch reservieren?"),
+    "French": ("Notre carte des vins propose les meilleurs vins slov\u00e8nes pr\u00e8s de Bred ainsi que des labels internationaux s\u00e9lectionn\u00e9s, \u00e9labor\u00e9e par notre sommelier interne. Accord mets et vins disponible avec le menu d\u00e9gustation (environ 35 \u20ac par personne). Souhaitez-vous r\u00e9server une table ?"),
+    "Italian": ("La nostra lista dei vini include i migliori vini sloveni vicino a Bred e etichette internazionali selezionate, curata dal nostro sommelier interno. Abbinamento vini disponibile con il menu degustazione (circa 35 \u20ac a persona). Vuoi riservare un tavolo?"),
+    "Spanish": ("Nuestra lista de vinos ofrece los mejores vinos eslovenos cerca de Bred y etiquetas internacionales seleccionadas, curada por nuestro sumiller interno. Maridaje de vinos disponible con el men\u00fa degustaci\u00f3n (aproximadamente 35 \u20ac por persona). \u00bfTe gustar\u00eda reservar una mesa?"),
 }
 
 _BAR_TRANSLATED = {
-    "Slovenian": (
-        "Na\u0161 bar stre\u017ee elegantne koktaje in aperitive vsak dan na terasi s panoramskim razgledom na jezero. "
-        "Popoln kraj za ve\u010derje s soncem! \u017delite ve\u010d informacij o na\u0161em jedilniku pija\u010d?"
-    ),
-    "German": (
-        "Unsere Bar serviert elegante Cocktails und Aperitivos t\u00e4glich auf der Terrasse mit Panoramablick auf den See. "
-        "Der perfekte Ort f\u00fcr Drinks bei Sonnenuntergang! M\u00f6chten Sie mehr \u00fcber unsere Getr\u00e4nkekarte erfahren?"
-    ),
-    "French": (
-        "Notre bar sert des cocktails \u00e9l\u00e9gants et des ap\u00e9ritifs quotidiennement sur la terrasse avec vue panoramique sur le lac. "
-        "L'endroit parfait pour les couchers de soleil ! Souhaitez-vous en savoir plus sur notre carte de boissons ?"
-    ),
-    "Italian": (
-        "Il nostro bar serve cocktail eleganti e aperitivi quotidianamente sulla terrazza con vista panoramica sul lago. "
-        "Il posto perfetto per i tramonti! Vuoi saperne di pi\u00f9 sul nostro menu delle bevande?"
-    ),
-    "Spanish": (
-        "Nuestro bar sirve c\u00f3cteles elegantes y aperitivos diariamente en la terrazca con vistas panor\u00e1micas al lago. "
-        "\u00a1El lugar perfecto para los atardeceres! \u00bfTe gustar\u00eda saber m\u00e1s sobre nuestra carta de bebidas?"
-    ),
+    "Slovenian": ("Na\u0161 bar stre\u017ee elegantne koktaje in aperitive vsak dan na terasi s panoramskim razgledom na jezero. Popoln kraj za son\u010dne ve\u010dere! \u017delite ve\u010d informacij o na\u0161em jedilniku pija\u010d?"),
+    "German": ("Unsere Bar serviert elegante Cocktails und Aperitivos t\u00e4glich auf der Terrasse mit Panoramablick auf den See. Der perfekte Ort f\u00fcr Drinks bei Sonnenuntergang! M\u00f6chten Sie mehr \u00fcber unsere Getr\u00e4nkekarte erfahren?"),
+    "French": ("Notre bar sert des cocktails \u00e9l\u00e9gants et des ap\u00e9ritifs quotidiennement sur la terrasse avec vue panoramique sur le lac. L'endroit parfait pour les couchers de soleil ! Souhaitez-vous en savoir plus sur notre carte de boissons ?"),
+    "Italian": ("Il nostro bar serve cocktail eleganti e aperitivi quotidianamente sulla terrazza con vista panoramica sul lago. Il posto perfetto per i tramonti! Vuoi saperne di pi\u00f9 sul nostro menu delle bevande?"),
+    "Spanish": ("Nuestro bar sirve c\u00f3cteles elegantes y aperitivos diariamente en la terrazca con vistas panor\u00e1micas al lago. \u00a1El lugar perfecto para los atardeceres! \u00bfTe gustar\u00eda saber m\u00e1s sobre nuestra carta de bebidas?"),
 }
 
 _SHUTTLE_TRANSLATED = {
-    "Slovenian": (
-        "Nudimo prevoz z letali\u0161\u010da, lokalni prevoz in poti po meri! "
-        "Priljubljene poti: Letali\u0161\u010de Ljubljana (~60 \u20ac), sredi\u0161\u010de Bleda (~15 \u20ac). "
-        "Za rezervacijo mi povejte ime, kje vas prevzeti, datum in uro. "
-        "Kje bi radi, da vas prevzamemo?"
-    ),
-    "German": (
-        "Wir bieten Flughafentransfers, lokale Transfers und individuelle Routen! "
-        "Beliebte Routen: Flughafen Ljubljana (~60 \u20ac), Bled Stadtzentrum (~15 \u20ac). "
-        "Zur Buchung ben\u00f6tige ich Ihren Namen, den Abholort, Datum und Uhrzeit. "
-        "Wo m\u00f6chten Sie abgeholt werden?"
-    ),
-    "French": (
-        "Nous proposons des transferts a\u00e9roport, des transports locaux et des itin\u00e9raires personnalis\u00e9s ! "
-        "Itin\u00e9raires populaires: A\u00e9roport de Ljubljana (~60 \u20ac), centre-ville de Bled (~15 \u20ac). "
-        "Pour r\u00e9server, dites-moi votre nom, le lieu de prise en charge, la date et l'heure. "
-        "O\u00f9 souhaitez-vous \u00eatre pris en charge ?"
-    ),
-    "Italian": (
-        "Offriamo trasferimenti aeroportuali, trasporti locali e percorsi personalizzati! "
-        "Percorsi popolari: Aeroporto di Lubiana (~60 \u20ac), centro di Bled (~15 \u20ac). "
-        "Per prenotare, dimmi il tuo nome, il luogo di ritiro, la data e l'ora. "
-        "Dove vuoi essere ritirato?"
-    ),
-    "Spanish": (
-        "Ofrecemos traslados al aeropuerto, transporte local y rutas personalizadas. "
-        "Rutas populares: Aeropuerto de Ljubljana (~60 \u20ac), centro de Bled (~15 \u20ac). "
-        "Para reservar, dime tu nombre, lugar de recogida, fecha y hora. "
-        "\u00bfD\u00f3nde te gustar\u00eda que te recojamos?"
-    ),
+    "Slovenian": ("Nudimo prevoz z letali\u0161\u010da, lokalni prevoz in poti po meri! Priljubljene poti: Letali\u0161\u010de Ljubljana (~60 \u20ac), sredi\u0161\u010de Bleda (~15 \u20ac). Za rezervacijo mi povejte ime, kje vas prevzeti, datum in uro. Kje bi radi, da vas prevzamemo?"),
+    "German": ("Wir bieten Flughafentransfers, lokale Transfers und individuelle Routen! Beliebte Routen: Flughafen Ljubljana (~60 \u20ac), Bled Stadtzentrum (~15 \u20ac). Zur Buchung ben\u00f6tige ich Ihren Namen, den Abholort, Datum und Uhrzeit. Wo m\u00f6chten Sie abgeholt werden?"),
+    "French": ("Nous proposons des transferts a\u00e9roport, des transports locaux et des itin\u00e9raires personnalis\u00e9s ! Itin\u00e9raires populaires: A\u00e9roport de Ljubljana (~60 \u20ac), centre-ville de Bled (~15 \u20ac). Pour r\u00e9server, dites-moi votre nom, le lieu de prise en charge, la date et l'heure. O\u00f9 souhaitez-vous \u00eatre pris en charge ?"),
+    "Italian": ("Offriamo trasferimenti aeroportuali, trasporti locali e percorsi personalizzati! Percorsi popolari: Aeroporto di Lubiana (~60 \u20ac), centro di Bled (~15 \u20ac). Per prenotare, dimmi il tuo nome, il luogo di ritiro, la data e l'ora. Dove vuoi essere ritirato?"),
+    "Spanish": ("Ofrecemos traslados al aeropuerto, transporte local y rutas personalizadas. Rutas populares: Aeropuerto de Ljubljana (~60 \u20ac), centro de Bled (~15 \u20ac). Para reservar, dime tu nombre, lugar de recogida, fecha y hora. \u00bfD\u00f3nde te gustar\u00eda que te recojamos?"),
 }
+
 
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
@@ -706,8 +596,32 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation!",
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
+            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte!",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+        },
+        "restaurant": {
+            "English": " Would you like to make a reservation?",
+            "Slovenian": "\u017delite rezervirati mizo?",
+            "German": " M\u00f6chten Sie eine Reservierung vornehmen?",
+            "French": " Souhaitez-vous r\u00e9server une table ?",
+            "Italian": " Vuoi riservare un tavolo?",
+            "Spanish": " \u00bfTe gustar\u00eda reservar una mesa?",
+        },
+        "location": {
+            "English": " Would you like directions or tips on getting here?",
+            "Slovenian": "\u017delite navodila za pot do nas ali nasvete za prihod?",
+            "German": " M\u00f6chten Sie eine Wegbeschreibung oder Tipps f\u00fcr die Anreise?",
+            "French": " Souhaitez-vous des indications ou des conseils pour venir ?",
+            "Italian": " Vuoi indicazioni o suggerimenti per raggiungerci?",
+            "Spanish": " \u00bfTe gustar\u00eda recibir indicaciones o consejos para llegar?",
+        },
+        "parking": {
+            "English": " Will you be driving to Bled, or would you like tips on public transport?",
+            "Slovenian": " Boste vozili v Bled ali \u017eelite nasvete za javni prevoz?",
+            "German": " Kommen Sie mit dem Auto nach Bred, oder ben\u00f6tigen Sie Tipps f\u00fcr den \u00f6ffentlichen Nahverkehr?",
+            "French": " Venez-vous \u00e0 Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?",
+            "Italian": " Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?",
+            "Spanish": " \u00bfVas a venir a Bled en coche, o te gustar\u00eda recibir consejos sobre transporte p\u00fablico?",
         },
     }
     # Generic follow-up when topic not matched
@@ -903,7 +817,7 @@ def _detect_language(message: str) -> str:
         return "French"
     # French word-based detection for shared accented chars (é, è, à, ù)
     if any(c in msg for c in ['é', 'è', 'à', 'ù']):
-        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec "]
+        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec ", " l'hôtel ", " l'hotel ", " où ", " êtes ", " sommes ", " avez-vous "]
         if any(w in msg for w in french_words):
             return "French"
 
@@ -1477,7 +1391,7 @@ def api_chat():
 
         if is_non_english:
             # For non-English messages, detect topic and fetch hotel data directly.
-            # Check if we have a pre-translated response for common topics
+            # Check if we have a pre-translated response for rooms/experiences
             # Use direct response to bypass LLM and avoid timeout issues
             direct_response = None
             topic_direct_map = {
@@ -1510,8 +1424,6 @@ def api_chat():
             # For other topics, use LLM with pre-fetched data
             hotel_answer = get_hotel_info_response(topic, user_message)
             if topic == "general" and detected_lang != "English":
-                # For non-English general messages (greetings, etc.), use
-                # localized fallback directly instead of relying on LLM translation
                 localized = _get_localized_fallback(detected_lang, user_message)
                 if localized and localized.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -1520,7 +1432,6 @@ def api_chat():
                     response_text = fix_spacing(localized)
                     response_text = _ensure_follow_up(response_text, "", detected_lang)
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
-                # Fallback to LLM if localized is empty
                 lang_messages.append({
                     "role": "system",
                     "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
