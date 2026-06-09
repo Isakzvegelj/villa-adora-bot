@@ -715,24 +715,33 @@ def _detect_language(message: str) -> str:
     return "English"
 
 
+def _word_in_text(word: str, text: str) -> bool:
+    """Check if a keyword appears as a whole word/phrase in text (lowercased)."""
+    import re
+    # Escape regex special chars in keyword, then match as whole word
+    escaped = re.escape(word)
+    return bool(re.search(r'(?:^|[\s,;:!?.()])' + escaped + r'(?:$|[\s,;:!?.()])', text))
+
 def _detect_topic(message: str) -> str:
     """Detect the hotel info topic from a message (language-independent)."""
-    msg = message.lower()
+    import re as _re
+    msg = " " + message.lower().strip() + " "
 
     topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento"],
-        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
+        "booking": [" book ", " reserve ", "rezervir", "buchen", "prenotare", "reservar"],
+        "rooms": ["room", "rooms", "suite", "suites", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture", "comida", "comer", "alimento"],
+        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
-        "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
+        "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
+        "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
+        "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
         "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "odhod", "abreise", "partenza", "du00e9part", "salida"],
-        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
-        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
+        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
+        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "odhod", "abreise", "partenza", "du00e9part", "salida"],
         "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
         "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
@@ -741,15 +750,28 @@ def _detect_topic(message: str) -> str:
         "room_service": ["room_service", "room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
-        "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
 
+    def _kw_match(kw, text):
+        """Match keyword in text with word-boundary awareness.
+        Multi-word phrases ('check in', 'how do') use simple containment.
+        Hyphenated variants (check-in) also match their spaced form (check in).
+        Single words require word boundaries to avoid 'cat' matching 'located'."""
+        if " " in kw or "-" in kw:
+            if kw in text:
+                return True
+            # Also try hyphen↔space swap for multi-word keywords
+            if " " in kw:
+                return kw.replace(" ", "-") in text
+            if "-" in kw:
+                return kw.replace("-", " ") in text
+            return False
+        # Single word: use regex word boundary
+        return bool(_re.search(r'\b' + _re.escape(kw) + r'\b', text))
+
     for topic, keywords in topic_keywords.items():
-        if any(kw in msg for kw in keywords):
+        if any(_kw_match(kw, msg) for kw in keywords):
             return topic
-    # Priority overrides: booking intent should override rooms
-    if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
-        return "booking"
     return "general"
 
 
@@ -1246,7 +1268,7 @@ def api_chat():
                     "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
                 })
         else:
-            # For English messages, use direct response for rooms/experiences to reduce latency
+            # For English messages, use direct response for rooms/experiences/location to reduce latency
             if topic == "rooms":
                 hotel_answer = get_hotel_info_response("rooms", user_message)
                 if hotel_answer and hotel_answer.strip():
@@ -1265,9 +1287,26 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "experiences", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic == "location":
+                hotel_answer = get_hotel_info_response("location", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "location", "English")
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            else:
+                # For other topics (pets, parking, breakfast, restaurant, bar, wine,
+                # wifi, contact, check_in, check_out, etc.), use LLM with hotel data context
+                hotel_answer = get_hotel_info_response(topic, user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({
+                        "role": "system",
+                        "content": f"Answer the guest's question using ONLY this hotel data:\n\n{hotel_answer}\n\nBe warm, concise, and end with a follow-up question."
+                    })
 
         # For non-English messages, exclude query_hotel_info tool since we provide
-        # hotel data via context. This prevents the LLM from calling the tool
         # and getting English responses. Keep booking/shuttle tools available.
         if is_non_english:
             available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
