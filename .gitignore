@@ -12,3 +12,10 @@ venv/
 *.swp
 *.swo
 *~
+test_*.py
+quick_test.py
+verify_ast.py
+fix_punctuation.py
+do_commit.sh
+*.db
+hotel.db
