@@ -432,14 +432,11 @@ def _ensure_follow_up(text: str, topic: str = "") -> str:
     if not text or not text.strip():
         return text
     text = text.strip()
-    # Check if already ends with a question mark
-    if text.endswith("?"):
+    # Check if already ends with a question mark or exclamation (German often uses !)
+    if text.endswith("?") or text.endswith("!") or text.endswith("？") or text.endswith("¿"):
         return text
-    # Check if there's a question mark in the last 80 chars (already has a follow-up)
-    if "?" in text[-80:]:
-        return text
-    # Check if already ends with a question in other languages
-    if text.endswith("？") or text.endswith("¿"):
+    # Check if there's a question mark in the last 120 chars (already has a follow-up)
+    if "?" in text[-120:] or "!" in text[-120:]:
         return text
     questions = {
         "rooms": " Which one catches your eye? I can start a booking for you — just tell me your name and dates!",
