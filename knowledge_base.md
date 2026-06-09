@@ -118,7 +118,7 @@
 - €22 per person (good breakfast — Continental, Vegetarian, Gluten-free options)
 - Fresh pastries, bread, local Slovenian products, coffee & tea
 - Served in dining room with lake views
-- **Dietary options:** Vegan, vegetarian, gluten-free, and dairy-free options available on request
+- **Dietary options:** Vegan, vegetarian, and gluten-free options available on request
 - Please inform us of any allergies or dietary requirements when booking
 
 ### Adora Pop Up Restaurant
@@ -145,7 +145,6 @@
 - Locally sourced Slovenian specialties
 - Signature Kremšnita — a fresh twist on Bled's iconic cream cake
 - Dietary preferences and allergies accommodated with advance notice
-- Vegan, vegetarian, gluten-free, and dairy-free options available on request
 - Regular pop-up dining events with special menus
 
 ### Wine List
@@ -175,9 +174,7 @@
 - No age restriction for check-in
 - Quiet hours: 22:00-07:00
 - Parties and events not allowed
-- Direct bookings: free cancellation up to 48 hours before arrival
-- Third-party bookings: their cancellation policies apply
-- Contact +386 51 603 858 for personalized assistance
+- Cancellation policy varies by room type and booking terms
 - Visa, MasterCard, Maestro, and Cash accepted
 
 ## Nearby Attractions & Activities
@@ -240,9 +237,6 @@
 - "Adora is beautifully situated in a quiet part of Bled, yet still close to everything"
 - "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom"
 - "The most expensive hotel of our 2-week trip but worth it"
-- "Small restaurant with limited space — quality over quantity. The tasting menu was extraordinary"
-- "Perfect romantic getaway — the tower room is unlike anything we've experienced"
-- "Breakfast was absolutely delicious with fresh local products and homemade pastries"
 - "Right across the street from Lake Bled. Beautiful outdoor patio. Stunning views and decor. Fabulous four-course dinner. Breakfast was awesome."
 - "The location of this hotel and the view from it are unparalleled! Spectacular!"
 - "A very beautiful hotel from start to finish. The decor is immaculate. The views are why you go to Bled!"
@@ -286,4 +280,79 @@
 - **Free shuttle service** to Bled center during off-season when walkways are inaccessible
 - **Languages spoken:** English, Russian, Croatian, German, and 3 others
 - **Room features:** Allergy-free rooms, bathrobes, fireplace, minibar, bidet, housekeeping
+
+## Frequently Asked Questions (FAQ)
+
+### Getting Here
+- **From Ljubljana Airport:** 35 km, ~30 min by car. We can arrange airport transfer — contact us to book.
+- **From Ljubljana Train Station:** Take the train to Bled Jesenice station (45-60 min), then a short taxi ride.
+- **By Car:** Free private parking with 8 spots available on a first-come basis. GPS: Cesta svobode 35, 4260 Bled.
+- **Shuttle Service:** Free shuttle to Bled center available during off-season.
+
+### Parking
+- 8 free private parking spots available on-site
+- First-come, first-served basis
+- No reservation needed for parking
+- EV charging available on request
+
+### Pets
+- Pets are welcome on request
+- €35 per pet per night
+- Please inform us at time of booking
+- Nearby walking paths are great for dogs
+
+### Children
+- Children of all ages are welcome
+- Cribs available on request (please book in advance)
+- Child-friendly property
+- Arcade/video games available
+
+### Wellness & Massage
+- In-room massage available 24/7 with 24 hours notice
+- Highly recommended by guests
+- Various massage types available
+- Book through reception or email
+
+### Restaurant Reservations
+- Reservations are required (limited seating)
+- Book via phone: +386 40 558 158 or +386 51 603 858
+- WhatsApp: +386 51 603 858
+- Email: evita.vilebled@gmail.com
+- Walk-ins subject to availability
+
+### Seasonal Information
+- **Summer (Jun-Aug):** Full services, restaurant open daily, warm weather (20-30°C), best for swimming and lake activities
+- **Spring (Mar-May):** Mild weather (10-20°C), fewer crowds, beautiful blooming gardens, restaurant open
+- **Autumn (Sep-Nov):** Cool weather (8-18°C), stunning fall colors, quieter atmosphere, restaurant open
+- **Winter (Dec-Feb):** Cold weather (-2 to 5°C), possible snow, magical atmosphere, restaurant hours may vary
+
+### Payment
+- Visa, MasterCard, Maestro accepted
+- Cash accepted (EUR)
+- Payment due at check-in
+- Security deposit may be required
+
+### Cancellation Policy
+- Varies by room type and booking channel
+- Direct bookings: Free cancellation up to 48 hours before check-in
+- Booking.com: As per Booking.com terms
+- Late cancellations may incur charges
+- No-shows charged for first night
+
+### Accessibility
+- Ground floor suites available (Prestige Suite)
+- Property has stairs (historic building)
+- Please contact us for specific accessibility needs
+- We do our best to accommodate all guests
+
+### Internet
+- Free high-speed WiFi throughout the property
+- Strong signal in all rooms and common areas
+- Suitable for remote work
+
+### Laundry
+- Laundry service available
+- 24-hour turnaround
+- Additional charges apply
+- Iron and ironing board available on request
 

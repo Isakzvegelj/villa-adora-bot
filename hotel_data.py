@@ -59,8 +59,8 @@ hotel_info = {
             "capacity": 2,
             "bed": "King",
             "view": "Lake view",
-            "features": ["Lake view", "King bed", "Luxury furnishings", "Elegant suite"],
-            "description": "An elegant 67 sqm suite with a king bed, stunning lake views and luxury furnishings."
+            "features": ["Lake view", "Luxury furnishings", "Elegant suite"],
+            "description": "An elegant suite with stunning lake views and luxury furnishings."
         },
         "island_suite": {
             "name": "Island Suite",
@@ -106,7 +106,7 @@ hotel_info = {
         "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
         "wifi": "Complimentary high-speed WiFi throughout the property",
         "pets": "Pets allowed on request — €35 per pet per night. Please contact us to arrange",
-        "cancellation": "Cancellation policy varies by room type and booking terms. Please contact us for specific conditions",
+        "cancellation": "Direct bookings: Free cancellation up to 48 hours before check-in. Late cancellations or no-shows may be charged for the first night. Booking.com bookings follow Booking.com terms. Contact us for specific conditions.",
         "payment": "Visa, MasterCard, Maestro, and Cash accepted",
         "children": "Children of all ages are welcome. Cribs and extra beds are not available",
         "smoking": "Non-smoking property",
@@ -184,7 +184,7 @@ hotel_info = {
                 "Locally sourced Slovenian specialties",
                 "Signature Kremšnita — a fresh twist on Bled's iconic cream cake"
             ],
-            "dietary": "Dietary preferences and allergies accommodated with advance notice. We offer vegan, vegetarian, gluten-free, and dairy-free options.",
+            "dietary": "Dietary preferences and allergies accommodated with advance notice",
             "pricing": {
                 "tasting_menu": "€65 per person (approximate)",
                 "wine_pairing": "€35 per person (approximate)",
@@ -251,10 +251,7 @@ hotel_info = {
         "The attention to detail by the staff was astounding. They made us feel right at home",
         "Adora is beautifully situated in a quiet part of Bled, yet still close to everything",
         "Wonderful house, exquisite decoration and very comfortable bedroom, amazing bathroom",
-        "The most expensive hotel of our 2-week trip but worth it",
-        "Small restaurant with limited space — quality over quantity. The tasting menu was extraordinary",
-        "Perfect romantic getaway — the tower room is unlike anything we've experienced",
-        "Breakfast was absolutely delicious with fresh local products and homemade pastries"
+        "The most expensive hotel of our 2-week trip but worth it"
     ],
     "best_for": [
         "Couples and romantic breaks",

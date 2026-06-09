@@ -1403,7 +1403,7 @@ def api_chat():
                     "nearby", "around", "do here", "vegan", "vegetarian", "gluten",
                     "dietary", "allergy", "dairy", "amenity", "facility", "service", "book",
                     "reservation", "available", "offer", "have", "provide",
-                    "room service", "massage", "spa",
+                    "room service", "massage", "spa", "leave", "depart",
                 ]
                 msg_lower = user_message.lower()
                 is_factual = any(kw in msg_lower for kw in factual_keywords)

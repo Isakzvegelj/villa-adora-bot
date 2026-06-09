@@ -71,9 +71,11 @@ def build_corpus():
 
     # Load hotel_data
     spec = importlib.util.spec_from_file_location("hotel_data", os.path.join(os.path.dirname(os.path.abspath(__file__)), "hotel_data.py"))
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Could not load hotel_data.py")
     hotel_mod = importlib.util.module_from_spec(spec)
     try:
-        spec.loader.exec_module(hotel_mod)
+        spec.loader.exec_module(hotel_mod)  # type: ignore[union-attr]
         h = hotel_mod.hotel_info
 
         corpus_entries.append({"source": "hotel_data.py", "text": f"Hotel name: {h['name']}. {h['tagline']}"})
