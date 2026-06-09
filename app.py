@@ -410,9 +410,10 @@ def fix_spacing(text):
     text = re.sub(r'\bhvala\b', ' hvala', text, flags=re.IGNORECASE)
     text = re.sub(r'\bzdravo\b', ' zdravo', text, flags=re.IGNORECASE)
     # Fix "Howcan" -> "How can"
-    text = re.sub(r'\bHowcan\b', 'How can', text)
+    text = re.sub(r'\b(Howcan)\b', 'How can', text)
     # Fix missing space/question mark before question words
-    text = re.sub(r'(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
+    # Use \b word boundaries to prevent matching substrings (e.g. "here" in "Where")
+    text = re.sub(r'\b(today|there|here|so|and|but|yes|no|great|perfect|wonderful|sorry)\s+(are you|do you|would you|can you|will you|is it|can I|shall I|should I|have you|did you|were you)\s', r'\1? \2 ', text, flags=re.IGNORECASE)
     # Fix missing space after period before common words
     text = re.sub(r'\.(The|We|Our|You|It|I|For|And|But|Or|If|When|How|What|Where|Yes|No|Please|Thank)', r'. \1', text)
     # Fix missing space after period in other languages
@@ -710,8 +711,9 @@ def _detect_topic(message: str) -> str:
     # Check dietary/breakfast FIRST before general keywords, since words like
     # "gluten-free options" can otherwise trigger a wrong topic.
     dietary_keywords = ["vegan", "vegetarian", "gluten", "allergy", "allergies",
-                        "dietary", "diet", "restriction", "celiac", "lactose",
-                        "intolerant", "vegansko", "vegetarijansko", "brezglutensko",
+                        "allergic", "dietary", "diet", "restriction", "celiac",
+                        "lactose", "intolerant", "nut", "nuts", "peanut",
+                        "vegansko", "vegetarijansko", "brezglutensko",
                         "alergija", "prehrana", "allergie", "allergène"]
     if any(kw in msg for kw in dietary_keywords):
         return "breakfast"
@@ -817,12 +819,12 @@ def get_hotel_info_response(topic, question):
                 break
 
     # Override: dietary questions should always go to breakfast/dining
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "allergic", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "nut", "nuts", "peanut"]):
         actual_topic = "breakfast"
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
-        if any(word in q for word in ["late", "later", "after", "early", "before", "outside"]):
+        if any(word in q for word in ["late", "later", "after", "early", "before", "outside", "arrive at", "arriving at", "get in at"]):
             if actual_topic == "check_out" or "depart" in q or "check out" in q or "checkout" in q or "leave" in q:
                 return (
                     f"Our standard check-out is {h['policies']['check_out']}, but late check-out is available on request! "
@@ -1184,8 +1186,8 @@ def api_chat():
             "rooms", "policies", "amenities", "location", "experiences",
             "breakfast", "parking", "wifi", "pets", "cancellation",
             "payment", "children", "smoking", "contact", "restaurant",
-            "bar", "wine", "late_check_in", "late_check_out", "shuttle",
-            "room_service", "general",
+            "bar", "wine", "check_in", "check_out", "late_check_in",
+            "late_check_out", "shuttle", "room_service", "general",
         }
         if hotel_answer and hotel_answer.strip() and topic in factual_topics:
             # For non-English queries, return a translated response
