@@ -106,7 +106,7 @@ hotel_info = {
         "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
         "wifi": "Complimentary high-speed WiFi throughout the property",
         "pets": "Pets allowed on request — €35 per pet per night. Please contact us to arrange",
-        "cancellation": "Cancellation policy varies by room type and booking terms. Please contact us for specific conditions",
+        "cancellation": "Direct bookings: Free cancellation up to 48 hours before check-in. Late cancellations or no-shows may be charged for the first night. Booking.com bookings follow Booking.com terms. Contact us for specific conditions.",
         "payment": "Visa, MasterCard, Maestro, and Cash accepted",
         "children": "Children of all ages are welcome. Cribs and extra beds are not available",
         "smoking": "Non-smoking property",
