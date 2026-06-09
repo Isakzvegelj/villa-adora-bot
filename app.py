@@ -335,6 +335,7 @@ def fix_spacing(text):
     text = re.sub(r'\bnon-smoking\b', 'non-smoking', text, flags=re.IGNORECASE)
     text = re.sub(r'\barrangea\b', 'arrange a', text, flags=re.IGNORECASE)
     text = re.sub(r'\bcanoffer\b', 'can offer', text, flags=re.IGNORECASE)
+    text = re.sub(r'\bcanprovide\b', 'can provide', text, flags=re.IGNORECASE)
     text = re.sub(r'\btheviews\b', 'the views', text, flags=re.IGNORECASE)
     text = re.sub(r'\bguestcan\b', 'guest can', text, flags=re.IGNORECASE)
     text = re.sub(r'\bwealso\b', 'we also', text, flags=re.IGNORECASE)
@@ -733,7 +734,7 @@ def _detect_topic(message: str) -> str:
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much"],
         "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
@@ -932,8 +933,6 @@ def get_hotel_info_response(topic, question):
             if suitable and num_people:
                 lines = [f"For {num_people} guest{'s' if num_people > 1 else ''}, I'd especially recommend:"]
                 lines.extend(suitable)
-                lines.append("\nAll our suites:")
-                lines.extend(all_rooms)
                 lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
                 return "\n".join(lines)
             lines = ["We have 7 beautiful suites, all with stunning lake views:"]
@@ -1275,6 +1274,15 @@ def api_chat():
                     sessions[session_id] = messages
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "experiences", "English")
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic == "booking":
+                hotel_answer = get_hotel_info_response("booking", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "rooms", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
         # For non-English messages, exclude query_hotel_info tool since we provide
