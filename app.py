@@ -415,6 +415,8 @@ def fix_spacing(text):
     text = re.sub(r'\?{2,}', '?', text)
     # Fix missing space before parentheses
     text = re.sub(r'([a-zA-Z])\(', r' \1 (', text)
+    # Remove common emoji characters that break the ? ending requirement
+    text = re.sub(r'[😊😀😃😄😁😆😂🤣☺️😇🙂😉😍🥰😘🤗🤩😋😜🤪😎🤓🧐🥳🥸😏🤠🤑😈👋👍👌🤝✌️🤞👏🙌🤲💯🌟✨🎉🎊❤️🧡💛💚💙💜🖤🤍🤎💖💕💞💓💗💘💝⭐🔥💥⚡🌈☀️🌙🌸🌺🌻🌹💐🎀🏆🥇🎖️🏅]+', '', text)
     # Fix multiple spaces
     text = re.sub(r'  +', ' ', text)
     return text.strip()
@@ -1266,6 +1268,25 @@ def api_chat():
                 response_text = _ensure_follow_up(response_text, topic if topic in ("rooms", "experiences", "activities") else "", detected_lang)
                 return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
+            # Handle social messages (greetings, thanks, goodbyes) directly to avoid LLM language issues
+            social_keywords = {
+                "English": ["thank", "thanks", "hello", "hi ", "hey", "goodbye", "bye", "good morning", "good evening", "good night", "good afternoon", "how are you", "how do you do", "welcome"],
+                "Slovenian": ["hvala", "pozdra", "zdravo", "nasvidenje", "dober dan", "pozdravljeni", "lahko noč", "dobrodošli"],
+                "German": ["danke", "vielen dank", "guten tag", "guten morgen", "guten abend", "auf wiedersehen", "tschüss", "hallo", "willkommen", "wie geht"],
+                "French": ["merci", "bonjour", "bonsoir", "au revoir", "salut", "bienvenue", "comment allez", "enchanté"],
+                "Italian": ["grazie", "buongiorno", "buonasera", "arrivederci", "ciao", "benvenuto", "come stai", "prego"],
+                "Spanish": ["gracias", "hola", "buenos", "buenas", "adiós", "bienvenido", "bienvenida", "cómo estás", "de nada"],
+                "Croatian": ["hvala", "pozdrav", "zdravo", "doviđenja", "dobrodošli", "kako si"],
+            }
+            is_social = any(kw in user_message.lower() for kw in social_keywords.get(detected_lang, []))
+            if is_social and topic == "general":
+                # Use the generic fallback which is well-translated
+                fallback = _get_localized_fallback(detected_lang, user_message)
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": fallback})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": fallback}]})
+
             # For other topics, use LLM with pre-fetched data
             hotel_answer = get_hotel_info_response(topic, user_message)
             if hotel_answer and hotel_answer.strip():
@@ -1307,7 +1328,7 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "rooms", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "late_check_in", "late_check_out"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -1316,6 +1337,7 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            # late_check_in / late_check_out go through LLM to enable calendar event extraction
 
         # For non-English messages, exclude query_hotel_info tool since we provide
         # hotel data via context. This prevents the LLM from calling the tool
