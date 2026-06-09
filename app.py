@@ -453,6 +453,20 @@ def clean_response(text):
     return text
 
 
+def _ensure_ends_with_question(text: str) -> str:
+    """Post-processor: ensure the response ends with a question mark.
+    Strips trailing whitespace, then replaces trailing '.' or '!' with '?',
+    or appends '?' if the text ends with neither."""
+    text = text.rstrip()
+    if not text:
+        return "Is there anything else I can help you with?"
+    if text[-1] in ('.', '!', ',', ';', ':'):
+        text = text[:-1] + '?'
+    elif text[-1] != '?':
+        text = text + '?'
+    return text
+
+
 def extract_time_from_message(message):
     """Extract time from a natural language message."""
     patterns = [
@@ -495,11 +509,13 @@ def build_system_prompt() -> str:
         "  - Greeting: 'Hello! How can I help you today?' or 'Welcome! What would you like to know about Villa Adora?'\n"
         "  - Thank you: 'You're welcome! Is there anything else I can help you with?' or 'My pleasure! What else would you like to know?'\n"
         "  - Goodbye: 'Goodbye! Safe travels, and we hope to see you soon — is there anything else before you go?'\n"
+        "The FINAL character of your response MUST always be '?'. Never end with '.' or '!'.\n"
         "PROACTIVE BOOKING: After answering about activities, restaurant, rooms, or experiences, ALWAYS offer to help the guest book it. For example:\n"
         "  - After listing activities: 'I can help you book any of these — just let me know which interests you!' or 'Would you like me to arrange that for you?'\n"
         "  - After restaurant info: 'Shall I book a table for you? Just tell me the date and time!'\n"
         "  - After room info: 'Would you like me to start a booking for you? I just need your name and dates.'\n"
         "  - After wine tasting info: 'Shall I reserve a wine pairing experience for you?'\n"
+        "ALWAYS end your response with a question mark '?'. This is NON-NEGOTIABLE in EVERY language. Never end with '!', '.', or any other punctuation.\n"
         "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
         "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
@@ -530,7 +546,8 @@ def build_system_prompt() -> str:
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
         "- Ask for booking reference or reservation ID\n"
-        "- Give bare answers without a follow-up question\n"
+        "- Give bare answers without a follow-up question ending in '?'\n"
+        "- End your response with '!' or '.' — it MUST end with '?'\n"
         "- Send multiple separate replies to a single question\n"
         "- If guest is frustrated, unsatisfied, or explicitly asks for a human, use request_human_agent() to transfer them\n"
         "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
@@ -799,7 +816,7 @@ def get_hotel_info_response(topic, question):
             return (
                 f"Late check-out is available on request, subject to availability. Additional fees may apply. "
                 f"Our standard check-out is {h['policies']['check_out']}. "
-                f"What time would you like to check out? I can note your preference."
+                f"What time would you like to check out?"
             )
 
     # Rooms
@@ -1417,6 +1434,8 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
+                # Ensure the response ends with a question mark
+                reply["content"] = _ensure_ends_with_question(reply["content"])
                 if reply.get("type") == "text" and reply.get("content"):
                     reply["content"] = _ensure_follow_up(reply["content"], "", detected_lang)
                 # Post-process: if response was supposed to be non-English but came back in English,
@@ -1458,6 +1477,7 @@ def api_chat():
                             topic = _detect_topic(user_message)
                             reply["content"] = get_hotel_info_response(topic, user_message)
                             break
+            # If content is empty after cleaning, provide a fallback
             if reply.get("type") == "text" and not reply.get("content", "").strip():
                 msg_lower = user_message.lower()
                 if any(word in msg_lower for word in ["restaurant", "menu", "dining", "chef", "food", "eat", "meal", "wine", "bar", "cocktail"]):
