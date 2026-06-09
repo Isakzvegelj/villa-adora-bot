@@ -585,7 +585,7 @@ def build_system_prompt() -> str:
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
         "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
-        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (lake view), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
+        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Deluxe Suite (lake view), Superior Suite (sleeps 4, family-friendly), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor) — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
