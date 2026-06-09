@@ -612,7 +612,7 @@ def _detect_language(message: str) -> str:
 
     # Word-based detection for languages without unique characters
     # French word patterns
-    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " chambres ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " parking ", " animaux ", " chien ", " chat ", " vins ", " restaurant ", " activités ", " où ", " combien ", " parlez ", " parlami "]
+    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " chambres ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " animaux ", " chien ", " chat ", " vins ", " activités ", " où ", " combien ", " parlez "]
     if any(w in msg for w in french_words):
         return "French"
 
