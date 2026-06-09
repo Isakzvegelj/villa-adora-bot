@@ -249,46 +249,9 @@ _EXPERIENCES_TRANSLATED = {
 
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
-    # Pad with spaces to ensure word-boundary matching works for first/last words
-    q = " " + user_message.lower().strip() + " "
-    # Handle thank-you messages
-    thank_you_words = ["hvala", "danke", "merci", "grazie", "gracias", "thank", "thanks", "hvala lepo", "vielen dank", "merci beaucoup", "grazie mille", "muchas gracias", "dankon", "hvala vam", "danke schön", "je vous remercie", "le agradezco", "ti ringrazio"]
-    if any(w in q for w in thank_you_words) and len(q) < 60:
-        fallbacks = {
-            "Slovenian": "Ni za kaj! Z veseljem pomagam. Kaj še lahko storim za vas?",
-            "German": "Gern geschehen! Kann ich sonst noch etwas für Sie tun?",
-            "French": "De rien ! Je suis à votre disposition. Puis-je faire autre chose pour vous ?",
-            "Italian": "Prego! Sono qui per aiutarti. Posso fare altro per te?",
-            "Spanish": "¡De nada! Estoy aquí para ayudar. ¿Hay algo más que pueda hacer por ti?",
-            "Croatian": "Nema na čemu! Rado ću vam pomoći. Mogu li još nešto učiniti za vas?",
-            "English": "You're welcome! Is there anything else I can help you with?",
-        }
-        return fallbacks.get(lang, fallbacks["English"])
-    # Handle greetings
-    greeting_words = ["zdravo", "pozdravljeni", "dober dan", "lahko noč", "nasvidenje", "ciao", "salve", "buongiorno", "buonasera", "arrivederci", "hallo", "guten tag", "guten morgen", "guten abend", "auf wiedersehen", "tschüss", "bonjour", "bonsoir", "au revoir", "salut", "hola", "buenos días", "buenas tardes", "hasta luego", "adios", "hello", "hi", "hey", "good morning", "good evening", "goodbye", "bye"]
-    if any(w in q for w in greeting_words) and len(q) < 40:
-        fallbacks = {
-            "Slovenian": "Zdravo! Sem Luka, vaš concierge v Villa Adora Bled. Kako vam lahko pomagam?",
-            "German": "Hallo! Ich bin Luka, Ihr Concierge im Villa Adora Bled. Wie kann ich Ihnen helfen?",
-            "French": "Bonjour ! Je suis Luka, votre concierge au Villa Adora Bled. Comment puis-je vous aider ?",
-            "Italian": "Ciao! Sono Luka, il vostro concierge al Villa Adora Bled. Come posso aiutarvi?",
-            "Spanish": "¡Hola! Soy Luka, su conserje en Villa Adora Bled. ¿Cómo puedo ayudarle?",
-            "Croatian": "Zdravo! Ja sam Luka, vaš concierge u Villa Adora Bled. Kako vam mogu pomoći?",
-            "English": "Hello! I'm Luka, your concierge at Villa Adora Bled. How can I help you today?",
-        }
-        return fallbacks.get(lang, fallbacks["English"])
+    q = user_message.lower()
     # Detect topic for a more relevant fallback
-    if any(w in q for w in ["pet", "dog", "cat", "animal", "pes", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot", "psa", "žival", "haustier", "tier", "tierk"]):
-        fallbacks = {
-            "Slovenian": "Živali so dovoljeni na zahtevo — 35 € na žival na noč. Prosimo, da nas obvestite vnaprej, da uredimo vse potrebno. Ali želite dodati hišne živali k vaši rezervaciji?",
-            "German": "Haustiere sind auf Anfrage erlaubt — 35 € pro Tier pro Nacht. Bitte informieren Sie uns im Voraus, damit wir alles arrangieren können. Möchten Sie ein Haustier hinzufügen?",
-            "French": "Les animaux de compagnie sont acceptés sur demande — 35 € par animal et par nuit. Veuillez nous informer à l'avance pour que nous puissions tout organiser. Souhaitez-vous ajouter un animal?",
-            "Italian": "Gli animali domestici sono ammessi su richiesta — 35 € per animale a notte. Per favore informateci in anticipo per organizzare tutto. Vuoi aggiungere un animale?",
-            "Spanish": "Se admiten mascotas bajo petición — 35 € por animal por noche. Por favor, infórmanos con antelación para organizarlo todo. ¿Te gustaría agregar una mascota?",
-            "Croatian": "Kućni ljubimci su dozvoljeni na zahtjev — 35 € za životinju po noći. Molimo obavijestite nas unaprijed kako bismo sve organizirali. Želite li dodati kućnog ljubimca?",
-            "English": "Pets are welcome on request — €35 per pet per night. Please let us know in advance so we can arrange everything. Would you like to add a pet to your booking?",
-        }
-    elif any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
+    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
         fallbacks = {
             "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov!",
             "German": "Wir haben 7 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen!",
@@ -296,7 +259,6 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli!",
             "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles!",
             "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja!",
-            "English": "We have 7 beautiful suites, all with stunning lake views. Each has a private bathroom, air conditioning, free WiFi, and TV. Which one interests you most? I'd be happy to share more details!",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
@@ -306,17 +268,6 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
             "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
             "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
-            "English": "Breakfast is available for €22 per person, served 8-10 AM. We also offer vegan, vegetarian, and gluten-free options on request. Would you like to add breakfast to your booking?",
-        }
-    elif any(w in q for w in ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci", "nahajate", "nahaja", "kje se"]):
-        fallbacks = {
-            "Slovenian": "Nahajamo se na Cesta svobode 35, 4260 Bled, Slovenija — neposredno na obali jezera Bled. Pogled na Bledski otok, Blejski grad in Triglav. 2 min hoje do čolnarnice, 15 min do centra Bleda. Želite navodila za pot?",
-            "German": "Wir befinden uns an der Cesta svobode 35, 4260 Bled, Slowenien — direkt am Ufer des Bleder Sees. Blick auf die Bled-Insel, die Bleder Burg und das Triglav-Gebirge. 2 Min. zu Fuß zur Bootsstation, 15 Min. ins Zentrum. Möchten Sie eine Wegbeschreibung?",
-            "French": "Nous sommes situés au Cesta svobode 35, 4260 Bled, Slovénie — directement sur les rives du lac Bled. Vue sur l'île de Bled, le château de Bled et les montagnes du Triglav. 2 min à pied de la station de bateaux, 15 min du centre-ville. Souhaitez-vous un itinéraire?",
-            "Italian": "Ci troviamo a Cesta svobode 35, 4260 Bled, Slovenia — direttamente sulle rive del lago di Bled. Vista sull'isola di Bled, il castello di Bled e le montagne del Triglav. 2 min a piedi dalla stazione dei battelli, 15 min dal centro. Vuoi le indicazioni?",
-            "Spanish": "Estamos ubicados en Cesta svobode 35, 4260 Bled, Eslovenia — directamente en las orillas del lago Bled. Vistas de la isla de Bled, el castillo de Bled y las montañas Triglav. 2 min a pie a la estación de botes, 15 min al centro. ¿Te gustaría indicaciones?",
-            "Croatian": "Nalazimo se na Cesta svobode 35, 4260 Bled, Slovenija — neposredno na obali jezera Bled. Pogled na Bledski otok, Bledski grad i planinu Triglav. 2 min hoda do stanice za brodove, 15 min do centra. Želite upute za put?",
-            "English": "We're located at Cesta svobode 35, 4260 Bled, Slovenia — right on the shore of Lake Bled. Views of Bled Island, Bled Castle, and the Triglav Mountains. 2 min walk to the boat station, 15 min to town center. Would you like directions?",
         }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -326,7 +277,6 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Cucina creativa con ingredienti sloveni locali sotto la guida dello chef Domen Demšar. La terrazza offre una delle migliori viste sul lago. Prenotazione: +386 40 558 158. Vuoi riservare un tavolo?",
             "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terraza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
             "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
-            "English": "We have the Adora Pop Up Restaurant right here at the hotel! Creative Slovenian cuisine with local ingredients by Chef Domen Demšar. The terrace has some of the best lake views in Bled. Reservations: +386 40 558 158. Would you like to book a table?",
         }
     else:
         fallbacks = {
@@ -336,9 +286,8 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti!",
             "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte!",
             "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći!",
-            "English": "Villa Adora Bled is a luxury boutique hotel on Lake Bled. We have 7 unique suites with lake views, a pop-up restaurant, free parking, and WiFi. What would you like to know? I'm here to help!",
         }
-    return fallbacks.get(lang, fallbacks.get("English", "I'm here to help! What would you like to know about Villa Adora Bled?"))
+    return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
 
 def fix_spacing(text):
@@ -625,9 +574,8 @@ def build_system_prompt() -> str:
         "- Quiet hours: 22:00-07:00 | Parties/events not allowed\n"
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
-        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n"
-        "- Cancellation: Direct bookings free cancellation up to 48h before check-in. No-shows charged first night.\n\n"
-        "ROOMS: Princess Suite (55 m², tower view, €250), Luxury Suite (lake view, €270), Penthouse Suite (60 m², 2 floors, €300), Swan Suite (67 m², lake view, €370), Island Suite (sleeps 4, 65 m², €380), Prestige Suite (72 m², ground floor, €420), Castle Suite — all with lake views.\n\n"
+        "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
+        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Swan Suite (lake view), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor), Castle Suite — all with lake views.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
@@ -749,8 +697,7 @@ def _detect_language(message: str) -> str:
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
             " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
-            " soba ", " sobe ", " apartma ", " ali ", " smem ", " kje ", " kam ",
-            " psa ", " mačka ", " prihod ", " odhod ", " pozno ", " restavracija "
+            " soba ", " sobe ", " apartma "
         ],
     }
 
@@ -771,15 +718,6 @@ def _detect_language(message: str) -> str:
 def _detect_topic(message: str) -> str:
     """Detect the hotel info topic from a message (language-independent)."""
     msg = message.lower()
-
-    # Check dietary/breakfast FIRST before general keywords, since words like
-    # "gluten-free options" can otherwise trigger a wrong topic.
-    dietary_keywords = ["vegan", "vegetarian", "gluten", "allergy", "allergies",
-                        "dietary", "diet", "restriction", "celiac", "lactose",
-                        "intolerant", "dairy", "vegansko", "vegetarijansko", "brezglutensko",
-                        "alergija", "prehrana", "allergie", "allergène"]
-    if any(kw in msg for kw in dietary_keywords):
-        return "breakfast"
 
     topic_keywords = {
         "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
@@ -805,17 +743,6 @@ def _detect_topic(message: str) -> str:
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
-
-    # Check for check-in/check-out FIRST (before general keyword matching)
-    # to ensure these specific phrases are not missed
-    if "check-in" in msg or "check in" in msg or "checkin" in msg:
-        if "late" in msg:
-            return "late_check_in"
-        return "check_in"
-    if "check-out" in msg or "check out" in msg or "checkout" in msg:
-        if "late" in msg:
-            return "late_check_out"
-        return "check_out"
 
     for topic, keywords in topic_keywords.items():
         if any(kw in msg for kw in keywords):
@@ -853,13 +780,13 @@ def get_hotel_info_response(topic, question):
     # Map common synonyms to topics
     topic_aliases = {
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "leave", "leaving"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure"],
         "rooms": ["room", "suite", "bed", "accommodation", "stay", "sleep"],
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
         "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "dairy"],
+        "breakfast": ["breakfast", "morning meal", "brunch"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
         "bar": ["bar", "cocktail", "cocktails", "aperitivo", "drinks", "mixologist"],
@@ -887,7 +814,7 @@ def get_hotel_info_response(topic, question):
                 break
 
     # Override: dietary questions should always go to breakfast/dining
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "dairy"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
         actual_topic = "breakfast"
 
     # Check-in / Check-out
@@ -1027,22 +954,22 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
-            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "dairy", "lactose", "intolerant"]):
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
-                    f"We offer vegan, vegetarian, gluten-free, and dairy-free options on request, "
+                    f"We offer vegan, vegetarian, and gluten-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
                     f"Would you like to add breakfast to your booking?"
                 )
             return (
                 f"Breakfast is €22/person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
-                f"We also offer vegan, vegetarian, gluten-free, and dairy-free options on request. "
+                f"We also offer vegan, vegetarian, and gluten-free options on request. "
                 f"Shall I add breakfast to your booking?"
             )
         return (
             f"{b} "
-            f"Vegan, vegetarian, gluten-free, and dairy-free options are available on request. "
+            f"Vegan, vegetarian, and gluten-free options are available on request. "
             f"Shall I add breakfast to your booking?"
         )
 
@@ -1339,78 +1266,86 @@ def api_chat():
                     response_text = _ensure_follow_up(response_text, "experiences", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
-        # Detect topic and fetch hotel data directly.
-        topic = _detect_topic(user_message)
-        hotel_answer = get_hotel_info_response(topic, user_message)
+        if is_non_english:
+            # For non-English messages, detect topic and fetch hotel data directly.
+            # Check if we have a pre-translated response for rooms/experiences
+            # Use direct response to bypass LLM and avoid timeout issues
+            direct_response = None
+            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
+                direct_response = _ROOM_LISTINGS_TRANSLATED[detected_lang]
+            elif topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
+                direct_response = _EXPERIENCES_TRANSLATED[detected_lang]
 
-        # Use pre-translated responses for rooms and experiences when available
-        if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
-            hotel_answer = _ROOM_LISTINGS_TRANSLATED[detected_lang]
-        if topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
-            hotel_answer = _EXPERIENCES_TRANSLATED[detected_lang]
+            if direct_response:
+                # Use pre-translated content directly - update session and return
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": direct_response})
+                sessions[session_id] = messages
+                # Ensure it ends with a question mark
+                response_text = _ensure_ends_with_question(direct_response)
+                response_text = _ensure_follow_up(response_text, topic if topic in ("rooms", "experiences", "activities") else "", detected_lang)
+                return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
-        # For factual hotel queries (where we have a direct answer), return it
-        # immediately without calling the LLM. This eliminates language mismatch
-        # and significantly reduces latency.
-        factual_topics = {
-            "rooms", "policies", "amenities", "location", "experiences",
-            "breakfast", "parking", "wifi", "pets", "cancellation",
-            "payment", "children", "smoking", "contact", "restaurant",
-            "bar", "wine", "late_check_in", "late_check_out", "shuttle",
-            "room_service", "general",
-        }
-        if hotel_answer and hotel_answer.strip() and topic in factual_topics:
-            # For non-English queries, return a translated response
-            if is_non_english:
-                # Always try to get a localized response first
-                translated = _get_localized_fallback(detected_lang, user_message)
-                reply_content = fix_spacing(translated) if translated else fix_spacing(hotel_answer)
+            # For other topics, use LLM with pre-fetched data
+            hotel_answer = get_hotel_info_response(topic, user_message)
+            if topic == "general" and detected_lang != "English":
+                # For non-English general messages (greetings, etc.), use
+                # localized fallback directly instead of relying on LLM translation
+                localized = _get_localized_fallback(detected_lang, user_message)
+                if localized and localized.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": localized})
+                    sessions[session_id] = messages
+                    response_text = fix_spacing(localized)
+                    response_text = _ensure_follow_up(response_text, "", detected_lang)
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                # Fallback to LLM if localized is empty
+                lang_messages.append({
+                    "role": "system",
+                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
+                })
+            elif hotel_answer and hotel_answer.strip():
+                lang_messages.append({
+                    "role": "system",
+                    "content": f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n3. Translate ALL hotel information below to {detected_lang}.\n4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n5. The FINAL character of your response MUST be '?'.\n\nHOTEL DATA TO TRANSLATE:\n{hotel_answer}"
+                })
             else:
-                # For English, use localized fallback for general/greeting queries
-                if topic == "general":
-                    localized = _get_localized_fallback(detected_lang, user_message)
-                    reply_content = fix_spacing(localized) if localized else fix_spacing(hotel_answer)
-                else:
-                    reply_content = fix_spacing(hotel_answer)
-            reply_content = _ensure_follow_up(reply_content, topic)
+                lang_messages.append({
+                    "role": "system",
+                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
+                })
+        else:
+            # For English messages, use direct response for rooms/experiences to reduce latency
+            if topic == "rooms":
+                hotel_answer = get_hotel_info_response("rooms", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "rooms", "English")
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic in ("experiences", "activities"):
+                hotel_answer = get_hotel_info_response("experiences", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "experiences", "English")
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
-            replies = [{"type": "text", "content": reply_content}]
-            # Don't add to conversation history for simple factual responses
-            return jsonify({"replies": replies})
-
-        # For non-factual queries (greetings, general chat, booking flow),
-        # use the LLM with language enforcement
-        if hotel_answer and hotel_answer.strip() and is_non_english:
-            lang_messages.append({
-                "role": "system",
-                "content": (
-                    f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n"
-                    f"1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n"
-                    f"2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n"
-                    f"3. Translate ALL hotel information below to {detected_lang}.\n"
-                    f"4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n\n"
-                    f"HOTEL DATA TO TRANSLATE:\n{hotel_answer}"
-                ),
-            })
-        elif is_non_english:
-            lang_messages.append({
-                "role": "system",
-                "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}."
-            })
-
-        # Only use booking/shuttle/human-agent tools (no query_hotel_info since we handle that above)
-        available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
-
-        # Add a language reinforcement message right before the LLM call
-        lang_reinforce = {
-            "role": "system",
-            "content": f"REMINDER: The user's message is in {'English' if not is_non_english else detected_lang}. Respond entirely in {'English' if not is_non_english else detected_lang}.",
-        }
-        final_messages = list(lang_messages) + [lang_reinforce]
+        # For non-English messages, exclude query_hotel_info tool since we provide
+        # hotel data via context. This prevents the LLM from calling the tool
+        # and getting English responses. Keep booking/shuttle tools available.
+        if is_non_english:
+            available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
+        else:
+            available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
 
         tool_params = {
             "model": MODEL,
-            "messages": final_messages,
+            "messages": lang_messages,
             "tools": available_tools,
             "temperature": 0.3 if is_non_english else 0.5,
             "max_tokens": 2000 if is_non_english else 1500,
@@ -1647,9 +1582,8 @@ def api_chat():
                 # replace with a translated fallback
                 if is_non_english and reply.get("content"):
                     content = reply["content"]
-                    content_lower = content.lower()
-
-                    # Language-specific indicator words (distinctive, not shared with English)
+                    # Check if response is still mostly English (simple heuristic)
+                    english_words = ["the ", "we ", "our ", "you ", "have ", "are ", "with ", "and ", "for ", "this ", "that ", "here ", "there ", "would ", "could ", "should ", "will ", "can ", "your"]
                     non_english_indicators = {
                         "Slovenian": ["imo", "vas", "prosim", "hvala", "sobe", "apartma", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid"],
                         "German": ["ich ", "sie ", "das ", "die ", "der ", "und ", "für ", "mit ", "haben ", "sind ", "können ", "möchten ", "guten", "vielen"],
