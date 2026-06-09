@@ -264,9 +264,39 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "English": "You're welcome! Is there anything else I can help you with?",
         }
         return fallbacks.get(lang, fallbacks["English"])
-    # Handle greetings
+    # Content keywords that indicate the message is NOT just a greeting
+    _content_keywords = [
+        "pet", "dog", "cat", "animal", "pes", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot", "psa", "žival",
+        "room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma",
+        "breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana",
+        "location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci", "nahajate", "nahaja",
+        "restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture",
+        "parking", "park", "car", "parkirišče", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement",
+        "wifi", "wi-fi", "internet", "wireless", "wlan",
+        "shuttle", "transfer", "airport", "prevoz", "navette", "transporte", "flughafen", "aeropuerto", "aéroport",
+        "price", "cost", "how much", "rate", "pricing", "cena", "preis", "prix", "precio", "prezzo", "stane", "koliko",
+        "book", "reservation", "rezervacija", "buchung", "prenotazione", "réservation", "reservación",
+        "check", "checkin", "checkout", "check-in", "check-out", "arrival", "departure", "arrive", "depart", "prihod", "odhod", "ankunft", "arrivo", "arrivée", "llegada",
+        "activity", "activities", "thing to do", "things to do", "what to do", "aktivnost", "aktivität", "attività", "activité", "actividad",
+        "spa", "massage", "wellness", "sauna", "pool", "swim",
+        "bar", "cocktail", "drink", "aperitivo", "pijača", "getränk", "bevanda", "boisson",
+        "wine", "wines", "vineyard", "sommelier", "vino", "vin", "wein", "vina",
+        "cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci",
+        "child", "kid", "baby", "family", "otrok", "kind", "bambino", "enfant", "niño",
+        "smoking", "smoke", "cigarette", "kajenje", "kaditi", "cigaretta", "rauchen", "fumare", "fumer", "fumar",
+        "contact", "phone", "email", "call", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar",
+        "late", "pozen", "spät", "tardif", "tardío",
+        "opzioni", "opciones", "options", "optionen", "možnosti",
+        # Italian/Spanish dietary
+        "vegano", "vegana", "vegani", "vegane", "glutine", "senza",
+        "vegetariano", "vegetariana", "allergico", "intollerante",
+        "veganas", "veganos", "sin", "vegetarianos", "vegetarianas",
+        "alérgico", "alérgica", "intolerante", "celíaco", "celíaca",
+    ]
+    _has_content = any(w in q for w in _content_keywords)
+    # Handle greetings — only if the message is PURELY a greeting (no content keywords)
     greeting_words = ["zdravo", "pozdravljeni", "dober dan", "lahko noč", "nasvidenje", "ciao", "salve", "buongiorno", "buonasera", "arrivederci", "hallo", "guten tag", "guten morgen", "guten abend", "auf wiedersehen", "tschüss", "bonjour", "bonsoir", "au revoir", "salut", "hola", "buenos días", "buenas tardes", "hasta luego", "adios", "hello", "hi", "hey", "good morning", "good evening", "goodbye", "bye"]
-    if any(w in q for w in greeting_words) and len(q) < 40:
+    if not _has_content and any(w in q for w in greeting_words) and len(q) < 40:
         fallbacks = {
             "Slovenian": "Zdravo! Sem Luka, vaš concierge v Villa Adora Bled. Kako vam lahko pomagam?",
             "German": "Hallo! Ich bin Luka, Ihr Concierge im Villa Adora Bled. Wie kann ich Ihnen helfen?",
@@ -298,7 +328,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja!",
             "English": "We have 7 beautiful suites, all with stunning lake views. Each has a private bathroom, air conditioning, free WiFi, and TV. Which one interests you most? I'd be happy to share more details!",
         }
-    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
+    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "opzioni", "opciones", "senza", "sin", "glutine", "vegano", "vegana", "vegani", "vegane", "vegetariano", "vegetariana", "allergico", "intollerante", "celliaco", "celiaco", "lattosio", "veganas", "veganos", "vegetarianos", "vegetarianas", "alérgico", "alérgica", "intolerante", "celíaco", "celíaca", "lactosa"]):
         fallbacks = {
             "Slovenian": "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Nudimo tudi veganska, vegetarijanska in brezglutenska jed. Želite dodati zajtrk k vaši rezervaciji?",
             "German": "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Wir bieten auch vegane, vegetäre und glutenfreie Optionen. Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?",
@@ -673,12 +703,16 @@ def _detect_language(message: str) -> str:
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
             " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
             " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere ",
-            " camera ", " alloggio "
+            " camera ", " alloggio ", " opzioni ", " senza ", " glutine ",
+            " vegano ", " vegana ", " vegetariano ", " vegetariana ", " allergico ",
+            " intollerante ", " celiaco ",
         ],
         "Spanish": [
             " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
             " quisiera ", " tienen ", " habitaciones ", " desayuno ", " restaurante ",
-            " bienvenido ", " hasta luego ", " magnífico ", " perfecto ", " reservación "
+            " bienvenido ", " hasta luego ", " magnífico ", " perfecto ", " reservación ",
+            " opciones ", " sin gluten ", " vegano ", " vegana ", " vegetariano ",
+            " vegetariana ", " alérgico ", " alérgica ", " intolerante ", " celíaco ", " celíaca ",
         ],
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
@@ -712,7 +746,18 @@ def _detect_topic(message: str) -> str:
                         "allergic", "dietary", "diet", "restriction", "celiac",
                         "lactose", "intolerant", "nut", "nuts", "peanut",
                         "vegansko", "vegetarijansko", "brezglutensko",
-                        "alergija", "prehrana", "allergie", "allergène"]
+                        "alergija", "prehrana", "allergie", "allergène",
+                        # Italian
+                        "vegano", "vegana", "vegani", "vegane", "vegetariano", "vegetariana",
+                        "vegetariani", "vegetariane", "glutine", "senza glutine",
+                        "allergico", "allergica", "intollerante", "intolleranza",
+                        "celliaco", "celiaco", "lattosio",
+                        # Spanish
+                        "vegano", "vegana", "veganas", "veganos", "vegetariano", "vegetariana",
+                        "vegetarianos", "vegetarianas", "sin gluten",
+                        "alérgico", "alérgica", "intolerante", "intolerancia",
+                        "celíaco", "celíaca", "lactosa",
+                        ]
     if any(kw in msg for kw in dietary_keywords):
         return "breakfast"
 
@@ -723,7 +768,7 @@ def _detect_topic(message: str) -> str:
         ("room_service", ["room service", "in-room dining", "food to room", "roomservice", "zimmer service", "servicio habitación", "servizio camera", "service en chambre", "postreba hrano", "sobna postreba"]),
         ("shuttle", ["shuttle", "transfer", "airport", "prevoz", "navette", "transporte", "flughafen", "aeropuerto", "aéroport"]),
         ("smoking", ["smoking", "smoke", "cigarette", "cigar", "tobacco", "kajenje", "kaditi", "cigaretta", "rauchen", "fumare", "fumer", "fumar"]),
-        ("experiences", ["activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what can you do around", "attraction", "sightseeing", "sight", "visit", "tour", "hike", "swim", "around bled", "around here", "in bled", "aktivnost", "kaj storiti", "kaj je videti", "aktivität", "was kann man machen", "attività", "cosa fare", "activité", "que peut-on faire", "que faire", "actividad", "que hacer", "que se puede hacer", "kaj se dela", "okoli bleda", "kuhinja", "co faire", "wat te doen", "wat is er te doen", "cosa posso fare", "che cosa fare", "was gibt es zu tun", "was ist zu tun", "co dělat", "co se dá dělat", "mit lehet csinálni", "co robić", "что делать"]),
+        ("experiences", ["activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what can you do around", "attraction", "sightseeing", "sight", "visit", "tour", "hike", "swim", "spa", "massage", "wellness", "sauna", "pool", "around bled", "around here", "in bled", "aktivnost", "kaj storiti", "kaj je videti", "aktivität", "was kann man machen", "attività", "cosa fare", "activité", "que peut-on faire", "que faire", "actividad", "que hacer", "que se puede hacer", "kaj se dela", "okoli bleda", "kuhinja", "co faire", "wat te doen", "wat is er te doen", "cosa posso fare", "che cosa fare", "was gibt es zu tun", "was ist zu tun", "co dělat", "co se dá dělat", "mit lehet csinálni", "co robić", "что делать"]),
         # Single-word topics after
         ("rooms", ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj", "koliko", "stane", "cena", "cene", "preis", "prix", "precio", "prezzo", "how much", "price", "cost"]),
         ("restaurant", ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "küche", "cucina", "manger", "nourriture"]),
