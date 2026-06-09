@@ -607,8 +607,9 @@ def _detect_language(message: str) -> str:
     if any(c in msg for c in ['ç', 'ê', 'î', 'ô', 'û', 'ë', 'ï', 'œ', 'æ']):
         return "French"
     # French word-based detection for shared accented chars (é, è, à, ù)
+    # The accented char alone is a strong French signal — just need 1 more word
     if any(c in msg for c in ['é', 'è', 'à', 'ù']):
-        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " petit ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " est ", " les ", " des ", " dans ", " pour ", " avec "]
+        french_words = [" bonjour ", " bonsoir ", " merci ", " vous ", " nous ", " chambre ", " chambres ", " déjeuner ", " réservation ", " avez ", " pouvez ", " voudrais ", " c'est ", " cette ", " notre ", " votre ", " est-ce ", " puis-je ", " souhaite ", " faire ", " veut ", " veux ", " aussi ", " très ", " voici ", " merci beaucoup ", " s'il vous plaît ", " excusez-moi ", " madame ", " monsieur ", " au revoir ", " bienvenue ", " comment allez ", " enchanté ", " enchante ", " qui ", " dont ", " donc ", " car "]
         if any(w in msg for w in french_words):
             return "French"
 
