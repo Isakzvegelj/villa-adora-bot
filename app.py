@@ -577,7 +577,7 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
 
     # Word-based Slovenian detection (without diacritics)
-    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane"]
+    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " kakšni ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane", " prijava ", " prijave ", " odjava ", " kje ", " kako ", " ura ", " urah ", " restavracija ", " parkirno ", " pes ", " aktivnosti ", " jezero ", " otok ", " grad ", " razgled ", " pogled ", " cena ", " cene ", " koliko "]
     if any(w in msg for w in slovenian_words):
         return "Slovenian"
 
@@ -606,13 +606,13 @@ def _detect_language(message: str) -> str:
     # Italian-specific characters (check AFTER French since they share some)
     if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
         # Could be French or Italian - check words
-        italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere "]
+        italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere ", " ora ", " che ora ", " parlami ", " parlez "]
         if any(w in msg for w in italian_words):
             return "Italian"
 
     # Word-based detection for languages without unique characters
     # French word patterns
-    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais "]
+    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " chambres ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " parking ", " animaux ", " chien ", " chat ", " vins ", " restaurant ", " activités ", " où ", " combien ", " parlez ", " parlami "]
     if any(w in msg for w in french_words):
         return "French"
 
@@ -623,7 +623,8 @@ def _detect_language(message: str) -> str:
             " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
             " können wir ", " ich hätte ", " buchung ", " zimmer ", " frühstück ",
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
-            " buchen ", " reservierung ", " kammer ", " schlafzimmer "
+            " buchen ", " reservierung ", " kammer ", " schlafzimmer ",
+            " einen parkplatz ", " parken ", " auto ", " wagen "
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
@@ -668,16 +669,16 @@ def _detect_topic(message: str) -> str:
     msg = message.lower()
 
     topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj"],
+        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "zimmern"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
-        "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
+        "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina"],
         "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
         "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
         "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "odhod", "abreise", "partenza", "du00e9part", "salida"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
