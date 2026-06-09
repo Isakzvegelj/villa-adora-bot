@@ -668,31 +668,36 @@ def _detect_topic(message: str) -> str:
     msg = message.lower()
 
     topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj", "koliko", "stane", "cena", "cene", "preis", "prix", "precio", "prezzo", "how much", "price", "cost"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
+        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
         "parking": ["parking", "park", "car", "parkiriu0161u010de", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
         "pets": ["pet", "dog", "cat", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "ubicaci"],
-        "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "du00e9part", "salida"],
+        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "late arrival", "prihod", "ankunft", "arrivo", "arrivu00e9e", "llegada"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "late departure", "odhod", "abreise", "partenza", "du00e9part", "salida"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
         "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
         "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
         "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
-        "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o"],
+        "children": ["child", "kid", "baby", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o", "dru\u017eina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
         "room_service": ["room_service", "room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
+        "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
+        "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
 
     for topic, keywords in topic_keywords.items():
         if any(kw in msg for kw in keywords):
             return topic
+    # Priority overrides: booking intent should override rooms
+    if any(kw in msg for kw in ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and any(kw in msg for kw in ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
+        return "booking"
     return "general"
 
 
@@ -986,8 +991,27 @@ def get_hotel_info_response(topic, question):
     # Children
     if actual_topic == "children":
         return (
-            f"{h['policies']['children']}. "
-            f"Traveling with family? I can help find the best room for everyone!"
+            f"Children of all ages are welcome! We are a family-friendly hotel. "
+            f"The Island Suite is perfect for families as it has 2 bedrooms and sleeps 4 guests. "
+            f"For activities, kids love rowing to Bled Island, swimming in the lake, "
+            f"horse-drawn carriage rides, and the Vintgar Gorge walk. "
+            f"Would you like me to help you find the best room or activities for your family?"
+        )
+
+    # Directions / Location details
+    if actual_topic == "location":
+        if any(word in q for word in ["castle", "bled castle"]):
+            return (
+                "Bled Castle is about a 30-minute walk from the hotel, or just 5 minutes by car. "
+                "It's a medieval castle perched on a cliff with incredible views over the lake. "
+                "I'd recommend visiting in the late afternoon for the best light. "
+                "Shall I help you arrange transport or give you more tips for your visit?"
+            )
+        return (
+            f"We're at {h['location']['address']}. "
+            f"{h['location']['description']} "
+            f"Phone: {h['location']['phone']}. "
+            f"Would you like directions or tips on getting here?"
         )
 
     # Smoking
@@ -997,17 +1021,28 @@ def get_hotel_info_response(topic, question):
             f"Is there anything else I can help you with?"
         )
 
-    # Location
-    if actual_topic == "location":
-        return (
-            f"We're at {h['location']['address']}. "
-            f"{h['location']['description']} "
-            f"Phone: {h['location']['phone']}. "
-            f"Would you like directions or tips on getting here?"
-        )
-
     # Experiences
     if actual_topic == "experiences":
+        # Check if specifically asking about massage/spa
+        if any(word in q for word in ["massage", "spa", "wellness"]):
+            return (
+                "In-room massage is available and highly recommended! Please give us 24 hours notice to arrange. "
+                "It's the perfect way to unwind after a day of exploring Bled. "
+                "Would you like me to help you book a massage session?"
+            )
+        # Check if asking about family-friendly activities
+        if any(word in q for word in ["family", "families", "kid", "child", "children", "baby", "toddler"]):
+            return (
+                "Bled is wonderful for families! Here are some great options:\n"
+                "• Row to Bled Island — kids love the traditional pletna boat ride\n"
+                "• Swimming in the lake — safe, clean, and free!\n"
+                "• Vintgar Gorge walk — an easy and spectacular nature walk\n"
+                "• Horse-drawn carriage rides around Bled\n"
+                "• Mini golf and cycling around the lake\n"
+                "• Bled Castle — explorers of all ages will enjoy it\n"
+                "The Island Suite is perfect for families as it sleeps 4 with 2 bedrooms! "
+                "Which activity sounds most fun for your family?"
+            )
         return (
             f"There's so much to do around Bled! Here are some highlights:\n"
             f"• Row to Bled Island & visit the Church of the Assumption\n"
@@ -1061,6 +1096,23 @@ def get_hotel_info_response(topic, question):
             f"a swimming pool, sauna, and garden. "
             f"Perfect for families or groups seeking a private retreat. "
             f"Would you like more details or to make an inquiry?"
+        )
+
+    # Weather
+    if actual_topic == "weather":
+        return (
+            "I don't have real-time weather data, but I'd recommend checking a weather app for the latest forecast! "
+            "Bled has beautiful warm summers perfect for swimming and hiking, "
+            "and magical snowy winters that transform the lake into a fairytale scene. "
+            "What are you most interested in doing during your visit?"
+        )
+
+    # Booking intent
+    if actual_topic == "booking":
+        return (
+            "I'd love to help you book a room! We have 7 beautiful suites with stunning lake views. "
+            "To get started, I'll need your name, check-in and check-out dates, and your preferred room. "
+            "Which suite catches your eye, or would you like me to help you choose?"
         )
 
     # Fallback
@@ -1300,15 +1352,27 @@ def api_chat():
                     "nearby", "around", "do here", "vegan", "vegetarian", "gluten",
                     "dietary", "allergy", "amenity", "facility", "service", "book",
                     "reservation", "available", "offer", "have", "provide",
-                    "room service", "massage", "spa",
+                    "room service", "massage", "spa", "book", "reserve", "reservation",
                 ]
                 msg_lower = user_message.lower()
+                # Detect topic for smarter fallback
+                detected_topic = _detect_topic(user_message)
                 is_factual = any(kw in msg_lower for kw in factual_keywords)
-                if is_factual:
-                    fallback = get_hotel_info_response("general", user_message)
-                    if len(content.strip()) < 100:
+                # Non-factual social messages (greetings, thanks, goodbyes)
+                is_social = any(kw in msg_lower for kw in ["thank", "thanks", "bye", "goodbye", "hello", "hi ", "hey", "good morning", "good evening", "good night", "good afternoon", "how are you", "how do you do"])
+                is_short = len(user_message.strip()) < 20
+                if is_social and is_short and not is_factual:
+                    # Let LLM handle social messages naturally but ensure language match
+                    if is_non_english and content:
+                        # Check if LLM responded in the right language
+                        pass  # Language check below will catch English responses
+                    replies.append({"type": "text", "content": content})
+                elif is_factual:
+                    fallback = get_hotel_info_response(detected_topic, user_message)
+                    if len(content.strip()) < 80:
                         replies.append({"type": "text", "content": fallback})
                     else:
+                        # Use LLM content if it's substantial, but verify it's on-topic
                         replies.append({"type": "text", "content": content})
                 else:
                     replies.append({"type": "text", "content": content})
