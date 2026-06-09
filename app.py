@@ -621,10 +621,10 @@ def _detect_language(message: str) -> str:
         "German": [
             " guten tag ", " guten morgen ", " guten abend ", " vielen danke ",
             " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
-            " können wir ", " ich hätte ", " buchung ", " zimmer ", " frühstück ",
+            " können wir ", " ich hätte ", " buchung ", " zimmer ", " zimmern ", " frühstück ",
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
             " buchen ", " reservierung ", " kammer ", " schlafzimmer ",
-            " einen parkplatz ", " parken ", " auto ", " wagen "
+            " einen parkplatz ", " parken ", " auto ", " wagen ", " erzählen "
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
@@ -669,7 +669,7 @@ def _detect_topic(message: str) -> str:
     msg = message.lower()
 
     topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "zimmern"],
+        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
@@ -1420,7 +1420,7 @@ def api_chat():
                 if reply.get("type") == "text" and reply.get("content"):
                     reply["content"] = _ensure_follow_up(reply["content"], "", detected_lang)
                 # Post-process: if response was supposed to be non-English but came back in English,
-                # append a language correction note for the next turn
+                # replace with a translated fallback
                 if is_non_english and reply.get("content"):
                     content = reply["content"]
                     # Check if response is still mostly English (simple heuristic)
@@ -1438,6 +1438,26 @@ def api_chat():
                     if eng_count > 3 and non_eng_count < 2 and len(content) > 50:
                         # Replace with a translated fallback
                         reply["content"] = _get_localized_fallback(detected_lang, user_message)
+                # Post-process: if response was supposed to be English but came back in another language,
+                # replace with English fallback
+                if not is_non_english and reply.get("content"):
+                    content = reply["content"]
+                    # Check if response is in a non-English language
+                    non_english_markers = {
+                        "French": ["nous ", "vous ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais ", "sommes ", "c'est ", "les ", "des ", "est ", "une ", "oui, ", "le ", "la ", "en ", "du ", "au "],
+                        "German": ["wir ", "sie ", "ihr ", "zimmer", "suite", "seeblick", "parkplatz", "haben ", "sind ", "können ", "möchten ", "guten", "vielen", "danke", "bitte", "und ", "für ", "mit ", "das ", "die ", "der "],
+                        "Italian": ["nostro", "nostra", "camera", "camere", "vista", "lago", "parcheggio", "avete", "abbiamo", "vorrei", "posso", "belliss", "grazie", "buongiorno", "prenotazione"],
+                        "Spanish": ["nuestro", "nuestra", "habitaciones", "vistas", "lago", "estacionamiento", "tenemos", "puede", "quiere", "gracias", "hola", "buenos", "buenas", "favor", "también", "estamos"],
+                        "Slovenian": ["imo", "vas", "sobe", "apartma", "jezero", "hvala", "prosim", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid", "prihod", "odhod"],
+                    }
+                    for lang, markers in non_english_markers.items():
+                        marker_count = sum(1 for m in markers if m.lower() in content.lower())
+                        # If 4+ non-English markers found, the response is likely in the wrong language
+                        if marker_count >= 4:
+                            # Replace with English fallback
+                            topic = _detect_topic(user_message)
+                            reply["content"] = get_hotel_info_response(topic, user_message)
+                            break
             if reply.get("type") == "text" and not reply.get("content", "").strip():
                 msg_lower = user_message.lower()
                 if any(word in msg_lower for word in ["restaurant", "menu", "dining", "chef", "food", "eat", "meal", "wine", "bar", "cocktail"]):
