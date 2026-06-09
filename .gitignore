@@ -19,3 +19,4 @@ fix_punctuation.py
 do_commit.sh
 *.db
 hotel.db
+test_results.json
