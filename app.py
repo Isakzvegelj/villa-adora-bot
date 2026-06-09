@@ -715,28 +715,33 @@ def _detect_topic(message: str) -> str:
     if any(kw in msg for kw in dietary_keywords):
         return "breakfast"
 
-    topic_keywords = {
-        "rooms": ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj", "koliko", "stane", "cena", "cene", "preis", "prix", "precio", "prezzo", "how much", "price", "cost"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "küche", "cucina", "manger", "nourriture"],
-        "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijača", "getränk", "bevanda", "boisson"],
-        "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"],
-        "parking": ["parking", "park", "car", "parkirišče", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"],
-        "location": ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci", "nahajate", "nahaja", "kje se"],
-        "pets": ["pet", "dog", "cat", "animal", "pes", "psa", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "experiences": ["activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "aktivnost", "attività", "activité", "actividad"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivée", "llegada"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "départ", "salida"],
-        "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spät ankommen", "arrivo tardif", "arrivée tardive"],
-        "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spät abreise", "partenza tardif", "départ tardif"],
-        "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
-        "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
-        "policies": ["policy", "rule", "regulation", "pravilo", "regel", "règle", "regla"],
-        "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
-        "children": ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niño"],
-        "room_service": ["room_service", "room service", "in-room dining", "food to room"],
-        "shuttle": ["shuttle", "transfer", "airport", "prevoz", "navette", "transporte"],
-    }
+    # ORDER MATTERS: check multi-word / specific topics BEFORE single-word topics
+    # to avoid "room" in "room service" matching the "rooms" topic first.
+    topic_keywords_ordered = [
+        # Multi-word / specific topics first
+        ("room_service", ["room service", "in-room dining", "food to room", "roomservice", "zimmer service", "servicio habitación", "servizio camera", "service en chambre", "postreba hrano", "sobna postreba"]),
+        ("shuttle", ["shuttle", "transfer", "airport", "prevoz", "navette", "transporte", "flughafen", "aeropuerto", "aéroport"]),
+        ("smoking", ["smoking", "smoke", "cigarette", "cigar", "tobacco", "kajenje", "kaditi", "cigaretta", "rauchen", "fumare", "fumer", "fumar"]),
+        ("experiences", ["activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what can you do around", "attraction", "sightseeing", "sight", "visit", "tour", "hike", "swim", "around bled", "around here", "in bled", "aktivnost", "kaj storiti", "kaj je videti", "aktivität", "was kann man machen", "attività", "cosa fare", "activité", "que peut-on faire", "que faire", "actividad", "que hacer", "que se puede hacer", "kaj se dela", "okoli bleda", "kuhinja", "co faire", "wat te doen", "wat is er te doen", "cosa posso fare", "che cosa fare", "was gibt es zu tun", "was ist zu tun", "co dělat", "co se dá dělat", "mit lehet csinálni", "co robić", "что делать"]),
+        # Single-word topics after
+        ("rooms", ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "apartmaj", "koliko", "stane", "cena", "cene", "preis", "prix", "precio", "prezzo", "how much", "price", "cost"]),
+        ("restaurant", ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "küche", "cucina", "manger", "nourriture"]),
+        ("bar", ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijača", "getränk", "bevanda", "boisson"]),
+        ("wine", ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"]),
+        ("breakfast", ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno"]),
+        ("parking", ["parking", "park", "car", "parkirišče", "parkir", "parkplatz", "parcheggio", "aparcamiento", "stationnement"]),
+        ("location", ["location", "address", "where", "direction", "map", "located", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "où", "dónde", "ubicaci", "nahajate", "nahaja", "kje se"]),
+        ("pets", ["pet", "dog", "cat", "animal", "pes", "psa", "mačka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"]),
+        ("check_in", ["check in", "checkin", "arrival", "arrive", "check-in", "late check in", "prihod", "ankunft", "arrivo", "arrivée", "llegada"]),
+        ("check_out", ["check out", "checkout", "departure", "depart", "check-out", "late check out", "odhod", "abreise", "partenza", "départ", "salida"]),
+        ("late_check_in", ["late check in", "late checkin", "late arrival", "arrive late", "pozen prihod", "spät ankommen", "arrivo tardif", "arrivée tardive"]),
+        ("late_check_out", ["late check out", "late checkout", "late departure", "leave late", "pozen odhod", "spät abreise", "partenza tardif", "départ tardif"]),
+        ("wifi", ["wifi", "wi-fi", "internet", "wireless", "wlan"]),
+        ("contact", ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"]),
+        ("policies", ["policy", "rule", "regulation", "pravilo", "regel", "règle", "regla"]),
+        ("cancellation", ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"]),
+        ("children", ["child", "kid", "baby", "family", "toddler", "otrok", "kind", "bambino", "enfant", "niño"]),
+    ]
 
     # Check for check-in/check-out FIRST (before general keyword matching)
     # to ensure these specific phrases are not missed
@@ -749,7 +754,7 @@ def _detect_topic(message: str) -> str:
             return "late_check_out"
         return "check_out"
 
-    for topic, keywords in topic_keywords.items():
+    for topic, keywords in topic_keywords_ordered:
         if any(kw in msg for kw in keywords):
             return topic
     return "general"
@@ -787,7 +792,7 @@ def get_hotel_info_response(topic, question):
         "policies": ["policy", "rule", "regulation"],
         "amenities": ["amenity", "facility", "feature", "service", "perk"],
         "location": ["location", "address", "where", "direction", "map", "find", "located"],
-        "experiences": ["experience", "activity", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to"],
+        "experiences": ["experience", "activity", "thing to do", "things to do", "what to do", "what can i do", "attraction", "sight", "visit", "tour", "hike", "swim", "activities", "nearby", "around", "do here", "what to", "around bled", "in bled"],
         "breakfast": ["breakfast", "morning meal", "brunch"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "demšar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal"],
         "wine": ["wine", "wines", "wine list", "wine pairing", "sommelier", "vineyard", "cellar"],
@@ -798,13 +803,13 @@ def get_hotel_info_response(topic, question):
         "cancellation": ["cancel", "refund", "cancellation"],
         "payment": ["payment", "pay", "card", "visa", "mastercard", "cash"],
         "children": ["child", "kid", "baby", "family", "toddler"],
-        "smoking": ["smoke", "smoking", "cigarette"],
+        "smoking": ["smoking", "smoke", "cigarette", "cigar", "tobacco"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
         "room_service": ["room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport"],
-        "general": ["general", "info", "information", "about", "tell me"],
+        "general": ["general", "info", "information", "about", "tell me", "booking system", "how does booking", "how do i book", "how to book", "can i book", "want to book", "would like to book"],
     }
 
     # Detect actual topic from question if topic is generic
