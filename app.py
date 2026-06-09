@@ -959,7 +959,7 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
-            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "allergic", "dietary", "diet", "restriction", "nut", "nuts", "peanut"]):
                 return (
                     f"Breakfast is €22/person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
@@ -1192,9 +1192,14 @@ def api_chat():
         if hotel_answer and hotel_answer.strip() and topic in factual_topics:
             # For non-English queries, return a translated response
             if is_non_english:
-                # Always try to get a localized response first
-                translated = _get_localized_fallback(detected_lang, user_message)
-                reply_content = fix_spacing(translated) if translated else fix_spacing(hotel_answer)
+                # For topics with pre-translated detailed responses (rooms, experiences),
+                # use hotel_answer directly instead of the generic fallback
+                _pre_translated_topics = {"rooms", "activities", "experiences"}
+                if topic in _pre_translated_topics:
+                    reply_content = fix_spacing(hotel_answer)
+                else:
+                    translated = _get_localized_fallback(detected_lang, user_message)
+                    reply_content = fix_spacing(translated) if translated else fix_spacing(hotel_answer)
             else:
                 # For English, use localized fallback for general/greeting queries
                 if topic == "general":
