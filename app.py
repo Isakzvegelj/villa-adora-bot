@@ -1444,16 +1444,16 @@ def api_chat():
                     content = reply["content"]
                     # Check if response is in a non-English language
                     non_english_markers = {
-                        "French": ["nous ", "vous ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais ", "sommes ", "c'est ", "les ", "des ", "est ", "une ", "oui, ", "le ", "la ", "en ", "du ", "au "],
-                        "German": ["wir ", "sie ", "ihr ", "zimmer", "suite", "seeblick", "parkplatz", "haben ", "sind ", "können ", "möchten ", "guten", "vielen", "danke", "bitte", "und ", "für ", "mit ", "das ", "die ", "der "],
-                        "Italian": ["nostro", "nostra", "camera", "camere", "vista", "lago", "parcheggio", "avete", "abbiamo", "vorrei", "posso", "belliss", "grazie", "buongiorno", "prenotazione"],
-                        "Spanish": ["nuestro", "nuestra", "habitaciones", "vistas", "lago", "estacionamiento", "tenemos", "puede", "quiere", "gracias", "hola", "buenos", "buenas", "favor", "también", "estamos"],
-                        "Slovenian": ["imo", "vas", "sobe", "apartma", "jezero", "hvala", "prosim", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid", "prihod", "odhod"],
+                        "French": ["nous ", "vous ", "notre ", "merci ", "bonjour ", "chambre ", "avez ", "pouvez ", "voudrais ", "sommes ", "c'est ", "les ", "des ", "est ", "une ", "oui, ", "le ", "la ", "en ", "du ", "au ", "venez ", "proposons ", "disposons ", "offrons ", "avons ", "êtes ", "souhaitez ", "voulez ", "êtes ", "cette ", "dans ", "pour ", "avec ", "sur ", "sont ", "vos ", "mes ", "tes ", "ses ", "nos ", "leurs "],
+                        "German": ["wir ", "sie ", "ihr ", "zimmer", "suite", "seeblick", "parkplatz", "haben ", "sind ", "können ", "möchten ", "guten", "vielen", "danke", "bitte", "und ", "für ", "mit ", "das ", "die ", "der ", "ist ", "sind ", "auch ", "oder ", "aber ", "nach ", "bei ", "von ", "aus ", "nur ", "noch ", "schon ", "sehr ", "hier ", "dort ", "wenn ", "weil ", "dass ", "wie ", "was ", "wer ", "wo ", "wann ", "warum "],
+                        "Italian": ["nostro", "nostra", "camera", "camere", "vista", "lago", "parcheggio", "avete", "abbiamo", "vorrei", "posso", "belliss", "grazie", "buongiorno", "prenotazione", "anche", "sono", "come", "quando", "dove", "perché", "cosa", "chi", "quale", "questo", "questa", "quello", "quella"],
+                        "Spanish": ["nuestro", "nuestra", "habitaciones", "vistas", "lago", "estacionamiento", "tenemos", "puede", "quiere", "gracias", "hola", "buenos", "buenas", "favor", "también", "estamos", "donde", "cuando", "cuanto", "magnífico", "perfecto", "como", "pero", "para", "con", "sin", "sobre", "entre", "hasta", "desde", "este", "esta", "ese", "esa"],
+                        "Slovenian": ["imo", "vas", "sobe", "apartma", "jezero", "hvala", "prosim", "lahko", "kako", "kakš", "želi", "dober", "pozdra", "nasvid", "prihod", "odhod", "tukaj", "kjer", "kako", "zakaj", "kaj", "kdo", "kateri", "kdaj", "koliko"],
                     }
                     for lang, markers in non_english_markers.items():
                         marker_count = sum(1 for m in markers if m.lower() in content.lower())
-                        # If 4+ non-English markers found, the response is likely in the wrong language
-                        if marker_count >= 4:
+                        # If 3+ non-English markers found, the response is likely in the wrong language
+                        if marker_count >= 3:
                             # Replace with English fallback
                             topic = _detect_topic(user_message)
                             reply["content"] = get_hotel_info_response(topic, user_message)
