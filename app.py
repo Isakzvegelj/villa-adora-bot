@@ -416,7 +416,11 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
     text = text.strip()
     if text.endswith("?"):
         return text
-    if "?" in text[-60:]:
+    if "?" in text[-80:]:
+        return text
+    # Don't append a topic question if the text already contains a question somewhere
+    # (e.g., from translated content that has a question mid-text)
+    if "?" in text:
         return text
     # Localized follow-up questions by topic and language
     questions = {
@@ -1273,75 +1277,6 @@ def api_chat():
                     response_text = _ensure_follow_up(response_text, "experiences", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
-        if is_non_english:
-            # For non-English messages, detect topic and fetch hotel data directly.
-            # Check if we have a pre-translated response for rooms/experiences
-            # Use direct response to bypass LLM and avoid timeout issues
-            direct_response = None
-            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
-                direct_response = _ROOM_LISTINGS_TRANSLATED[detected_lang]
-            elif topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
-                direct_response = _EXPERIENCES_TRANSLATED[detected_lang]
-
-            if direct_response:
-                # Use pre-translated content directly - update session and return
-                messages.append({"role": "user", "content": user_message})
-                messages.append({"role": "assistant", "content": direct_response})
-                sessions[session_id] = messages
-                # Ensure it ends with a question mark
-                response_text = _ensure_ends_with_question(direct_response)
-                response_text = _ensure_follow_up(response_text, topic if topic in ("rooms", "experiences", "activities") else "", detected_lang)
-                return jsonify({"replies": [{"type": "text", "content": response_text}]})
-
-            # For other topics, use LLM with pre-fetched data
-            hotel_answer = get_hotel_info_response(topic, user_message)
-            if topic == "general" and detected_lang != "English":
-                # For non-English general messages (greetings, etc.), use
-                # localized fallback directly instead of relying on LLM translation
-                localized = _get_localized_fallback(detected_lang, user_message)
-                if localized and localized.strip():
-                    messages.append({"role": "user", "content": user_message})
-                    messages.append({"role": "assistant", "content": localized})
-                    sessions[session_id] = messages
-                    response_text = fix_spacing(localized)
-                    response_text = _ensure_follow_up(response_text, "", detected_lang)
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
-                # Fallback to LLM if localized is empty
-                lang_messages.append({
-                    "role": "system",
-                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
-                })
-            elif hotel_answer and hotel_answer.strip():
-                lang_messages.append({
-                    "role": "system",
-                    "content": f"MANDATORY INSTRUCTION — YOU MUST FOLLOW THIS:\n\n1. Respond ENTIRELY in {detected_lang}. EVERY word must be in {detected_lang}.\n2. Do NOT use English except for proper nouns: 'Villa Adora', 'Lake Bled', 'Bled Island', 'Bled Castle', 'Chef Domen Demšar'.\n3. Translate ALL hotel information below to {detected_lang}.\n4. Be warm, concise, and end with a follow-up question in {detected_lang}.\n5. The FINAL character of your response MUST be '?'.\n\nHOTEL DATA TO TRANSLATE:\n{hotel_answer}"
-                })
-            else:
-                lang_messages.append({
-                    "role": "system",
-                    "content": f"MANDATORY: The guest wrote in {detected_lang}. Respond ENTIRELY in {detected_lang}. Be warm, concise, and end with a follow-up question in {detected_lang}. The FINAL character MUST be '?'."
-                })
-        else:
-            # For English messages, use direct response for rooms/experiences to reduce latency
-            if topic == "rooms":
-                hotel_answer = get_hotel_info_response("rooms", user_message)
-                if hotel_answer and hotel_answer.strip():
-                    messages.append({"role": "user", "content": user_message})
-                    messages.append({"role": "assistant", "content": hotel_answer})
-                    sessions[session_id] = messages
-                    response_text = _ensure_ends_with_question(hotel_answer)
-                    response_text = _ensure_follow_up(response_text, "rooms", "English")
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
-            elif topic in ("experiences", "activities"):
-                hotel_answer = get_hotel_info_response("experiences", user_message)
-                if hotel_answer and hotel_answer.strip():
-                    messages.append({"role": "user", "content": user_message})
-                    messages.append({"role": "assistant", "content": hotel_answer})
-                    sessions[session_id] = messages
-                    response_text = _ensure_ends_with_question(hotel_answer)
-                    response_text = _ensure_follow_up(response_text, "experiences", "English")
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
-
         # For non-English messages, exclude query_hotel_info tool since we provide
         # hotel data via context. This prevents the LLM from calling the tool
         # and getting English responses. Keep booking/shuttle tools available.
@@ -1424,7 +1359,7 @@ def api_chat():
                             f"• Check-in: {args['check_in']}\n"
                             f"• Check-out: {args['check_out']}\n"
                             f"• Room: {args['room_name']}{price_str}\n\n"
-                            "Reply yes to confirm or no to cancel."
+                            "Reply yes to confirm or no to cancel? Thank you!"
                         ),
                     }
                 )
@@ -1693,9 +1628,10 @@ def api_confirm():
                 response = (
                     f"✅ Confirmed for {pending.get('guest_name', 'guest')}!"
                     f" Welcome to {hotel_info['name']}."
+                    f" Is there anything else I can help you with?"
                 )
             else:
-                response = "❌ Canceled."
+                response = "❌ Canceled. Is there anything else I can help you with?"
             messages.pop(i)
             sessions[session_id] = messages
             return jsonify({"reply": {"type": "text", "content": response}})
