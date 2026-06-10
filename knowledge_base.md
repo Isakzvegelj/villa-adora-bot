@@ -267,14 +267,15 @@
 - Bled cream cake is a local specialty — try it in town (or try Adora's signature Kremšnita!)
 - Straža cable car station is just 1 min walk away
 
-## Villa Pomona — Luxury Villa Retreat
-- **Type:** Design boutique villa, separate from the hotel
+## Villa Pomona — Sister Property
+- **Type:** Design boutique villa, separate property in Bled
 - **Location:** Most picturesque street in Bled, 3-minute walk from Lake Bled and town center
-- **Accommodation:** 3 spacious bedrooms, each with ensuite bathroom
-- **Amenities:** Swimming pool with pool house, sauna, sprawling garden, daily cleaning
-- **Services:** Private chef (lunch, dinner, BBQ), breakfast option, masseur, yoga sessions, personal coach
+- **Accommodation:** 5 distinctive suites (Heritage, Garden, Lakeview Deluxe, Orchard, Tower)
+- **Amenities:** Swimming pool with pool house, sauna, sprawling botanical garden, daily cleaning
+- **Services:** Private chef (lunch, dinner, BBQ), breakfast included, massage, yoga sessions
 - **Ideal for:** Families, friends, small groups, wellness retreats
-- **Contact:** info@adorabled.com
+- **Contact:** info@villapomona.si
+- **Website:** https://villapomona.si
 
 ## Additional Highlights
 - Signature Kremšnita — a creative twist on Bled's iconic cream cake
