@@ -1396,6 +1396,14 @@ def get_hotel_info_response(topic, question):
             "Is there anything else I can help you with?"
         )
 
+    # Swimming pool / spa queries - Villa Adora doesn't have a pool, but Villa Pomona does
+    if any(word in q for word in ["swimming pool", "pool", "swim", "plavalni bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina"]):
+        return (
+            "Villa Adora Bled doesn't have a swimming pool, but guests can swim in the pristine Lake Bled right outside! "
+            "We also have a sister property, Villa Pomona, which features a swimming pool, sauna, and full wellness facilities — perfect for a private retreat. "
+            "Would you like more details about Villa Pomona, or shall I tell you about swimming in the lake?"
+        )
+
     # Experiences
     if actual_topic == "experiences":
         # Check if specifically asking about massage/spa
@@ -1490,10 +1498,19 @@ def get_hotel_info_response(topic, question):
             "Which suite catches your eye, or would you like me to help you choose?"
         )
 
+    # Adversarial / off-topic queries about internal systems
+    adversarial_keywords = ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github"]
+    if any(word in q for word in adversarial_keywords):
+        return (
+            "I'm Luka, your concierge at Villa Adora Bled! "
+            "I'm here to help you with everything about your stay — rooms, dining, activities, and more. "
+            "What would you like to know about our hotel?"
+        )
+
     # Fallback
     return (
         f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "
-        f"right on Lake Bled. We have 7 unique suites with panoramic lake views. "
+        f"right on Lake Bled. We have 8 unique suites with panoramic lake views. "
         f"What would you like to know — rooms, booking, or things to do in Bled?"
     )
 
@@ -1584,6 +1601,28 @@ def api_chat():
                 direct_response = _PARKING_TRANSLATED[detected_lang]
             elif topic == "shuttle" and detected_lang in _SHUTTLE_TRANSLATED:
                 direct_response = _SHUTTLE_TRANSLATED[detected_lang]
+            # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
+            elif any(word in user_message.lower() for word in ["swimming pool", "pool", "plavalni bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina"]):
+                pool_responses = {
+                    "Slovenian": "Villa Adora Bled nima bazena, a lahko gostje uživajo v čistem jezeru Bled tukaj ob hotelu! Naša sestra lastnost Villa Pomona pa ponuja bazen, savno in wellness — popolno za zasebni oddih. Želite več informacij o Villi Pomoni?",
+                    "German": "Villa Adora Bled hat kein Schwimmbad, aber Gäste können direkt vor Ort in den kristallklaren Bleder See springen! Unsere Schwesteranlage Villa Pomona bietet Pool, Sauna und Wellness — perfekt für einen privaten Rückzug. Möchten Sie mehr über Villa Pomona erfahren?",
+                    "French": "Villa Adora Bled n'a pas de piscine, mais les invités peuvent profiter du lac Bled cristallin juste à côté ! Notre propriété sœur Villa Pomona propose piscine, sauna et wellness — idéal pour une retraite privée. Souhaitez-vous plus d'informations sur Villa Pomona ?",
+                    "Italian": "Villa Adora Bled non ha una piscina, ma gli ospiti possono godersi il cristallino lago Bled proprio qui! La nostra proprietà sorella Villa Pomona offre piscina, sauna e wellness — perfetta per un ritiro privato. Vuoi maggiori informazioni su Villa Pomona?",
+                    "Spanish": "Villa Adora Bled no tiene piscina, ¡pero los huéspedes pueden disfrutar del cristalino lago Bled aquí mismo! Nuestra propiedad hermana Villa Pomona ofrece piscina, sauna y wellness — ideal para un retiro privado. ¿Desea más información sobre Villa Pomona?",
+                    "Croatian": "Villa Adora Bled nema bazen, ali gosti mogu uživati u kristalno čistom jezeru Bled tukaj! Naša sestrina nekretnina Villa Pomona nudi bazen, saunu i wellness — savršeno za privatni odmor. Želite li više informacija o Villi Pomoni?",
+                }
+                direct_response = pool_responses.get(detected_lang, pool_responses["Slovenian"])
+            # Adversarial / tech queries - redirect to hotel topics
+            elif any(word in user_message.lower() for word in ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github", "podatkovna baza", "strežnik"]):
+                adversarial_responses = {
+                    "Slovenian": "Sem Luka, vaš concierge v Villi Adora Bled! Tukaj sem, da vam pri vašem bivanju pomagam s čim — sobami, hrano, aktivnostmi in več. Kaj bi radi izvedeli o našem hotelu?",
+                    "German": "Ich bin Luka, Ihr Concierge im Villa Adora Bled! Ich bin hier, um Ihnen bei Ihrem Aufenthalt zu helfen — Zimmern, Essen, Aktivitäten und mehr. Was möchten Sie über unser Hotel wissen?",
+                    "French": "Je suis Luka, votre concierge au Villa Adora Bled ! Je suis là pour vous aider avec tout concernant votre séjour — chambres, restauration, activités et plus. Que souhaitez-vous savoir sur notre hôtel ?",
+                    "Italian": "Sono Luka, il vostro concierge al Villa Adora Bled! Sono qui per aiutarti con tutto riguardo il tuo soggiorno — camere, ristorazione, attività e altro. Cosa vorresti sapere sul nostro hotel?",
+                    "Spanish": "¡Soy Luka, su conserje en Villa Adora Bled! Estoy aquí para ayudarle con todo sobre su estancia — habitaciones, restauración, actividades y más. ¿Qué le gustaría saber sobre nuestro hotel?",
+                    "Croatian": "Ja sam Luka, vaš concierge u Villi Adora Bled! Tu sam da vam pomognem s vezom na boravak — sobama, hranom, aktivnostima i više. Što biste željeli znati o našem hotelu?",
+                }
+                direct_response = adversarial_responses.get(detected_lang, adversarial_responses["Slovenian"])
 
             if direct_response:
                 # Use pre-translated content directly - update session and return
@@ -1607,6 +1646,31 @@ def api_chat():
                     "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 8 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
                 }
                 direct_response = booking_prompts.get(detected_lang, booking_prompts["Slovenian"])
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": direct_response})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": direct_response}]})
+
+            # Pre-LLM direct responses for common non-English topics to avoid LLM timeouts
+            cancellation_keywords = {
+                "Slovenian": ["odpoved", "preklic", "storno", "razveljavi"],
+                "German": ["stornier", "rückerstattung", "widerruf", "annullier"],
+                "French": ["annul", "rembours", "politique d'annulation"],
+                "Italian": ["annull", "rimbors", "politica di annullamento"],
+                "Spanish": ["cancel", "reembols", "política de cancelación"],
+                "Croatian": ["odustat", "otkaž", "povrat", "stornir"],
+            }
+            is_cancellation = any(kw in user_message.lower() for kw in cancellation_keywords.get(detected_lang, []))
+            if is_cancellation and topic in ("policies", "cancellation", "general"):
+                cancellation_responses = {
+                    "Slovenian": "Pri neposrednih rezervacijah je brezplačen preklic mogoč do 48 ur pred prihodom. Pri poznejšem preklicu ali nespuščanju se lahko zaračuna prva nočitev. Rezervacije prek Booking.com veljajo pogoji Booking.com. Nas kontaktirajte za posebne pogoje. Želite, da vašo rezervacijo zapišem?",
+                    "German": "Bei Direktbuchungen ist eine kostenlose Stornierung bis 48 Stunden vor Check-in möglich. Bei verspäteter Stornierung oder No-Show kann die erste Nacht berechnet werden. Buchungen über Booking.com unterliegen den AGB von Booking.com. Kontaktieren Sie uns für spezifische Bedingungen. Soll ich Ihre Buchung für Sie notieren?",
+                    "French": "Pour les réservations directes, l'annulation est gratuite jusqu'à 48 heures avant l'arrivée. Les annulations tardives ou les no-shows peuvent être facturés pour la première nuit. Les réservations via Booking.com suivent les conditions de Booking.com. Contactez-nous pour les conditions spécifiques. Souhaitez-vous que je note votre réservation?",
+                    "Italian": "Per le prenotazioni dirette, la cancellazione è gratuita fino a 48 ore prima dell'arrivo. Le cancellazioni tardive o i no-show possono essere addebitati per la prima notte. Le prenotazioni tramite Booking.com seguono i termini di Booking.com. Contattaci per condizioni specifiche. Vuoi che annoti la tua prenotazione?",
+                    "Spanish": "Para reservas directas, la cancelación es gratuita hasta 48 horas antes del check-in. Las cancelaciones tardías o no presentaciones pueden cobrarse por la primera noche. Las reservas a través de Booking.com siguen los términos de Booking.com. Contáctenos para condiciones específicas. ¿Desea que anote su reserva?",
+                    "Croatian": "Za izravne rezervacije, otkazivanje je besplatno do 48 sata prije prijave. Kasna otkazivanja ili ne dolazak mogu se naplatiti za prvu noć. Rezervacije putem Booking.com podližu uvjetima Booking.com. Kontaktirajte nas za specifične uvjete. Želite li da zabilježim vašu rezervaciju?",
+                }
+                direct_response = cancellation_responses.get(detected_lang, cancellation_responses["Slovenian"])
                 messages.append({"role": "user", "content": user_message})
                 messages.append({"role": "assistant", "content": direct_response})
                 sessions[session_id] = messages
@@ -1708,7 +1772,7 @@ def api_chat():
                 social_responses = {
                     "greeting": "Hello! Welcome to Villa Adora Bled! How can I help make your stay special today?",
                     "thanks": "You're very welcome! Is there anything else I can help you with today?",
-                    "goodbye": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels!",
+                    "goodbye": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels — is there anything else before you go?",
                 }
                 response_text = social_responses.get(social_type, social_responses["greeting"])
                 messages.append({"role": "user", "content": user_message})
@@ -2062,7 +2126,7 @@ def api_chat():
                 else:
                     reply["content"] = (
                         f"Villa Adora Bled is a luxury boutique hotel on Lake Bled. "
-                        f"We have 7 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
+                        f"We have 8 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
                         f"What would you like to know more about?"
                     )
 
