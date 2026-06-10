@@ -365,29 +365,34 @@ _LOCATION_TRANSLATED = {
 
 _BREAKFAST_TRANSLATED = {
     "Slovenian": (
-        "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Sveže pecivo, kruh in lokalni slovenski izdelki. "
-        "Nudimo tudi veganske, vegetarijanske in brezglutenske možnosti na zahtevo. "
-        "Ali želite dodati zajtrk k vaši rezervaciji?"
+        "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. "
+        "Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. "
+        "Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. "
+        "Imate kakšne prehranske omejitve, o katerih bi morali vedeti?"
     ),
     "German": (
-        "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Frische Gebäck, Brot und lokale slowenische Produkte. "
-        "Wir bieten auch vegane, vegetäre und glutenfreie Optionen auf Anfrage. "
-        "Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?"
+        "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. "
+        "Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. "
+        "Vegane, vegetäre und glutenfreie Optionen auf Anfrage. "
+        "Haben Sie irgendwelche Ernährungseinschränkungen, die wir wissen sollten?"
     ),
     "French": (
-        "Le petit-déjeuner est disponible pour 22 € par personne, servi de 8h à 10h. Pâtisseries fraîches, pain et produits locaux slovènes. "
-        "Nous proposons également des options végétaliennes, végétariennes et sans gluten sur demande. "
-        "Souhaitez-vous ajouter le petit-déjeuner à votre réservation ?"
+        "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. "
+        "Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. "
+        "Options végétaliennes, végétariennes et sans gluten sur demande. "
+        "Avez-vous des restrictions alimentaires que nous devrions connaître?"
     ),
     "Italian": (
-        "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Pasticceria fresca, pane e prodotti locali sloveni. "
-        "Offriamo anche opzioni vegane, vegetariane e senza glutine su richiesta. "
-        "Vuoi aggiungere la colazione alla tua prenotazione?"
+        "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. "
+        "Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. "
+        "Opzioni vegane, vegetariane e senza glutine su richiesta. "
+        "Hai delle restrizioni alimentari che dovremmo sapere?"
     ),
     "Spanish": (
-        "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. Pasteles frescos, pan y productos locales eslovenos. "
-        "También ofrecemos opciones veganas, vegetarianas y sin gluten bajo pedido. "
-        "¿Te gustaría agregar el desayuno a tu reserva?"
+        "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. "
+        "Buffet rico con pasteles frescos, pan y productos locales eslovenos. "
+        "Opciones veganas, vegetarianas y sin gluten bajo pedido. "
+        "¿Tiene alguna restricción alimentaria que debamos conocer?"
     ),
 }
 
@@ -682,14 +687,14 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
-        fallbacks = {
-            "Slovenian": "Zajtrk je na voljo za 22 € na osebo, postrežen med 8. in 10. uro. Nudimo tudi veganska, vegetarijanska in brezglutenska jed. Želite dodati zajtrk k vaši rezervaciji?",
-            "German": "Frühstück ist für 22 € pro Person verfügbar, serviert von 8-10 Uhr. Wir bieten auch vegane, vegetäre und glutenfreie Optionen. Möchten Sie Frühstück zu Ihrer Buchung hinzufügen?",
-            "French": "Le petit-déjeuner est disponible pour 22 € par personne, servi de 8h à 10h. Nous proposons également des options végétaliennes, végétariennes et sans gluten. Souhaitez-vous ajouter le petit-déjeuner à votre réservation?",
-            "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
-            "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
-            "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
-        }
+            fallbacks = {
+                "Slovenian": "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
+                "German": "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
+                "French": "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. Options végétaliennes, végétariennes et sans gluten sur demande. Avez-vous des restrictions alimentaires ?",
+                "Italian": "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
+                "Spanish": "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
+                "Croatian": "Doručak je uključen u cijenu sobe — poslužuje se od 7:30 do 10:30 na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
+            }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
             "Slovenian": "Imamo restavracijo Adora Pop Up kar v hotelu! Ustvarjena kuhinja z lokalnimi slovenskimi sestavinami pod vodstvom šefa kuhinje Domena Demšara. Terasa ima ene najlepših razgledov na jezero. Rezervacija: +386 40 558 158. Želite rezervirati mizo?",
@@ -1040,7 +1045,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "- Breakfast: €22/person, served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
+        "Breakfast: Included in the room rate (complimentary). Served daily 7:30-10:30 AM on the terrace with lake views. Rich buffet with fresh pastries, bread, local Slovenian products. Vegan, vegetarian, and gluten-free options available on request.",
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"

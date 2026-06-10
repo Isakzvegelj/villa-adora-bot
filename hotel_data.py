@@ -113,7 +113,7 @@ hotel_info = {
         "check_in_window": "14:00-23:00 (photo ID and credit card required at check-in)",
         "late_check_in": "Available on request. Contact reception to arrange. We can accommodate late arrivals with advance notice",
         "late_check_out": "Available on request, subject to availability. Additional fees may apply. Contact reception to arrange",
-        "breakfast": "Breakfast served daily 8:00-10:00 AM. €22 per person. Fresh pastries, bread, local Slovenian products served in dining room with lake views. High quality — described as 'absolutely delicious'",
+        "breakfast": "Breakfast is included in the room rate (complimentary). Served daily 7:30-10:30 AM on the terrace with lake views. Rich buffet with fresh pastries, bread, local Slovenian products. Vegan, vegetarian, and gluten-free options available on request.",
         "parking": "Free private parking on-site — 8 parking spots available in front of the hotel",
         "wifi": "Complimentary high-speed WiFi throughout the property",
         "pets": "Pets allowed on request — €35 per pet per night. Please contact us to arrange",
@@ -156,7 +156,7 @@ hotel_info = {
     ],
     "dining": {
         "breakfast": {
-            "description": "Served daily 8:00-10:00 AM, €22/person",
+            "description": "Included in the room rate (complimentary). Served daily 7:30-10:30 AM on the terrace with lake views.",
             "includes": ["Fresh pastries", "Bread", "Local Slovenian products", "Coffee & tea"],
             "dietary": {
                 "vegan": "Yes — vegan breakfast option available on request",
