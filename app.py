@@ -1287,7 +1287,7 @@ def _detect_topic(message: str) -> str:
             return "late_check_out"
         return "late_check_in"
     # Priority: family/children questions should override "room" keyword
-    if _matches(msg_raw, ["family rooms", "family room", "family suite", "family-friendly", "family friendly", "children room", "kids room", "room for kids", "room for children", "družinski", "otroški", "familienzimmer", "kind", "camer", "chambre enfant"]):
+    if _matches(msg_raw, ["family rooms", "family room", "family suite", "family-friendly", "family friendly", "children room", "kids room", "room for kids", "room for children", "družinski", "otroški", "familienzimmer", "kind", "chambre enfant", "camera per bambini", "camera per bambino", "chambre d'enfant"]):
         return "children"
     # Priority: spa/wellness specific queries should map directly
     if _matches(msg_raw, ["spa", "wellness", "sauna", "massage", "wellness area", "wellness center", "wellness centre", "savna", "masaža", "massage", "sauna", "wellness"]):
