@@ -282,6 +282,7 @@ _PETS_TRANSLATED = {
     "Italian": "Gli animali domestici sono ammessi su richiesta \u2014 35 \u20ac per animale per notte. Contattateci per organizzare. State pensando di portare un amico a quattro zampe?",
     "Spanish": "\u00a1Las mascotas son bienvenidas bajo petici\u00f3n \u2014 35 \u20ac por mascota por noche! Cont\u00e1ctenos para organizarlo. \u00bfPlanea traer a un amigo peludo?",
     "Croatian": "Ku\u0107ni ljubimci su dobrodo\u0161li na zahtjev \u2014 35 \u20ac za ljubimca po no\u0107i. Molimo kontaktirajte nas za organizaciju. Planirate li dovesti krznenog prijatelja?",
+    "Serbian": "Ku\u0107ni ljubimci su dobrodo\u0161li na zahtev \u2014 35 \u20ac za ljubimca po no\u0107i. Molimo kontaktirajte nas za organizaciju. Planirate li dovesti krznenog prijatelja?",
 }
 
 
@@ -1104,14 +1105,25 @@ def _detect_language(message: str) -> str:
     msg = _re.sub(r'  +', ' ', msg)
 
     # Character-based detection for languages with unique characters
-    # Slovenian/Croatian specific characters
+    # Serbian detection (Cyrillic-specific characters or Serbian Latin words)
+    serbian_cyrillic = ['ђ', 'ј', 'љ', 'њ', 'ћ', 'ѕ']
+    if any(c in msg for c in serbian_cyrillic):
+        return "Serbian"
+    # Serbian Latin words (distinct from Croatian)
+    serbian_words = [" добар дан ", " хвала ", " молим ", " добродошли ", " собе ", " апартман ", " имате ", " могу ", " желим ", " који ", " каква ", " колико ", " цена ", " језеро ", " оток ", " град ", " разглед ", " поглед ", " активности ", " масажа ", " вино ", " храна ", " пиће ", " ресторана ", " хотел ", " соба ", " спаваћа ", " купатило ", " терета ", " паркинг ", " ауто ", " аеродром ", " такси ", " трансфер ", " резервација ", " пријава ", " одјава ", " касније ", " рано ", " добро ", " супер ", " одлично ", " хвала лепо ", " на видење ", " довиђења ", " срећан пут ", " поздрав ", " здраво ", " ћао ", " бок ", " живело "]
+    if any(w in msg for w in serbian_words):
+        return "Serbian"
+    # Slovenian/Croatian specific characters (š, č, ž)
     if any(c in msg for c in ['š', 'č', 'ž']):
-        slovenian_markers = [" imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober dan ", " zdravo ", " sobe ", " soba "]
+        slovenian_markers = [ " imate ", " kakšen ", " kako ", " lahko ", " želim ", " prosim ", " hvala ", " pozdravljeni ", " dober dan ", " zdravo ", " sobe ", " soba "]
         if any(w in msg for w in slovenian_markers):
             return "Slovenian"
         if 'đ' in msg or 'ć' in msg:
             return "Croatian"
         return "Slovenian"
+    # Croatian/Serbian shared characters (đ, ć) — default to Croatian
+    if 'đ' in msg or 'ć' in msg:
+        return "Croatian"
 
     # Word-based Slovenian detection (without diacritics)
     slovenian_words = [ " pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " kakšni ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane", " prijava ", " prijave ", " odjava ", " kje ", " kako ", " ura ", " urah ", " restavracija ", " parkirno ", " pes ", " aktivnosti ", " jezero ", " otok ", " grad ", " razgled ", " pogled ", " cena ", " cene ", " koliko ", " kajenje ", " kaditi ", " dovoljeno ", " prepovedano ", " omogočeno ", " kje lahko ", " ali je ", " ali imate ", " kakšna ", " kakšne ", " kateri ", " katera ", " prosim vas ", " hvala lepo ", " lep pozdrav ", " se vidimo ", " na svidenje ", " lahko noč ", " dober večer ", " dobro jutro ", " kako vam lahko pomagam ", " želim rezervirati ", " koliko stane ", " kje ste ", " kako dostopam ", " ali lahko ", " bi radi ", " bi želel ", " bi želela ", " najboljši ", " najboljša ", " priporočam ", " priporočamo ", " odlično ", " super ", " super hvala ", " hvala za ", " ni za kaj ", " v redu ", " se strinjam ", " razumem ", " ne razumem ", " ponovite ", " prosim ponovite ", " kje je ", " kje so ", " kdaj ", " zakaj ", " kako dela ", " kako gre ", " vse najboljše ", " srečno ", " nasvidenje ", " adijo ", " aju ", " ciao ", " bok ", " zbogom ", " dovidenja ", " se slišimo ", " lep dan ", " veseli nas ", " vesel bom ", " vesela bom ", " nasvidenje ", " se kmalu vidimo ", " lepa pozdrava ", " srčno pozdravljeni ", " pozdravljeni ", " pozdravljena ", " pozdravljene ", " pozdravljeni ", " pozdravljen ", " pozdravljena ", " pozdravljene "]
@@ -1954,31 +1966,33 @@ def api_chat():
             # Check if we have a pre-translated response for rooms/experiences
             # Use direct response to bypass LLM and avoid timeout issues
             direct_response = None
+            # Serbian uses Croatian responses (mutually intelligible)
+            _lookup_lang = "Croatian" if detected_lang == "Serbian" else detected_lang
             # Check for price queries first — bypass pre-translated responses
             _q_lower = user_message.lower()
             _is_price = any(w in _q_lower for w in ["koliko stane", "wie viel kostet", "combien coûte", "quanto costa", "cuánto cuesta", "koliko košta", "price", "cost", "how much", "rate", "cena", "preis", "prix", "precio", "prezzo"])
-            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED and not _is_price:
-                direct_response = _ROOM_LISTINGS_TRANSLATED[detected_lang]
-            elif topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
-                direct_response = _EXPERIENCES_TRANSLATED[detected_lang]
-            elif topic == "pets" and detected_lang in _PETS_TRANSLATED:
-                direct_response = _PETS_TRANSLATED[detected_lang]
-            elif topic == "restaurant" and detected_lang in _RESTAURANT_TRANSLATED:
-                direct_response = _RESTAURANT_TRANSLATED[detected_lang]
-            elif topic == "location" and detected_lang in _LOCATION_TRANSLATED:
-                direct_response = _LOCATION_TRANSLATED[detected_lang]
-            elif topic == "breakfast" and detected_lang in _BREAKFAST_TRANSLATED:
-                direct_response = _BREAKFAST_TRANSLATED[detected_lang]
-            elif topic in ("check_in", "check_out", "late_check_in", "late_check_out") and detected_lang in _CHECKIN_TRANSLATED:
-                direct_response = _CHECKIN_TRANSLATED[detected_lang]
-            elif topic == "wine" and detected_lang in _WINE_TRANSLATED:
-                direct_response = _WINE_TRANSLATED[detected_lang]
-            elif topic == "bar" and detected_lang in _BAR_TRANSLATED:
-                direct_response = _BAR_TRANSLATED[detected_lang]
-            elif topic == "parking" and detected_lang in _PARKING_TRANSLATED:
-                direct_response = _PARKING_TRANSLATED[detected_lang]
-            elif topic == "shuttle" and detected_lang in _SHUTTLE_TRANSLATED:
-                direct_response = _SHUTTLE_TRANSLATED[detected_lang]
+            if topic == "rooms" and _lookup_lang in _ROOM_LISTINGS_TRANSLATED and not _is_price:
+                direct_response = _ROOM_LISTINGS_TRANSLATED[_lookup_lang]
+            elif topic in ("experiences", "activities") and _lookup_lang in _EXPERIENCES_TRANSLATED:
+                direct_response = _EXPERIENCES_TRANSLATED[_lookup_lang]
+            elif topic == "pets" and _lookup_lang in _PETS_TRANSLATED:
+                direct_response = _PETS_TRANSLATED[_lookup_lang]
+            elif topic == "restaurant" and _lookup_lang in _RESTAURANT_TRANSLATED:
+                direct_response = _RESTAURANT_TRANSLATED[_lookup_lang]
+            elif topic == "location" and _lookup_lang in _LOCATION_TRANSLATED:
+                direct_response = _LOCATION_TRANSLATED[_lookup_lang]
+            elif topic == "breakfast" and _lookup_lang in _BREAKFAST_TRANSLATED:
+                direct_response = _BREAKFAST_TRANSLATED[_lookup_lang]
+            elif topic in ("check_in", "check_out", "late_check_in", "late_check_out") and _lookup_lang in _CHECKIN_TRANSLATED:
+                direct_response = _CHECKIN_TRANSLATED[_lookup_lang]
+            elif topic == "wine" and _lookup_lang in _WINE_TRANSLATED:
+                direct_response = _WINE_TRANSLATED[_lookup_lang]
+            elif topic == "bar" and _lookup_lang in _BAR_TRANSLATED:
+                direct_response = _BAR_TRANSLATED[_lookup_lang]
+            elif topic == "parking" and _lookup_lang in _PARKING_TRANSLATED:
+                direct_response = _PARKING_TRANSLATED[_lookup_lang]
+            elif topic == "shuttle" and _lookup_lang in _SHUTTLE_TRANSLATED:
+                direct_response = _SHUTTLE_TRANSLATED[_lookup_lang]
             # Smoking policy - non-English direct responses
             elif topic == "smoking":
                 smoking_responses = {
@@ -1988,8 +2002,9 @@ def api_chat():
                     "Italian": "Villa Adora Bled è un hotel per non fumatori — tutte le camere e gli spazi interni sono senza fumo. Tuttavia, i fumatori possono utilizzare la terrazza esterna. C'è altro con cui posso aiutarti?",
                     "Spanish": "Villa Adora Bled es un hotel para no fumadores — todas las habitaciones y espacios interiores son libres de humo. Sin embargo, los fumadores pueden usar la terraza exterior. ¿Hay algo más en lo que pueda ayudarte?",
                     "Croatian": "Villa Adora Bled je hotel za nepušače — sve sobe i unutarnji prostori su bez dima. Međutim, pušači mogu koristiti vanjsku terasu. Mogu li vam još nekako pomoći?",
+                    "Serbian": "Villa Adora Bled je hotel za nepušače — sve sobe i unutarnji prostori su bez dima. Međutim, pušači mogu koristiti vanjsku terasu. Mogu li vam još nekako pomoći?",
                 }
-                direct_response = smoking_responses.get(detected_lang)
+                direct_response = smoking_responses.get(_lookup_lang)
             # WiFi - non-English direct responses
             elif topic == "wifi":
                 wifi_responses = {
@@ -1999,8 +2014,9 @@ def api_chat():
                     "Italian": "WiFi gratuito ad alta velocità in tutto l'hotel. C'è altro con cui posso aiutarti?",
                     "Spanish": "WiFi gratuito de alta velocidad en todo el hotel. ¿Hay algo más en lo que pueda ayudarte?",
                     "Croatian": "Besplatni brzi WiFi u cijelom hotelu. Mogu li vam još nekako pomoći?",
+                    "Serbian": "Besplatni brzi WiFi u celom hotelu. Mogu li vam još nekako pomoći?",
                 }
-                direct_response = wifi_responses.get(detected_lang)
+                direct_response = wifi_responses.get(_lookup_lang)
             # Contact - non-English direct responses
             elif topic == "contact":
                 contact_responses = {
@@ -2010,17 +2026,18 @@ def api_chat():
                     "Italian": "Puoi contattarci al +386 51 603 858 o evita.vilebled@gmail.com. O continua semplicemente a chattare con me — sono qui per aiutarti! C'è altro che vorresti sapere?",
                     "Spanish": "Puede contactarnos al +386 51 603 858 o evita.vilebled@gmail.com. O simplemente siga chateando conmigo — ¡estoy aquí para ayudar! ¿Hay algo más que le gustaría saber?",
                     "Croatian": "Možete nas kontaktirati na +386 51 603 858 ili evita.vilebled@gmail.com. Ili nastavite razgovor sa mnom — tu sam da vam pomognem! Ima li još nečega što biste željeli znati?",
+                    "Serbian": "Možete nas kontaktirati na +386 51 603 858 ili evita.vilebled@gmail.com. Ili nastavite razgovor sa mnom — tu sam da vam pomognem! Ima li još nečega što biste željeli znati?",
                 }
-                direct_response = contact_responses.get(detected_lang)
+                direct_response = contact_responses.get(_lookup_lang)
             # Spa/Wellness - non-English direct responses
-            elif topic == "spa" and detected_lang in _WELLNESS_TRANSLATED:
-                direct_response = _WELLNESS_TRANSLATED[detected_lang]
+            elif topic == "spa" and _lookup_lang in _WELLNESS_TRANSLATED:
+                direct_response = _WELLNESS_TRANSLATED[_lookup_lang]
             # Children/Family - non-English direct responses
-            elif topic == "children" and detected_lang in _CHILDREN_TRANSLATED:
-                direct_response = _CHILDREN_TRANSLATED[detected_lang]
+            elif topic == "children" and _lookup_lang in _CHILDREN_TRANSLATED:
+                direct_response = _CHILDREN_TRANSLATED[_lookup_lang]
             # Wedding - non-English direct responses
-            elif topic == "wedding" and detected_lang in _WEDDING_TRANSLATED:
-                direct_response = _WEDDING_TRANSLATED[detected_lang]
+            elif topic == "wedding" and _lookup_lang in _WEDDING_TRANSLATED:
+                direct_response = _WEDDING_TRANSLATED[_lookup_lang]
             # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
             elif any(word in user_message.lower() for word in ["swimming pool", "pool", "plavalni bazen", "bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina", "bazenu", "bazena"]):
                 pool_responses = {
@@ -2030,8 +2047,9 @@ def api_chat():
                     "Italian": "Villa Adora Bled non ha una piscina, ma gli ospiti possono godersi il cristallino lago Bled proprio qui! La nostra proprietà sorella Villa Pomona offre piscina, sauna e wellness — perfetta per un ritiro privato. Vuoi maggiori informazioni su Villa Pomona?",
                     "Spanish": "Villa Adora Bled no tiene piscina, ¡pero los huéspedes pueden disfrutar del cristalino lago Bled aquí mismo! Nuestra propiedad hermana Villa Pomona ofrece piscina, sauna y wellness — ideal para un retiro privado. ¿Desea más información sobre Villa Pomona?",
                     "Croatian": "Villa Adora Bled nema bazen, ali gosti mogu uživati u kristalno čistom jezeru Bled tukaj! Naša sestrina nekretnina Villa Pomona nudi bazen, saunu i wellness — savršeno za privatni odmor. Želite li više informacija o Villi Pomoni?",
+                    "Serbian": "Villa Adora Bled nema bazen, ali gosti mogu uživati u kristalno čistom jezeru Bled tukaj! Naša sestrina nekretnina Villa Pomona nudi bazen, saunu i wellness — savršeno za privatni odmor. Želite li više informacija o Villi Pomoni?",
                 }
-                direct_response = pool_responses.get(detected_lang, pool_responses["Slovenian"])
+                direct_response = pool_responses.get(_lookup_lang, pool_responses["Slovenian"])
             # Adversarial / tech queries - redirect to hotel topics
             elif any(word in user_message.lower() for word in ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github", "podatkovna baza", "strežnik"]):
                 adversarial_responses = {
@@ -2041,8 +2059,9 @@ def api_chat():
                     "Italian": "Sono Luka, il vostro concierge al Villa Adora Bled! Sono qui per aiutarti con tutto riguardo il tuo soggiorno — camere, ristorazione, attività e altro. Cosa vorresti sapere sul nostro hotel?",
                     "Spanish": "¡Soy Luka, su conserje en Villa Adora Bled! Estoy aquí para ayudarle con todo sobre su estancia — habitaciones, restauración, actividades y más. ¿Qué le gustaría saber sobre nuestro hotel?",
                     "Croatian": "Ja sam Luka, vaš concierge u Villi Adora Bled! Tu sam da vam pomognem s vezom na boravak — sobama, hranom, aktivnostima i više. Što biste željeli znati o našem hotelu?",
+                    "Serbian": "Ja sam Luka, vaš concierge u Villi Adora Bled! Tu sam da vam pomognem s vezom na boravak — sobama, hranom, aktivnostima i više. Što biste željeli znati o našem hotelu?",
                 }
-                direct_response = adversarial_responses.get(detected_lang, adversarial_responses["Slovenian"])
+                direct_response = adversarial_responses.get(_lookup_lang, adversarial_responses["Slovenian"])
 
             if direct_response:
                 # Use pre-translated content directly - update session and return
@@ -2291,7 +2310,7 @@ def api_chat():
             "messages": lang_messages,
             "tools": available_tools,
             "temperature": 0.3 if is_non_english else 0.5,
-            "max_tokens": 2000 if is_non_english else 1500,
+            "max_tokens": 2000,
             "timeout": 50,
         }
         tool_params["tool_choice"] = "auto"
