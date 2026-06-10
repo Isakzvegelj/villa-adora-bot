@@ -1045,7 +1045,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "Breakfast: Included in the room rate (complimentary). Served daily 7:30-10:30 AM on the terrace with lake views. Rich buffet with fresh pastries, bread, local Slovenian products. Vegan, vegetarian, and gluten-free options available on request.",
+        "- Breakfast: €22 per person (NOT included in room rate — it is an additional charge). Served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"
@@ -1235,7 +1235,7 @@ def _detect_topic(message: str) -> str:
         "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
-        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
+        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attività", "activité", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
@@ -1415,6 +1415,7 @@ def get_hotel_info_response(topic, question):
                 )
         return (
             f"Check-in is from {h['policies']['check_in']}, and check-out is by {h['policies']['check_out']}. "
+            f"Please bring a photo ID and credit card for check-in. "
             f"Late check-in or check-out can also be arranged on request — just let us know your plans! "
             f"Would you like help with a reservation?"
         )
@@ -1568,6 +1569,14 @@ def get_hotel_info_response(topic, question):
     # Restaurant
     if actual_topic == "restaurant":
         r = h.get("dining", {}).get("restaurant", {})
+        # If asking specifically about the chef, highlight Chef Domen Demšar
+        if any(word in q for word in ["chef", "domen", "demšar", "demar", "kuhar", "küchenchef", "chef de cuisine", "cocinero", "cuoco"]):
+            return (
+                f"Our restaurant is led by renowned Chef Domen Demšar! "
+                f"He's known for creative, locally inspired Slovenian dishes with French, Italian, and international influences, "
+                f"using top-quality regional ingredients. He's also very accommodating with dietary needs and allergies. "
+                f"Would you like to make a reservation to experience his cooking?"
+            )
         return (
             f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
             f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
@@ -2186,7 +2195,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -2509,6 +2518,22 @@ def api_chat():
                 reply["content"] = clean_response(reply["content"])
                 # Anti-hallucination: remove any mention of Castle Suite (not a real room)
                 reply["content"] = re.sub(r'(?i)\bCastle Suite\b[^.\n]*', '', reply["content"])
+                # Anti-hallucination: correct breakfast misinformation
+                # Breakfast is €22/person, NOT included in room rate, served 8-10 AM
+                if re.search(r'(?i)breakfast.*(?:included|complimentary|free)', reply["content"]) or \
+                   re.search(r'(?i)(?:included|complimentary|free).*breakfast', reply["content"]):
+                    # Replace the hallucinated breakfast response with correct info
+                    reply["content"] = (
+                        "Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
+                        "We also offer vegan, vegetarian, and gluten-free options on request. "
+                        "Shall I add breakfast to your booking?"
+                    )
+                # Fix wrong breakfast times (e.g., 7:30-10:30 is wrong, correct is 8-10 AM)
+                reply["content"] = re.sub(
+                    r'(?i)breakfast.*?(?:7\s*[:.]?\s*30|10\s*[:.]?\s*30).*?(?:AM|am)',
+                    'Breakfast is served 8-10 AM',
+                    reply["content"]
+                )
                 # Clean up any double spaces or dangling bullets left by removal
                 reply["content"] = re.sub(r'\n\s*•\s*$', '', reply["content"])
                 reply["content"] = re.sub(r'\n{3,}', '\n\n', reply["content"])
