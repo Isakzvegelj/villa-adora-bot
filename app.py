@@ -645,6 +645,25 @@ def fix_spacing(text):
     text = re.sub(r'\bWherewould\b', 'Where would', text, flags=re.IGNORECASE)
     # Fix "a" merged with following word: "abooking" -> "a booking"
     text = re.sub(r'\ba(booking|breakfast|restaurant|reservation|shuttle|transfer|bar|hotel|room|suite|pool|spa|gym|park|dog|cat|car|taxi|tour|trip|table|meal|drink|menu)\b', r'a \1', text)
+    # Fix common lowercase word merges: "messagemight" -> "message might"
+    common_merges = [
+        ('message', 'might'), ('message', 'may'), ('your', 'message'), ('your', 'booking'),
+        ('is', 'a'), ('it', 'is'), ('in', 'the'), ('to', 'the'), ('on', 'the'),
+        ('at', 'the'), ('for', 'the'), ('with', 'the'), ('from', 'the'), ('by', 'the'),
+        ('and', 'the'), ('and', 'a'), ('or', 'the'), ('or', 'a'), ('but', 'the'),
+        ('this', 'is'), ('that', 'is'), ('there', 'is'), ('here', 'is'), ('where', 'is'),
+        ('what', 'is'), ('how', 'is'), ('who', 'is'), ('when', 'is'), ('why', 'is'),
+        ('can', 'you'), ('could', 'you'), ('would', 'you'), ('should', 'you'),
+        ('will', 'you'), ('shall', 'you'), ('may', 'i'), ('can', 'i'), ('could', 'i'),
+        ('do', 'you'), ('did', 'you'), ('are', 'you'), ('were', 'you'), ('have', 'you'),
+        ('is', 'there'), ('are', 'there'), ('was', 'there'), ('were', 'there'),
+        ('i', 'am'), ('i', 'have'), ('i', 'will'), ('i', 'would'), ('i', 'can'),
+        ('we', 'are'), ('we', 'have'), ('we', 'will'), ('we', 'can'), ('we', 'would'),
+        ('they', 'are'), ('they', 'have'), ('they', 'will'), ('they', 'can'),
+        ('you', 'are'), ('you', 'have'), ('you', 'will'), ('you', 'can'),
+    ]
+    for w1, w2 in common_merges:
+        text = re.sub(r'\b' + w1 + w2 + r'\b', w1 + ' ' + w2, text, flags=re.IGNORECASE)
     # Fix missing space: lowercase-to-uppercase word joints (common LLM glitch)
     text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
     text = re.sub(r'\byouhave\b', 'you have', text, flags=re.IGNORECASE)
@@ -787,17 +806,11 @@ def clean_response(text):
 
 
 def _ensure_ends_with_question(text: str) -> str:
-    """Post-processor: ensure the response ends with a question mark.
-    Only modifies the text if it doesn't already contain a question mark
-    near the end. This avoids double-questioning when _ensure_follow_up
-    has already appended a question."""
+    """Post-processor: ensure the response ends with a question mark."""
     text = text.rstrip()
     if not text:
         return "Is there anything else I can help you with?"
-    # If there's already a question mark in the last 80 chars, leave as-is
-    if "?" in text[-80:]:
-        return text
-    # Otherwise ensure it ends with ?
+    # Always ensure the final character is '?'
     if text[-1] in ('.', '!', ',', ';', ':'):
         text = text[:-1] + '?'
     elif text[-1] != '?':
