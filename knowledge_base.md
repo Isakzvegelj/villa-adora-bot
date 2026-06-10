@@ -416,6 +416,14 @@
 - In-house catering available
 - Wedding coordinator on request
 - Prestige Suite is popular for wedding nights
+- **Garden Ceremony Package (from €3,500):** Includes garden setup for up to 30 guests, floral arrangements, champagne toast, 3-course dinner, and wedding night in the Prestige Suite
+- **Full Villa Buyout (from €12,000/night):** All 8 suites for up to 16 guests, exclusive use of the garden and terrace, private chef for all meals, and dedicated wedding coordinator
+- **Elopement Package (from €1,200):** 2-night stay in a luxury suite, champagne and chocolates on arrival, couples massage, private dinner on the terrace, and pletna boat ride at sunset
+- **Anniversary Package (from €800):** Rose petals and champagne on arrival, 4-course dinner for two on the terrace, couples massage, and late check-out
+- All wedding packages can be customized — contact us for a personalized quote
+- Preferred wedding vendors list available on request (photographers, florists, musicians)
+- Garden pavilion available for cocktail receptions
+- Indoor backup space available in case of rain
 
 ### Corporate Retreats
 - Meeting room available for up to 20 people
@@ -459,4 +467,64 @@
 - Business center services
 - Airport transfer available
 - Quiet environment ideal for focused work
+
+## Room Comparison Guide
+
+### Best Suite for Couples
+**Princess Suite (€440/night)** — The most romantic option with a tower overlooking Lake Bled, queen bed, and a cozy living area. Perfect for honeymoons and anniversaries.
+
+### Best Suite for Families
+**Superior Suite (€570/night)** — Sleeps 4 with 2 bedrooms, lake and castle views, and spacious living areas. The best value for families or groups of friends.
+
+### Best Suite for Luxury Seekers
+**Island Suite (€620/night)** — The largest suite at 65 sq m with 2 luxury bedrooms, a big living area, 2 balconies, and stunning views of the lake and Bled Island.
+
+### Best Value
+**Princess Suite (€440/night)** — Offers the best balance of luxury, views, and price. The tower location provides unique panoramic views.
+
+### Most Unique
+**Penthouse Suite (€430/night)** — 2 floors with a king-sized bed, the most unique space in the house with breathtaking views and an extremely cozy atmosphere.
+
+### Ground Floor Access
+**Prestige Suite (Price on request)** — 72 sq m on the ground floor with a living area, small dining area, king bed overlooking Lake Bled, very big luxury bathroom, and spacious terrace. Best for guests who prefer no stairs.
+
+## Slovenian Wine Regions Guide
+
+### Goriška Brda (30 min from Bled)
+- Known as "Slovenia's Tuscany" — rolling hills with vineyards
+- Famous for Rebula (white) and Merlot (red)
+- Top producers: Kabaj, Mlečnik, Ščubl
+- Wine tasting tours available from Bled
+
+### Vipava Valley (45 min from Bled)
+- Known for crisp whites: Pinot Grigio, Sauvignon Blanc
+- Dramatic landscape with strong burja wind
+- Top producers: Burja, Sutor, Vina Kramar
+
+### Wine Tasting from Bled
+- Several agencies offer half-day wine tours from Bled
+- We can arrange private wine tasting experiences
+- The Adora restaurant features a curated Slovenian wine list
+
+## Bled Seasonal Events Calendar
+
+### Spring (March-May)
+- **March:** Bled Festival (classical music)
+- **April:** Cherry blossom season around the lake
+- **May:** Bled Days (cultural festival), opening of outdoor dining season
+
+### Summer (June-August)
+- **June:** Bled Festival Summer Season begins
+- **July:** Bled International Rowing Regatta, Open-air cinema
+- **August:** Bled Castle Summer Events, Lake Bled Swimming Marathon
+
+### Autumn (September-November)
+- **September:** Bled Wine Festival, Harvest season
+- **October:** Bled Marathon (running), Autumn colours peak
+- **November:** St. Martin's Day (wine celebration)
+
+### Winter (December-February)
+- **December:** Bled Christmas Market, New Year's Eve celebrations
+- **January:** Winter hiking, possible frozen lake walks
+- **February:** Valentine's Day packages, Carnival in nearby towns
 
