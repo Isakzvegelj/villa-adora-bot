@@ -1143,7 +1143,7 @@ def _detect_language(message: str) -> str:
     # Italian-specific characters (check AFTER French since they share some)
     if any(c in msg for c in ['à', 'è', 'é', 'ì', 'ò', 'ù']):
         # Could be French or Italian - check words
-        italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere ", " ora ", " che ora ", " parlami ", " parlez "]
+        italian_words = [" buongiorno ", " buonasera ", " grazie ", " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere ", " camera ", " dove ", " dov ", " dov' ", " dov’ ", " parlami ", " parlez ", " quanto ", " come ", " dove si ", " dove è ", " dov'è ", " dov’è ", " soggiorno ", " per favore ", " piacere ", " bellissimo ", " magnifico ", " splendido ", " incantevole ", " meraviglioso "]
         if any(w in msg for w in italian_words):
             return "Italian"
 
@@ -1162,12 +1162,12 @@ def _detect_language(message: str) -> str:
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
             " buchen ", " reservierung ", " kammer ", " schlafzimmer ",
             " einen parkplatz ", " parken ", " auto ", " wagen ", " erzählen ", " wie viel ", " was kostet ", " wie kostet ", " prinzessin ",
-            " ist ", " erlaubt ", " rauchen ", " kostenlos ", " wifi ", " kontaktieren ",
+            " erlaubt ", " rauchen ", " kostenlos ", " kontaktieren ",
             " kontakt ", " telefon ", " email ", " e-mail ", " adresse ", " wo sind ",
             " wie komme ", " empfehlen ", " empfehlung ", " kinder ", " familie ",
-            " restaurant ", " bar ", " wein ", " frühstücken ", " buchung ",
-            " stornier ", " stornierung ", " zimmer ", " suite ", " bett ",
-            " badezimmer ", " klimaanlage ", " fernseher ", " tv ", " parken ",
+            " wein ", " frühstücken ", " buchung ",
+            " stornier ", " stornierung ", " zimmer ", " bett ",
+            " badezimmer ", " klimaanlage ", " fernseher ", " parken ",
             " haustier ", " hund ", " katze ", " haustiere ", " massagen ",
             " wellness ", " sauna ", " schwimmen ", " see ", " berg ", " schloss "
         ],
@@ -1181,7 +1181,9 @@ def _detect_language(message: str) -> str:
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
             " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
             " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere ",
-            " camera ", " alloggio "
+            " camera ", " alloggio ", " dove ", " dov'è ", " dov’è ", " dov è ",
+            " quanto costa ", " che ora ", " ora ", " soggiorno ", " piacere ",
+            " splendido ", " incantevole ", " meraviglioso ", " favoloso "
         ],
         "Spanish": [
             " buenos días ", " buenas tardes ", " muchas gracias ", " por favor ",
