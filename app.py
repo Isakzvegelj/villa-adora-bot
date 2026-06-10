@@ -1602,7 +1602,7 @@ def api_chat():
             elif topic == "shuttle" and detected_lang in _SHUTTLE_TRANSLATED:
                 direct_response = _SHUTTLE_TRANSLATED[detected_lang]
             # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
-            elif any(word in user_message.lower() for word in ["swimming pool", "pool", "plavalni bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina"]):
+            elif any(word in user_message.lower() for word in ["swimming pool", "pool", "plavalni bazen", "bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina", "bazenu", "bazena"]):
                 pool_responses = {
                     "Slovenian": "Villa Adora Bled nima bazena, a lahko gostje uživajo v čistem jezeru Bled tukaj ob hotelu! Naša sestra lastnost Villa Pomona pa ponuja bazen, savno in wellness — popolno za zasebni oddih. Želite več informacij o Villi Pomoni?",
                     "German": "Villa Adora Bled hat kein Schwimmbad, aber Gäste können direkt vor Ort in den kristallklaren Bleder See springen! Unsere Schwesteranlage Villa Pomona bietet Pool, Sauna und Wellness — perfekt für einen privaten Rückzug. Möchten Sie mehr über Villa Pomona erfahren?",
@@ -1722,7 +1722,7 @@ def api_chat():
                 sessions[session_id] = messages
                 return jsonify({"replies": [{"type": "text", "content": response_text}]})
             # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
-            if any(word in user_message.lower() for word in ["swimming pool", "pool", "swim"]):
+            if any(word in user_message.lower() for word in ["swimming pool", "pool", "swim", "bazen", "bazenu", "bazena", "Schwimmbad", "piscina", "piscine", "natazione"]):
                 response_text = (
                     "Villa Adora Bled doesn't have a swimming pool, but guests can swim in the pristine Lake Bled right outside! "
                     "We also have a sister property, Villa Pomona, which features a swimming pool, sauna, and full wellness facilities — perfect for a private retreat. "
