@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Comprehensive test suite for Villa Adora Bled bot."""
+"""Final comprehensive test suite."""
 import requests
 import json
 import time
