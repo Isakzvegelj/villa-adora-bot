@@ -1663,7 +1663,10 @@ def api_chat():
             # Check if we have a pre-translated response for rooms/experiences
             # Use direct response to bypass LLM and avoid timeout issues
             direct_response = None
-            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED:
+            # Check for price queries first — bypass pre-translated responses
+            _q_lower = user_message.lower()
+            _is_price = any(w in _q_lower for w in ["koliko stane", "wie viel kostet", "combien coûte", "quanto costa", "cuánto cuesta", "koliko košta", "price", "cost", "how much", "rate", "cena", "preis", "prix", "precio", "prezzo"])
+            if topic == "rooms" and detected_lang in _ROOM_LISTINGS_TRANSLATED and not _is_price:
                 direct_response = _ROOM_LISTINGS_TRANSLATED[detected_lang]
             elif topic in ("experiences", "activities") and detected_lang in _EXPERIENCES_TRANSLATED:
                 direct_response = _EXPERIENCES_TRANSLATED[detected_lang]
