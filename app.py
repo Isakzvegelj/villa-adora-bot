@@ -139,6 +139,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Deluxe apartmaj, za 2 osebi — Razgled na jezero, luksuzna oprema\n"
         "• Superior apartmaj, za 4 osebe — 2 spalnici, družinski apartmaj\n"
         "• Otoški apartmaj, 65 m², za 4 osebe — 2 luksuzni spalnici, 2 balkona\n"
+        "• Labodji apartmaj, 67 m², za 2 osebi — Razgled na jezero, luksuzna kopalnica\n"
         "• Prestižni apartmaj, 72 m², za 2 osebi — Pritličje, pogled na jezero\n"
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
@@ -150,6 +151,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Deluxe Suite, für 2 Gäste — Seeblick, luxuriöse Ausstattung\n"
         "• Superior Suite, für 4 Gäste — 2 Schlafzimmer, familienfreundlich\n"
         "• Insel Suite, 65 m², für 4 Gäste — 2 Luxusschlafzimmer, 2 Balkone\n"
+        "• Schwan Suite, 67 m², für 2 Gäste — Seeblick, luxuriöses Badezimmer\n"
         "• Prestige Suite, 72 m², für 2 Gäste — Erdgeschoss, Seeblick\n"
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
@@ -161,7 +163,8 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, pour 2 personnes — Vue sur le lac, mobilier de luxe\n"
         "• Suite Supérieure, pour 4 personnes — 2 chambres, idéale pour les familles\n"
         "• Suite Île, 65 m², pour 4 personnes — 2 chambres de luxe, 2 balcons\n"
-        "• Suite Prestige, 72 m², pour 2 personnes — Rez-de-chaussée, salon\n"
+        "• Suite Cygne, 67 m², pour 2 personnes — Vue sur le lac, salle de bain luxueuse\n"
+        "• Suite Prestige, 72 m², pour 2 personnes — Rez-de-chaussée, vue lac\n"
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
@@ -172,6 +175,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, per 2 persone — Vista lago, arredi di lusso\n"
         "• Suite Superiore, per 4 persone — 2 camere da letto, ideale per famiglie\n"
         "• Suite Isola, 65 m², per 4 persone — 2 camere da letto di lusso, 2 balconi\n"
+        "• Suite Cigno, 67 m², per 2 persone — Vista lago, bagno di lusso\n"
         "• Suite Prestige, 72 m², per 2 persone — Piano terra, vista lago\n"
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
@@ -183,8 +187,21 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, para 2 personas — Vista al lago, mobiliario de lujo\n"
         "• Suite Superior, para 4 personas — 2 habitaciones, ideal para familias\n"
         "• Suite Isla, 65 m², para 4 personas — 2 habitaciones de lujo, 2 balcones\n"
+        "• Suite Cisne, 67 m², para 2 personas — Vista al lago, baño de lujo\n"
         "• Suite Prestige, 72 m², para 2 personas — Planta baja, vista al lago\n"
         "¿Cuál te gusta más? Puedo hacer la reserva — solo necesito tu nombre y las fechas?"
+    ),
+    "Croatian": (
+        "Imamo 8 prekrasnih apartmana s prekrasnim pogledom na jezero:\n"
+        "• Apartman Princeza, 55 m², za 2 osobe — Pogled na jezero iz tornja, dnevni boravak\n"
+        "• Luksuzni apartman, za 2 osobe — Pogled na jezero, elegantan namještaj\n"
+        "• Penthouse apartman, 60 m², za 2 osobe — 2 kata, king-size krevet\n"
+        "• Deluxe apartman, za 2 osobe — Pogled na jezero, luksuzna oprema\n"
+        "• Superior apartman, za 4 osobe — 2 spavaće sobe, obiteljski apartman\n"
+        "• Otočni apartman, 65 m², za 4 osebe — 2 luksuzne spavaće sobe, 2 balkona\n"
+        "• Apartman Labud, 67 m², za 2 osobe — Pogled na jezero, luksuzna kupaonica\n"
+        "• Prestižni apartman, 72 m², za 2 osobe — Prizemlje, pogled na jezero\n"
+        "Koji vas najviše privlači? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?"
     ),
 }
 
