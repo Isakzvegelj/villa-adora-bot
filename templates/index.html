@@ -350,10 +350,22 @@
         const inputEl = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
 
+        function renderMarkdown(text) {
+            // Simple markdown: **bold**, *italic*, \n -> <br>
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+            return html;
+        }
+
         function addMessage(text, role) {
             const div = document.createElement('div');
             div.className = 'message ' + role;
-            div.textContent = text;
+            div.innerHTML = renderMarkdown(text);
             messagesEl.appendChild(div);
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }
@@ -362,7 +374,7 @@
             const div = document.createElement('div');
             div.className = 'message confirmation';
             const textNode = document.createElement('div');
-            textNode.textContent = text;
+            textNode.innerHTML = renderMarkdown(text);
             div.appendChild(textNode);
             const btnRow = document.createElement('div');
             btnRow.className = 'confirm-buttons';

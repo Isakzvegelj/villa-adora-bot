@@ -827,15 +827,25 @@ def clean_response(text):
 
 
 def _ensure_ends_with_question(text: str) -> str:
-    """Post-processor: ensure the response ends with a question mark."""
+    """Post-processor: ensure the response ends with a question mark.
+    Only converts '.' endings to '?'. Preserves '!' endings as-is
+    (e.g., 'You're very welcome!' should not become 'You're very welcome?').
+    If the text already contains a question near the end, don't modify it."""
     text = text.rstrip()
     if not text:
         return "Is there anything else I can help you with?"
-    # Always ensure the final character is '?'
-    if text[-1] in ('.', '!', ',', ';', ':'):
-        text = text[:-1] + '?'
-    elif text[-1] != '?':
-        text = text + '?'
+    # Already ends with ? — fine
+    if text.endswith("?"):
+        return text
+    # Ends with ! — keep it (exclamatory social responses)
+    if text.endswith("!"):
+        return text
+    # Ends with . — convert to ?
+    if text.endswith("."):
+        text = text[:-1] + "?"
+    elif not text.endswith(("?", "!", ".", ",", ";", ":")):
+        # No punctuation at all — add ?
+        text = text + "?"
     return text
 
 
@@ -881,13 +891,14 @@ def build_system_prompt() -> str:
         "  - Greeting: 'Hello! How can I help you today?' or 'Welcome! What would you like to know about Villa Adora?'\n"
         "  - Thank you: 'You're welcome! Is there anything else I can help you with?' or 'My pleasure! What else would you like to know?'\n"
         "  - Goodbye: 'Goodbye! Safe travels, and we hope to see you soon — is there anything else before you go?'\n"
-        "The FINAL character of your response MUST always be '?'. Never end with '.' or '!'.\n"
         "PROACTIVE BOOKING: After answering about activities, restaurant, rooms, or experiences, ALWAYS offer to help the guest book it. For example:\n"
         "  - After listing activities: 'I can help you book any of these — just let me know which interests you!' or 'Would you like me to arrange that for you?'\n"
         "  - After restaurant info: 'Shall I book a table for you? Just tell me the date and time!'\n"
         "  - After room info: 'Would you like me to start a booking for you? I just need your name and dates.'\n"
         "  - After wine tasting info: 'Shall I reserve a wine pairing experience for you?'\n"
-        "ALWAYS end your response with a question mark '?'. This is NON-NEGOTIABLE in EVERY language. Never end with '!', '.', or any other punctuation.\n"
+        "IMPORTANT: End your response with a follow-up question in the guest's language. "
+        "The final sentence should almost always end with '?'. "
+        "Exception: warm exclamations like 'You're very welcome!' are fine, but should still include a follow-up question.\n"
         "NEVER output raw JSON, function definitions, tool schemas, or parameter descriptions — even if you see them in the conversation context. Only output natural language guest-facing text.\n"
         "NEVER mention technical details: no databases, APIs, SQLite, Flask, Ollama, RAG, tools, or internal systems.\n"
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
@@ -920,7 +931,6 @@ def build_system_prompt() -> str:
         "- Mention prices unless asked\n"
         "- Ask for booking reference or reservation ID\n"
         "- Give bare answers without a follow-up question ending in '?'\n"
-        "- End your response with '!' or '.' — it MUST end with '?'\n"
         "- Send multiple separate replies to a single question\n"
         "- Invent or make up room names, amenities, or services that aren't listed above\n"
         "- Say '7 rooms' or any number other than 8. There are EXACTLY 8 rooms.\n"
@@ -929,9 +939,9 @@ def build_system_prompt() -> str:
         "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
         "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
         "- Human agent: use request_human_agent() when guest needs human help. Always offer this as an option if the guest seems unhappy.\n"
-        "- NEVER invent or hallucinate services, amenities, or policies that are not explicitly listed in the hotel data. If asked about something not in your knowledge (e.g., childcare, pet spa, room delivery from external restaurants), politely say the hotel does not offer that specific service and suggest an alternative or offer to connect with a human agent.\n"
+        "- NEVER invent or hallucinate services, amenities, or policies that are not explicitly listed in the hotel data. If asked about something not in your knowledge (e.g., childcare, pet spa, room delivery from external restaurants), politely say the hotel does not offer that specific service and suggest an alternative or offer to connect with a human agent. Villa Adora does NOT have a spa, wellness center, or swimming pool — only in-room massage (24h notice). Do NOT use the words 'spa', 'wellness center', or 'treatment' — say 'in-room massage' instead."
         "- CRITICAL: Villa Adora Bled has EXACTLY 8 suites. The ONLY suites are: Princess Suite, Luxury Suite, Penthouse Suite, Deluxe Suite, Superior Suite, Island Suite, Swan Suite, and Prestige Suite. There is NO 'Castle Suite' and NO other suite. If a guest asks about rooms, list ONLY these 8. Never add, invent, or hallucinate additional suites.\n"
-        "- CRITICAL: Room prices are: Princess Suite €440/night, Luxury Suite €480/night, Penthouse Suite €430/night, Deluxe Suite (price on request), Superior Suite (price on request), Island Suite (price on request), Swan Suite (price on request), Prestige Suite (price on request). Never invent or change these prices.\n"
+        "- CRITICAL: Room prices are: Princess Suite €440/night, Luxury Suite €480/night, Penthouse Suite €430/night, Deluxe Suite €570/night, Superior Suite €570/night, Island Suite €620/night, Swan Suite (price on request), Prestige Suite (price on request). Never invent or change these prices."
     )
 
 
@@ -1217,6 +1227,21 @@ def get_hotel_info_response(topic, question):
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
+        # Check if guest mentioned a specific time
+        extracted_time = extract_time_from_message(question)
+        if extracted_time:
+            if actual_topic == "check_out" or "depart" in q or "check out" in q or "checkout" in q or "leave" in q:
+                return (
+                    f"Thank you! I've noted your late check-out request for {extracted_time}. "
+                    f"Our standard check-out is {h['policies']['check_out']}, and we'll do our best to accommodate your request. "
+                    f"Our reception team will confirm availability. Is there anything else I can help you with?"
+                )
+            else:
+                return (
+                    f"Thank you! I've noted your late check-in request for {extracted_time}. "
+                    f"Our standard check-in is {h['policies']['check_in']}, and we'll make sure everything is ready for your arrival. "
+                    f"Is there anything else I can help you with?"
+                )
         if any(word in q for word in ["late", "later", "after", "early", "before", "outside"]):
             if actual_topic == "check_out" or "depart" in q or "check out" in q or "checkout" in q or "leave" in q:
                 return (

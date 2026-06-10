@@ -53,7 +53,7 @@ hotel_info = {
         },
         "deluxe_suite": {
             "name": "Deluxe Suite",
-            "price": None,
+            "price": 570,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 2,
@@ -64,7 +64,7 @@ hotel_info = {
         },
         "superior_suite": {
             "name": "Superior Suite",
-            "price": None,
+            "price": 570,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 4,
@@ -75,7 +75,7 @@ hotel_info = {
         },
         "island_suite": {
             "name": "Island Suite",
-            "price": None,
+            "price": 620,
             "currency": "EUR",
             "size_sqm": 65,
             "capacity": 4,
