@@ -1531,7 +1531,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "policies":
         return (
             f"Check-in: {h['policies']['check_in']}. Check-out: {h['policies']['check_out']}. "
-            f"Breakfast is €22/person. Free parking and WiFi. Pets allowed on request. "
+            f"Breakfast is included in the room rate (complimentary). Free parking and WiFi. Pets allowed on request. "
             f"Is there a specific policy you'd like to know more about?"
         )
 
@@ -1542,16 +1542,17 @@ def get_hotel_info_response(topic, question):
             dietary = b.get("dietary", {})
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
-                    f"Breakfast is €22/person, served 8-10 AM in our dining room. "
+                    f"Breakfast is included in your room rate (complimentary), served 7:30-10:30 AM on the terrace with lake views. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
                     f"We offer vegan, vegetarian, and gluten-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
-                    f"Would you like to add breakfast to your booking?"
+                    f"Would you like to add a note about your dietary preferences to your booking?"
                 )
             return (
-                f"Breakfast is €22/person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
+                f"Breakfast is included in your room rate (complimentary), served daily 7:30-10:30 AM on the terrace with lake views. "
+                f"Rich buffet with fresh pastries, bread, and local Slovenian products. "
                 f"We also offer vegan, vegetarian, and gluten-free options on request. "
-                f"Shall I add breakfast to your booking?"
+                f"Shall I add a note about any dietary preferences to your booking?"
             )
         return (
             f"{b} "
