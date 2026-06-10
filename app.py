@@ -1370,11 +1370,15 @@ def api_chat():
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
             # late_check_in / late_check_out go through LLM to enable calendar event extraction
 
-        # For non-English messages, exclude query_hotel_info tool since we provide
-        # hotel data via context. This prevents the LLM from calling the tool
-        # and getting English responses. Keep booking/shuttle tools available.
+        # For non-English messages, exclude query_hotel_info and book_room tools:
+        # - hotel data is provided via context (translated by the code)
+        # - book_room is excluded because LLMs hallucinate booking details in non-English
+        #   (e.g., fabricated names, past dates). Booking is handled via English flow or
+        #   the booking intent topic which returns a form asking for details.
+        #   Shuttle booking is kept because guests rarely book shuttles in other languages
+        #   without providing details explicitly.
         if is_non_english:
-            available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
+            available_tools = [book_shuttle_function, request_human_agent_function]
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
 
@@ -1440,7 +1444,51 @@ def api_chat():
                 continue
             tool_reply = None
             if fn == "book_room":
-                room_key = args["room_name"].lower().replace(" ", "_")
+                # Validate booking args to prevent LLM hallucinations
+                from datetime import date as _date
+                guest_name = args.get("guest_name", "").strip()
+                check_in = args.get("check_in", "").strip()
+                check_out = args.get("check_out", "").strip()
+                room_name = args.get("room_name", "").strip()
+                # Reject if any required field is empty
+                if not guest_name or not check_in or not check_out or not room_name:
+                    tool_reply = (
+                        "I'd love to help you book! I just need a few more details: "
+                        "your name, check-in date, check-out date, and preferred room. "
+                        "Could you provide those?"
+                    )
+                    replies.append({"type": "text", "content": tool_reply})
+                    continue
+                # Reject if dates are in the past
+                try:
+                    ci = _date.fromisoformat(check_in)
+                    co = _date.fromisoformat(check_out)
+                    if ci < _date.today() or co < _date.today():
+                        tool_reply = (
+                            "I notice those dates are in the past. Could you please "
+                            "provide your actual travel dates? I'm happy to help with your booking!"
+                        )
+                        replies.append({"type": "text", "content": tool_reply})
+                        continue
+                    if co <= ci:
+                        tool_reply = (
+                            "It looks like the check-out date is before the check-in date. "
+                            "Could you double-check your dates for me?"
+                        )
+                        replies.append({"type": "text", "content": tool_reply})
+                        continue
+                except ValueError:
+                    pass  # If date format is invalid, proceed anyway
+                # Reject common placeholder/hallucinated names
+                placeholder_names = {"mario", "rossi", "mario rossi", "john doe", "jane doe", "test", "guest", "anonymous"}
+                if guest_name.lower() in placeholder_names:
+                    tool_reply = (
+                        f"I'd like to make sure I have the correct details. "
+                        f"Could you please confirm your name for the booking?"
+                    )
+                    replies.append({"type": "text", "content": tool_reply})
+                    continue
+                room_key = room_name.lower().replace(" ", "_")
                 price = hotel_info["rooms"].get(room_key, {}).get("price", "")
                 price_str = f" ({price} EUR/night)" if price else ""
                 replies.append(
@@ -1448,10 +1496,10 @@ def api_chat():
                         "type": "confirmation_request",
                         "content": (
                             f"Booking Confirmation\n\n"
-                            f"• Guest: {args['guest_name']}\n"
-                            f"• Check-in: {args['check_in']}\n"
-                            f"• Check-out: {args['check_out']}\n"
-                            f"• Room: {args['room_name']}{price_str}\n\n"
+                            f"• Guest: {guest_name}\n"
+                            f"• Check-in: {check_in}\n"
+                            f"• Check-out: {check_out}\n"
+                            f"• Room: {room_name}{price_str}\n\n"
                             "Reply yes to confirm or no to cancel? Thank you!"
                         ),
                     }
