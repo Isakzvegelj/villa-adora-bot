@@ -1552,11 +1552,12 @@ def get_hotel_info_response(topic, question):
             dietary = b.get("dietary", {})
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
-                    f"Breakfast is €22 per person, served 8-10 AM in our dining room. "
-                    f"We're happy to accommodate dietary needs — just let us know when you book! "
-                    f"We offer vegan, vegetarian, and gluten-free options on request, "
-                    f"and can handle allergies and other dietary requirements with advance notice. "
-                    f"Would you like to add breakfast to your booking?"
+                    f"We're happy to accommodate dietary needs! Breakfast (€22/person, served 8-10 AM) "
+                    f"offers vegan, vegetarian, and gluten-free options on request. "
+                    f"Our Adora Pop Up Restaurant also caters to dietary requirements — "
+                    f"Chef Domen Demšar is known for creative accommodations. "
+                    f"Just let us know your preferences when you book. "
+                    f"Would you like to add breakfast or make a restaurant reservation?"
                 )
             return (
                 f"Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
@@ -1615,9 +1616,11 @@ def get_hotel_info_response(topic, question):
     # Bar
     if actual_topic == "bar":
         return (
-            "Our bar serves elegant cocktails and aperitivos daily on the terrace with arguably the best sunset views over Lake Bled. "
+            "Our bar serves elegant cocktails and aperitivos daily on the terrace — arguably the best sunset views over Lake Bled! "
+            "Enjoy classic and signature cocktails crafted with premium spirits, local Slovenian ingredients, and fresh herbs from our garden. "
+            "Popular choices include the Bled Negroni with local gin, spritz variations, and seasonal specials. "
             "It's the perfect spot to unwind after a day of exploring! "
-            "Would you like me to tell you more about our drinks menu, or shall I help you with a restaurant reservation?"
+            "Would you like to reserve a table on the terrace, or shall I help you with a restaurant reservation?"
         )
 
     # Parking
@@ -2236,7 +2239,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -2245,7 +2248,6 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
-            # late_check_in / late_check_out go through LLM to enable calendar event extraction
 
         # Handle English social messages (greetings, thanks, goodbyes) directly to avoid LLM failures
         if not is_non_english and topic == "general":

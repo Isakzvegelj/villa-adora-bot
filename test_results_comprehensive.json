@@ -1,0 +1,145 @@
+{
+  "results": [
+    {
+      "label": "rooms",
+      "question": "What rooms do you have available?",
+      "reply": "We have 8 beautiful suites, all with stunning lake views:\n• Princess Suite, 55 m², sleeps 2 — Lake view from tower, Living area\n• Luxury Suite, sleeps 2 — Lake view, Elegant decor\n• Penthouse Suite, 60 m², sleeps 2 — 2 floors, King-sized bed\n• Deluxe Suite, sleeps 2 — Lake view, Luxury furnishings\n• Superior Suite, sleeps 4 — Perfect for families, 2 bedrooms\n• Island Suite, 65 m², sleeps 4 — First floor, 2 luxury bedrooms\n• Swan Suite, 67 m², sleeps 2 — 67 sq m, King bed\n• Prestige Suite, 72 m², sleeps 2 — Ground floor, Living area\nWhich one catches your eye? I can start a booking for you — just tell me your name and dates?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "check-in",
+      "question": "What time is check-in and check-out?",
+      "reply": "Check-in is from 14:00 (2:00 PM), and check-out is by 11:00 (11:00 AM). Please bring a photo ID and credit card for check-in. Late check-in or check-out can also be arranged on request — just let us know your plans! Would you like help with a reservation?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "parking",
+      "question": "Do you have parking?",
+      "reply": "Free private parking on-site — 8 parking spots available in front of the hotel. Will you be driving to Bled, or would you like tips on public transport?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "pets",
+      "question": "Can I bring my dog?",
+      "reply": "Pets allowed on request — €35 per pet per night. Please contact us to arrange. Are you planning to bring a furry friend along?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "breakfast",
+      "question": "What is included in breakfast?",
+      "reply": "Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. We also offer vegan, vegetarian, and gluten-free options on request. Shall I add breakfast to your booking?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "restaurant",
+      "question": "Tell me about your restaurant",
+      "reply": "We have the Adora Pop Up Restaurant right here at the hotel! Exclusive dining destination inside Adora Luxury Hotel. Creative, locally inspired Slovenian dishes with French, Italian, and international influences, using top-quality regional ingredients. Led by renowned Chef Domen Demšar. Hours: Lunch & Dinner Tuesday – Sunday, Brunch Thursday – Saturday. The terrace has arguably the best sunset views in Bled. Reservations: +386 40 558 158 / +386 51 603 858 or evita.vilebled@gmail.com. Would you like to make a reservation?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "wine",
+      "question": "What wines do you serve?",
+      "reply": "Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines from vineyards near Bled alongside selected international labels. Wine pairing is available with our tasting menu (approximately €35/person). The tasting menu itself is approximately €65/person. For the full current wine list, I'd recommend contacting the restaurant directly at +386 40 558 158. Would you like to reserve a table?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "bar",
+      "question": "What cocktails do you have?",
+      "reply": "Our bar serves elegant cocktails and aperitivos daily on the terrace with arguably the best sunset views over Lake Bled. It's the perfect spot to unwind after a day of exploring! Would you like me to tell you more about our drinks menu, or shall I help you with a restaurant reservation?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "location",
+      "question": "Where are you located?",
+      "reply": "We're at Cesta svobode 35, 4260 Bled, Slovenia. Directly on the shores of Lake Bled — one of the few hotels with this prime position. Views of Bled Island, Bled Castle, and Triglav Mountains. 2-minute walk to boat station, 15-minute walk to Bled town center, 30-minute walk to Bled Castle. Phone: +386 51 603 858. Would you like directions or tips on getting here?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "activities",
+      "question": "What can I do around Bled?",
+      "reply": "There's so much to do around Bled! Here are some highlights:\n• Row to Bled Island & visit the Church of the Assumption\n• Swimming, paddleboarding, kayaking, and boat tours on the lake\n• Vintgar Gorge walk (2.4 km away)\n• Bled Castle visit (30 min walk)\n• 6 km lakeside walking path & 15 signposted hikes\n• Day trips to Lake Bohinj, Ljubljana, Postojna Cave\n• In-room massage, garden evenings with wine\nI can help you book any of these — just let me know which interests you. What sounds most appealing to you?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "booking",
+      "question": "I would like to book a room",
+      "reply": "I'd love to help you book a room! We have 8 beautiful suites with stunning lake views. To get started, I'll need your name, check-in and check-out dates, and your preferred room. Which suite catches your eye, or would you like me to help you choose?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "late check-in",
+      "question": "Can I check in late at night?",
+      "reply": "Bled is magical in the evening! Here are some wonderful night-time options:\n• Sunset cocktails on our terrace — arguably the best sunset views in Bled\n• Dinner at the Adora Pop Up Restaurant (Tue-Sun) with terrace dining\n• Garden evenings with wine under the stars\n• In-room massage — the perfect way to unwind after a day of exploring\n• Stargazing from the garden or terrace — Bled has wonderfully clear skies\n• Room service dining in the comfort of your suite\n• Evening walk along the 6 km lakeside path — beautifully peaceful at night\nWould you like me to book a dinner reservation or arrange an in-room massage for you?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "late check-out",
+      "question": "Can I check out late?",
+      "reply": "Our standard check-out is 11:00 (11:00 AM), but late check-out is available on request! It's subject to availability and additional fees may apply. Contact reception to arrange. What time would you like to check out?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "dietary vegan",
+      "question": "Do you have vegan options?",
+      "reply": "Breakfast is €22 per person, served 8-10 AM in our dining room. We're happy to accommodate dietary needs — just let us know when you book! We offer vegan, vegetarian, and gluten-free options on request, and can handle allergies and other dietary requirements with advance notice. Would you like to add breakfast to your booking?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "dietary gluten-free",
+      "question": "Is there gluten-free food?",
+      "reply": "We have the Adora Pop Up Restaurant right here at the hotel! Chef Domen Demšar is known for accommodating dietary needs with creativity and care. We offer vegan, vegetarian, and gluten-free options on request — just let us know your preferences when you reserve. Hours: Lunch & Dinner Tuesday – Sunday, Brunch Thursday – Saturday. Reservations: +386 40 558 158 / +386 51 603 858 or evita.vilebled@gmail.com. Would you like to make a reservation and note your dietary preferences?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "slovenian",
+      "question": "Kakšne sobe imate na voljo?",
+      "reply": "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n• Luksuzni apartmaj, za 2 osebi — Razgled na jezero, elegantna dekoracija\n• Penthouse apartmaj, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n• Deluxe apartmaj, za 2 osebi — Razgled na jezero, luksuzna oprema\n• Superior apartmaj, za 4 osebe — 2 spalnici, družinski apartmaj\n• Otoški apartmaj, 65 m², za 4 osebe — 2 luksuzni spalnici, 2 balkona\n• Labodji apartmaj, 67 m², za 2 osebi — Razgled na jezero, luksuzna kopalnica\n• Prestižni apartmaj, 72 m², za 2 osebi — Pritličje, pogled na jezero\nKateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "german",
+      "question": "Welche Zimmer haben Sie verfügbar?",
+      "reply": "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\n• Prinzessin Suite, 55 m², für 2 Gäste — Seeblick vom Turm, Wohnbereich\n• Luxus Suite, für 2 Gäste — Seeblick, elegante Einrichtung\n• Penthouse Suite, 60 m², für 2 Gäste — 2 Etagen, Kingsize-Bett\n• Deluxe Suite, für 2 Gäste — Seeblick, luxuriöse Ausstattung\n• Superior Suite, für 4 Gäste — 2 Schlafzimmer, familienfreundlich\n• Insel Suite, 65 m², für 4 Gäste — 2 Luxusschlafzimmer, 2 Balkone\n• Schwan Suite, 67 m², für 2 Gäste — Seeblick, luxuriöses Badezimmer\n• Prestige Suite, 72 m², für 2 Gäste — Erdgeschoss, Seeblick\nWelche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "italian",
+      "question": "Quali camere avete disponibili?",
+      "reply": "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\n• Suite Principessa, 55 m², per 2 persone — Vista lago dalla torre, zona living\n• Suite Luxury, per 2 persone — Vista lago, arredi eleganti\n• Suite Penthouse, 60 m², per 2 persone — 2 piani, letto king size\n• Suite Deluxe, per 2 persone — Vista lago, arredi di lusso\n• Suite Superiore, per 4 persone — 2 camere da letto, ideale per famiglie\n• Suite Isola, 65 m², per 4 persone — 2 camere da letto di lusso, 2 balconi\n• Suite Cigno, 67 m², per 2 persone — Vista lago, bagno di lusso\n• Suite Prestige, 72 m², per 2 persone — Piano terra, vista lago\nQuale ti piace di più? Posso prenotare per te — mi servono solo nome e date?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "french",
+      "question": "Quelles chambres avez-vous de disponible?",
+      "reply": "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\n• Suite Princesse, 55 m², pour 2 personnes — Vue sur le lac depuis la tour, salon\n• Suite de Luxe, pour 2 personnes — Vue sur le lac, décoration élégante\n• Suite Penthouse, 60 m², pour 2 personnes — 2 étages, lit king-size\n• Suite Deluxe, pour 2 personnes — Vue sur le lac, mobilier de luxe\n• Suite Supérieure, pour 4 personnes — 2 chambres, idéale pour les familles\n• Suite Île, 65 m², pour 4 personnes — 2 chambres de luxe, 2 balcons\n• Suite Cygne, 67 m², pour 2 personnes — Vue sur le lac, salle de bain luxueuse\n• Suite Prestige, 72 m², pour 2 personnes — Rez-de-chaussée, vue lac\nLaquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?",
+      "status": "ok",
+      "http_status": 200
+    },
+    {
+      "label": "spanish",
+      "question": "¿Qué habitaciones tienen disponibles?",
+      "reply": "Tenemos 8 hermosas suites con vistas impresionantes al lago:\n• Suite Princesa, 55 m², para 2 personas — Vista al lago desde la torre, zona de estar\n• Suite de Lujo, para 2 personas — Vista al lago, decoración elegante\n• Suite Penthouse, 60 m², para 2 personas — 2 pisos, cama king size\n• Suite Deluxe, para 2 personas — Vista al lago, mobiliario de lujo\n• Suite Superior, para 4 personas — 2 habitaciones, ideal para familias\n• Suite Isla, 65 m², para 4 personas — 2 habitaciones de lujo, 2 balcones\n• Suite Cisne, 67 m², para 2 personas — Vista al lago, baño de lujo\n• Suite Prestige, 72 m², para 2 personas — Planta baja, vista al lago\n¿Cuál te gusta más? Puedo hacer la reserva — solo necesito tu nombre y las fechas?",
+      "status": "ok",
+      "http_status": 200
+    }
+  ],
+  "issues": []
+}
