@@ -1128,6 +1128,16 @@ def _detect_topic(message: str) -> str:
     # Priority: smoking questions should override "room" keyword
     if _matches(msg_raw, ["smoke", "smoking", "cigarette", "cigar", "tobacco", "kajenje", "kaditi", "rauchen", "zigarette", "cigaretta", "cigare", "cigarrillo"]):
         return "smoking"
+    # Priority: late check-in/out should override "night"/"evening" experiences keywords
+    if _matches(msg_raw, ["late check in", "late checkin", "late arrival", "arrive late", "late check-in",
+                           "late check out", "late checkout", "late departure", "leave late", "late check-out",
+                           "pozen prihod", "pozen odhod", "spät ankommen", "spät abreise",
+                           "arrivo tardif", "partenza tardif", "arrivée tardive", "départ tardif"]):
+        # Determine if it's check-in or check-out
+        if _matches(msg_raw, ["late check out", "late checkout", "late departure", "leave late", "late check-out",
+                              "pozen odhod", "spät abreise", "partenza tardif", "départ tardif"]):
+            return "late_check_out"
+        return "late_check_in"
     # Priority: family/children questions should override "room" keyword
     if _matches(msg_raw, ["family rooms", "family room", "family suite", "family-friendly", "family friendly", "children room", "kids room", "room for kids", "room for children", "družinski", "otroški", "familienzimmer", "kind", "camer", "chambre enfant"]):
         return "children"
@@ -1511,7 +1521,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "spa":
         return (
             "We offer in-room massage and wellness services — the perfect way to unwind after exploring Bled! "
-            "Please give us 24 hours notice to arrange your spa treatment. "
+            "Please give us 24 hours notice to arrange your treatment. "
             "Our sister property Villa Pomona also features a full wellness area with sauna. "
             "Would you like me to help you book a massage or learn more about our wellness options?"
         )
