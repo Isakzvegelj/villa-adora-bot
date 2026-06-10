@@ -1104,6 +1104,23 @@ def _detect_language(message: str) -> str:
     # Collapse multiple spaces
     msg = _re.sub(r'  +', ' ', msg)
 
+    # Quick high-confidence checks for common greetings (before any word-list matching)
+    # These prevent misdetection when short common words overlap across languages
+    if " ciao " in msg or msg.strip() == "ciao":
+        return "Italian"
+    if " pozdravljeni " in msg or msg.strip() == "pozdravljeni":
+        return "Slovenian"
+    if " pozdrav " in msg or msg.strip() == "pozdrav":
+        return "Croatian"
+    if " guten tag " in msg or " guten morgen " in msg or " guten abend " in msg:
+        return "German"
+    if " bonjour " in msg or msg.strip() == "bonjour":
+        return "French"
+    if " hola " in msg or msg.strip() == "hola":
+        return "Spanish"
+    if " buongiorno " in msg or msg.strip() == "buongiorno":
+        return "Italian"
+
     # Character-based detection for languages with unique characters
     # Serbian detection (Cyrillic-specific characters or Serbian Latin words)
     serbian_cyrillic = ['ђ', 'ј', 'љ', 'њ', 'ћ', 'ѕ']
