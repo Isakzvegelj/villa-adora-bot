@@ -542,6 +542,132 @@ _SHUTTLE_TRANSLATED = {
 }
 
 
+_WELLNESS_TRANSLATED = {
+    "Slovenian": (
+        "Villa Adora ponuja masažo v sobi — na voljo 24 ur na dan, 24 ur predhodnega obvestila. "
+        "Naši gosti to zelo priporočajo! Vrste masaž: sproščujoča, športna, globoka tkiva. "
+        "Rezervacija prek recepcije ali e-pošte evita.vilebled@gmail.com. "
+        "Želite rezervirati masažo za vaše bivanje?"
+    ),
+    "German": (
+        "Villa Adora bietet In-Zimmer-Massagen — 24 Stunden am Tag verfügbar, 24 Stunden Vorankündigung. "
+        "Unsere Gäste empfehlen es sehr! Massagearten: Entspannung, Sport, Tiefengewebe. "
+        "Buchung über Rezeption oder E-Mail evita.vilebled@gmail.com. "
+        "Möchten Sie eine Massage für Ihren Aufenthalt buchen?"
+    ),
+    "French": (
+        "Villa Adora propose des massages en chambre — disponibles 24h/24, 24 heures de préavis. "
+        "Nos invités le recommandent vivement ! Types de massage : relaxation, sportif, tissus profonds. "
+        "Réception par réception ou email evita.vilebled@gmail.com. "
+        "Souhaitez-vous réserver un massage pour votre séjour ?"
+    ),
+    "Italian": (
+        "Villa Adora offre massaggi in camera — disponibili 24 ore su 24, 24 ore di preavviso. "
+        "I nostri ospiti lo consigliano vivamente! Tipi di massaggio: rilassamento, sportivo, tessuti profondi. "
+        "Prenotazione tramite reception o email evita.vilebled@gmail.com. "
+        "Vuoi prenotare un massaggio per il tuo soggiorno?"
+    ),
+    "Spanish": (
+        "Villa Adora ofrece masajes en la habitación — disponibles las 24 horas, con 24 horas de anticipación. "
+        "¡Nuestros huéspedes lo recomiendan mucho! Tipos de masaje: relajación, deportivo, tejidos profundos. "
+        "Reserva a través de recepción o email evita.vilebled@gmail.com. "
+        "¿Te gustaría reservar un masaje para tu estancia?"
+    ),
+    "Croatian": (
+        "Villa Adora nudi masažu u sobi — dostupna 24 sata dnevno, 24 sata prethodne najave. "
+        "Naši gosti to preporučuju! Vrste masaže: opušćajuća, sportska, dubinskih tkiva. "
+        "Rezervacija putem recepcije ili emaila evita.vilebled@gmail.com. "
+        "Želite li rezervirati masažu za vaš boravak?"
+    ),
+}
+
+
+_CHILDREN_TRANSLATED = {
+    "Slovenian": (
+        "Otroci vseh starosti so dobrodošli! Imamo Superior apartma (2 spalnici, spalni 4) in "
+        "Otoški apartma (2 spalnici, 65 m², spalni 4) — idealna za družine. "
+        "Na voljo so tudi otroška posteljica na zahtevo. V vrtu je prostor za igro, "
+        "ponujamo pa tudi brezplačno izposojo koles. "
+        "Imate otroke, ki bi jih zanimali kakšni posebni ugodnosti?"
+    ),
+    "German": (
+        "Kinder jeden Alters willkommen! Wir haben die Superior Suite (2 Schlafzimmer, 4 Gäste) und "
+        "die Insel Suite (2 Schlafzimmer, 65 m², 4 Gäste) — ideal für Familien. "
+        "Babybetten auf Anfrage verfügbar. Der Garten bietet Platz zum Spielen, "
+        "und wir bieten kostenlose Fahrradverleih. "
+        "Haben Sie Kinder, die an bestimmten Annehmlichkeiten interessiert wären?"
+    ),
+    "French": (
+        "Les enfants de tous âges sont les bienvenus ! Nous avons la Suite Supérieure (2 chambres, 4 personnes) et "
+        "la Suite Île (2 chambres, 65 m², 4 personnes) — idéales pour les familles. "
+        "Lits bébé disponibles sur demande. Le jardin offre un espace de jeu, "
+        "et nous proposons la location gratuite de vélos. "
+        "Avez-vous des enfants qui seraient intéressés par certaines commodités ?"
+    ),
+    "Italian": (
+        "I bambini di tutte le età sono i benvenuti! Abbiamo la Suite Superiore (2 camere, 4 persone) e "
+        "la Suite Isola (2 camere, 65 m², 4 persone) — ideali per le famiglie. "
+        "Culle disponibili su richiesta. Il giardino offre spazio per giocare, "
+        "e offriamo noleggio biciclette gratuito. "
+        "Hai bambini che sarebbero interessati a particolari servizi?"
+    ),
+    "Spanish": (
+        "¡Niños de todas las edades son bienvenidos! Tenemos la Suite Superior (2 habitaciones, 4 personas) y "
+        "la Suite Isla (2 habitaciones, 65 m², 4 personas) — ideales para familias. "
+        "Cunas disponibles bajo petición. El jardín ofrece espacio para jugar, "
+        "y ofrecemos alquiler gratuito de bicicletas. "
+        "¿Tiene niños que estarían interesados en ciertas comodidades?"
+    ),
+    "Croatian": (
+        "Djeca svih dobi su dobrodošla! Imamo Superior apartman (2 spavaće sobe, 4 osobe) i "
+        "Otočni apartman (2 spavaće sobe, 65 m², 4 osobe) — idealne za obitelji. "
+        "Dječji krevetići dostupni na zahtjev. Vrt nudi prostor za igru, "
+        "a nudimo i besplatnu najam bicikala. "
+        "Imate li djecu koja bi zanimali određeni pogodnosti?"
+    ),
+}
+
+
+_WEDDING_TRANSLATED = {
+    "Slovenian": (
+        "Villa Adora je kraj za intimne poroke in proslave — maksimalno 30 gostov v vrtu. "
+        "Prestižni apartmaj je priljubljen za poročne noči. Ponujamo catering, "
+        "koordinatorja poroke in romantične pakete (rože, šampanjček, čokolade). "
+        "Ōelite več informacij o naših poročnih paketih?"
+    ),
+    "German": (
+        "Villa Adora ist ein Ort für intime Hochzeiten und Feiern — maximal 30 Gäste im Garten. "
+        "Die Prestige Suite ist beliebt für Hochzeitsächte. Wir bieten Catering, "
+        "Hochzeitskoordinator und romantische Pakete (Rosen, Schokolade, Champagner). "
+        "Möchten Sie mehr über unsere Hochzeitspakete erfahren?"
+    ),
+    "French": (
+        "Villa Adora est un lieu pour les mariages intimes et les célébrations — maximum 30 invités dans le jardin. "
+        "La Suite Prestige est populaire pour les nuits de noces. Nous proposons un service de restauration, "
+        "un coordinateur de mariage et des forfaits romantiques (roses, chocolat, champagne). "
+        "Souhaitez-vous en savoir plus sur nos forfaits mariage ?"
+    ),
+    "Italian": (
+        "Villa Adora è un luogo per matrimoni intimi e celebrazioni — massimo 30 ospiti nel giardino. "
+        "La Suite Prestige è popolare per le notti di nozze. Offriamo catering, "
+        "coordinatore di matrimoni e pacchetti romantici (rose, cioccolato, champagne). "
+        "Vuoi maggiori informazioni sui nostri pacchetti matrimoniali?"
+    ),
+    "Spanish": (
+        "Villa Adora es un lugar para bodas íntimas y celebraciones — máximo 30 invitados en el jardín. "
+        "La Suite Prestige es popular para las noches de bodas. Ofrecemos catering, "
+        "coordinador de bodas y paquetes románticos (rosas, chocolate, champán). "
+        "¿Te gustaría saber más sobre nuestros paquetes de boda?"
+    ),
+    "Croatian": (
+        "Villa Adora je mjesto za intimne vjenčane proslave — maksimalno 30 gostiju u vrtu. "
+        "Prestižni apartman je popularan za vjenčane noći. Nudimo catering, "
+        "koordinatora vjenčanja i romantične pakete (ruže, čokolada, šampanjac). "
+        "Želite li više informacija o našim vjenčanim paketima?"
+    ),
+}
+
+
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
     q = user_message.lower()
@@ -1105,6 +1231,7 @@ def _detect_topic(message: str) -> str:
         "spa": ["spa", "wellness", "sauna", "massage"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
+        "wedding": ["wedding", "marriage", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],
     }
 
     def _matches(text, keywords):
@@ -1653,6 +1780,15 @@ def get_hotel_info_response(topic, question):
             "Which suite catches your eye, or would you like me to help you choose?"
         )
 
+    # Wedding
+    if actual_topic == "wedding":
+        return (
+            "Villa Adora is a wonderful venue for intimate weddings and celebrations — up to 30 guests in our garden. "
+            "The Prestige Suite is a popular choice for wedding nights. We offer catering, "
+            "a wedding coordinator, and romantic packages (roses, champagne, chocolates). "
+            "Would you like more information about our wedding packages?"
+        )
+
     # Adversarial / off-topic queries about internal systems
     adversarial_keywords = ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github"]
     if any(word in q for word in adversarial_keywords):
@@ -1792,6 +1928,15 @@ def api_chat():
                     "Croatian": "Možete nas kontaktirati na +386 51 603 858 ili evita.vilebled@gmail.com. Ili nastavite razgovor sa mnom — tu sam da vam pomognem! Ima li još nečega što biste željeli znati?",
                 }
                 direct_response = contact_responses.get(detected_lang)
+            # Spa/Wellness - non-English direct responses
+            elif topic == "spa" and detected_lang in _WELLNESS_TRANSLATED:
+                direct_response = _WELLNESS_TRANSLATED[detected_lang]
+            # Children/Family - non-English direct responses
+            elif topic == "children" and detected_lang in _CHILDREN_TRANSLATED:
+                direct_response = _CHILDREN_TRANSLATED[detected_lang]
+            # Wedding - non-English direct responses
+            elif topic == "wedding" and detected_lang in _WEDDING_TRANSLATED:
+                direct_response = _WEDDING_TRANSLATED[detected_lang]
             # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
             elif any(word in user_message.lower() for word in ["swimming pool", "pool", "plavalni bazen", "bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina", "bazenu", "bazena"]):
                 pool_responses = {
