@@ -308,6 +308,7 @@
         <div class="quick-replies" id="quickReplies">
             <span class="quick-reply" onclick="sendQuick('What rooms do you have?')">🏨 Rooms</span>
             <span class="quick-reply" onclick="sendQuick('Tell me about breakfast')">🍳 Breakfast</span>
+            <span class="quick-reply" onclick="sendQuick('Tell me about the restaurant')">🍽️ Restaurant</span>
             <span class="quick-reply" onclick="sendQuick('What activities are nearby?')">🏔️ Activities</span>
             <span class="quick-reply" onclick="sendQuick('I want to book a room')">📅 Book</span>
             <span class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</span>
@@ -352,10 +353,14 @@
 
         function renderMarkdown(text) {
             // Simple markdown: **bold**, *italic*, \n -> <br>
+            // NOTE: HTML escaping is done character-by-character before markdown
+            // to prevent XSS from user-generated content
             let html = text
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#x27;')
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.+?)\*/g, '<em>$1</em>')
                 .replace(/\n/g, '<br>');

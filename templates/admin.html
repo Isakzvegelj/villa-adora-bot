@@ -10,53 +10,108 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid rgba(240,230,211,0.15);padding-bottom:1rem}
 .header h1{font-size:1.5rem;font-weight:400;color:#f0e6d3;letter-spacing:1px}
 .header .subtitle{font-size:0.8rem;color:#7a8a9e;margin-top:0.2rem}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
 .stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,230,211,0.1);border-radius:12px;padding:1.2rem}
 .stat-card .label{font-size:0.75rem;color:#7a8a9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem}
 .stat-card .value{font-size:1.8rem;font-weight:600;color:#f0e6d3}
-h2{margin:1.5rem 0 0.8rem;color:#f0e6d3;font-size:1rem;font-weight:500}
-.refresh-btn{background:rgba(94,129,172,0.3);color:#f0e6d3;border:1px solid rgba(94,129,172,0.4);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.85rem}
+.stat-card .value.warn{color:#d4b87a}
+h2{margin:1.5rem 0 0.8rem;color:#f0e6d3;font-size:1rem;font-weight:500;display:flex;align-items:center;gap:0.5rem}
+h2 .count{font-size:0.75rem;background:rgba(240,230,211,0.15);color:#d4b87a;padding:0.15rem 0.5rem;border-radius:10px;font-weight:400}
+.refresh-btn{background:rgba(94,129,172,0.3);color:#f0e6d3;border:1px solid rgba(94,129,172,0.4);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.85rem;transition:background 0.2s}
 .refresh-btn:hover{background:rgba(94,129,172,0.5)}
 table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-bottom:2rem;font-size:0.88rem}
 th,td{padding:0.7rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
-th{background:rgba(255,255,255,0.06);color:#a8b2c1;font-weight:500}
+th{background:rgba(255,255,255,0.06);color:#a8b2c1;font-weight:500;white-space:nowrap}
 tr:hover{background:rgba(255,255,255,0.03)}
+td{max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .empty{color:#5a6a7e;font-style:italic;padding:1.5rem;text-align:center}
+.badge{display:inline-block;padding:0.15rem 0.5rem;border-radius:6px;font-size:0.75rem;font-weight:500}
+.badge.check-in{background:rgba(100,180,100,0.2);color:#81c784}
+.badge.check-out{background:rgba(255,183,77,0.2);color:#ffb74d}
+.badge.human{background:rgba(212,184,122,0.2);color:#d4b87a}
+.badge.shuttle{background:rgba(94,129,172,0.2);color:#82b1ff}
+.section{margin-bottom:1rem}
 </style>
 </head>
 <body>
 <div class="header">
-<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard</div></div>
-<button class="refresh-btn" onclick="loadAll()">Refresh</button>
+<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard &mdash; Real-time overview of hotel operations</div></div>
+<button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
 </div>
 <div class="stats-grid">
 <div class="stat-card"><div class="label">Total Bookings</div><div class="value" id="bookingCount">-</div></div>
 <div class="stat-card"><div class="label">Calendar Events</div><div class="value" id="calendarCount">-</div></div>
+<div class="stat-card"><div class="label">Shuttle Bookings</div><div class="value" id="shuttleCount">-</div></div>
+<div class="stat-card"><div class="label">Human Agent Requests</div><div class="value" id="humanCount">-</div></div>
 </div>
-<h2>Bookings</h2>
+
+<div class="section">
+<h2>Bookings <span class="count" id="bookingBadge">0</span></h2>
 <table id="bookingsTable"><thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead><tbody></tbody></table>
-<h2>Calendar Events</h2>
-<table id="calendarTable"><thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="section">
+<h2>Calendar Events <span class="count" id="calendarBadge">0</span></h2>
+<table id="calendarTable"><thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Date</th><th>Notes</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="section">
+<h2>Shuttle Bookings <span class="count" id="shuttleBadge">0</span></h2>
+<table id="shuttleTable"><thead><tr><th>ID</th><th>Guest</th><th>Pickup</th><th>Drop-off</th><th>Date</th><th>Time</th><th>Pax</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="section">
+<h2>Human Agent Requests <span class="count" id="humanBadge">0</span></h2>
+<table id="humanTable"><thead><tr><th>ID</th><th>Reason</th><th>Guest</th><th>Summary</th><th>Time</th></tr></thead><tbody></tbody></table>
+</div>
+
 <script>
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 async function loadBookings(){
   try{
     const res=await fetch('/api/bookings');const data=await res.json();
-    document.getElementById('bookingCount').textContent=data.bookings?data.bookings.length:0;
+    const n=data.bookings?data.bookings.length:0;
+    document.getElementById('bookingCount').textContent=n;
+    document.getElementById('bookingBadge').textContent=n;
     const tbody=document.querySelector('#bookingsTable tbody');
-    if(!data.bookings||data.bookings.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No bookings yet</td></tr>';return}
-    tbody.innerHTML=data.bookings.map(b=>'<tr><td>'+b.id+'</td><td>'+b.guest+'</td><td>'+b.room+'</td><td>'+b.check_in+'</td><td>'+b.check_out+'</td></tr>').join('');
+    if(!n){tbody.innerHTML='<tr><td colspan="5" class="empty">No bookings yet</td></tr>';return}
+    tbody.innerHTML=data.bookings.map(b=>'<tr><td>'+b.id+'</td><td>'+esc(b.guest)+'</td><td>'+esc(b.room)+'</td><td>'+esc(b.check_in)+'</td><td>'+esc(b.check_out)+'</td></tr>').join('');
   }catch(e){console.error(e)}
 }
 async function loadCalendar(){
   try{
     const res=await fetch('/api/calendar');const data=await res.json();
-    document.getElementById('calendarCount').textContent=data.events?data.events.length:0;
+    const n=data.events?data.events.length:0;
+    document.getElementById('calendarCount').textContent=n;
+    document.getElementById('calendarBadge').textContent=n;
     const tbody=document.querySelector('#calendarTable tbody');
-    if(!data.events||data.events.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No calendar events yet</td></tr>';return}
-    tbody.innerHTML=data.events.map(e=>'<tr><td>'+e.id+'</td><td>'+e.event_type.replace(/_/g,' ')+'</td><td>'+e.guest_name+'</td><td>'+e.time+'</td><td>'+(e.notes||'')+'</td></tr>').join('');
+    if(!n){tbody.innerHTML='<tr><td colspan="6" class="empty">No calendar events yet</td></tr>';return}
+    tbody.innerHTML=data.events.map(e=>'<tr><td>'+e.id+'</td><td><span class="badge '+e.event_type+'">'+esc(e.event_type.replace(/_/g,' '))+'</span></td><td>'+esc(e.guest_name)+'</td><td>'+esc(e.time)+'</td><td>'+esc(e.date||'')+'</td><td title="'+esc(e.notes||'')+'">'+esc((e.notes||'').substring(0,60))+'</td></tr>').join('');
   }catch(e){console.error(e)}
 }
-function loadAll(){loadBookings();loadCalendar()}
+async function loadShuttles(){
+  try{
+    const res=await fetch('/api/shuttles');const data=await res.json();
+    const n=data.shuttles?data.shuttles.length:0;
+    document.getElementById('shuttleCount').textContent=n;
+    document.getElementById('shuttleBadge').textContent=n;
+    const tbody=document.querySelector('#shuttleTable tbody');
+    if(!n){tbody.innerHTML='<tr><td colspan="7" class="empty">No shuttle bookings yet</td></tr>';return}
+    tbody.innerHTML=data.shuttles.map(s=>'<tr><td>'+s.id+'</td><td>'+esc(s.guest_name)+'</td><td>'+esc(s.pickup_location)+'</td><td>'+esc(s.dropoff_location)+'</td><td>'+esc(s.date)+'</td><td>'+esc(s.time)+'</td><td>'+s.passengers+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+async function loadHumanRequests(){
+  try{
+    const res=await fetch('/api/human-requests');const data=await res.json();
+    const n=data.requests?data.requests.length:0;
+    document.getElementById('humanCount').textContent=n;
+    document.getElementById('humanBadge').textContent=n;
+    const tbody=document.querySelector('#humanTable tbody');
+    if(!n){tbody.innerHTML='<tr><td colspan="5" class="empty">No human agent requests yet</td></tr>';return}
+    tbody.innerHTML=data.requests.map(r=>'<tr><td>'+r.id+'</td><td>'+esc(r.reason)+'</td><td>'+esc(r.guest_name)+'</td><td title="'+esc(r.summary||'')+'">'+esc((r.summary||'').substring(0,40))+'</td><td>'+esc(r.created_at||'')+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+function loadAll(){loadBookings();loadCalendar();loadShuttles();loadHumanRequests()}
 loadAll();setInterval(loadAll,30000);
 </script>
 </body>
