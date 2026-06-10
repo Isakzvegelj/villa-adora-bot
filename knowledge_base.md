@@ -438,7 +438,7 @@
 - Spring/Autumn: 6-18°C, ideal for sightseeing
 
 ### What makes Villa Adora different from other Bled hotels?
-- Only 8 suites - intimate boutique experience
+- Only 8 suites — intimate boutique experience
 - Directly on the lake shore
 - Heritage villa from 1878 with modern luxury
 - Personalized concierge service
@@ -452,3 +452,53 @@
 - Airport transfer available
 - Quiet environment ideal for focused work
 
+## Summer 2026 Experiences
+
+### Summer Highlights
+- Extended restaurant hours on the terrace (daily, Jun-Aug)
+- Complimentary sunset aperitivo on the terrace (Thursday-Saturday)
+- Guided morning yoga sessions on the garden terrace (Saturdays, Jul-Aug)
+- Weekly wine tasting featuring Slovenian wines (Fridays)
+- Live acoustic music on the terrace (select Saturday evenings)
+- Children's activity program during school holidays (Jul-Aug)
+
+### New for Summer 2026
+- **E-Bike Fleet:** New electric bikes available for complimentary guest use — explore Bled and the surrounding hills with ease
+- **Floating Breakfast:** Breakfast served on a private floating platform on the lake (advance booking required, weather permitting)
+- **Stargazing Evenings:** Monthly stargazing sessions with a local astronomer from the garden terrace (check dates at reception)
+- **Wellness Garden:** New outdoor wellness area with meditation corner and herbal tea station
+
+### Booking Direct Benefits
+- Best rate guarantee (lowest price or we match it + 10% off)
+- Free room upgrade subject to availability
+- Complimentary welcome drink (Slovenian wine or fresh juice)
+- Free late check-out (until 13:00, subject to availability)
+- Free airport transfer for stays of 3+ nights (advance booking required)
+
+## Website & Digital Services
+
+### Villa Adora Website
+- **URL:** https://villa-adora-bled.si
+- **Features:** Online booking, virtual tour, gallery, special offers, gift vouchers
+- **Languages:** English, Slovenian, German, Italian
+- **Concierge Chat:** AI-powered concierge chat available on the website for instant assistance
+- **Mobile:** Fully responsive design, works perfectly on phones and tablets
+
+### Online Booking
+- Direct bookings available at villa-adora-bled.si/reservation
+- Real-time availability calendar
+- Instant confirmation
+- Secure payment processing
+- Special offers and packages available online
+
+## Sustainability
+
+### Green Initiatives
+- Solar panels for hot water heating
+- LED lighting throughout the property
+- Local and organic products prioritized in restaurant
+- Towel and linen reuse program
+- Electric vehicle charging station available
+- Complimentary e-bike and bicycle rental to reduce car use
+- Water-saving fixtures in all suites
+- Recycling program for guests and staff
