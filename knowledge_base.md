@@ -112,8 +112,8 @@
 - Child friendly
 
 ## Breakfast
-- Served daily 7:30-10:30 AM
-- Included in the room rate (complimentary)
+- Served daily 8:00-10:00 AM
+- €22 per person (NOT included in the room rate)
 - Rich buffet with fresh pastries, bread, local Slovenian products
 - Served on the terrace with lake views (weather permitting)
 - High quality, described as "absolutely delicious"
@@ -123,8 +123,8 @@
 ## Dining
 
 ### Breakfast
-- Included in the room rate (complimentary)
-- Served daily 7:30-10:30 AM on the terrace with lake views
+- €22 per person (NOT included in the room rate)
+- Served daily 8:00-10:00 AM on the terrace with lake views
 - Rich buffet: fresh pastries, bread, local Slovenian products, coffee & tea
 - Dietary options: Vegan, vegetarian, and gluten-free available on request
 

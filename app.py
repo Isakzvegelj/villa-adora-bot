@@ -365,34 +365,34 @@ _LOCATION_TRANSLATED = {
 
 _BREAKFAST_TRANSLATED = {
     "Slovenian": (
-        "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. "
+        "Zajtrk stane 22 € na osobo — postrežen med 8. in 10. uro na terasi s pogledom na jezero. "
         "Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. "
         "Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. "
         "Imate kakšne prehranske omejitve, o katerih bi morali vedeti?"
     ),
     "German": (
-        "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. "
+        "Frühstück kostet 22 € pro Person — serviert von 8 bis 10 Uhr auf der Terrasse mit Seeblick. "
         "Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. "
         "Vegane, vegetäre und glutenfreie Optionen auf Anfrage. "
         "Haben Sie irgendwelche Ernährungseinschränkungen, die wir wissen sollten?"
     ),
     "French": (
-        "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. "
+        "Le petit-déjeuner coûte 22 € par personne — servi de 8h à 10h sur la terrasse avec vue sur le lac. "
         "Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. "
         "Options végétaliennes, végétariennes et sans gluten sur demande. "
         "Avez-vous des restrictions alimentaires que nous devrions connaître?"
     ),
     "Italian": (
-        "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. "
+        "La colazione costa 22 € a persona — servita dalle 8 alle 10 sulla terrazza con vista sul lago. "
         "Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. "
         "Opzioni vegane, vegetariane e senza glutine su richiesta. "
         "Hai delle restrizioni alimentari che dovremmo sapere?"
     ),
     "Spanish": (
-        "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. "
+        "El desayuno cuesta 22 € por persona — servido de 8 a 10 AM en la terraza con vistas al lago. "
         "Buffet rico con pasteles frescos, pan y productos locales eslovenos. "
         "Opciones veganas, vegetarianas y sin gluten bajo pedido. "
-        "¿Tiene alguna restricción alimentaria que debamos conocer?"
+        "¿Tiene restricciones alimentarias que debamos conocer?"
     ),
 }
 
@@ -688,12 +688,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
             fallbacks = {
-                "Slovenian": "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
-                "German": "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
-                "French": "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. Options végétaliennes, végétariennes et sans gluten sur demande. Avez-vous des restrictions alimentaires ?",
-                "Italian": "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
-                "Spanish": "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
-                "Croatian": "Doručak je uključen u cijenu sobe — poslužuje se od 7:30 do 10:30 na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
+                "Slovenian": "Zajtrk stane 22 € na osobo — postrežen med 8. in 10. uro na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
+                "German": "Frühstück kostet 22 € pro Person — serviert von 8 bis 10 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
+                "French": "Le petit-déjeuner coûte 22 € par personne — servi de 8h à 10h sur la terrasse avec vue sur le lac. Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. Options végétaliennes, végétariennes et sans gluten sur demande. Avez-vous des restrictions alimentaires ?",
+                "Italian": "La colazione costa 22 € a persona — servita dalle 8 alle 10 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
+                "Spanish": "El desayuno cuesta 22 € por persona — servido de 8 a 10 AM en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
+                "Croatian": "Doručak košta 22 € po osobi — poslužuje se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
             }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -1537,7 +1537,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "policies":
         return (
             f"Check-in: {h['policies']['check_in']}. Check-out: {h['policies']['check_out']}. "
-            f"Breakfast is included in the room rate (complimentary). Free parking and WiFi. Pets allowed on request. "
+            f"Breakfast is €22 per person (not included in room rate). Free parking and WiFi. Pets allowed on request. "
             f"Is there a specific policy you'd like to know more about?"
         )
 
@@ -1548,17 +1548,16 @@ def get_hotel_info_response(topic, question):
             dietary = b.get("dietary", {})
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
-                    f"Breakfast is included in your room rate (complimentary), served 7:30-10:30 AM on the terrace with lake views. "
+                    f"Breakfast is €22 per person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
                     f"We offer vegan, vegetarian, and gluten-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
-                    f"Would you like to add a note about your dietary preferences to your booking?"
+                    f"Would you like to add breakfast to your booking?"
                 )
             return (
-                f"Breakfast is included in your room rate (complimentary), served daily 7:30-10:30 AM on the terrace with lake views. "
-                f"Rich buffet with fresh pastries, bread, and local Slovenian products. "
+                f"Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
                 f"We also offer vegan, vegetarian, and gluten-free options on request. "
-                f"Shall I add a note about any dietary preferences to your booking?"
+                f"Shall I add breakfast to your booking?"
             )
         return (
             f"{b} "
