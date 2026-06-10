@@ -219,6 +219,14 @@
 - Garden evenings with wine
 - Beautiful garden with lake views
 
+### Night Activities
+- Sunset cocktails on the terrace — arguably the best sunset views in Bled
+- Stargazing from the garden or terrace — Bled has wonderfully clear skies
+- Evening walk along the 6 km lakeside path — beautifully peaceful at night
+- Room service dining in the comfort of your suite
+- Adora Pop Up Restaurant dinner (Tue-Sun) with terrace views
+- In-room massage — perfect way to unwind after a day of exploring
+
 ### Day Trips
 - Lake Bohinj (Slovenia)
 - Ljubljana (Slovenia capital)

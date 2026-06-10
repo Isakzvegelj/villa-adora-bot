@@ -235,6 +235,9 @@ hotel_info = {
         "Mini golf",
         "In-room massage (24 hours notice)",
         "Garden evenings with wine",
+        "Stargazing from the garden or terrace",
+        "Sunset cocktails on the terrace",
+        "Evening lakeside walks",
         "Day trips to Lake Bohinj, Ljubljana, Postojna Cave, Piran"
     ],
     "nearby_attractions": {
@@ -242,7 +245,8 @@ hotel_info = {
         "walking_hiking": ["6 km lakeside path", "15 signposted hikes", "Vintgar Gorge (2.4 km)", "Julian Alps hiking"],
         "sightseeing": ["Bled Castle (30 min walk)", "Straza cable car (1 min walk)", "Bled town center (15 min walk)"],
         "adventure": ["Canyoning in Bohinj Valley", "Horse riding", "Cycling", "Fishing"],
-        "day_trips": ["Lake Bohinj", "Ljubljana", "Postojna Cave", "Piran", "Triglav National Park"]
+        "day_trips": ["Lake Bohinj", "Ljubljana", "Postojna Cave", "Piran", "Triglav National Park"],
+        "night_activities": ["Sunset cocktails on terrace", "Stargazing from garden", "Garden evenings with wine", "Evening lakeside walks", "In-room massage", "Room service dining", "Adora Pop Up Restaurant dinner"]
     },
     "guest_reviews_highlights": [
         "One of the most beautifully situated hotels I've ever stayed in",
