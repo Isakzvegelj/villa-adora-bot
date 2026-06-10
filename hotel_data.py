@@ -53,7 +53,7 @@ hotel_info = {
         },
         "deluxe_suite": {
             "name": "Deluxe Suite",
-            "price": 570,
+            "price": None,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 2,
@@ -64,7 +64,7 @@ hotel_info = {
         },
         "superior_suite": {
             "name": "Superior Suite",
-            "price": 570,
+            "price": None,
             "currency": "EUR",
             "size_sqm": None,
             "capacity": 4,
@@ -75,7 +75,7 @@ hotel_info = {
         },
         "island_suite": {
             "name": "Island Suite",
-            "price": 620,
+            "price": None,
             "currency": "EUR",
             "size_sqm": 65,
             "capacity": 4,
@@ -83,6 +83,17 @@ hotel_info = {
             "view": "Stunning lake and island view",
             "features": ["First floor", "2 luxury bedrooms", "Big living area", "2 balconies", "Stunning lake & island view"],
             "description": "Stylish luxury suite extending over 65 sq m on the first floor. Stunning view of the lake and Bled Island. Perfect for couples, groups of friends, or families. Features 2 luxury bedrooms, a big living area and 2 balconies."
+        },
+        "swan_suite": {
+            "name": "Swan Suite",
+            "price": None,
+            "currency": "EUR",
+            "size_sqm": 67,
+            "capacity": 2,
+            "bed": "King",
+            "view": "Lake view",
+            "features": ["67 sq m", "King bed", "Lake view", "Luxury bathroom", "Spacious"],
+            "description": "A beautifully appointed luxury suite featuring 67 sq m of elegant space with a king-sized bed and stunning lake views."
         },
         "prestige_suite": {
             "name": "Prestige Suite",
