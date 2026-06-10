@@ -1114,7 +1114,7 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
 
     # Word-based Slovenian detection (without diacritics)
-    slovenian_words = [" pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " kakšni ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane", " prijava ", " prijave ", " odjava ", " kje ", " kako ", " ura ", " urah ", " restavracija ", " parkirno ", " pes ", " aktivnosti ", " jezero ", " otok ", " grad ", " razgled ", " pogled ", " cena ", " cene ", " koliko "]
+    slovenian_words = [ " pozdravljeni ", " hvala ", " prosim ", " kako ste ", " dober dan ", " nasvidenje ", " rezervacija ", " zajtrk ", " sobe ", " soba ", " apartma ", " imate ", " lahko ", " želim ", " kakšen ", " kakšni ", " količina ", " gostje ", " gostom ", " jutri ", " danes ", " nočitev ", " koliko ", " stane", " prijava ", " prijave ", " odjava ", " kje ", " kako ", " ura ", " urah ", " restavracija ", " parkirno ", " pes ", " aktivnosti ", " jezero ", " otok ", " grad ", " razgled ", " pogled ", " cena ", " cene ", " koliko ", " kajenje ", " kaditi ", " dovoljeno ", " prepovedano ", " omogočeno ", " kje lahko ", " ali je ", " ali imate ", " kakšna ", " kakšne ", " kateri ", " katera ", " prosim vas ", " hvala lepo ", " lep pozdrav ", " se vidimo ", " na svidenje ", " lahko noč ", " dober večer ", " dobro jutro ", " kako vam lahko pomagam ", " želim rezervirati ", " koliko stane ", " kje ste ", " kako dostopam ", " ali lahko ", " bi radi ", " bi želel ", " bi želela ", " najboljši ", " najboljša ", " priporočam ", " priporočamo ", " odlično ", " super ", " super hvala ", " hvala za ", " ni za kaj ", " v redu ", " se strinjam ", " razumem ", " ne razumem ", " ponovite ", " prosim ponovite ", " kje je ", " kje so ", " kdaj ", " zakaj ", " kako dela ", " kako gre ", " vse najboljše ", " srečno ", " nasvidenje ", " adijo ", " aju ", " ciao ", " bok ", " zbogom ", " dovidenja ", " se slišimo ", " lep dan ", " veseli nas ", " vesel bom ", " vesela bom ", " nasvidenje ", " se kmalu vidimo ", " lepa pozdrava ", " srčno pozdravljeni ", " pozdravljeni ", " pozdravljena ", " pozdravljene ", " pozdravljeni ", " pozdravljen ", " pozdravljena ", " pozdravljene "]
     if any(w in msg for w in slovenian_words):
         return "Slovenian"
 
@@ -1183,7 +1183,10 @@ def _detect_language(message: str) -> str:
         "Slovenian": [
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
             " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
-            " soba ", " sobe ", " apartma "
+            " soba ", " sobe ", " apartma ", " kajenje ", " kaditi ", " dovoljeno ",
+            " prepovedano ", " omogočeno ", " ali je ", " ali imate ", " kakšna ",
+            " kakšne ", " kateri ", " katera ", " kje lahko ", " koliko stane ",
+            " želim rezervirati ", " kje ste ", " lep dan ", " srčno pozdravljeni "
         ],
     }
 
