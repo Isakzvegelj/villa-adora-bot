@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hotel_name }} — Digital Concierge</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #e8e8e8;
+        }
+        .header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            max-width: 600px;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 0.3rem;
+            color: #f0e6d3;
+        }
+        .header p {
+            font-size: 0.85rem;
+            color: #a8b2c1;
+            font-style: italic;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 1rem 1rem;
+        }
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            min-height: 300px;
+            max-height: 60vh;
+        }
+        .message {
+            max-width: 85%;
+            padding: 0.8rem 1.1rem;
+            border-radius: 18px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+        }
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e8e8e8;
+            border-bottom-left-radius: 4px;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: rgba(94, 129, 172, 0.4);
+            color: #f0e6d3;
+            border-bottom-right-radius: 4px;
+        }
+        .message.confirmation {
+            align-self: flex-start;
+            background: rgba(240, 230, 211, 0.15);
+            border: 1px solid rgba(240, 230, 211, 0.3);
+            color: #f0e6d3;
+            border-bottom-left-radius: 4px;
+        }
+        .confirm-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.6rem;
+        }
+        .confirm-btn {
+            flex: 1;
+            padding: 0.45rem 0.8rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .confirm-btn.yes {
+            background: rgba(100, 180, 100, 0.35);
+            color: #c8e6c9;
+            border: 1px solid rgba(100, 180, 100, 0.45);
+        }
+        .confirm-btn.yes:hover { background: rgba(100, 180, 100, 0.5); }
+        .confirm-btn.no {
+            background: rgba(255, 255, 255, 0.08);
+            color: #a8b2c1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .confirm-btn.no:hover { background: rgba(255, 255, 255, 0.14); }
+        .input-area {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .input-area input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #e8e8e8;
+            font-size: 0.95rem;
+            padding: 0.3rem 0.5rem;
+            font-family: inherit;
+        }
+        .input-area input::placeholder { color: #6b7b8d; }
+        .input-area button {
+            background: rgba(94, 129, 172, 0.6);
+            border: none;
+            color: #f0e6d3;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+        .input-area button:hover { background: rgba(94, 129, 172, 0.8); }
+        .input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .typing { font-style: italic; color: #6b7b8d; padding: 0.5rem; }
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding: 0.5rem 0;
+        }
+        .quick-reply {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #a8b2c1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .quick-reply:hover {
+            background: rgba(255,255,255,0.15);
+            color: #e8e8e8;
+        }
+        .human-agent-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            width: 100%;
+            padding: 0.6rem 1rem;
+            margin-top: 0.5rem;
+            background: rgba(180, 140, 80, 0.15);
+            border: 1px solid rgba(180, 140, 80, 0.35);
+            color: #d4b87a;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .human-agent-btn:hover {
+            background: rgba(180, 140, 80, 0.25);
+            border-color: rgba(180, 140, 80, 0.5);
+        }
+        .human-agent-btn svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #1e2a3a;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 1.5rem;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+        .modal h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #f0e6d3;
+            margin-bottom: 0.6rem;
+        }
+        .modal p {
+            font-size: 0.88rem;
+            color: #a8b2c1;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .modal .warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            background: rgba(180, 140, 80, 0.12);
+            border: 1px solid rgba(180, 140, 80, 0.25);
+            border-radius: 10px;
+            padding: 0.7rem 0.8rem;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        .modal .warning svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            color: #d4b87a;
+        }
+        .modal .warning span {
+            font-size: 0.82rem;
+            color: #c8b88a;
+            line-height: 1.45;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.55rem 1rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .modal-buttons .btn-cancel {
+            background: rgba(255,255,255,0.08);
+            color: #a8b2c1;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .modal-buttons .btn-cancel:hover { background: rgba(255,255,255,0.14); }
+        .modal-buttons .btn-confirm {
+            background: rgba(180, 140, 80, 0.3);
+            color: #f0e6d3;
+            border: 1px solid rgba(180, 140, 80, 0.4);
+        }
+        .modal-buttons .btn-confirm:hover { background: rgba(180, 140, 80, 0.45); }
+        /* Human agent active banner */
+        .human-banner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            background: rgba(180, 140, 80, 0.12);
+            border: 1px solid rgba(180, 140, 80, 0.25);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            font-size: 0.82rem;
+            color: #c8b88a;
+        }
+        .human-banner.active { display: flex; }
+        .human-banner .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #d4b87a;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        @media (max-width: 640px) {
+            .header h1 { font-size: 1.4rem; }
+            .message { max-width: 90%; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ hotel_name }}</h1>
+        <p>Your digital concierge — ask me anything about your stay</p>
+    </div>
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="quick-replies" id="quickReplies">
+            <span class="quick-reply" onclick="sendQuick('What rooms do you have?')">🏨 Rooms</span>
+            <span class="quick-reply" onclick="sendQuick('Tell me about breakfast')">🍳 Breakfast</span>
+            <span class="quick-reply" onclick="sendQuick('What activities are nearby?')">🏔️ Activities</span>
+            <span class="quick-reply" onclick="sendQuick('I want to book a room')">📅 Book</span>
+            <span class="quick-reply" onclick="sendQuick('Where are you located?')">📍 Location</span>
+        </div>
+        <button class="human-agent-btn" onclick="showHumanModal()" id="humanBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Speak to a Human Agent
+        </button>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter')sendMessage()" />
+            <button onclick="sendMessage()" id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <!-- Human Agent Modal -->
+    <div class="modal-overlay" id="humanModal">
+        <div class="modal">
+            <h3>Speak to a Human Agent</h3>
+            <p>Our reception team will be notified and will respond to you here in the chat.</p>
+            <div class="warning">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span><strong>Please note:</strong> Responses from a human agent may take longer than the instant bot replies. For urgent matters, you can also call us directly at <strong>+386 51 603 858</strong>.</span>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="hideHumanModal()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmHumanAgent()">Yes, connect me</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Human Agent Active Banner -->
+    <div class="human-banner" id="humanBanner">
+        <span class="dot"></span>
+        <span>A human agent has been notified and will respond shortly.</span>
+    </div>
+
+    <script>
+        const sessionId = 'web_' + Math.random().toString(36).substr(2, 9);
+        const messagesEl = document.getElementById('messages');
+        const inputEl = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function addMessage(text, role) {
+            const div = document.createElement('div');
+            div.className = 'message ' + role;
+            div.textContent = text;
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function addConfirmation(text) {
+            const div = document.createElement('div');
+            div.className = 'message confirmation';
+            const textNode = document.createElement('div');
+            textNode.textContent = text;
+            div.appendChild(textNode);
+            const btnRow = document.createElement('div');
+            btnRow.className = 'confirm-buttons';
+            const yesBtn = document.createElement('button');
+            yesBtn.className = 'confirm-btn yes';
+            yesBtn.textContent = '✓ Yes, confirm';
+            yesBtn.onclick = () => { sendConfirm(true); div.remove(); };
+            const noBtn = document.createElement('button');
+            noBtn.className = 'confirm-btn no';
+            noBtn.textContent = '✗ No, cancel';
+            noBtn.onclick = () => { sendConfirm(false); div.remove(); };
+            btnRow.appendChild(yesBtn);
+            btnRow.appendChild(noBtn);
+            div.appendChild(btnRow);
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        async function sendConfirm(confirmed) {
+            addMessage(confirmed ? 'Yes, confirm' : 'No, cancel', 'user');
+            showTyping();
+            try {
+                const res = await fetch('/api/confirm', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, confirmed: confirmed})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.reply) {
+                    addMessage(data.reply.content, 'bot');
+                }
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm sorry, something went wrong. Please try again!", 'bot');
+            }
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'typing';
+            div.id = 'typing';
+            div.textContent = 'Luka is typing...';
+            messagesEl.appendChild(div);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typing');
+            if (el) el.remove();
+        }
+
+        async function sendMessage() {
+            const text = inputEl.value.trim();
+            if (!text) return;
+            addMessage(text, 'user');
+            inputEl.value = '';
+            sendBtn.disabled = true;
+            showTyping();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, message: text})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.replies) {
+                    data.replies.forEach(reply => {
+                        if (reply.type === 'confirmation_request') {
+                            addConfirmation(reply.content);
+                        } else {
+                            addMessage(reply.content, 'bot');
+                        }
+                    });
+                }
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm sorry, I'm having trouble connecting right now. Please try again!", 'bot');
+            }
+            sendBtn.disabled = false;
+            inputEl.focus();
+        }
+
+        function sendQuick(text) {
+            inputEl.value = text;
+            sendMessage();
+        }
+
+        // ── Human Agent Modal ──
+        function showHumanModal() {
+            document.getElementById('humanModal').classList.add('active');
+        }
+        function hideHumanModal() {
+            document.getElementById('humanModal').classList.remove('active');
+        }
+        async function confirmHumanAgent() {
+            hideHumanModal();
+            addMessage('I\'d like to speak with a human agent, please.', 'user');
+            sendBtn.disabled = true;
+            showTyping();
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({session_id: sessionId, message: 'Please connect me with a human agent.'})
+                });
+                const data = await res.json();
+                hideTyping();
+                if (data.replies) {
+                    data.replies.forEach(reply => {
+                        if (reply.type === 'confirmation_request') {
+                            addConfirmation(reply.content);
+                        } else {
+                            addMessage(reply.content, 'bot');
+                        }
+                    });
+                }
+                // Show the persistent banner
+                document.getElementById('humanBanner').classList.add('active');
+                // Also show the banner above the messages area
+                const bannerClone = document.getElementById('humanBanner').cloneNode(true);
+                bannerClone.id = 'humanBannerInline';
+                bannerClone.style.marginBottom = '0.5rem';
+                const container = document.querySelector('.chat-container');
+                container.insertBefore(bannerClone, container.firstChild);
+            } catch (e) {
+                hideTyping();
+                addMessage("I'm having trouble connecting. Please call us at +386 51 603 858.", 'bot');
+            }
+            sendBtn.disabled = false;
+            inputEl.focus();
+        }
+
+        // Welcome message
+        window.addEventListener('load', () => {
+            addMessage("Hello! I'm Luka, your digital concierge at Villa Adora Bled. How can I help you today?", 'bot');
+        });
+
+        // Close modal on overlay click
+        document.getElementById('humanModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) hideHumanModal();
+        });
+    </script>
+</body>
+</html>

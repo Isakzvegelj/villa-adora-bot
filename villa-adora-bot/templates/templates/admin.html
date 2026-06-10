@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Adora Bled - Admin Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;padding:2rem;min-height:100vh}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid rgba(240,230,211,0.15);padding-bottom:1rem}
+.header h1{font-size:1.5rem;font-weight:400;color:#f0e6d3;letter-spacing:1px}
+.header .subtitle{font-size:0.8rem;color:#7a8a9e;margin-top:0.2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,230,211,0.1);border-radius:12px;padding:1.2rem}
+.stat-card .label{font-size:0.75rem;color:#7a8a9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem}
+.stat-card .value{font-size:1.8rem;font-weight:600;color:#f0e6d3}
+h2{margin:1.5rem 0 0.8rem;color:#f0e6d3;font-size:1rem;font-weight:500}
+.refresh-btn{background:rgba(94,129,172,0.3);color:#f0e6d3;border:1px solid rgba(94,129,172,0.4);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.85rem}
+.refresh-btn:hover{background:rgba(94,129,172,0.5)}
+table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-bottom:2rem;font-size:0.88rem}
+th,td{padding:0.7rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+th{background:rgba(255,255,255,0.06);color:#a8b2c1;font-weight:500}
+tr:hover{background:rgba(255,255,255,0.03)}
+.empty{color:#5a6a7e;font-style:italic;padding:1.5rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="header">
+<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard</div></div>
+<button class="refresh-btn" onclick="loadAll()">Refresh</button>
+</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="label">Total Bookings</div><div class="value" id="bookingCount">-</div></div>
+<div class="stat-card"><div class="label">Calendar Events</div><div class="value" id="calendarCount">-</div></div>
+</div>
+<h2>Bookings</h2>
+<table id="bookingsTable"><thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead><tbody></tbody></table>
+<h2>Calendar Events</h2>
+<table id="calendarTable"><thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th></tr></thead><tbody></tbody></table>
+<script>
+async function loadBookings(){
+  try{
+    const res=await fetch('/api/bookings');const data=await res.json();
+    document.getElementById('bookingCount').textContent=data.bookings?data.bookings.length:0;
+    const tbody=document.querySelector('#bookingsTable tbody');
+    if(!data.bookings||data.bookings.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No bookings yet</td></tr>';return}
+    tbody.innerHTML=data.bookings.map(b=>'<tr><td>'+b.id+'</td><td>'+b.guest+'</td><td>'+b.room+'</td><td>'+b.check_in+'</td><td>'+b.check_out+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+async function loadCalendar(){
+  try{
+    const res=await fetch('/api/calendar');const data=await res.json();
+    document.getElementById('calendarCount').textContent=data.events?data.events.length:0;
+    const tbody=document.querySelector('#calendarTable tbody');
+    if(!data.events||data.events.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No calendar events yet</td></tr>';return}
+    tbody.innerHTML=data.events.map(e=>'<tr><td>'+e.id+'</td><td>'+e.event_type.replace(/_/g,' ')+'</td><td>'+e.guest_name+'</td><td>'+e.time+'</td><td>'+(e.notes||'')+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+function loadAll(){loadBookings();loadCalendar()}
+loadAll();setInterval(loadAll,30000);
+</script>
+</body>
+</html>
