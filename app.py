@@ -1161,9 +1161,19 @@ def _detect_language(message: str) -> str:
 
     # Word-based detection for languages without unique characters
     # French word patterns
-    french_words = [" bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " chambres ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " animaux ", " chien ", " chat ", " vins ", " activités ", " où ", " combien ", " parlez "]
+    french_words = [ " bonjour ", " bonsoir ", " merci ", " s'il vous ", " je voudrais ", " avez-vous ", " nous avons ", " les chambres ", " petit déjeuner ", " au revoir ", " bienvenue ", " c'est ", " réservation ", " chambre ", " chambres ", " pouvez ", " voulez ", " souhaitez ", " souhaite ", " j'aimerais ", " je souhaiterais ", " animaux ", " chien ", " chat ", " vins ", " activités ", " où ", " combien ", " parlez "]
     if any(w in msg for w in french_words):
         return "French"
+
+    # Italian word-based detection (BEFORE Slovenian to avoid false matches on shared words like "avete")
+    italian_words = [ " ciao ", " buongiorno ", " buonasera ", " vorrei ", " prenotazione ", " colazione ", " ristorante ", " arrivederci ", " camere ", " camera ", " alloggio ", " soggiorno ", " piacere ", " splendido ", " incantevole ", " meraviglioso ", " favoloso ", " bellissimo ", " magnifico "]
+    if any(w in msg for w in italian_words):
+        return "Italian"
+
+    # Croatian word-based detection (BEFORE Slovenian to avoid false matches on shared words like "sobe", "imate")
+    croatian_words = [ " pozdrav ", " bok ", " zdravo ", " doviđenja ", " hvala lijepa ", " molim vas ", " kako ste ", " dobar dan ", " laku noć ", " soba ", " sobe ", " apartman ", " rezervacija ", " doručak ", " restoran ", " kuhinja ", " vino ", " pivo ", " kava ", " čaj ", " plaža ", " more ", " planina ", " grad ", " otok ", " most ", " ulica ", " trg ", " park ", " škola ", " crkva ", " bolnica ", " ljekarna ", " pošta ", " banka ", " trgovina ", " restorani ", " kafić ", " pivnica ", " slastičarna ", " pekara ", " mesnica ", " ribarnica ", " voće ", " povrće ", " meso ", " riba ", " kruh ", " mlijeko ", " sir ", " jogurt ", " voćni ", " povrtni ", " dnevni ", " noćni ", " tjedni ", " mjesečni ", " godišnji ", " pola ", " cijeli ", " pola sata ", " sat ", " minuta ", " sati ", " minuta ", " jutro ", " popodne ", " večer ", " noć ", " danas ", " sutra ", " jučer ", " prekosutra ", " ovaj ", " onaj ", " taj ", " moj ", " tvoj ", " njegov ", " njezin ", " naš ", " vaš ", " njihov ", " ova ", " ona ", " ta ", " ovo ", " ono ", " to ", " koji ", " koja ", " koje ", " što ", " zašto ", " kako ", " gdje ", " kad ", " koliko ", " tko ", " čiji ", " nešto ", " ništa ", " svatko ", " nitko ", " svaki ", " svaka ", " svako ", " neki ", " neka ", " neko ", " mnogo ", " malo ", " više ", " manje ", " najviše ", " najmanje ", " dobro ", " loše ", " lijepo ", " ružno ", " veliko ", " malo ", " dugo ", " kratko ", " široko ", " usko ", " visoko ", " nisko ", " debelo ", " tanko ", " teško ", " lako ", " brzo ", " sporo ", " skupo ", " jeftino ", " staro ", " novo ", " mlado ", " staro ", " čisto ", " prljavo ", " toplo ", " hladno ", " vruće ", " ledeno ", " suho ", " mokro ", " tvrdo ", " meko ", " glasno ", " tiho ", " svijetlo ", " tamno ", " crno ", " bijelo ", " crveno ", " plavo ", " zeleno ", " žuto ", " narančasto ", " ljubičasto ", " sivo ", " smeđe ", " zlatno ", " srebrno "]
+    if any(w in msg for w in croatian_words):
+        return "Croatian"
 
     # Multi-word phrases that are highly distinctive per language
     distinctive_phrases = {
@@ -1196,7 +1206,7 @@ def _detect_language(message: str) -> str:
             " buongiorno ", " buonasera ", " grazie mille ", " per favore ",
             " vorrei ", " avete ", " prenotazione ", " colazione ", " ristorante ",
             " arrivederci ", " benvenuto ", " magnifico ", " bellissimo ", " camere ",
-            " camera ", " alloggio ", " dove ", " dov'è ", " dov’è ", " dov è ",
+            " camera ", " alloggio ", " dove ", " dov'è ", " dov'è ", " dov è ",
             " quanto costa ", " che ora ", " ora ", " soggiorno ", " piacere ",
             " splendido ", " incantevole ", " meraviglioso ", " favoloso "
         ],
@@ -1264,7 +1274,7 @@ def _detect_topic(message: str) -> str:
         "spa": ["spa", "wellness", "sauna", "massage"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
-        "wedding": ["wedding", "marriage", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],
+        "wedding": ["wedding", "marriage", "married", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],
     }
 
     def _matches(text, keywords):
@@ -1288,6 +1298,9 @@ def _detect_topic(message: str) -> str:
     # Priority: smoking questions should override "room" keyword
     if _matches(msg_raw, ["smoke", "smoking", "cigarette", "cigar", "tobacco", "kajenje", "kaditi", "rauchen", "zigarette", "cigaretta", "cigare", "cigarrillo"]):
         return "smoking"
+    # Priority: Villa Pomona queries should be detected before generic keyword matching
+    if _matches(msg_raw, ["villa pomona", "pomona", "villa pomona"]):
+        return "villa_pomona"
     # Priority: late check-in/out should override "night"/"evening" experiences keywords
     if _matches(msg_raw, ["late check in", "late checkin", "late arrival", "arrive late", "late check-in",
                            "late check out", "late checkout", "late departure", "leave late", "late check-out",
@@ -2260,7 +2273,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences", "villa_pomona", "wedding"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
