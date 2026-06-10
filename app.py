@@ -1020,7 +1020,7 @@ def _detect_language(message: str) -> str:
             " können wir ", " ich hätte ", " buchung ", " zimmer ", " zimmern ", " frühstück ",
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
             " buchen ", " reservierung ", " kammer ", " schlafzimmer ",
-            " einen parkplatz ", " parken ", " auto ", " wagen ", " erzählen "
+            " einen parkplatz ", " parken ", " auto ", " wagen ", " erzählen ", " wie viel ", " was kostet ", " wie kostet ", " prinzessin "
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
