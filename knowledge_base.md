@@ -2,7 +2,7 @@
 
 ## Hotel Overview
 - **Name:** Villa Adora Bled (formerly Vila Istra, now Adora Luxury Hotel)
-- **Type:** Small luxury boutique hotel, 8 suites
+- **Type:** Small luxury boutique hotel, 7 suites
 - **Location:** Cesta svobode 35, 4260 Bled, Slovenia — directly on the shore of Lake Bled
 - **Built:** 1878, heritage-protected villa converted into a luxury design hotel
 - **Atmosphere:** Intimate, secluded, quiet, romantic, charming, luxury
@@ -33,7 +33,7 @@
 - **Quiet hours:** 22:00-07:00
 - **Parties/events:** Not allowed
 
-## Room Types (8 suites)
+## Room Types (7 suites)
 
 ### Princess Suite — €440/night
 - 55 sq m, lake view from tower
@@ -77,11 +77,6 @@
 - Very big luxury bathroom, spacious terrace, big flat TV
 - Unforgettable lake view through all windows
 - Absolute harmony of artful decor, elegance and spaciousness
-
-### Swan Suite — Price on request
-- 67 sq m, king-sized bed
-- Lake views, luxury bathroom
-- Spacious elegance with modern amenities
 
 ## Amenities
 - Free WiFi throughout
@@ -437,7 +432,7 @@
 - Spring/Autumn: 6-18°C, ideal for sightseeing
 
 ### What makes Villa Adora different from other Bled hotels?
-- Only 8 suites - intimate boutique experience
+- Only 7 suites - intimate boutique experience
 - Directly on the lake shore
 - Heritage villa from 1878 with modern luxury
 - Personalized concierge service

@@ -132,62 +132,57 @@ request_human_agent_function = {
 
 _ROOM_LISTINGS_TRANSLATED = {
     "Slovenian": (
-        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
+        "Imamo 7 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
         "• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
         "• Luksuzni apartmaj, za 2 osebi — Razgled na jezero, elegantna dekoracija\n"
         "• Penthouse apartmaj, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n"
         "• Deluxe apartmaj, za 2 osebi — Razgled na jezero, luksuzna oprema\n"
         "• Superior apartmaj, za 4 osebe — 2 spalnici, družinski apartmaj\n"
         "• Otoški apartmaj, 65 m², za 4 osebe — 2 luksuzni spalnici, 2 balkona\n"
-        "• Labodji apartmaj, 67 m², za 2 osebi — King-size postelja, pogled na jezero\n"
         "• Prestižni apartmaj, 72 m², za 2 osebi — Pritličje, pogled na jezero\n"
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
     "German": (
-        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
+        "Wir haben 7 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
         "• Prinzessin Suite, 55 m², für 2 Gäste — Seeblick vom Turm, Wohnbereich\n"
         "• Luxus Suite, für 2 Gäste — Seeblick, elegante Einrichtung\n"
         "• Penthouse Suite, 60 m², für 2 Gäste — 2 Etagen, Kingsize-Bett\n"
         "• Deluxe Suite, für 2 Gäste — Seeblick, luxuriöse Ausstattung\n"
         "• Superior Suite, für 4 Gäste — 2 Schlafzimmer, familienfreundlich\n"
         "• Insel Suite, 65 m², für 4 Gäste — 2 Luxusschlafzimmer, 2 Balkone\n"
-        "• Schwan Suite, 67 m², für 2 Gäste — Kingsize-Bett, Seeblick\n"
         "• Prestige Suite, 72 m², für 2 Gäste — Erdgeschoss, Seeblick\n"
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
     "French": (
-        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\n"
+        "Nous avons 7 magnifiques suites avec vue imprenable sur le lac:\n"
         "• Suite Princesse, 55 m², pour 2 personnes — Vue sur le lac depuis la tour, salon\n"
         "• Suite de Luxe, pour 2 personnes — Vue sur le lac, décoration élégante\n"
         "• Suite Penthouse, 60 m², pour 2 personnes — 2 étages, lit king-size\n"
         "• Suite Deluxe, pour 2 personnes — Vue sur le lac, mobilier de luxe\n"
         "• Suite Supérieure, pour 4 personnes — 2 chambres, idéale pour les familles\n"
         "• Suite Île, 65 m², pour 4 personnes — 2 chambres de luxe, 2 balcons\n"
-        "• Suite Cygne, 67 m², pour 2 personnes — Lit king-size, vue sur le lac\n"
         "• Suite Prestige, 72 m², pour 2 personnes — Rez-de-chaussée, salon\n"
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
-        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\n"
+        "Abbiamo 7 splendide suite con vista mozzafiato sul lago:\n"
         "• Suite Principessa, 55 m², per 2 persone — Vista lago dalla torre, zona living\n"
         "• Suite Luxury, per 2 persone — Vista lago, arredi eleganti\n"
         "• Suite Penthouse, 60 m², per 2 persone — 2 piani, letto king size\n"
         "• Suite Deluxe, per 2 persone — Vista lago, arredi di lusso\n"
         "• Suite Superiore, per 4 persone — 2 camere da letto, ideale per famiglie\n"
         "• Suite Isola, 65 m², per 4 persone — 2 camere da letto di lusso, 2 balconi\n"
-        "• Suite Cigno, 67 m², per 2 persone — Letto king size, vista lago\n"
         "• Suite Prestige, 72 m², per 2 persone — Piano terra, vista lago\n"
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
     "Spanish": (
-        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\n"
+        "Tenemos 7 hermosas suites con vistas impresionantes al lago:\n"
         "• Suite Princesa, 55 m², para 2 personas — Vista al lago desde la torre, zona de estar\n"
         "• Suite de Lujo, para 2 personas — Vista al lago, decoración elegante\n"
         "• Suite Penthouse, 60 m², para 2 personas — 2 pisos, cama king size\n"
         "• Suite Deluxe, para 2 personas — Vista al lago, mobiliario de lujo\n"
         "• Suite Superior, para 4 personas — 2 habitaciones, ideal para familias\n"
         "• Suite Isla, 65 m², para 4 personas — 2 habitaciones de lujo, 2 balcones\n"
-        "• Suite Cisne, 67 m², para 2 personas — Cama king size, vista al lago\n"
         "• Suite Prestige, 72 m², para 2 personas — Planta baja, vista al lago\n"
         "¿Cuál te gusta más? Puedo hacer la reserva — solo necesito tu nombre y las fechas?"
     ),
@@ -515,12 +510,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     # Detect topic for a more relevant fallback
     if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
         fallbacks = {
-            "Slovenian": "Imamo 8 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
-            "German": "Wir haben 8 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
-            "French": "Nous avons 8 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
-            "Italian": "Abbiamo 8 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
-            "Spanish": "Tenemos 8 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
-            "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
+            "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
+            "German": "Wir haben 7 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
+            "French": "Nous avons 7 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
+            "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
+            "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
+            "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
@@ -542,12 +537,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         }
     else:
         fallbacks = {
-            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 8 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
-            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 8 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
-            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 8 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
-            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 8 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
-            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 8 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
-            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 8 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
+            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 7 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
+            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 7 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
+            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 7 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
+            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
+            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
+            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
         }
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
@@ -882,6 +877,8 @@ def build_system_prompt() -> str:
         "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
         "- Human agent: use request_human_agent() when guest needs human help. Always offer this as an option if the guest seems unhappy.\n"
         "- NEVER invent or hallucinate services, amenities, or policies that are not explicitly listed in the hotel data. If asked about something not in your knowledge (e.g., childcare, pet spa, room delivery from external restaurants), politely say the hotel does not offer that specific service and suggest an alternative or offer to connect with a human agent.\n"
+        "- CRITICAL: Villa Adora Bled has EXACTLY 7 suites. The ONLY suites are: Princess Suite, Luxury Suite, Penthouse Suite, Deluxe Suite, Superior Suite, Island Suite, and Prestige Suite. There is NO 'Swan Suite', NO 'Castle Suite', and NO other suite. If a guest asks about rooms, list ONLY these 7. Never add, invent, or hallucinate additional suites.\n"
+        "- CRITICAL: Room prices are: Princess Suite €440/night, Luxury Suite €480/night, Penthouse Suite €430/night, Deluxe Suite €570/night, Superior Suite €570/night, Island Suite €620/night, Prestige Suite (price on request). Never invent or change these prices.\n"
     )
 
 
@@ -1252,11 +1249,11 @@ def get_hotel_info_response(topic, question):
                 lines.extend(suitable)
                 lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
                 return "\n".join(lines)
-            lines = ["We have 8 beautiful suites, all with stunning lake views:"]
+            lines = ["We have 7 beautiful suites, all with stunning lake views:"]
             lines.extend(all_rooms)
             lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
             return "\n".join(lines)
-        lines = ["We have 8 beautiful suites, all with stunning lake views:"]
+        lines = ["We have 7 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
             size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
@@ -1488,7 +1485,7 @@ def get_hotel_info_response(topic, question):
     # Booking intent
     if actual_topic == "booking":
         return (
-            "I'd love to help you book a room! We have 8 beautiful suites with stunning lake views. "
+            "I'd love to help you book a room! We have 7 beautiful suites with stunning lake views. "
             "To get started, I'll need your name, check-in and check-out dates, and your preferred room. "
             "Which suite catches your eye, or would you like me to help you choose?"
         )
@@ -1496,7 +1493,7 @@ def get_hotel_info_response(topic, question):
     # Fallback
     return (
         f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "
-        f"right on Lake Bled. We have 8 unique suites with panoramic lake views. "
+        f"right on Lake Bled. We have 7 unique suites with panoramic lake views. "
         f"What would you like to know — rooms, booking, or things to do in Bled?"
     )
 
@@ -1983,6 +1980,23 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
+                # Anti-hallucination: remove any mention of Swan Suite or Castle Suite
+                reply["content"] = re.sub(r'(?i)\bSwan Suite\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bCastle Suite\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bLabodji apartmaj\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bSuite Cygne\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bSchwan Suite\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bSuite Schwan\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bSuite Cigno\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\bSuite Cisne\b[^.\n]*', '', reply["content"])
+                # Fix "8 suites" -> "7 suites" in various languages
+                reply["content"] = re.sub(r'\b8 (beautiful |wunderschöne |magnifiques |splendide |hermosas |čudovitih )', r'7 \1', reply["content"])
+                reply["content"] = re.sub(r'\b8 (suites|apartmajev)', r'7 \1', reply["content"])
+                # Clean up any double spaces or dangling bullets left by removal
+                reply["content"] = re.sub(r'\n\s*•\s*$', '', reply["content"])
+                reply["content"] = re.sub(r'\n{3,}', '\n\n', reply["content"])
+                reply["content"] = re.sub(r'  +', ' ', reply["content"])
+                reply["content"] = reply["content"].strip()
                 # Ensure the response ends with a question mark
                 reply["content"] = _ensure_ends_with_question(reply["content"])
                 if reply.get("type") == "text" and reply.get("content"):
@@ -2039,7 +2053,7 @@ def api_chat():
                 else:
                     reply["content"] = (
                         f"Villa Adora Bled is a luxury boutique hotel on Lake Bled. "
-                        f"We have 8 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
+                        f"We have 7 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
                         f"What would you like to know more about?"
                     )
 
