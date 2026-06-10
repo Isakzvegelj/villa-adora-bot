@@ -132,7 +132,7 @@ request_human_agent_function = {
 
 _ROOM_LISTINGS_TRANSLATED = {
     "Slovenian": (
-        "Imamo 7 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
+        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
         "• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
         "• Luksuzni apartmaj, za 2 osebi — Razgled na jezero, elegantna dekoracija\n"
         "• Penthouse apartmaj, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n"
@@ -143,7 +143,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
     "German": (
-        "Wir haben 7 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
+        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
         "• Prinzessin Suite, 55 m², für 2 Gäste — Seeblick vom Turm, Wohnbereich\n"
         "• Luxus Suite, für 2 Gäste — Seeblick, elegante Einrichtung\n"
         "• Penthouse Suite, 60 m², für 2 Gäste — 2 Etagen, Kingsize-Bett\n"
@@ -154,7 +154,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
     "French": (
-        "Nous avons 7 magnifiques suites avec vue imprenable sur le lac:\n"
+        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\n"
         "• Suite Princesse, 55 m², pour 2 personnes — Vue sur le lac depuis la tour, salon\n"
         "• Suite de Luxe, pour 2 personnes — Vue sur le lac, décoration élégante\n"
         "• Suite Penthouse, 60 m², pour 2 personnes — 2 étages, lit king-size\n"
@@ -165,7 +165,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
-        "Abbiamo 7 splendide suite con vista mozzafiato sul lago:\n"
+        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\n"
         "• Suite Principessa, 55 m², per 2 persone — Vista lago dalla torre, zona living\n"
         "• Suite Luxury, per 2 persone — Vista lago, arredi eleganti\n"
         "• Suite Penthouse, 60 m², per 2 persone — 2 piani, letto king size\n"
@@ -176,7 +176,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
     "Spanish": (
-        "Tenemos 7 hermosas suites con vistas impresionantes al lago:\n"
+        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\n"
         "• Suite Princesa, 55 m², para 2 personas — Vista al lago desde la torre, zona de estar\n"
         "• Suite de Lujo, para 2 personas — Vista al lago, decoración elegante\n"
         "• Suite Penthouse, 60 m², para 2 personas — 2 pisos, cama king size\n"
@@ -861,7 +861,7 @@ def build_system_prompt() -> str:
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
         "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
-        "ROOMS (EXACT LIST — these are the ONLY rooms, never invent or add others): Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Deluxe Suite (lake view), Superior Suite (sleeps 4, family-friendly), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor) — all with lake views. There are exactly 7 rooms.\n\n"
+        "ROOMS (EXACT LIST — these are the ONLY rooms, never invent or add others): Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Deluxe Suite (lake view), Superior Suite (sleeps 4, family-friendly), Island Suite (sleeps 4, 65 m²), Swan Suite (67 m², King bed, lake view), Prestige Suite (72 m², ground floor) — all with lake views. There are exactly 8 rooms.\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
@@ -870,15 +870,15 @@ def build_system_prompt() -> str:
         "- End your response with '!' or '.' — it MUST end with '?'\n"
         "- Send multiple separate replies to a single question\n"
         "- Invent or make up room names, amenities, or services that aren't listed above\n"
-        "- Say '8 rooms' or any number other than 7. There are EXACTLY 7 rooms.\n"
-        "- Add a 'Swan Suite' or any suite not in the exact room list above\n"
+        "- Say '7 rooms' or any number other than 8. There are EXACTLY 8 rooms.\n"
+        "- Add any suite not in the exact room list above (no Castle Suite, no extra suites)\n"
         "- If guest is frustrated, unsatisfied, or explicitly asks for a human, use request_human_agent() to transfer them\n"
         "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
         "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
         "- Human agent: use request_human_agent() when guest needs human help. Always offer this as an option if the guest seems unhappy.\n"
         "- NEVER invent or hallucinate services, amenities, or policies that are not explicitly listed in the hotel data. If asked about something not in your knowledge (e.g., childcare, pet spa, room delivery from external restaurants), politely say the hotel does not offer that specific service and suggest an alternative or offer to connect with a human agent.\n"
-        "- CRITICAL: Villa Adora Bled has EXACTLY 7 suites. The ONLY suites are: Princess Suite, Luxury Suite, Penthouse Suite, Deluxe Suite, Superior Suite, Island Suite, and Prestige Suite. There is NO 'Swan Suite', NO 'Castle Suite', and NO other suite. If a guest asks about rooms, list ONLY these 7. Never add, invent, or hallucinate additional suites.\n"
-        "- CRITICAL: Room prices are: Princess Suite €440/night, Luxury Suite €480/night, Penthouse Suite €430/night, Deluxe Suite €570/night, Superior Suite €570/night, Island Suite €620/night, Prestige Suite (price on request). Never invent or change these prices.\n"
+        "- CRITICAL: Villa Adora Bled has EXACTLY 8 suites. The ONLY suites are: Princess Suite, Luxury Suite, Penthouse Suite, Deluxe Suite, Superior Suite, Island Suite, Swan Suite, and Prestige Suite. There is NO 'Castle Suite' and NO other suite. If a guest asks about rooms, list ONLY these 8. Never add, invent, or hallucinate additional suites.\n"
+        "- CRITICAL: Room prices are: Princess Suite €440/night, Luxury Suite €480/night, Penthouse Suite €430/night, Deluxe Suite (price on request), Superior Suite (price on request), Island Suite (price on request), Swan Suite (price on request), Prestige Suite (price on request). Never invent or change these prices.\n"
     )
 
 
@@ -1249,11 +1249,11 @@ def get_hotel_info_response(topic, question):
                 lines.extend(suitable)
                 lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
                 return "\n".join(lines)
-            lines = ["We have 7 beautiful suites, all with stunning lake views:"]
+            lines = ["We have 8 beautiful suites, all with stunning lake views:"]
             lines.extend(all_rooms)
             lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
             return "\n".join(lines)
-        lines = ["We have 7 beautiful suites, all with stunning lake views:"]
+        lines = ["We have 8 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
             size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
@@ -1485,7 +1485,7 @@ def get_hotel_info_response(topic, question):
     # Booking intent
     if actual_topic == "booking":
         return (
-            "I'd love to help you book a room! We have 7 beautiful suites with stunning lake views. "
+            "I'd love to help you book a room! We have 8 beautiful suites with stunning lake views. "
             "To get started, I'll need your name, check-in and check-out dates, and your preferred room. "
             "Which suite catches your eye, or would you like me to help you choose?"
         )
@@ -1999,18 +1999,8 @@ def api_chat():
         for reply in replies:
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
-                # Anti-hallucination: remove any mention of Swan Suite or Castle Suite
-                reply["content"] = re.sub(r'(?i)\bSwan Suite\b[^.\n]*', '', reply["content"])
+                # Anti-hallucination: remove any mention of Castle Suite (not a real room)
                 reply["content"] = re.sub(r'(?i)\bCastle Suite\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bLabodji apartmaj\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bSuite Cygne\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bSchwan Suite\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bSuite Schwan\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bSuite Cigno\b[^.\n]*', '', reply["content"])
-                reply["content"] = re.sub(r'(?i)\bSuite Cisne\b[^.\n]*', '', reply["content"])
-                # Fix "8 suites" -> "7 suites" in various languages
-                reply["content"] = re.sub(r'\b8 (beautiful |wunderschöne |magnifiques |splendide |hermosas |čudovitih )', r'7 \1', reply["content"])
-                reply["content"] = re.sub(r'\b8 (suites|apartmajev)', r'7 \1', reply["content"])
                 # Clean up any double spaces or dangling bullets left by removal
                 reply["content"] = re.sub(r'\n\s*•\s*$', '', reply["content"])
                 reply["content"] = re.sub(r'\n{3,}', '\n\n', reply["content"])
