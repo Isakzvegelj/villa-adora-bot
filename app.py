@@ -1620,8 +1620,9 @@ def get_hotel_info_response(topic, question):
 
     # Cancellation
     if actual_topic == "cancellation":
+        cancellation_text = h['policies']['cancellation'].rstrip('.')
         return (
-            f"{h['policies']['cancellation']}. "
+            f"{cancellation_text}. "
             f"Would you like me to note any special conditions for your booking?"
         )
 
