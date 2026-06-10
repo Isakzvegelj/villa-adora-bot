@@ -1120,6 +1120,11 @@ def _detect_language(message: str) -> str:
         return "Spanish"
     if " buongiorno " in msg or msg.strip() == "buongiorno":
         return "Italian"
+    # High-confidence English check: if the message contains common English-only
+    # words with no non-English markers, return English early to prevent
+    # false-positive Croatian/Slovenian detection from shared vocabulary
+    if any(w in msg for w in [" room ", " rooms ", " book ", " booking ", " check-in ", " check-out ", " breakfast ", " parking ", " restaurant ", " hello ", " hi ", " thank ", " please ", " would ", " could ", " welcome ", " goodbye "]):
+        return "English"
 
     # Character-based detection for languages with unique characters
     # Serbian detection (Cyrillic-specific characters or Serbian Latin words)
@@ -1273,8 +1278,8 @@ def _detect_topic(message: str) -> str:
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
         "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "nearby", "near", "how close", "how near", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
-        "experiences": ["experience", "activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what should i do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attività", "activité", "actividad", "hacer", "qué hacer", "noches", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
+        "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "how close", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
+        "experiences": ["experience", "activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what should i do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "nearby", "near", "aktivnost", "attività", "activité", "actividad", "hacer", "qué hacer", "noches", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
