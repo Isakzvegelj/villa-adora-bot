@@ -1709,6 +1709,29 @@ def api_chat():
                 })
         else:
             # For English messages, use direct response for rooms/experiences to reduce latency
+            # Adversarial / tech queries - redirect to hotel topics (before LLM call)
+            adversarial_keywords_en = ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github"]
+            if any(word in user_message.lower() for word in adversarial_keywords_en):
+                response_text = (
+                    "I'm Luka, your concierge at Villa Adora Bled! "
+                    "I'm here to help you with everything about your stay — rooms, dining, activities, and more. "
+                    "What would you like to know about our hotel?"
+                )
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": response_text})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            # Swimming pool queries - Villa Adora doesn't have one, but Villa Pomona does
+            if any(word in user_message.lower() for word in ["swimming pool", "pool", "swim"]):
+                response_text = (
+                    "Villa Adora Bled doesn't have a swimming pool, but guests can swim in the pristine Lake Bled right outside! "
+                    "We also have a sister property, Villa Pomona, which features a swimming pool, sauna, and full wellness facilities — perfect for a private retreat. "
+                    "Would you like more details about Villa Pomona, or shall I tell you about swimming in the lake?"
+                )
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": response_text})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": response_text}]})
             if topic == "rooms":
                 hotel_answer = get_hotel_info_response("rooms", user_message)
                 if hotel_answer and hotel_answer.strip():
