@@ -1234,7 +1234,7 @@ def _detect_topic(message: str) -> str:
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
         "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
-        "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
+        "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "nearby", "near", "how close", "how near", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
         "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
@@ -1379,9 +1379,13 @@ def get_hotel_info_response(topic, question):
                     actual_topic = t
                     break
 
-    # Override: dietary questions should always go to breakfast/dining
+    # Override: dietary questions should go to breakfast/dining, unless specifically about restaurant/dinner
     if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
-        actual_topic = "breakfast"
+        # If query is specifically about restaurant dining, keep restaurant topic
+        if any(word in q for word in ["dinner", "lunch", "restaurant", "eat", "meal", "food", "menu", "chef", "dining"]):
+            actual_topic = "restaurant"
+        else:
+            actual_topic = "breakfast"
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
@@ -1568,6 +1572,17 @@ def get_hotel_info_response(topic, question):
     # Restaurant
     if actual_topic == "restaurant":
         r = h.get("dining", {}).get("restaurant", {})
+        # Check if query is about dietary needs
+        if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+            return (
+                f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
+                f"Chef Domen Demšar is known for accommodating dietary needs with creativity and care. "
+                f"We offer vegan, vegetarian, and gluten-free options on request — just let us know your preferences when you reserve. "
+                f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
+                f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
+                f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
+                f"Would you like to make a reservation and note your dietary preferences?"
+            )
         return (
             f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
             f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
@@ -1651,6 +1666,33 @@ def get_hotel_info_response(topic, question):
                 "It's a medieval castle perched on a cliff with incredible views over the lake. "
                 "I'd recommend visiting in the late afternoon for the best light. "
                 "Shall I help you arrange transport or give you more tips for your visit?"
+            )
+        if any(word in q for word in ["vintgar", "gorge"]):
+            return (
+                "Vintgar Gorge is just 2.4 km from the hotel — about a 10-minute drive or a beautiful 30-minute walk. "
+                "It's a stunning 1.6 km wooden walkway through a dramatic canyon. "
+                "I'd recommend going early morning to avoid crowds. "
+                "Would you like tips on getting there or combining it with other activities?"
+            )
+        if any(word in q for word in ["town center", "town centre", "city center", "city centre", "bled center", "bled centre", "center of bled"]):
+            return (
+                "Bled town center is a pleasant 15-minute walk from the hotel along the lakeside path. "
+                "You'll find restaurants, cafés, the casino, and shops there. "
+                "It's especially lovely in the evening! "
+                "Would you like restaurant recommendations in town?"
+            )
+        if any(word in q for word in ["airport", "ljubljana airport"]):
+            return (
+                "Ljubljana Jože Pučnik Airport is about 35 km away — roughly a 30-minute drive. "
+                "We can arrange airport shuttle transfer for approximately €60. "
+                "Just let me know your flight details and I'll help book it for you!"
+            )
+        if any(word in q for word in ["bohinj", "lake bohinj"]):
+            return (
+                "Lake Bohinj is about a 30-minute drive from Bled — a beautiful day trip! "
+                "It's Slovenia's largest permanent lake, surrounded by the Julian Alps. "
+                "Highlights include Savica Waterfall, Vogel cable car, and swimming in crystal-clear water. "
+                "Would you like help planning a day trip there?"
             )
         return (
             f"We're at {h['location']['address']}. "
