@@ -1,193 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ hotel_name }} — Admin Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            padding: 2rem;
-        }
-        h1 { margin-bottom: 0.5rem; color: #1a1a2e; }
-        .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; }
-        h2 { margin: 1.5rem 0 0.8rem; color: #333; font-size: 1.1rem; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            font-size: 0.88rem;
-        }
-        th, td { padding: 0.65rem 0.9rem; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #1a1a2e; color: #f0e6d3; font-weight: 500; }
-        tr:hover { background: #f8f8f8; }
-        .empty { color: #999; font-style: italic; padding: 1rem; }
-        .refresh-btn {
-            background: #1a1a2e;
-            color: #f0e6d3;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-        .refresh-btn:hover { background: #2a2a4e; }
-        .stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            min-width: 140px;
-        }
-        .stat-card .number { font-size: 1.6rem; font-weight: 600; color: #1a1a2e; }
-        .stat-card .label { font-size: 0.78rem; color: #888; margin-top: 0.2rem; }
-        .badge {
-            display: inline-block;
-            padding: 0.15rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        .badge-checkin { background: #e3f2fd; color: #1565c0; }
-        .badge-checkout { background: #fff3e0; color: #e65100; }
-        .badge-shuttle { background: #e8f5e9; color: #2e7d32; }
-        .badge-human { background: #fce4ec; color: #c62828; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Villa Adora Bled - Admin Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f0f1a;color:#e0e0e0;padding:2rem;min-height:100vh}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid rgba(240,230,211,0.15);padding-bottom:1rem}
+.header h1{font-size:1.5rem;font-weight:400;color:#f0e6d3;letter-spacing:1px}
+.header .subtitle{font-size:0.8rem;color:#7a8a9e;margin-top:0.2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,230,211,0.1);border-radius:12px;padding:1.2rem}
+.stat-card .label{font-size:0.75rem;color:#7a8a9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem}
+.stat-card .value{font-size:1.8rem;font-weight:600;color:#f0e6d3}
+h2{margin:1.5rem 0 0.8rem;color:#f0e6d3;font-size:1rem;font-weight:500}
+.refresh-btn{background:rgba(94,129,172,0.3);color:#f0e6d3;border:1px solid rgba(94,129,172,0.4);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.85rem}
+.refresh-btn:hover{background:rgba(94,129,172,0.5)}
+table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-bottom:2rem;font-size:0.88rem}
+th,td{padding:0.7rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.05)}
+th{background:rgba(255,255,255,0.06);color:#a8b2c1;font-weight:500}
+tr:hover{background:rgba(255,255,255,0.03)}
+.empty{color:#5a6a7e;font-style:italic;padding:1.5rem;text-align:center}
+</style>
 </head>
 <body>
-    <h1>{{ hotel_name }} — Admin Dashboard</h1>
-    <p class="subtitle">Real-time overview of bookings, events, and guest requests</p>
-    <button class="refresh-btn" onclick="loadAll()">🔄 Refresh</button>
-
-    <div class="stats" id="stats">
-        <div class="stat-card"><div class="number" id="statBookings">—</div><div class="label">Bookings</div></div>
-        <div class="stat-card"><div class="number" id="statEvents">—</div><div class="label">Calendar Events</div></div>
-        <div class="stat-card"><div class="number" id="statShuttles">—</div><div class="label">Shuttle Bookings</div></div>
-        <div class="stat-card"><div class="number" id="statHumans">—</div><div class="label">Human Agent Requests</div></div>
-    </div>
-
-    <h2>📅 Bookings</h2>
-    <table id="bookingsTable">
-        <thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead>
-        <tbody></tbody>
-    </table>
-
-    <h2>🗓️ Calendar Events</h2>
-    <table id="calendarTable">
-        <thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th><th>Created</th></tr></thead>
-        <tbody></tbody>
-    </table>
-
-    <h2>🚐 Shuttle Bookings</h2>
-    <table id="shuttleTable">
-        <thead><tr><th>ID</th><th>Guest</th><th>Pickup</th><th>Drop-off</th><th>Date</th><th>Time</th><th>Pax</th></tr></thead>
-        <tbody></tbody>
-    </table>
-
-    <h2>🧑‍💼 Human Agent Requests</h2>
-    <table id="humanTable">
-        <thead><tr><th>ID</th><th>Reason</th><th>Guest</th><th>Summary</th><th>Created</th></tr></thead>
-        <tbody></tbody>
-    </table>
-
-    <script>
-        async function loadBookings() {
-            try {
-                const res = await fetch('/api/bookings');
-                const data = await res.json();
-                const tbody = document.querySelector('#bookingsTable tbody');
-                document.getElementById('statBookings').textContent = data.bookings ? data.bookings.length : 0;
-                if (!data.bookings || data.bookings.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No bookings yet</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = data.bookings.map(b =>
-                    `<tr><td>${b.id}</td><td>${escapeHtml(b.guest)}</td><td>${escapeHtml(b.room)}</td><td>${b.check_in}</td><td>${b.check_out}</td></tr>`
-                ).join('');
-            } catch (e) {
-                console.error('Failed to load bookings:', e);
-            }
-        }
-
-        async function loadCalendar() {
-            try {
-                const res = await fetch('/api/calendar');
-                const data = await res.json();
-                const tbody = document.querySelector('#calendarTable tbody');
-                document.getElementById('statEvents').textContent = data.events ? data.events.length : 0;
-                if (!data.events || data.events.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="empty">No calendar events yet</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = data.events.map(e => {
-                    const badgeClass = e.event_type.includes('checkin') ? 'badge-checkin'
-                        : e.event_type.includes('checkout') ? 'badge-checkout'
-                        : 'badge-shuttle';
-                    return `<tr><td>${e.id}</td><td><span class="badge ${badgeClass}">${e.event_type}</span></td><td>${escapeHtml(e.guest_name)}</td><td>${e.time}</td><td>${escapeHtml(e.notes || '')}</td><td>${e.created_at}</td></tr>`;
-                }).join('');
-            } catch (e) {
-                console.error('Failed to load calendar:', e);
-            }
-        }
-
-        async function loadShuttles() {
-            try {
-                const res = await fetch('/api/shuttles');
-                const data = await res.json();
-                const tbody = document.querySelector('#shuttleTable tbody');
-                document.getElementById('statShuttles').textContent = data.shuttles ? data.shuttles.length : 0;
-                if (!data.shuttles || data.shuttles.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="empty">No shuttle bookings yet</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = data.shuttles.map(s =>
-                    `<tr><td>${s.id}</td><td>${escapeHtml(s.guest_name)}</td><td>${escapeHtml(s.pickup_location)}</td><td>${escapeHtml(s.dropoff_location)}</td><td>${s.date}</td><td>${s.time}</td><td>${s.passengers}</td></tr>`
-                ).join('');
-            } catch (e) {
-                console.error('Failed to load shuttles:', e);
-            }
-        }
-
-        async function loadHumans() {
-            try {
-                const res = await fetch('/api/human-requests');
-                const data = await res.json();
-                const tbody = document.querySelector('#humanTable tbody');
-                document.getElementById('statHumans').textContent = data.requests ? data.requests.length : 0;
-                if (!data.requests || data.requests.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="empty">No human agent requests yet</td></tr>';
-                    return;
-                }
-                tbody.innerHTML = data.requests.map(r =>
-                    `<tr><td>${r.id}</td><td>${escapeHtml(r.reason)}</td><td>${escapeHtml(r.guest_name)}</td><td>${escapeHtml(r.summary || '')}</td><td>${r.created_at}</td></tr>`
-                ).join('');
-            } catch (e) {
-                console.error('Failed to load human requests:', e);
-            }
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text || '';
-            return div.innerHTML;
-        }
-
-        function loadAll() { loadBookings(); loadCalendar(); loadShuttles(); loadHumans(); }
-        loadAll();
-    </script>
+<div class="header">
+<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard</div></div>
+<button class="refresh-btn" onclick="loadAll()">Refresh</button>
+</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="label">Total Bookings</div><div class="value" id="bookingCount">-</div></div>
+<div class="stat-card"><div class="label">Calendar Events</div><div class="value" id="calendarCount">-</div></div>
+</div>
+<h2>Bookings</h2>
+<table id="bookingsTable"><thead><tr><th>ID</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th></tr></thead><tbody></tbody></table>
+<h2>Calendar Events</h2>
+<table id="calendarTable"><thead><tr><th>ID</th><th>Type</th><th>Guest</th><th>Time</th><th>Notes</th></tr></thead><tbody></tbody></table>
+<script>
+async function loadBookings(){
+  try{
+    const res=await fetch('/api/bookings');const data=await res.json();
+    document.getElementById('bookingCount').textContent=data.bookings?data.bookings.length:0;
+    const tbody=document.querySelector('#bookingsTable tbody');
+    if(!data.bookings||data.bookings.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No bookings yet</td></tr>';return}
+    tbody.innerHTML=data.bookings.map(b=>'<tr><td>'+b.id+'</td><td>'+b.guest+'</td><td>'+b.room+'</td><td>'+b.check_in+'</td><td>'+b.check_out+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+async function loadCalendar(){
+  try{
+    const res=await fetch('/api/calendar');const data=await res.json();
+    document.getElementById('calendarCount').textContent=data.events?data.events.length:0;
+    const tbody=document.querySelector('#calendarTable tbody');
+    if(!data.events||data.events.length===0){tbody.innerHTML='<tr><td colspan="5" class="empty">No calendar events yet</td></tr>';return}
+    tbody.innerHTML=data.events.map(e=>'<tr><td>'+e.id+'</td><td>'+e.event_type.replace(/_/g,' ')+'</td><td>'+e.guest_name+'</td><td>'+e.time+'</td><td>'+(e.notes||'')+'</td></tr>').join('');
+  }catch(e){console.error(e)}
+}
+function loadAll(){loadBookings();loadCalendar()}
+loadAll();setInterval(loadAll,30000);
+</script>
 </body>
 </html>
