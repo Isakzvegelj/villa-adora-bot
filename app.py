@@ -1678,7 +1678,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
