@@ -139,6 +139,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Deluxe apartmaj, za 2 osebi — Razgled na jezero, luksuzna oprema\n"
         "• Superior apartmaj, za 4 osebe — 2 spalnici, družinski apartmaj\n"
         "• Otoški apartmaj, 65 m², za 4 osebe — 2 luksuzni spalnici, 2 balkona\n"
+        "• Labodji apartmaj, 67 m², za 2 osebi — King-size postelja, pogled na jezero\n"
         "• Prestižni apartmaj, 72 m², za 2 osebi — Pritličje, pogled na jezero\n"
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
@@ -150,6 +151,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Deluxe Suite, für 2 Gäste — Seeblick, luxuriöse Ausstattung\n"
         "• Superior Suite, für 4 Gäste — 2 Schlafzimmer, familienfreundlich\n"
         "• Insel Suite, 65 m², für 4 Gäste — 2 Luxusschlafzimmer, 2 Balkone\n"
+        "• Schwan Suite, 67 m², für 2 Gäste — Kingsize-Bett, Seeblick\n"
         "• Prestige Suite, 72 m², für 2 Gäste — Erdgeschoss, Seeblick\n"
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
@@ -161,6 +163,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, pour 2 personnes — Vue sur le lac, mobilier de luxe\n"
         "• Suite Supérieure, pour 4 personnes — 2 chambres, idéale pour les familles\n"
         "• Suite Île, 65 m², pour 4 personnes — 2 chambres de luxe, 2 balcons\n"
+        "• Suite Cygne, 67 m², pour 2 personnes — Lit king-size, vue sur le lac\n"
         "• Suite Prestige, 72 m², pour 2 personnes — Rez-de-chaussée, salon\n"
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
@@ -172,6 +175,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, per 2 persone — Vista lago, arredi di lusso\n"
         "• Suite Superiore, per 4 persone — 2 camere da letto, ideale per famiglie\n"
         "• Suite Isola, 65 m², per 4 persone — 2 camere da letto di lusso, 2 balconi\n"
+        "• Suite Cigno, 67 m², per 2 persone — Letto king size, vista lago\n"
         "• Suite Prestige, 72 m², per 2 persone — Piano terra, vista lago\n"
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
@@ -183,6 +187,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Suite Deluxe, para 2 personas — Vista al lago, mobiliario de lujo\n"
         "• Suite Superior, para 4 personas — 2 habitaciones, ideal para familias\n"
         "• Suite Isla, 65 m², para 4 personas — 2 habitaciones de lujo, 2 balcones\n"
+        "• Suite Cisne, 67 m², para 2 personas — Cama king size, vista al lago\n"
         "• Suite Prestige, 72 m², para 2 personas — Planta baja, vista al lago\n"
         "¿Cuál te gusta más? Puedo hacer la reserva — solo necesito tu nombre y las fechas?"
     ),
@@ -626,6 +631,8 @@ def fix_spacing(text):
     text = re.sub(r'\bIsthere\b', 'Is there', text, flags=re.IGNORECASE)
     # Fix "Wherewould" -> "Where would"
     text = re.sub(r'\bWherewould\b', 'Where would', text, flags=re.IGNORECASE)
+    # Fix "a" merged with following word: "abooking" -> "a booking"
+    text = re.sub(r'\ba(booking|breakfast|restaurant|reservation|shuttle|transfer|bar|hotel|room|suite|pool|spa|gym|park|dog|cat|car|taxi|tour|trip|table|meal|drink|menu)\b', r'a \1', text)
     # Fix missing space: lowercase-to-uppercase word joints (common LLM glitch)
     text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
     text = re.sub(r'\byouhave\b', 'you have', text, flags=re.IGNORECASE)
@@ -1037,6 +1044,7 @@ def _detect_topic(message: str) -> str:
         "children": ["child", "kid", "baby", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o", "dru\u017eina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
         "room_service": ["room_service", "room service", "in-room dining", "food to room", "order food", "food to my room", "dining in my room", "meal to room", "bring food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
+        "gym": ["gym", "fitness", "workout", "exercise", "treadmill", "weights"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
@@ -1066,7 +1074,10 @@ def _detect_topic(message: str) -> str:
     if _matches(msg_raw, ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and _matches(msg_raw, ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
         return "booking"
     # Priority: "get to [place]" / "how do i get to" should map to location/directions
+    # BUT if "airport" is mentioned, map to shuttle instead
     if _matches(msg_raw, ["get to", "how do i get", "how to get", "directions to", "way to", "reach the", "reach bled"]):
+        if _matches(msg_raw, ["airport", "ljubljana", "brnik", "transfer"]):
+            return "shuttle"
         return "location"
     for topic, keywords in topic_keywords.items():
         if _matches(msg_word, keywords):
@@ -1123,16 +1134,21 @@ def get_hotel_info_response(topic, question):
         "contact": ["contact", "phone", "email", "call", "reach"],
         "room_service": ["room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport"],
+        "gym": ["gym", "fitness", "workout", "exercise"],
         "general": ["general", "info", "information", "about", "tell me"],
     }
 
     # Detect actual topic from question if topic is generic
     actual_topic = topic
     if topic in ("general", "policies"):
-        for t, aliases in topic_aliases.items():
-            if any(a in q for a in aliases):
-                actual_topic = t
-                break
+        # Check cancellation first (before policies) since "cancellation policy" contains both keywords
+        if any(a in q for a in ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"]):
+            actual_topic = "cancellation"
+        else:
+            for t, aliases in topic_aliases.items():
+                if any(a in q for a in aliases):
+                    actual_topic = t
+                    break
 
     # Override: dietary questions should always go to breakfast/dining
     if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
@@ -1443,6 +1459,16 @@ def get_hotel_info_response(topic, question):
         return (
             f"You can reach us at {h['location']['phone']} or {h['location']['email']}. "
             f"Or just keep chatting with me — I'm here to help! What else would you like to know?"
+        )
+
+    # Gym / Fitness
+    if actual_topic == "gym":
+        return (
+            "Villa Adora Bled does not have an on-site gym, but our sister property Villa Pomona "
+            "features a full wellness area with sauna. For active guests, Bled offers excellent "
+            "outdoor fitness options — jogging around the lake, hiking trails, swimming, "
+            "kayaking, and paddleboarding. "
+            "Would you like me to suggest some great running routes or outdoor activities?"
         )
 
     # Amenities
@@ -1765,7 +1791,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies", "gym"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -1895,7 +1921,7 @@ def api_chat():
                     if ci < _date.today() or co < _date.today():
                         tool_reply = (
                             "I notice those dates are in the past. Could you please "
-                            "provide your actual travel dates? I'm happy to help with your booking!"
+                            "provide your actual travel dates so I can help with your booking?"
                         )
                         replies.append({"type": "text", "content": tool_reply})
                         continue
