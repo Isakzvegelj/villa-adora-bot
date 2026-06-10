@@ -286,18 +286,19 @@ hotel_info = {
         "name": "Villa Pomona",
         "type": "Design boutique villa — luxury retreat",
         "location": "Most picturesque street in Bled, 3-minute walk from Lake Bled and town center",
-        "description": "A luxurious and serene retreat with swimming pool, pool house, sprawling garden, and sauna. Offers a 'home away from home' feeling with full-service amenities.",
+        "description": "A luxurious and serene retreat with swimming pool, pool house, sprawling botanical garden, and sauna. Offers a 'home away from home' feeling with full-service amenities.",
         "accommodations": {
-            "bedrooms": 3,
-            "bathrooms": "3 ensuite bedrooms",
+            "suites": 5,
+            "suite_names": ["Heritage Suite", "Garden Suite", "Lakeview Deluxe Suite", "Orchard Suite", "Tower Suite"],
+            "bathrooms": "5 ensuite suites",
             "style": "Modern aesthetics with traditional charm"
         },
         "amenities": [
             "Swimming pool with pool house",
             "Sauna",
-            "Sprawling garden",
+            "Sprawling botanical garden",
             "Daily cleaning by dedicated villa maid",
-            "Breakfast option available",
+            "Breakfast included",
             "Private chef (lunch, dinner, BBQ)",
             "Masseur services",
             "Yoga sessions",
@@ -309,7 +310,8 @@ hotel_info = {
             "Smaller groups looking for a retreat",
             "Wellness and rejuvenation-focused stays"
         ],
-        "contact": "info@adorabled.com"
+        "contact": "info@villapomona.si",
+        "website": "https://villapomona.si"
     },
     "additional_services": [
         "Signature Kremšnita — a creative twist on Bled's iconic cream cake",

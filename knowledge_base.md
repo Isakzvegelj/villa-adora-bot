@@ -426,10 +426,11 @@
 ## Frequently Asked Questions (Extended)
 
 ### Is there a restaurant on-site?
-- Villa Adora offers in-room dining and terrace dining
-- Several excellent restaurants within 5-minute walk
-- Concierge can make restaurant reservations
-- Room service available during breakfast hours
+- Yes! The Adora Pop Up Restaurant is right here at the hotel, serving creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar
+- Hours: Lunch & Dinner Tuesday – Sunday, Brunch Thursday – Saturday, Drinks daily
+- The terrace has arguably the best sunset views in Bled
+- Reservations: +386 40 558 158 or evita.vilebled@gmail.com
+- Room service is also available for in-suite dining
 
 ### What is the weather like in Bled?
 - Continental climate with warm summers and cold winters
@@ -438,16 +439,16 @@
 - Spring/Autumn: 6-18°C, ideal for sightseeing
 
 ### What makes Villa Adora different from other Bled hotels?
-- Only 8 suites - intimate boutique experience
-- Directly on the lake shore
+- Only 8 suites — intimate boutique experience
+- Directly on the lake shore — one of the few hotels with this prime position
 - Heritage villa from 1878 with modern luxury
 - Personalized concierge service
-- Complimentary bike rental and wellness access
+- Complimentary bike rental, free parking, and free WiFi
 
 ### Is Villa Adora suitable for business travelers?
 - Yes, all suites have work desks
 - Reliable high-speed WiFi throughout
-- Meeting room available
+- Meeting room available for up to 20 people
 - Business center services
 - Airport transfer available
 - Quiet environment ideal for focused work

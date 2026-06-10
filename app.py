@@ -1556,11 +1556,13 @@ def get_hotel_info_response(topic, question):
     # Villa Pomona
     if "villa pomona" in q or "pomona" in q:
         vp = h.get("villa_pomona", {})
+        acc = vp.get("accommodations", {})
+        suites_count = acc.get("suites", 5)
         return (
             f"We also offer {vp.get('name', 'Villa Pomona')} — {vp.get('type', 'a luxury villa retreat')}. "
             f"Located on {vp.get('location', 'the most picturesque street in Bled')}. "
-            f"It features {vp.get('accommodations', {}).get('bedrooms', 3)} bedrooms with ensuite bathrooms, "
-            f"a swimming pool, sauna, and garden. "
+            f"It features {suites_count} distinctive suites with ensuite bathrooms, "
+            f"a swimming pool, sauna, and botanical garden. "
             f"Perfect for families or groups seeking a private retreat. "
             f"Would you like more details or to make an inquiry?"
         )
