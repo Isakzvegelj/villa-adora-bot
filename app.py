@@ -758,7 +758,7 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
+            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
         },
     }
@@ -1104,6 +1104,9 @@ def _detect_topic(message: str) -> str:
         if _matches(msg_raw, ["airport", "ljubljana", "brnik", "transfer"]):
             return "shuttle"
         return "location"
+    # Priority: breakfast questions about inclusion/pricing should not be captured by "room" keyword
+    if _matches(msg_raw, ["breakfast included", "breakfast included in", "is breakfast included", "does breakfast include", "zajtrk vključen", "frühstück inklusive", "petit déjeuner inclus", "colazione inclusa", "desayuno incluido"]) and not _matches(msg_raw, ["book", "reserve", "rezervir", "buchen", "prenotare"]):
+        return "breakfast"
     for topic, keywords in topic_keywords.items():
         if _matches(msg_word, keywords):
             return topic
