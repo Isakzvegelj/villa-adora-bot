@@ -1002,11 +1002,11 @@ def get_hotel_info_response(topic, question):
                 lines.extend(suitable)
                 lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
                 return "\n".join(lines)
-            lines = ["We have 7 beautiful suites, all with stunning lake views:"]
+            lines = ["We have 8 beautiful suites, all with stunning lake views:"]
             lines.extend(all_rooms)
             lines.append("Which one catches your eye? I can start a booking for you — just tell me your name and dates?")
             return "\n".join(lines)
-        lines = ["We have 7 beautiful suites, all with stunning lake views:"]
+        lines = ["We have 8 beautiful suites, all with stunning lake views:"]
         for r in h["rooms"].values():
             size = f", {r['size_sqm']} m²" if r.get("size_sqm") else ""
             cap = f", sleeps {r['capacity']}" if r.get("capacity") else ""
@@ -1238,7 +1238,7 @@ def get_hotel_info_response(topic, question):
     # Booking intent
     if actual_topic == "booking":
         return (
-            "I'd love to help you book a room! We have 7 beautiful suites with stunning lake views. "
+            "I'd love to help you book a room! We have 8 beautiful suites with stunning lake views. "
             "To get started, I'll need your name, check-in and check-out dates, and your preferred room. "
             "Which suite catches your eye, or would you like me to help you choose?"
         )
@@ -1246,7 +1246,7 @@ def get_hotel_info_response(topic, question):
     # Fallback
     return (
         f"Villa Adora Bled is a heritage-protected villa from 1878, converted into a luxury design hotel "
-        f"right on Lake Bled. We have 7 unique suites with panoramic lake views. "
+        f"right on Lake Bled. We have 8 unique suites with panoramic lake views. "
         f"What would you like to know — rooms, booking, or things to do in Bled?"
     )
 
@@ -1773,7 +1773,7 @@ def api_chat():
                 else:
                     reply["content"] = (
                         f"Villa Adora Bled is a luxury boutique hotel on Lake Bled. "
-                        f"We have 7 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
+                        f"We have 8 unique suites with lake views, a pop-up restaurant, free parking and WiFi. "
                         f"What would you like to know more about?"
                     )
 
