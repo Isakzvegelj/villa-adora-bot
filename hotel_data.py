@@ -324,3 +324,33 @@ hotel_info = {
         "8-course special event menus for celebrations"
     ]
 }
+
+# Seasonal events and enhanced data
+SEASONAL_EVENTS = [
+    {"name": "Bled Festival Weeks", "season": "Summer (July-August)", "description": "Classical music concerts in the castle courtyard"},
+    {"name": "Bled Cream Cake Festival", "season": "Summer (August)", "description": "Celebration of Bled's iconic dessert"},
+    {"name": "Christmas in Bled", "season": "Winter (December-January)", "description": "Christmas market, ice skating, and festive decorations"},
+    {"name": "Bled Winter Carnival", "season": "Winter (February)", "description": "Traditional carnival with costumes and music"},
+    {"name": "St. Martin's Day", "season": "Autumn (November 11)", "description": "Celebration of new wine with tastings and feasts"},
+]
+
+WINE_REGIONS = [
+    {"name": "Goriška Brda", "distance": "30 min drive", "highlights": ["Rebula", "Merlot", "Sauvignonasse"]},
+    {"name": "Štajerska", "distance": "1.5 hour drive", "highlights": ["Riesling", "Šipon", "Traminer"]},
+    {"name": "Vipava Valley", "distance": "1 hour drive", "highlights": ["Pinot Noir", "Barbera", "Zelen"]},
+]
+
+CULINARY_HIGHLIGHTS = [
+    "Kremšnita — Bled's iconic cream cake",
+    "Goulash — Slovenian-style with polenta",
+    "Štruklji — rolled dumplings",
+    "Potica — traditional walnut roll",
+    "Prekmurska gibanica — layered pastry",
+]
+
+DAY_TRIPS = [
+    {"name": "Lake Bohinj", "distance": "30 min drive", "highlights": ["Savica Waterfall", "Vogel cable car", "Swimming"]},
+    {"name": "Ljubljana", "distance": "30 min drive", "highlights": ["Castle", "Triple Bridge", "Metelkova", "Dragon Bridge"]},
+    {"name": "Postojna Cave", "distance": "50 min drive", "highlights": ["24 km underground passages", "Predjama Castle"]},
+    {"name": "Vintgar Gorge", "distance": "10 min drive", "highlights": ["1.6 km wooden walkway", "Stunning canyon views"]},
+]
