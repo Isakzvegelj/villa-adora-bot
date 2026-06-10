@@ -1088,7 +1088,7 @@ def _detect_topic(message: str) -> str:
         "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
-        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad"],
+        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
@@ -1545,6 +1545,19 @@ def get_hotel_info_response(topic, question):
                 "• Bled Castle — explorers of all ages will enjoy it\n"
                 "The Island Suite and Superior Suite are perfect for families — both sleep 4 with 2 bedrooms! "
                 "Which activity sounds most fun for your family?"
+            )
+        # Check if asking about evening/night activities
+        if any(word in q for word in ["night", "evening", "nightlife", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "večerja", "večerju"]):
+            return (
+                "Bled is magical in the evening! Here are some wonderful night-time options:\n"
+                "• Sunset cocktails on our terrace — arguably the best sunset views in Bled\n"
+                "• Dinner at the Adora Pop Up Restaurant (Tue-Sun) with terrace dining\n"
+                "• Garden evenings with wine under the stars\n"
+                "• In-room massage — the perfect way to unwind after a day of exploring\n"
+                "• Stargazing from the garden or terrace — Bled has wonderfully clear skies\n"
+                "• Room service dining in the comfort of your suite\n"
+                "• Evening walk along the 6 km lakeside path — beautifully peaceful at night\n"
+                "Would you like me to book a dinner reservation or arrange an in-room massage for you?"
             )
         return (
             f"There's so much to do around Bled! Here are some highlights:\n"
