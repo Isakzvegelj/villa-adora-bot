@@ -35,46 +35,48 @@
 
 ## Room Types (7 suites)
 
-### Princess Suite — €250/night
+### Princess Suite — €440/night
 - 55 sq m, lake view from tower
 - Queen bed, living area, bedroom, bathroom
 - Little tower overlooks Lake Bled
 - Perfect for couples, romantic getaway
 - A/C, WiFi, TV, safe, minibar, shower, bath, work space
 
-### Luxury Suite — €270/night
+### Luxury Suite — €480/night
 - Lake view, elegant decor
 - Comfortable bedding
 - A/C, WiFi, TV, safe, minibar
 
-### Penthouse Suite — €300/night
+### Penthouse Suite — €430/night
 - 60 sq m, 2 floors
 - King-sized bed, most unique place in the house
 - Breathtaking views through the windows
 - Most special and cosy atmosphere
 - Extremely comfortable
 
-### Swan Suite — €370/night
-- 67 sq m, King bed
+### Deluxe Suite — €570/night
 - Lake view, luxury furnishings
-- Elegant suite with stunning lake views
+- Elegant suite with spacious seating area and flat-screen TV
+- Stunning lake views and elegant decor
 
-### Island Suite — €380/night
+### Superior Suite — €570/night
+- Sleeps 4, 2 bedrooms
+- Perfect for families or groups of friends
+- Lake and castle views
+- Spacious living areas
+
+### Island Suite — €620/night
 - 65 sq m, first floor
 - 2 luxury bedrooms, big living area, 2 balconies
 - Stunning view of the lake and Bled Island
 - Perfect for couples, groups of friends, or families (sleeps 4)
 
-### Prestige Suite — €420/night
+### Prestige Suite — Price on request
 - 72 sq m, ground floor
 - Living area, small dining area, king bed overlooking Lake Bled
 - Very big luxury bathroom, spacious terrace, big flat TV
 - Unforgettable lake view through all windows
 - Absolute harmony of artful decor, elegance and spaciousness
-
-### Castle Suite
-- Stylish luxury suite with castle views
-- Part of the 7-suite collection
 
 ## Amenities
 - Free WiFi throughout
