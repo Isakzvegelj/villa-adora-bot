@@ -253,14 +253,25 @@ _EXPERIENCES_TRANSLATED = {
     ),
     "Spanish": (
         "En Bled hay mucho por hacer!:\n"
-        "\u2022 Paseo a la Isla de Bled y visita de la iglesia\n"
-        "\u2022 Nataci\u00f3n, paddle, kayak y excursiones\n"
-        "\u2022 Gargantas de Vintgar (2,4 km)\n"
-        "\u2022 Castillo de Bled (30 min a pie)\n"
-        "\u2022 Sendero de 6 km y 15 senderos\n"
-        "\u2022 Excursiones a Bohinj, Ljubljana, cueva de Postojna\n"
-        "\u2022 Masaje en habitaci\u00f3n, noches con vino\n"
-        "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?"
+        "• Paseo a la Isla de Bled y visita de la iglesia\n"
+        "• Natación, paddle, kayak y excursiones\n"
+        "• Gargantas de Vintgar (2,4 km)\n"
+        "• Castillo de Bled (30 min a pie)\n"
+        "• Sendero de 6 km y 15 senderos\n"
+        "• Excursiones a Bohinj, Ljubljana, cueva de Postojna\n"
+        "• Masaje en habitación, noches con vino\n"
+        "¿Cuál te interesa más? ¡Estaré encantado de ayudarte?"
+    ),
+    "Croatian": (
+        "U Bledu ima mnogo toga za učiniti!:\n"
+        "• Vožnja na otok Bled i posjet crkvi\n"
+        "• Plivanje, SUP, kajak i brodski izleti\n"
+        "• Šetnja kroz klisuru Vintgar (2,4 km)\n"
+        "• Posjet dvorcu Bled (30 min hodajući)\n"
+        "• Staza od 6 km i 15 označenih staza\n"
+        "• Izleti na Bohinj, Ljubljansku, Postojnsku špilju\n"
+        "• Masaža u sobi, večeri s vinom\n"
+        "Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!"
     ),
 }
 
@@ -399,7 +410,7 @@ _CHECKIN_TRANSLATED = {
     ),
     "Italian": (
         "Il check-in è dalle 14:00 alle 23:00, il check-out fino alle 11:00. "
-        "Check-in/check-out tardivo è disponibile su richiesta — contaccia la reception. "
+        "Check-in/check-out tardivo è disponibile su richiesta — contatta la reception. "
         "A che ora prevedi di arrivare?"
     ),
     "Spanish": (
@@ -484,6 +495,10 @@ _PARKING_TRANSLATED = {
         "Ofrecemos estacionamiento privado gratuito — 8 espacios de estacionamiento frente al hotel. "
         "¿Vas a venir a Bled en coche, o te gustaría recibir consejos sobre transporte público?"
     ),
+    "Croatian": (
+        "Nudimo besplatno privatno parkiralište — 8 parkirnih mjesta ispred hotela. "
+        "Dolazite li u Bled autom, ili želite savjete za javni prijevoz?"
+    ),
 }
 
 
@@ -517,6 +532,12 @@ _SHUTTLE_TRANSLATED = {
         "Rutas populares: Aeropuerto de Ljubljana (~60 €), centro de Bled (~15 €). "
         "Para reservar, dime tu nombre, lugar de recogida, fecha y hora. "
         "¿Dónde te gustaría que te recojamos?"
+    ),
+    "Croatian": (
+        "Nudimo transfere zračne lokalne prijevoz i prilagođene rute! "
+        "Popularne rute: Zračna luka Ljubljana (~60 €), centar Bleda (~15 €). "
+        "Za rezervaciju mi recite ime, mjesto preuzimanja, datum i vrijeme. "
+        "Gdje biste da vas preuzmemo?"
     ),
 }
 
@@ -1221,7 +1242,7 @@ def get_hotel_info_response(topic, question):
     # Rooms
     if actual_topic == "rooms":
         # Check if asking about pricing
-        is_price_query = any(word in q for word in ["price", "cost", "how much", "rate", "pricing", "expensive", "cheap", "cena", "preis", "prix", "precio", "prezzo"])
+        is_price_query = any(word in q for word in ["price", "cost", "how much", "rate", "pricing", "expensive", "cheap", "cena", "preis", "prix", "precio", "prezzo", "koliko stane", "wie viel kostet", "combien coûte", "quanto costa", "cuánto cuesta", "koliko košta"])
         # Check if asking about capacity/groups
         is_capacity_query = any(word in q for word in ["people", "person", "group", "family", "children", "kids", "sleeps", "capacity", "many", "3", "4", "5", "6", "oseb", "oseba", "osebi", "osebo", "skupina", "družina", "otroci", "leži", "kapacita", "gostje", "gostov", "personen", "person", "gruppe", "familie", "kinder", "schläft", "personas", "persona", "grupo", "familia", "niños", "capacidad", "personnes", "groupe", "famille", "enfants", "capacité", "persone", "gruppo", "famiglia", "bambini", "capacità"])
         # Check if asking about a specific room
@@ -1238,6 +1259,15 @@ def get_hotel_info_response(topic, question):
             # Match on distinctive words (not "suite" which is shared by all)
             distinctive_words = [w for w in room_name_lower.split() if len(w) > 3 and w != "suite"]
             score = sum(2 for w in distinctive_words if w in q)
+            # Fuzzy: also match if query word starts with distinctive word (e.g., "princesin" starts with "princes")
+            if score == 0:
+                for w in distinctive_words:
+                    for qw in q.split():
+                        if len(qw) > 5 and qw.startswith(w):
+                            score = 1
+                            break
+                    if score > 0:
+                        break
             if score > best_score:
                 best_score = score
                 best_match = room
