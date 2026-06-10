@@ -1,9 +1,0 @@
-# Villa Adora Bled — The Alpine Concierge
-# Hotel data extracted from https://www.adorabled.com/
-
-Villa Adora is a boutique heritage hotel on the shore of Lake Bled, Slovenia.
-Built in 1878, renovated in 1996 and 2012.
-7-9 luxury suites with panoramic lake views.
-
-Contact: +386 51 603 858 | evita.vilebled@gmail.com
-Address: Cesta svobode 35, 4260 Bled, Slovenia
