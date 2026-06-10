@@ -112,22 +112,21 @@
 - Child friendly
 
 ## Breakfast
-- Served daily 8:00-10:00 AM
-- €22 per person
-- Fresh pastries, bread, local Slovenian products
-- Served in dining room with lake views
+- Served daily 7:30-10:30 AM
+- Included in the room rate (complimentary)
+- Rich buffet with fresh pastries, bread, local Slovenian products
+- Served on the terrace with lake views (weather permitting)
 - High quality, described as "absolutely delicious"
-- Can accommodate dietary preferences
+- Dietary options: Vegan, vegetarian, and gluten-free available on request
+- Please inform us of any allergies or dietary requirements when booking
 
 ## Dining
 
 ### Breakfast
-- Served daily 8:00-10:00 AM
-- €22 per person (good breakfast — Continental, Vegetarian, Gluten-free options)
-- Fresh pastries, bread, local Slovenian products, coffee & tea
-- Served in dining room with lake views
-- **Dietary options:** Vegan, vegetarian, and gluten-free options available on request
-- Please inform us of any allergies or dietary requirements when booking
+- Included in the room rate (complimentary)
+- Served daily 7:30-10:30 AM on the terrace with lake views
+- Rich buffet: fresh pastries, bread, local Slovenian products, coffee & tea
+- Dietary options: Vegan, vegetarian, and gluten-free available on request
 
 ### Adora Pop Up Restaurant
 - **Location:** Inside Adora Luxury Hotel, on the shores of Lake Bled
