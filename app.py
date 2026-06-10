@@ -268,12 +268,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     # Detect topic for a more relevant fallback
     if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
         fallbacks = {
-            "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
-            "German": "Wir haben 7 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
-            "French": "Nous avons 7 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
-            "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
-            "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
-            "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
+            "Slovenian": "Imamo 8 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
+            "German": "Wir haben 8 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
+            "French": "Nous avons 8 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
+            "Italian": "Abbiamo 8 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
+            "Spanish": "Tenemos 8 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
+            "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
@@ -295,12 +295,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         }
     else:
         fallbacks = {
-            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 7 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
-            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 7 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
-            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 7 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
-            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
-            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
-            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
+            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 8 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
+            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 8 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
+            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 8 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
+            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 8 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
+            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 8 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
+            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 8 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
         }
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
