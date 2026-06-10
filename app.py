@@ -1279,10 +1279,12 @@ def _detect_topic(message: str) -> str:
     # Priority: late check-in/out should override "night"/"evening" experiences keywords
     if _matches(msg_raw, ["late check in", "late checkin", "late arrival", "arrive late", "late check-in",
                            "late check out", "late checkout", "late departure", "leave late", "late check-out",
+                           "check in late", "check out late",
                            "pozen prihod", "pozen odhod", "spät ankommen", "spät abreise",
                            "arrivo tardif", "partenza tardif", "arrivée tardive", "départ tardif"]):
         # Determine if it's check-in or check-out
         if _matches(msg_raw, ["late check out", "late checkout", "late departure", "leave late", "late check-out",
+                              "check out late",
                               "pozen odhod", "spät abreise", "partenza tardif", "départ tardif"]):
             return "late_check_out"
         return "late_check_in"
