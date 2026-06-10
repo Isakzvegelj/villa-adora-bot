@@ -1071,7 +1071,7 @@ def _detect_topic(message: str) -> str:
 
     topic_keywords = {
         "rooms": ["room", "rooms", "suite", "suites", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
-        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento"],
+        "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento", "ve\u010derja", "ve\u010derjo", "ve\u010deri", "kosilo", "kosilom", "obed", "obrom", "jedilnik", "jedilnika", "kuhar", "kuhinja", "terasa", "ve\u010dera", "ve\u010deru", "ru\u010dak", "ru\u010dka", "ru\u010dkom", "ve\u010derala", "ve\u010derati", "jela", "jelo", "hrana"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
@@ -1115,7 +1115,7 @@ def _detect_topic(message: str) -> str:
 
     # Priority: booking intent should override rooms when both keywords present
     # Priority: room_service keywords should override "rooms" when food-related terms present
-    if _matches(msg_raw, ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service"]):
+    if _matches(msg_raw, ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service", "food delivered", "deliver food", "food delivery", "send food", "bring me food", "food in my room", "eat in my room", "dine in my room"]):
         return "room_service"
     if _matches(msg_raw, ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and _matches(msg_raw, ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
         return "booking"
@@ -1766,17 +1766,73 @@ def api_chat():
             # Handle social messages (greetings, thanks, goodbyes) directly to avoid LLM language issues
             social_keywords = {
                 "English": ["thank", "thanks", "hello", "hi ", "hey", "goodbye", "bye", "good morning", "good evening", "good night", "good afternoon", "how are you", "how do you do", "welcome"],
-                "Slovenian": ["hvala", "pozdra", "zdravo", "nasvidenje", "dober dan", "pozdravljeni", "lahko noč", "dobrodošli"],
+                "Slovenian": ["hvala", "pozdra", "zdravo", "nasvidenje", "dober dan", "pozdravljeni", "lahko no\u010d", "dobrodo\u0161li", "kako ste", "kako si", "lep dan", "adijo", "aju", "sre\u010dno", "nasvidenje", "se sli\u0161imo"],
                 "German": ["danke", "vielen dank", "guten tag", "guten morgen", "guten abend", "auf wiedersehen", "tschüss", "hallo", "willkommen", "wie geht"],
                 "French": ["merci", "bonjour", "bonsoir", "au revoir", "salut", "bienvenue", "comment allez", "enchanté"],
                 "Italian": ["grazie", "buongiorno", "buonasera", "arrivederci", "ciao", "benvenuto", "come stai", "prego"],
                 "Spanish": ["gracias", "hola", "buenos", "buenas", "adiós", "bienvenido", "bienvenida", "cómo estás", "de nada"],
-                "Croatian": ["hvala", "pozdrav", "zdravo", "doviđenja", "dobrodošli", "kako si"],
+                "Croatian": ["hvala", "pozdrav", "zdravo", "dovi\u0111enja", "dobrodo\u0161li", "kako si", "lijep dan", "bok", "zbogom", "sretno"],
             }
             is_social = any(kw in user_message.lower() for kw in social_keywords.get(detected_lang, []))
             if is_social and topic == "general":
-                # Use the generic fallback which is well-translated
-                fallback = _get_localized_fallback(detected_lang, user_message)
+                # Use proper social responses per language
+                social_type = "greeting"
+                msg_lower = user_message.lower()
+                goodbye_words = {
+                    "English": ["goodbye", "bye ", "see you", "farewell"],
+                    "Slovenian": ["nasvidenje", "adijo", "sre\u010dno", "se sli\u0161imo"],
+                    "German": ["auf wiedersehen", "tschüss", "tschau"],
+                    "French": ["au revoir", "salut"],
+                    "Italian": ["arrivederci", "ciao"],
+                    "Spanish": ["adiós", "hasta luego"],
+                    "Croatian": ["dovi\u0111enja", "bok", "zbogom"],
+                }
+                thanks_words = {
+                    "English": ["thank", "thanks"],
+                    "Slovenian": ["hvala"],
+                    "German": ["danke", "vielen dank"],
+                    "French": ["merci"],
+                    "Italian": ["grazie"],
+                    "Spanish": ["gracias"],
+                    "Croatian": ["hvala"],
+                }
+                if any(w in msg_lower for w in goodbye_words.get(detected_lang, [])):
+                    social_type = "goodbye"
+                elif any(w in msg_lower for w in thanks_words.get(detected_lang, [])):
+                    social_type = "thanks"
+
+                social_responses = {
+                    "greeting": {
+                        "English": "Hello! Welcome to Villa Adora Bled! How can I help make your stay special today?",
+                        "Slovenian": "Dober dan! Dobrodo\u0161li v Villi Adora Bled! Kako vam lahko pomagam pri va\u0161em bivanju?",
+                        "German": "Guten Tag! Willkommen im Villa Adora Bled! Wie kann ich Ihnen bei Ihrem Aufenthalt helfen?",
+                        "French": "Bonjour ! Bienvenue au Villa Adora Bled ! Comment puis-je vous aider avec votre séjour ?",
+                        "Italian": "Buongiorno! Benvenuto al Villa Adora Bled! Come posso aiutarti con il tuo soggiorno?",
+                        "Spanish": "¡Buenos días! ¡Bienvenido a Villa Adora Bled! ¿Cómo puedo ayudarte con tu estancia?",
+                        "Croatian": "Dobrodo\u0161li u Villa Adora Bled! Kako vam mogu pomo\u0107i s va\u0161im boravkom?",
+                    },
+                    "thanks": {
+                        "English": "You're very welcome! Is there anything else I can help you with today?",
+                        "Slovenian": "Ni za kaj! Vam lahko \u0161e kako pomagam?",
+                        "German": "Gern geschehen! Kann ich Ihnen noch mit etwas helfen?",
+                        "French": "Je vous en prie ! Y a-t-il autre chose que je puisse faire pour vous ?",
+                        "Italian": "Prego! C'\u00e8 altro con cui posso aiutarti?",
+                        "Spanish": "¡De nada! ¿Hay algo más en lo que pueda ayudarte?",
+                        "Croatian": "Nema na \u010demu! Mogu li vam jo\u0161 nekako pomo\u0107i?",
+                    },
+                    "goodbye": {
+                        "English": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels \u2014 is there anything else before you go?",
+                        "Slovenian": "Nasvidenje! Upamo, da vas bomo kmali spet videli v Villi Adora Bled. Varno pot \u2014 vas \u0161e kaj zanima?",
+                        "German": "Auf Wiedersehen! Wir freuen uns, Sie im Villa Adora Bled begrüßen zu dürfen. Gute Reise \u2014 kann ich Ihnen noch mit etwas helfen?",
+                        "French": "Au revoir ! Nous avons hâte de vous accueillir au Villa Adora Bled. Bon voyage \u2014 y a-t-il autre chose avant de partir ?",
+                        "Italian": "Arrivederci! Non vediamo l'ora di accoglierci al Villa Adora Bled. Buon viaggio \u2014 c'\u00e8 altro prima di partire?",
+                        "Spanish": "¡Adi\u00f3s! Esperamos darle la bienvenida a Villa Adora Bled. Buen viaje \u2014 \u00bfhay algo m\u00e1s antes de irte?",
+                        "Croatian": "Dovi\u0111enja! Radujemo se \u0161to \u0107emo vas do\u010dekati u Villa Adora Bled. Sretan put \u2014 imam li vam jo\u0161 ne\u0161to pomo\u0107i?",
+                    },
+                }
+                fallback = social_responses.get(social_type, social_responses["greeting"]).get(
+                    detected_lang, social_responses["greeting"]["English"]
+                )
                 messages.append({"role": "user", "content": user_message})
                 messages.append({"role": "assistant", "content": fallback})
                 sessions[session_id] = messages
