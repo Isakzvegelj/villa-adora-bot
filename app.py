@@ -1169,7 +1169,10 @@ def _detect_language(message: str) -> str:
             " stornier ", " stornierung ", " zimmer ", " bett ",
             " badezimmer ", " klimaanlage ", " fernseher ", " parken ",
             " haustier ", " hund ", " katze ", " haustiere ", " massagen ",
-            " wellness ", " sauna ", " schwimmen ", " see ", " berg ", " schloss "
+            " wellness ", " sauna ", " schwimmen ", " see ", " berg ", " schloss ",
+            " das ", " sie ", " haben sie ", " ich hätte ", " können sie ",
+            " möchten sie ", " buchen sie ", " gibt es ", " ist es ", " wo ist ",
+            " wie viel ", " was kostet ", " prinzessin "
         ],
         "French": [
             " bonjour ", " bonsoir ", " merci beaucoup ", " s'il vous plaît ",
