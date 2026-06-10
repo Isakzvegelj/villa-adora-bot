@@ -643,6 +643,8 @@ def fix_spacing(text):
     text = re.sub(r'\bIsthere\b', 'Is there', text, flags=re.IGNORECASE)
     # Fix "Wherewould" -> "Where would"
     text = re.sub(r'\bWherewould\b', 'Where would', text, flags=re.IGNORECASE)
+    # Fix "a" merged with following word: "abooking" -> "a booking"
+    text = re.sub(r'\ba(booking|breakfast|restaurant|reservation|shuttle|transfer|bar|hotel|room|suite|pool|spa|gym|park|dog|cat|car|taxi|tour|trip|table|meal|drink|menu)\b', r'a \1', text)
     # Fix missing space: lowercase-to-uppercase word joints (common LLM glitch)
     text = re.sub(r'\byouare\b', 'you are', text, flags=re.IGNORECASE)
     text = re.sub(r'\byouhave\b', 'you have', text, flags=re.IGNORECASE)
@@ -1054,6 +1056,7 @@ def _detect_topic(message: str) -> str:
         "children": ["child", "kid", "baby", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o", "dru\u017eina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
         "room_service": ["room_service", "room service", "in-room dining", "food to room", "order food", "food to my room", "dining in my room", "meal to room", "bring food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
+        "gym": ["gym", "fitness", "workout", "exercise", "treadmill", "weights"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
@@ -1083,7 +1086,10 @@ def _detect_topic(message: str) -> str:
     if _matches(msg_raw, ["book", "reserve", "rezervir", "buchen", "prenotare", "réserver", "reservar"]) and _matches(msg_raw, ["room", "suite", "zimmer", "camera", "chambre", "habitaci", "sobe", "soba"]):
         return "booking"
     # Priority: "get to [place]" / "how do i get to" should map to location/directions
+    # BUT if "airport" is mentioned, map to shuttle instead
     if _matches(msg_raw, ["get to", "how do i get", "how to get", "directions to", "way to", "reach the", "reach bled"]):
+        if _matches(msg_raw, ["airport", "ljubljana", "brnik", "transfer"]):
+            return "shuttle"
         return "location"
     for topic, keywords in topic_keywords.items():
         if _matches(msg_word, keywords):
@@ -1140,16 +1146,21 @@ def get_hotel_info_response(topic, question):
         "contact": ["contact", "phone", "email", "call", "reach"],
         "room_service": ["room service", "in-room dining", "food to room"],
         "shuttle": ["shuttle", "transfer", "airport"],
+        "gym": ["gym", "fitness", "workout", "exercise"],
         "general": ["general", "info", "information", "about", "tell me"],
     }
 
     # Detect actual topic from question if topic is generic
     actual_topic = topic
     if topic in ("general", "policies"):
-        for t, aliases in topic_aliases.items():
-            if any(a in q for a in aliases):
-                actual_topic = t
-                break
+        # Check cancellation first (before policies) since "cancellation policy" contains both keywords
+        if any(a in q for a in ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"]):
+            actual_topic = "cancellation"
+        else:
+            for t, aliases in topic_aliases.items():
+                if any(a in q for a in aliases):
+                    actual_topic = t
+                    break
 
     # Override: dietary questions should always go to breakfast/dining
     if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
@@ -1460,6 +1471,16 @@ def get_hotel_info_response(topic, question):
         return (
             f"You can reach us at {h['location']['phone']} or {h['location']['email']}. "
             f"Or just keep chatting with me — I'm here to help! What else would you like to know?"
+        )
+
+    # Gym / Fitness
+    if actual_topic == "gym":
+        return (
+            "Villa Adora Bled does not have an on-site gym, but our sister property Villa Pomona "
+            "features a full wellness area with sauna. For active guests, Bled offers excellent "
+            "outdoor fitness options — jogging around the lake, hiking trails, swimming, "
+            "kayaking, and paddleboarding. "
+            "Would you like me to suggest some great running routes or outdoor activities?"
         )
 
     # Amenities
@@ -1782,7 +1803,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies", "gym"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -1912,7 +1933,7 @@ def api_chat():
                     if ci < _date.today() or co < _date.today():
                         tool_reply = (
                             "I notice those dates are in the past. Could you please "
-                            "provide your actual travel dates? I'm happy to help with your booking!"
+                            "provide your actual travel dates so I can help with your booking?"
                         )
                         replies.append({"type": "text", "content": tool_reply})
                         continue
