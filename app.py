@@ -626,6 +626,7 @@ def build_system_prompt() -> str:
         "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
         "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
         "- Human agent: use request_human_agent() when guest needs human help. Always offer this as an option if the guest seems unhappy.\n"
+        "- NEVER invent or hallucinate services, amenities, or policies that are not explicitly listed in the hotel data. If asked about something not in your knowledge (e.g., childcare, pet spa, room delivery from external restaurants), politely say the hotel does not offer that specific service and suggest an alternative or offer to connect with a human agent.\n"
     )
 
 
@@ -977,6 +978,9 @@ def get_hotel_info_response(topic, question):
                 if num_word + " " in q or " " + num_word + " " in q:
                     num_people = num_val
                     break
+            # If no number found but family/children keywords present, default to 4
+            if num_people is None and any(word in q for word in ["family", "children", "kids", "družina", "otroci", "kinder", "enfants", "bambini", "niños", "familie", "gruppe", "grupo", "famille", "famiglia", "gostje", "gostov"]):
+                num_people = 4
             suitable = []
             all_rooms = []
             for r in h["rooms"].values():
@@ -1135,8 +1139,9 @@ def get_hotel_info_response(topic, question):
     # Smoking
     if actual_topic == "smoking":
         return (
-            f"{h['policies']['smoking']}. "
-            f"Is there anything else I can help you with?"
+            "Villa Adora Bled is a non-smoking property — all rooms and indoor areas are smoke-free. "
+            "However, guests may smoke on the outdoor terrace. "
+            "Is there anything else I can help you with?"
         )
 
     # Experiences
@@ -1244,6 +1249,25 @@ def get_hotel_info_response(topic, question):
 app = Flask(__name__)
 sessions = {}
 
+MAX_SESSIONS = 500
+
+def _prune_sessions():
+    """Prune oldest sessions when limit is reached to prevent memory leak."""
+    global sessions
+    if len(sessions) > MAX_SESSIONS:
+        keys = list(sessions.keys())
+        for key in keys[:len(keys) // 2]:
+            sessions.pop(key, None)
+
+_request_count = 0
+
+@app.before_request
+def _check_prune():
+    global _request_count
+    _request_count += 1
+    if _request_count % 100 == 0:
+        _prune_sessions()
+
 
 @app.route("/")
 def index():
@@ -1256,7 +1280,7 @@ def api_chat():
     session_id = data.get("session_id", "default")
     user_message = data.get("message", "")
     if not user_message.strip():
-        return jsonify({"replies": [{"type": "text", "content": "Empty input."}]})
+        return jsonify({"replies": [{"type": "text", "content": "Hello! How can I help you today? Feel free to ask about our rooms, restaurant, activities, or anything else about Villa Adora Bled!"}]})
     if len(user_message) > 500:
         user_message = user_message[:500]
     if session_id not in sessions:
@@ -1373,6 +1397,33 @@ def api_chat():
                     response_text = _ensure_follow_up(response_text, "", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
             # late_check_in / late_check_out go through LLM to enable calendar event extraction
+
+        # Handle English social messages (greetings, thanks, goodbyes) directly to avoid LLM failures
+        if not is_non_english and topic == "general":
+            msg_lower = user_message.strip().lower()
+            social_patterns = {
+                "greeting": ["hello", "hi ", "hey ", "good morning", "good evening", "good night", "good afternoon", "how are you", "how do you do"],
+                "thanks": ["thank", "thanks", "thanks a lot", "thank you"],
+                "goodbye": ["goodbye", "bye ", "see you", "farewell"],
+            }
+            is_social = False
+            social_type = ""
+            for stype, patterns in social_patterns.items():
+                if any(p in msg_lower for p in patterns):
+                    is_social = True
+                    social_type = stype
+                    break
+            if is_social and len(user_message.strip()) < 50:
+                social_responses = {
+                    "greeting": "Hello! Welcome to Villa Adora Bled! How can I help make your stay special today?",
+                    "thanks": "You're very welcome! Is there anything else I can help you with today?",
+                    "goodbye": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels!",
+                }
+                response_text = social_responses.get(social_type, social_responses["greeting"])
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": response_text})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
         # For non-English messages, exclude query_hotel_info and book_room tools:
         # - hotel data is provided via context (translated by the code)
