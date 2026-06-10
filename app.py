@@ -365,34 +365,34 @@ _LOCATION_TRANSLATED = {
 
 _BREAKFAST_TRANSLATED = {
     "Slovenian": (
-        "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. "
+        "Zajtrk stane 22 € na osobo — postrežen med 8. in 10. uro na terasi s pogledom na jezero. "
         "Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. "
         "Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. "
         "Imate kakšne prehranske omejitve, o katerih bi morali vedeti?"
     ),
     "German": (
-        "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. "
+        "Frühstück kostet 22 € pro Person — serviert von 8 bis 10 Uhr auf der Terrasse mit Seeblick. "
         "Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. "
         "Vegane, vegetäre und glutenfreie Optionen auf Anfrage. "
         "Haben Sie irgendwelche Ernährungseinschränkungen, die wir wissen sollten?"
     ),
     "French": (
-        "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. "
+        "Le petit-déjeuner coûte 22 € par personne — servi de 8h à 10h sur la terrasse avec vue sur le lac. "
         "Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. "
         "Options végétaliennes, végétariennes et sans gluten sur demande. "
         "Avez-vous des restrictions alimentaires que nous devrions connaître?"
     ),
     "Italian": (
-        "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. "
+        "La colazione costa 22 € a persona — servita dalle 8 alle 10 sulla terrazza con vista sul lago. "
         "Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. "
         "Opzioni vegane, vegetariane e senza glutine su richiesta. "
         "Hai delle restrizioni alimentari che dovremmo sapere?"
     ),
     "Spanish": (
-        "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. "
+        "El desayuno cuesta 22 € por persona — servido de 8 a 10 AM en la terraza con vistas al lago. "
         "Buffet rico con pasteles frescos, pan y productos locales eslovenos. "
         "Opciones veganas, vegetarianas y sin gluten bajo pedido. "
-        "¿Tiene alguna restricción alimentaria que debamos conocer?"
+        "¿Tiene restricciones alimentarias que debamos conocer?"
     ),
 }
 
@@ -688,12 +688,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
             fallbacks = {
-                "Slovenian": "Zajtrk je vključen v ceno nočitve — postrežen med 7:30 in 10:30 na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
-                "German": "Frühstück ist im Zimmerpreis inbegriffen — serviert von 7:30 bis 10:30 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
-                "French": "Le petit-déjeuner est inclus dans le prix de la chambre — servi de 7h30 à 10h30 sur la terrasse avec vue sur le lac. Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. Options végétaliennes, végétariennes et sans gluten sur demande. Avez-vous des restrictions alimentaires ?",
-                "Italian": "La colazione è inclusa nel prezzo della camera — servita dalle 7:30 alle 10:30 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
-                "Spanish": "El desayuno está incluido en el precio de la habitación — servido de 7:30 a 10:30 en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
-                "Croatian": "Doručak je uključen u cijenu sobe — poslužuje se od 7:30 do 10:30 na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
+                "Slovenian": "Zajtrk stane 22 € na osobo — postrežen med 8. in 10. uro na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
+                "German": "Frühstück kostet 22 € pro Person — serviert von 8 bis 10 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
+                "French": "Le petit-déjeuner coûte 22 € par personne — servi de 8h à 10h sur la terrasse avec vue sur le lac. Buffet riche avec pâtisseries fraîches, pain et produits locaux slovènes. Options végétaliennes, végétariennes et sans gluten sur demande. Avez-vous des restrictions alimentaires ?",
+                "Italian": "La colazione costa 22 € a persona — servita dalle 8 alle 10 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
+                "Spanish": "El desayuno cuesta 22 € por persona — servido de 8 a 10 AM en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
+                "Croatian": "Doručak košta 22 € po osobi — poslužuje se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
             }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -1045,7 +1045,7 @@ def build_system_prompt() -> str:
         "KEY FACTS:\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00\n"
         "- Late check-in/out: Available on request, contact reception\n"
-        "Breakfast: Included in the room rate (complimentary). Served daily 7:30-10:30 AM on the terrace with lake views. Rich buffet with fresh pastries, bread, local Slovenian products. Vegan, vegetarian, and gluten-free options available on request.",
+        "- Breakfast: €22 per person (NOT included in room rate — it is an additional charge). Served 8-10 AM. Continental, vegan, vegetarian, gluten-free options available on request.\n"
         "- Restaurant: Adora Pop Up Restaurant — creative Slovenian cuisine with French, Italian, and international influences by Chef Domen Demšar. Lunch/dinner Tue-Sun, brunch Thu-Sat. Terrace with best lake views in Bled. Tasting menu ~€65/person, wine pairing ~€35/person. Reservations: +386 40 558 158 or evita.vilebled@gmail.com\n"
         "- Wine list: curated Slovenian and international wines by in-house expert. Wine pairing available with tasting menu (~€35/person).\n"
         "- Bar: cocktails and aperitivos daily on terrace with panoramic lake views. If guest asks about bar AND wine, mention both: cocktails and our curated wine list.\n"
@@ -1235,7 +1235,7 @@ def _detect_topic(message: str) -> str:
         "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "nearby", "near", "how close", "how near", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
-        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attivitu00e0", "activitu00e9", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
+        "experiences": ["experience", "activity", "activities", "thing to do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "aktivnost", "attività", "activité", "actividad", "night", "evening", "nightlife", "evening activities", "night activities", "after dark", "sunset", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
         "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
@@ -1419,6 +1419,7 @@ def get_hotel_info_response(topic, question):
                 )
         return (
             f"Check-in is from {h['policies']['check_in']}, and check-out is by {h['policies']['check_out']}. "
+            f"Please bring a photo ID and credit card for check-in. "
             f"Late check-in or check-out can also be arranged on request — just let us know your plans! "
             f"Would you like help with a reservation?"
         )
@@ -1540,7 +1541,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "policies":
         return (
             f"Check-in: {h['policies']['check_in']}. Check-out: {h['policies']['check_out']}. "
-            f"Breakfast is included in the room rate (complimentary). Free parking and WiFi. Pets allowed on request. "
+            f"Breakfast is €22 per person (not included in room rate). Free parking and WiFi. Pets allowed on request. "
             f"Is there a specific policy you'd like to know more about?"
         )
 
@@ -1551,17 +1552,16 @@ def get_hotel_info_response(topic, question):
             dietary = b.get("dietary", {})
             if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
                 return (
-                    f"Breakfast is included in your room rate (complimentary), served 7:30-10:30 AM on the terrace with lake views. "
+                    f"Breakfast is €22 per person, served 8-10 AM in our dining room. "
                     f"We're happy to accommodate dietary needs — just let us know when you book! "
                     f"We offer vegan, vegetarian, and gluten-free options on request, "
                     f"and can handle allergies and other dietary requirements with advance notice. "
-                    f"Would you like to add a note about your dietary preferences to your booking?"
+                    f"Would you like to add breakfast to your booking?"
                 )
             return (
-                f"Breakfast is included in your room rate (complimentary), served daily 7:30-10:30 AM on the terrace with lake views. "
-                f"Rich buffet with fresh pastries, bread, and local Slovenian products. "
+                f"Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
                 f"We also offer vegan, vegetarian, and gluten-free options on request. "
-                f"Shall I add a note about any dietary preferences to your booking?"
+                f"Shall I add breakfast to your booking?"
             )
         return (
             f"{b} "
@@ -1572,7 +1572,7 @@ def get_hotel_info_response(topic, question):
     # Restaurant
     if actual_topic == "restaurant":
         r = h.get("dining", {}).get("restaurant", {})
-        # Check if query is about dietary needs
+        # If asking about dietary needs, highlight Chef Demšar's accommodations
         if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
             return (
                 f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
@@ -1582,6 +1582,14 @@ def get_hotel_info_response(topic, question):
                 f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
                 f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
                 f"Would you like to make a reservation and note your dietary preferences?"
+            )
+        # If asking specifically about the chef, highlight Chef Domen Demšar
+        if any(word in q for word in ["chef", "domen", "demšar", "demar", "kuhar", "küchenchef", "chef de cuisine", "cocinero", "cuoco"]):
+            return (
+                f"Our restaurant is led by renowned Chef Domen Demšar! "
+                f"He's known for creative, locally inspired Slovenian dishes with French, Italian, and international influences, "
+                f"using top-quality regional ingredients. He's also very accommodating with dietary needs and allergies. "
+                f"Would you like to make a reservation to experience his cooking?"
             )
         return (
             f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
@@ -2228,7 +2236,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
@@ -2551,6 +2559,22 @@ def api_chat():
                 reply["content"] = clean_response(reply["content"])
                 # Anti-hallucination: remove any mention of Castle Suite (not a real room)
                 reply["content"] = re.sub(r'(?i)\bCastle Suite\b[^.\n]*', '', reply["content"])
+                # Anti-hallucination: correct breakfast misinformation
+                # Breakfast is €22/person, NOT included in room rate, served 8-10 AM
+                if re.search(r'(?i)breakfast.*(?:included|complimentary|free)', reply["content"]) or \
+                   re.search(r'(?i)(?:included|complimentary|free).*breakfast', reply["content"]):
+                    # Replace the hallucinated breakfast response with correct info
+                    reply["content"] = (
+                        "Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
+                        "We also offer vegan, vegetarian, and gluten-free options on request. "
+                        "Shall I add breakfast to your booking?"
+                    )
+                # Fix wrong breakfast times (e.g., 7:30-10:30 is wrong, correct is 8-10 AM)
+                reply["content"] = re.sub(
+                    r'(?i)breakfast.*?(?:7\s*[:.]?\s*30|10\s*[:.]?\s*30).*?(?:AM|am)',
+                    'Breakfast is served 8-10 AM',
+                    reply["content"]
+                )
                 # Clean up any double spaces or dangling bullets left by removal
                 reply["content"] = re.sub(r'\n\s*•\s*$', '', reply["content"])
                 reply["content"] = re.sub(r'\n{3,}', '\n\n', reply["content"])
