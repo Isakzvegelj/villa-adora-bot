@@ -1091,6 +1091,8 @@ def _detect_topic(message: str) -> str:
         "room_service": ["room_service", "room service", "in-room dining", "food to room", "order food", "food to my room", "dining in my room", "meal to room", "bring food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
         "gym": ["gym", "fitness", "workout", "exercise", "treadmill", "weights"],
+        "smoking": ["smoke", "smoking", "cigarette", "cigar", "tobacco"],
+        "spa": ["spa", "wellness", "sauna", "massage"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
     }
@@ -1113,6 +1115,15 @@ def _detect_topic(message: str) -> str:
                     return True
         return False
 
+    # Priority: smoking questions should override "room" keyword
+    if _matches(msg_raw, ["smoke", "smoking", "cigarette", "cigar", "tobacco", "kajenje", "kaditi", "rauchen", "zigarette", "cigaretta", "cigare", "cigarrillo"]):
+        return "smoking"
+    # Priority: family/children questions should override "room" keyword
+    if _matches(msg_raw, ["family rooms", "family room", "family suite", "family-friendly", "family friendly", "children room", "kids room", "room for kids", "room for children", "družinski", "otroški", "familienzimmer", "kind", "camer", "chambre enfant"]):
+        return "children"
+    # Priority: spa/wellness specific queries should map directly
+    if _matches(msg_raw, ["spa", "wellness", "sauna", "massage", "wellness area", "wellness center", "wellness centre", "savna", "masaža", "massage", "sauna", "wellness"]):
+        return "spa"
     # Priority: booking intent should override rooms when both keywords present
     # Priority: room_service keywords should override "rooms" when food-related terms present
     if _matches(msg_raw, ["order food", "food to room", "food to my room", "dining in my room", "meal to room", "bring food to room", "in-room dining", "room service", "room_service", "food delivered", "deliver food", "food delivery", "send food", "bring me food", "food in my room", "eat in my room", "dine in my room"]):
@@ -1178,6 +1189,7 @@ def get_hotel_info_response(topic, question):
         "payment": ["payment", "pay", "card", "visa", "mastercard", "cash"],
         "children": ["child", "kid", "baby", "family", "toddler"],
         "smoking": ["smoke", "smoking", "cigarette"],
+        "spa": ["spa", "wellness", "sauna", "massage"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "after hours check in", "night check in"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "after hours check out"],
         "contact": ["contact", "phone", "email", "call", "reach"],
@@ -1470,6 +1482,15 @@ def get_hotel_info_response(topic, question):
             "Is there anything else I can help you with?"
         )
 
+    # Spa / Wellness / Massage
+    if actual_topic == "spa":
+        return (
+            "We offer in-room massage and wellness services — the perfect way to unwind after exploring Bled! "
+            "Please give us 24 hours notice to arrange your spa treatment. "
+            "Our sister property Villa Pomona also features a full wellness area with sauna. "
+            "Would you like me to help you book a massage or learn more about our wellness options?"
+        )
+
     # Swimming pool / spa queries - Villa Adora doesn't have a pool, but Villa Pomona does
     if any(word in q for word in ["swimming pool", "pool", "swim", "plavalni bazen", "badi", "schwimmbad", "natazione", "piscine", "pisina", "piscina"]):
         return (
@@ -1539,8 +1560,8 @@ def get_hotel_info_response(topic, question):
     # Room Service
     if actual_topic == "room_service":
         return (
-            "Room service is available! You can enjoy meals and drinks in the comfort of your suite. "
-            "Our kitchen can accommodate dietary requirements — just let us know your preferences. "
+            "Room service is available! You can order food and drinks to enjoy in the comfort of your suite. "
+            "Our kitchen can accommodate dietary requirements — just let us know your preferences when you order. "
             "Would you like to know about our dining options or restaurant menu as well?"
         )
 
@@ -1910,7 +1931,7 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather", "cancellation", "policies", "gym"):
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
