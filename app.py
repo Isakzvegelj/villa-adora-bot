@@ -510,12 +510,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     # Detect topic for a more relevant fallback
     if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
         fallbacks = {
-            "Slovenian": "Imamo 7 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
-            "German": "Wir haben 7 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
-            "French": "Nous avons 7 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
-            "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
-            "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
-            "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
+            "Slovenian": "Imamo 8 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
+            "German": "Wir haben 8 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
+            "French": "Nous avons 8 magnifiques suites avec vue sur le lac. Toutes disposent d'une salle de bain privée, de la climatisation, du WiFi gratuit et de la télévision. Laquelle vous intéresse le plus? Je peux vous en dire plus?",
+            "Italian": "Abbiamo 8 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
+            "Spanish": "Tenemos 8 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
+            "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
@@ -537,12 +537,12 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
         }
     else:
         fallbacks = {
-            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 7 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
-            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 7 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
-            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 7 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
-            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
-            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
-            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
+            "Slovenian": "Villa Adora Bled je butični hotel ob jezeru Bled. Imamo 8 edinstvenih apartmajev z razgledom na jezero, restavracijo, brezplačno parkiranje in WiFi. Kaj vas zanima? Z veseljem vam pomagam?",
+            "German": "Villa Adora Bled ist ein Boutique-Hotel am See Bled. Wir haben 8 einzigartige Suiten mit Seeblick, ein Restaurant, kostenloses Parken und WLAN. Was möchten Sie wissen? Ich helfe Ihnen gerne?",
+            "French": "Villa Adora Bled est un hôtel de charme au lac Bled. Nous avons 8 suites uniques avec vue sur le lac, un restaurant, un parking gratuit et le WiFi. Que souhaitez-vous savoir? Je serai ravi de vous aider?",
+            "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 8 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
+            "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 8 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
+            "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 8 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
         }
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
@@ -818,7 +818,7 @@ def build_system_prompt() -> str:
         "- Detect the guest's language from their message and respond in the SAME language.\n"
         "- Supported languages: English, Slovenian (Slovenščina), German (Deutsch), Italian (Italiano), French (Français), Spanish (Español), Croatian (Hrvatski), Serbian (Srpski).\n"
         "- When a tool returns English information, you MUST translate it to the guest's language. This is NON-NEGOTIABLE.\n"
-        "- Example: If guest writes in Slovenian and the tool returns 'We have 7 beautiful suites', you must respond with 'Imamo 7 čudovitih apartmajev' — NOT the English text.\n"
+        "- Example: If guest writes in Slovenian and the tool returns 'We have 8 beautiful suites', you must respond with 'Imamo 8 čudovitih apartmajev' — NOT the English text.\n"
         "- If the guest writes in French, you must respond in French. If in German, respond in German. ALWAYS match the guest's language.\n"
         "- Keep the same warm, concise style regardless of language.\n\n"
         "STYLE:\n"
@@ -1595,6 +1595,23 @@ def api_chat():
                 response_text = _ensure_follow_up(response_text, topic if topic in ("rooms", "experiences", "activities") else "", detected_lang)
                 return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
+            # For non-English booking intents, return a translated prompt for short
+            # messages, or let the LLM handle it (with book_room tool) for longer ones.
+            if topic == "booking" and len(user_message.strip()) < 30:
+                booking_prompts = {
+                    "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 8 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
+                    "German": "Ich helfe gerne bei der Buchung! Wir haben 8 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
+                    "French": "Je serai ravi de vous aider à réserver ! Nous avons 8 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
+                    "Italian": "Sarò felice di aiutarti con la prenotazione! Abbiamo 8 splendide suite con vista sul lago. Mi servono il tuo nome, le date e la suite preferita. Quale ti piace di più?",
+                    "Spanish": "¡Estaré encantado de ayudarte con la reserva! Tenemos 8 hermosas suites con vistas al lago. Necesito tu nombre, las fechas y la suite preferida. ¿Cuál te gusta más?",
+                    "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 8 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
+                }
+                direct_response = booking_prompts.get(detected_lang, booking_prompts["Slovenian"])
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": direct_response})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": direct_response}]})
+
             # Handle social messages (greetings, thanks, goodbyes) directly to avoid LLM language issues
             social_keywords = {
                 "English": ["thank", "thanks", "hello", "hi ", "hey", "goodbye", "bye", "good morning", "good evening", "good night", "good afternoon", "how are you", "how do you do", "welcome"],
@@ -1647,14 +1664,20 @@ def api_chat():
                     response_text = _ensure_follow_up(response_text, "experiences", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
             elif topic == "booking":
-                hotel_answer = get_hotel_info_response("booking", user_message)
-                if hotel_answer and hotel_answer.strip():
-                    messages.append({"role": "user", "content": user_message})
-                    messages.append({"role": "assistant", "content": hotel_answer})
-                    sessions[session_id] = messages
-                    response_text = _ensure_ends_with_question(hotel_answer)
-                    response_text = _ensure_follow_up(response_text, "rooms", "English")
-                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                # Let the LLM handle booking with the book_room tool — it can extract
+                # name, dates, and room from the user's message in one go.
+                # Only return the static prompt if the message is very short (likely
+                # just "I want to book" without details).
+                if len(user_message.strip()) < 30:
+                    hotel_answer = get_hotel_info_response("booking", user_message)
+                    if hotel_answer and hotel_answer.strip():
+                        messages.append({"role": "user", "content": user_message})
+                        messages.append({"role": "assistant", "content": hotel_answer})
+                        sessions[session_id] = messages
+                        response_text = _ensure_ends_with_question(hotel_answer)
+                        response_text = _ensure_follow_up(response_text, "rooms", "English")
+                        return jsonify({"replies": [{"type": "text", "content": response_text}]})
+                # Otherwise fall through to LLM with book_room tool available
             elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "weather"):
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
@@ -1693,15 +1716,11 @@ def api_chat():
                 sessions[session_id] = messages
                 return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
-        # For non-English messages, exclude query_hotel_info and book_room tools:
-        # - hotel data is provided via context (translated by the code)
-        # - book_room is excluded because LLMs hallucinate booking details in non-English
-        #   (e.g., fabricated names, past dates). Booking is handled via English flow or
-        #   the booking intent topic which returns a form asking for details.
-        #   Shuttle booking is kept because guests rarely book shuttles in other languages
-        #   without providing details explicitly.
+        # For non-English messages, include book_room but with strict validation
+        # on the Python side (dates, placeholder names, etc. are all checked).
+        # Shuttle booking and human agent transfer are always available.
         if is_non_english:
-            available_tools = [book_shuttle_function, request_human_agent_function]
+            available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
 
