@@ -132,7 +132,7 @@ request_human_agent_function = {
 
 _ROOM_LISTINGS_TRANSLATED = {
     "Slovenian": (
-        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
+        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\\n"
         "• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
         "• Luksuzni apartmaj, za 2 osebi — Razgled na jezero, elegantna dekoracija\n"
         "• Penthouse apartmaj, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n"
@@ -144,7 +144,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
     "German": (
-        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
+        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\\n"
         "• Prinzessin Suite, 55 m², für 2 Gäste — Seeblick vom Turm, Wohnbereich\n"
         "• Luxus Suite, für 2 Gäste — Seeblick, elegante Einrichtung\n"
         "• Penthouse Suite, 60 m², für 2 Gäste — 2 Etagen, Kingsize-Bett\n"
@@ -156,7 +156,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
     "French": (
-        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\n"
+        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\\n"
         "• Suite Princesse, 55 m², pour 2 personnes — Vue sur le lac depuis la tour, salon\n"
         "• Suite de Luxe, pour 2 personnes — Vue sur le lac, décoration élégante\n"
         "• Suite Penthouse, 60 m², pour 2 personnes — 2 étages, lit king-size\n"
@@ -168,7 +168,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
-        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\n"
+        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\\n"
         "• Suite Principessa, 55 m², per 2 persone — Vista lago dalla torre, zona living\n"
         "• Suite Luxury, per 2 persone — Vista lago, arredi eleganti\n"
         "• Suite Penthouse, 60 m², per 2 persone — 2 piani, letto king size\n"
@@ -180,7 +180,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
     "Spanish": (
-        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\n"
+        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\\n"
         "• Suite Princesa, 55 m², para 2 personas — Vista al lago desde la torre, zona de estar\n"
         "• Suite de Lujo, para 2 personas — Vista al lago, decoración elegante\n"
         "• Suite Penthouse, 60 m², para 2 personas — 2 pisos, cama king size\n"
@@ -1138,7 +1138,7 @@ def build_system_prompt() -> str:
         "- NEVER invent or hallucinate services, amenities, or policies not in the hotel data.\n"
         "- Villa Adora does NOT have a spa, wellness center, or swimming pool — only in-room massage (24h notice).\n"
         "- NEVER use the words 'spa', 'wellness center', or 'treatment' — say 'in-room massage' instead.\n"
-        "- NEVER say '7 rooms' — there are EXACTLY 8 suites. NEVER add suites not in the official list.\n"
+        "- There are EXACTLY 8 suites. NEVER say '7 suites' or '7 rooms'. NEVER add suites not in the official list (no 'Royal Suite', etc.)."
         "- If guest is frustrated or explicitly asks for a human, use request_human_agent().\n"
         "- ALWAYS use query_hotel_info tool for factual questions — never answer from your own knowledge.\n\n"
         "## KEY FACTS\n"
@@ -1152,7 +1152,7 @@ def build_system_prompt() -> str:
         "- Address: Cesta svobode 35, Bled, Slovenia | Phone/WhatsApp: +386 51 603 858\n"
         "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
         "## ROOMS (EXACT — never invent or add others)\n"
-        "Princess Suite (55 m², tower view, €440), Luxury Suite (lake view, €480), Penthouse Suite (60 m², 2 floors, €430), Deluxe Suite (lake view, €570), Superior Suite (sleeps 4, €570), Island Suite (65 m², sleeps 4, €620), Swan Suite (67 m², King bed, price on request), Prestige Suite (72 m², ground floor, price on request).\n\n"
+        "• Princess Suite (55 m², tower view, €440), Luxury Suite (lake view, €480), Penthouse Suite (60 m², 2 floors, €430), Deluxe Suite (lake view, €570), Superior Suite (sleeps 4, €570), Island Suite (65 m², sleeps 4, €620), Swan Suite (67 m², King bed, price on request), Prestige Suite (72 m², ground floor, price on request). All 8 suites have lake views."
         "## HISTORY\n"
         "Villa Adora was built in 1878 as a private villa during the Austro-Hungarian era, when Bled was a fashionable resort for European aristocracy. Originally known as Vila Istra, it was carefully converted into a luxury design hotel. The villa is heritage-protected under Slovenian cultural heritage laws."
     )
@@ -1563,16 +1563,9 @@ def get_hotel_info_response(topic, question):
                     actual_topic = t
                     break
 
-    # Override: dietary questions should go to breakfast/dining, unless specifically about restaurant/dinner
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "vegane opcije", "vegetarijanske opcije", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
-        # If query is specifically about restaurant dining, keep restaurant topic
-        if any(word in q for word in ["dinner", "lunch", "restaurant", "eat", "meal", "food", "menu", "chef", "dining"]):
-            actual_topic = "restaurant"
-        elif any(word in q for word in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]):
-            # General dietary accommodation questions — route to restaurant for richer response
-            actual_topic = "restaurant"
-        else:
-            actual_topic = "breakfast"
+    # Override: dietary questions should go to restaurant, not breakfast
+    if actual_topic not in ("restaurant",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "vegane opcije", "vegetarijanske opcije", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
+        actual_topic = "restaurant"
 
     # Check-in / Check-out
     if actual_topic in ("check_in", "check_out"):
@@ -1623,7 +1616,7 @@ def get_hotel_info_response(topic, question):
             return (
                 f"Late check-out is available on request, subject to availability. Additional fees may apply. "
                 f"Our standard check-out is {h['policies']['check_out']}. "
-                f"What time would you like?"
+                f"What time would you prefer to check out?"
             )
 
     # Rooms
@@ -2415,12 +2408,12 @@ def api_chat():
             if topic == "booking" and len(user_message.strip()) < 30:
                 booking_prompts = {
                     "English": "I'd be happy to help you book! We have 8 beautiful suites with lake views. I just need your name, dates, and preferred suite. Which one catches your eye?",
-                    "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 8 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
-                    "German": "Ich helfe gerne bei der Buchung! Wir haben 8 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
-                    "French": "Je serai ravi de vous aider à réserver ! Nous avons 8 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
-                    "Italian": "Sarò felice di aiutarti con la prenotazione! Abbiamo 8 splendide suite con vista sul lago. Mi servono il tuo nome, le date e la suite preferita. Quale ti piace di più?",
-                    "Spanish": "¡Estaré encantado de ayudarte con la reserva! Tenemos 8 hermosas suites con vistas al lago. Necesito tu nombre, las fechas y la suite preferida. ¿Cuál te gusta más?",
-                    "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 8 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
+                    "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 7 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
+                    "German": "Ich helfe gerne bei der Buchung! Wir haben 7 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
+                    "French": "Je serai ravi de vous aider à réserver ! Nous avons 7 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
+                    "Italian": "Sarò felice di aiutarti con la prenotazione! Abbiamo 7 splendide suite con vista sul lago. Mi servono il tuo nome, le date e la suite preferita. Quale ti piace di più?",
+                    "Spanish": "¡Estaré encantado de ayudarte con la reserva! Tenemos 7 hermosas suites con vistas al lago. Necesito tu nombre, las fechas y la suite preferida. ¿Cuál te gusta más?",
+                    "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 7 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
                 }
                 direct_response = booking_prompts.get(detected_lang, booking_prompts["Slovenian"])
                 messages.append({"role": "user", "content": user_message})
