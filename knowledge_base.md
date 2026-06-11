@@ -108,14 +108,12 @@
 - Laundry service
 - Shuttle service / Airport transfer
 - 24h guest support
-- Business center, meeting room
 - Garden with lake views and small pavilion
 - Terrace, outdoor sitting area
 - Hotel boats for hire
 - Bicycle rental
 - Massage (in-room, 24 hours notice required)
 - Express check-in/check-out
-- Arcade/Video games
 - Non-smoking property
 - Child friendly
 
@@ -301,9 +299,8 @@
 - Guest satisfaction: Cleanliness 9.2, Comfort 9.4, Staff 9.2 (Booking.com)
 - **TripAdvisor:** 4.7/5 rating (275 reviews), Travelers' Choice award (top 10%), #4 of 71 B&Bs in Bled
 - **TripAdvisor ratings:** Location 4.9, Cleanliness 4.8, Rooms 4.7, Service 4.7, Sleep Quality 4.7
-- **Free shuttle service** to Bled center during off-season when walkways are inaccessible
 - **Languages spoken:** English, Russian, Croatian, German, and 3 others
-- **Room features:** Allergy-free rooms, bathrobes, fireplace, minibar, bidet, housekeeping
+- **Room features:** Minibar, housekeeping, and in-room amenities vary by suite
 
 ## Frequently Asked Questions (FAQ)
 
@@ -311,13 +308,12 @@
 - **From Ljubljana Airport:** 35 km, ~30 min by car. We can arrange airport transfer — contact us to book.
 - **From Ljubljana Train Station:** Take the train to Bled Jesenice station (45-60 min), then a short taxi ride.
 - **By Car:** Free private parking with 8 spots available on a first-come basis. GPS: Cesta svobode 35, 4260 Bled.
-- **Shuttle Service:** Free shuttle to Bled center available during off-season.
+- **Shuttle Service:** Shuttle service available on request; prices vary by route.
 
 ### Parking
 - 8 free private parking spots available on-site
 - First-come, first-served basis
 - No reservation needed for parking
-- EV charging available on request
 
 ### Pets
 - Pets are welcome on request
@@ -327,14 +323,12 @@
 
 ### Children
 - Children of all ages are welcome
-- Cribs available on request (please book in advance)
-- Child-friendly property
-- Arcade/video games available
+- Cribs and extra beds are not available
+- Family-friendly options: Superior Suite and Island Suite (both 2 bedrooms, sleep 4)
 
 ### Wellness & Massage
-- In-room massage available 24/7 with 24 hours notice
-- Highly recommended by guests
-- Various massage types available
+- In-room massage available with 24 hours notice
+- No spa, wellness center, or swimming pool on-site
 - Book through reception or email
 
 ### Restaurant Reservations
@@ -418,33 +412,21 @@
 
 ## Special Events & Experiences
 
-### Wedding & Celebration Packages
-- Villa Adora is available for intimate weddings and celebrations
-- Maximum 30 guests for garden events
-- In-house catering available
-- Wedding coordinator on request
-- Prestige Suite is popular for wedding nights
-- **Garden Ceremony Package (from €3,500):** Includes garden setup for up to 30 guests, floral arrangements, champagne toast, 3-course dinner, and wedding night in the Prestige Suite
-- **Full Villa Buyout (from €12,000/night):** All 8 suites for up to 16 guests, exclusive use of the garden and terrace, private chef for all meals, and dedicated wedding coordinator
-- **Elopement Package (from €1,200):** 2-night stay in a luxury suite, champagne and chocolates on arrival, couples massage, private dinner on the terrace, and pletna boat ride at sunset
-- **Anniversary Package (from €800):** Rose petals and champagne on arrival, 4-course dinner for two on the terrace, couples massage, and late check-out
-- All wedding packages can be customized — contact us for a personalized quote
-- Preferred wedding vendors list available on request (photographers, florists, musicians)
-- Garden pavilion available for cocktail receptions
-- Indoor backup space available in case of rain
+### Wedding & Private Celebrations
+- Villa Adora is available for intimate weddings and private celebrations
+- For dates, options, catering, and any extra services, please contact reception directly
+- The concierge can help start an inquiry with the hotel team
 
-### Corporate Retreats
-- Meeting room available for up to 20 people
-- Team-building activities can be arranged
-- Full villa buyout possible for groups
-- Catering and AV equipment available
+### Corporate & Group Stays
+- All suites include work desks and reliable high-speed WiFi
+- Airport transfers, local transport, and custom shuttle routes can be arranged
+- For meetings, retreats, or group stays, contact reception to discuss what is possible for your dates
 
 ### Romantic Packages
-- Rose petals, champagne, and chocolates on arrival
-- Couples massage in wellness center
-- Private dinner on the terrace
-- Pletna boat ride to the island at sunset
-- Contact concierge to arrange
+- Rose petals, champagne, and chocolates on arrival can be requested through the concierge
+- In-room massage can be arranged with 24 hours notice
+- Private dinners or boat experiences may be arranged through the concierge when available
+- Contact concierge to discuss your preferred date and details
 
 ## Frequently Asked Questions (Extended)
 
@@ -466,15 +448,13 @@
 - Directly on the lake shore — one of the few hotels with this prime position
 - Heritage villa from 1878 with modern luxury
 - Personalized concierge service
-- Complimentary bike rental, free parking, and free WiFi
+- Bicycle rental, free parking, and free WiFi
 
 ### Is Villa Adora suitable for business travelers?
 - Yes, all suites have work desks
 - Reliable high-speed WiFi throughout
-- Meeting room available for up to 20 people
-- Business center services
-- Airport transfer available
 - Quiet environment ideal for focused work
+- Airport transfer and local transport can be arranged
 
 ## Room Comparison Guide
 

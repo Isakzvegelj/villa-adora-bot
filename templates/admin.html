@@ -10,6 +10,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid rgba(240,230,211,0.15);padding-bottom:1rem}
 .header h1{font-size:1.5rem;font-weight:400;color:#f0e6d3;letter-spacing:1px}
 .header .subtitle{font-size:0.8rem;color:#7a8a9e;margin-top:0.2rem}
+.header-actions{display:flex;gap:0.5rem;align-items:center}
+.export-btn{background:rgba(212,184,122,0.18);color:#f0e6d3;border:1px solid rgba(212,184,122,0.35);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.85rem;transition:background 0.2s}
+.export-btn:hover{background:rgba(212,184,122,0.3)}
+.last-updated{font-size:0.72rem;color:#7a8a9e;white-space:nowrap}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem}
 .stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(240,230,211,0.1);border-radius:12px;padding:1.2rem}
 .stat-card .label{font-size:0.75rem;color:#7a8a9e;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem}
@@ -35,8 +39,8 @@ td{max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </head>
 <body>
 <div class="header">
-<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard &mdash; Real-time overview of hotel operations</div></div>
-<button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+<div><h1>Villa Adora Bled</h1><div class="subtitle">Admin Dashboard &mdash; Real-time overview of hotel operations</div><div class="last-updated" id="lastUpdated">Last updated: --</div></div>
+<div class="header-actions"><button class="export-btn" onclick="exportCsv('bookings')">Export bookings</button><button class="export-btn" onclick="exportCsv('calendar')">Export calendar</button><button class="refresh-btn" onclick="loadAll()">↻ Refresh</button></div>
 </div>
 <div class="stats-grid">
 <div class="stat-card"><div class="label">Total Bookings</div><div class="value" id="bookingCount">-</div></div>
@@ -111,7 +115,22 @@ async function loadHumanRequests(){
     tbody.innerHTML=data.requests.map(r=>'<tr><td>'+r.id+'</td><td>'+esc(r.reason)+'</td><td>'+esc(r.guest_name)+'</td><td title="'+esc(r.summary||'')+'">'+esc((r.summary||'').substring(0,40))+'</td><td>'+esc(r.created_at||'')+'</td></tr>').join('');
   }catch(e){console.error(e)}
 }
-function loadAll(){loadBookings();loadCalendar();loadShuttles();loadHumanRequests()}
+function loadAll(){loadBookings();loadCalendar();loadShuttles();loadHumanRequests();document.getElementById('lastUpdated').textContent='Last updated: '+new Date().toLocaleString()}
+async function exportCsv(type){
+  try{
+    const res=await fetch(`/api/export?type=${encodeURIComponent(type)}`);
+    if(!res.ok) throw new Error('Export failed');
+    const blob=await res.blob();
+    const url=window.URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`villa-adora-${type}-${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  }catch(e){console.error(e);alert('Export failed. Please try again.')}
+}
 loadAll();setInterval(loadAll,30000);
 </script>
 </body>

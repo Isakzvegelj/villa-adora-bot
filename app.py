@@ -6,7 +6,7 @@ from openai import OpenAI
 from database import add_booking, init_db, add_calendar_event, get_all_calendar_events
 from hotel_data import hotel_info
 import sqlite3
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 try:
     from rag import retrieve as rag_retrieve
     _RAG_AVAILABLE = True
@@ -998,6 +998,63 @@ def extract_time_from_message(message):
     return None
 
 
+def extract_date_from_message(message):
+    """Extract a date from a natural language message when possible."""
+    import datetime as _dt
+
+    msg = message.strip()
+    msg_lower = msg.lower()
+
+    # ISO date: 2026-06-15
+    iso_match = re.search(r'\b(20\d{2}-\d{2}-\d{2})\b', msg)
+    if iso_match:
+        return iso_match.group(1)
+
+    # European date: 15.06.2026
+    eu_match = re.search(r'\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b', msg)
+    if eu_match:
+        day, month, year = map(int, eu_match.groups())
+        try:
+            return _dt.date(year, month, day).isoformat()
+        except ValueError:
+            return ""
+
+    # Month names with optional year
+    month_names = {
+        "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+        "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12,
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "jun": 6, "jul": 7, "aug": 8,
+        "sep": 9, "sept": 9, "oct": 10, "nov": 11, "dec": 12,
+    }
+    month_pattern = "|".join(month_names.keys())
+    for pattern in [
+        rf'\b({month_pattern})\s+(\d{{1,2}})(?:st|nd|rd|th)?(?:,?\s+(20\d{{2}}))?\b',
+        rf'\b(\d{{1,2}})(?:st|nd|rd|th)?\s+({month_pattern})(?:,?\s+(20\d{{2}}))?\b',
+    ]:
+        match = re.search(pattern, msg_lower)
+        if match:
+            parts = match.groups()
+            if parts[0] in month_names:
+                month = month_names[parts[0]]
+                day = int(parts[1])
+                year = int(parts[2]) if parts[2] else _dt.date.today().year
+            else:
+                day = int(parts[0])
+                month = month_names[parts[1]]
+                year = int(parts[2]) if parts[2] else _dt.date.today().year
+            try:
+                return _dt.date(year, month, day).isoformat()
+            except ValueError:
+                return ""
+
+    if "tomorrow" in msg_lower:
+        return (_dt.date.today() + _dt.timedelta(days=1)).isoformat()
+    if "today" in msg_lower:
+        return _dt.date.today().isoformat()
+
+    return ""
+
+
 def build_system_prompt() -> str:
     return (
         "You are Luka, a friendly hotel concierge at Villa Adora Bled, a luxury boutique hotel on Lake Bled, Slovenia.\n\n"
@@ -1660,9 +1717,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "bar":
         return (
             "Our bar serves elegant cocktails and aperitivos daily on the terrace — arguably the best sunset views over Lake Bled! "
-            "Enjoy classic and signature cocktails crafted with premium spirits, local Slovenian ingredients, and fresh herbs from our garden. "
-            "Popular choices include the Bled Negroni with local gin, spritz variations, and seasonal specials. "
-            "It's the perfect spot to unwind after a day of exploring! "
+            "It's a lovely place to unwind after a day exploring, and we also have a curated wine list if you'd prefer wine. "
             "Would you like to reserve a table on the terrace, or shall I help you with a restaurant reservation?"
         )
 
@@ -1905,13 +1960,12 @@ def get_hotel_info_response(topic, question):
             "Which suite catches your eye, or would you like me to help you choose?"
         )
 
-    # Wedding
+    # Wedding / private events
     if actual_topic == "wedding":
         return (
-            "Villa Adora is a wonderful venue for intimate weddings and celebrations — up to 30 guests in our garden. "
-            "The Prestige Suite is a popular choice for wedding nights. We offer catering, "
-            "a wedding coordinator, and romantic packages (roses, champagne, chocolates). "
-            "Would you like more information about our wedding packages?"
+            "Villa Adora is a beautiful setting for intimate weddings and private celebrations. "
+            "For weddings or special events, our reception team can discuss available dates, options, "
+            "and any extra services that may suit your plans. Would you like me to help start an inquiry?"
         )
 
     # Adversarial / off-topic queries about internal systems
@@ -2494,7 +2548,8 @@ def api_chat():
                             event_type=event_type,
                             guest_name=guest_name,
                             time=extracted_time,
-                            notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Original message: {user_message}"
+                            notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Original message: {user_message}",
+                            date=extract_date_from_message(user_message)
                         )
 
                 tool_reply = answer
@@ -2595,7 +2650,8 @@ def api_chat():
                     event_type=event_type,
                     guest_name=guest_name,
                     time=extracted_time,
-                    notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}"
+                    notes=f"Guest requested {event_type.replace('_', ' ')} at {extracted_time}. Message: {user_message}",
+                    date=extract_date_from_message(user_message)
                 )
             else:
                 if replies and "what time would you like" not in replies[-1]["content"].lower() and "what time were you planning" not in replies[-1]["content"].lower():
@@ -2622,7 +2678,7 @@ def api_chat():
                    re.search(r'(?i)(?:included|complimentary|free).*breakfast', reply["content"]):
                     # Replace the hallucinated breakfast response with correct info
                     reply["content"] = (
-                        "Breakfast is €22 per person, served daily 8-10 AM in our dining room with fresh pastries, bread, and local Slovenian products. "
+                        "Breakfast is €22 per person, served daily 8-10 AM on our terrace with fresh pastries, bread, and local Slovenian products. "
                         "We also offer vegan, vegetarian, and gluten-free options on request. "
                         "Shall I add breakfast to your booking?"
                     )
@@ -2907,6 +2963,50 @@ def api_human_requests():
             for r in rows
         ]
     })
+
+
+@app.route("/api/export")
+def api_export():
+    import csv
+    import io
+
+    export_type = request.args.get("type", "bookings").lower()
+    conn = sqlite3.connect("hotel.db")
+    c = conn.cursor()
+
+    exports = {
+        "bookings": ("SELECT id, guest_name, room_name, check_in, check_out FROM bookings ORDER BY id DESC", ["id", "guest_name", "room_name", "check_in", "check_out"]),
+        "calendar": ("SELECT id, session_id, event_type, guest_name, time, date, notes, created_at FROM calendar_events ORDER BY id DESC", ["id", "session_id", "event_type", "guest_name", "time", "date", "notes", "created_at"]),
+        "shuttles": ("SELECT id, session_id, guest_name, pickup_location, dropoff_location, date, time, passengers, notes, created_at FROM shuttle_bookings ORDER BY id DESC", ["id", "session_id", "guest_name", "pickup_location", "dropoff_location", "date", "time", "passengers", "notes", "created_at"]),
+        "human": ("SELECT id, session_id, reason, guest_name, summary, created_at FROM human_agent_requests ORDER BY id DESC", ["id", "session_id", "reason", "guest_name", "summary", "created_at"]),
+    }
+
+    if export_type not in exports:
+        conn.close()
+        return jsonify({"error": "Invalid export type"}), 400
+
+    query, headers = exports[export_type]
+    c.execute(query)
+    rows = c.fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=headers)
+    writer.writeheader()
+    for row in rows:
+        writer.writerow(dict(zip(headers, row)))
+
+    filename = f"villa-adora-{export_type}-{_dt_now_for_export()}.csv"
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
+
+def _dt_now_for_export():
+    from datetime import datetime
+    return datetime.utcnow().strftime("%Y%m%d-%H%M%S")
 
 
 if __name__ == "__main__":

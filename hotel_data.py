@@ -143,8 +143,6 @@ hotel_info = {
         "Laundry service",
         "Shuttle service / Airport transfer",
         "24h guest support",
-        "Business center",
-        "Meeting room",
         "Garden with lake views and small pavilion",
         "Terrace and outdoor sitting area",
         "Hotel boats for hire",
