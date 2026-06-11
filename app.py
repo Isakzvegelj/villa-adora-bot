@@ -2220,6 +2220,139 @@ def api_chat():
                     "Serbian": "Villa Adora Bled nema bazen, ali gosti mogu uživati u kristalno čistom jezeru Bled tukaj! Naša sestrina nekretnina Villa Pomona nudi bazen, saunu i wellness — savršeno za privatni odmor. Želite li više informacija o Villi Pomoni?",
                 }
                 direct_response = pool_responses.get(_lookup_lang, pool_responses["Slovenian"])
+            # Summer 2026 packages and events
+            elif topic == "summer":
+                summer_responses = {
+                    "Slovenian": (
+                        "Poleti 2026 v Villi Adora bomo ponudili več posebnih paketov in dogodkov:\n\n"
+                        "🏖️ **Posebni paketi:**\n"
+                        "• Romanski paket — 2 nočitvi v Princess/Penthouse suiti, šampanjec, masaža za par, večerja na terasi (od €950)\n"
+                        "• Wellness umik — 3 nočitve, dnevna joga, 2 masaži, zajtrk (od €1.200)\n"
+                        "• Pustolovski paket — Vintgar, kajak, kolesa, kosilo (od €850)\n"
+                        "• Družinski paket — Superior/Island suite, kolesa, piknik (od €1.100)\n"
+                        "• Kulinarno doživetje — degustacijski meni z vinom, kuharski tečaj (od €1.050)\n\n"
+                        "🎵 **Poletni dogodki v Bledu:**\n"
+                        "• Blejski festival (julij) — klasična glasba na Blejskem gradu\n"
+                        "• Okarina World Music Festival (julij–avgust)\n"
+                        "• Blejski dnevi (avgust)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Vsak večer na naši terasi: Sunset Aperitivo z rahledom na jezero!\n"
+                        "Ōelite več informacij o katerem koli paketu? Z veseljem vam pomagam rezervirati!"
+                    ),
+                    "German": (
+                        "Sommer 2026 in Villa Adora — besondere Pakete und Events:\n\n"
+                        "🏖️ **Sommer-Pakete:**\n"
+                        "• Romantik-Paket — 2 Nächte Princess/Penthouse Suite, Sekt, Paarmassagement, Terrassenessen (ab €950)\n"
+                        "• Wellness-Retreat 3 Nächte, tägliches Yoga, 2 Massagen (ab €1.200)\n"
+                        "• Abenteuer-Paket — Vintgar, Kajak, Fahrrad, Lunchpaket (ab €850)\n"
+                        "• Familien-Paket — Superior/Island Suite, Fahrräder, Picknick (ab €1.100)\n"
+                        "• Kulinarisches Erlebnis — 4-Gänge-Menü mit Wein, Kochkurs (ab €1.050)\n\n"
+                        "🎵 **Sommer-Events in Bled:**\n"
+                        "• Bled Festival (Juli) — klassische Musik auf der Bleder Burg\n"
+                        "• Okarina World Music Festival (Juli–August)\n"
+                        "• Bled Days (August)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Jeden Abend auf unserer Terrasse: Sunset Aperitivo mit Seeblick!\n"
+                        "Möchten Sie mehr über eines der Pakete erfahren? Ich helfe gerne bei der Buchung!"
+                    ),
+                    "English": (
+                        "Summer 2026 at Villa Adora — special packages and events:\n\n"
+                        "🏖️ **Summer Packages:**\n"
+                        "• Romance Package — 2 nights Princess/Penthouse Suite, champagne, couples massage, private terrace dinner (from €950)\n"
+                        "• Wellness Retreat — 3 nights, daily yoga, 2 massages, healthy brunch (from €1,200)\n"
+                        "• Adventure Package — Vintgar Gorge, kayak, bicycle rental, packed lunch (from €850)\n"
+                        "• Family Getaway — Superior/Island Suite, bikes, lake picnic basket (from €1,100)\n"
+                        "• Culinary Experience — 4-course tasting menu with wine pairing, cooking class with Chef Domen Demšar (from €1,050)\n\n"
+                        "🎵 **Summer Events in Bled:**\n"
+                        "• Bled Festival (July) — classical music at Bled Castle\n"
+                        "• Okarina World Music Festival (July–August)\n"
+                        "• Bled Days (August)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Every evening on our terrace: Sunset Aperitivo with lake views!\n"
+                        "Would you like more details on any package? I'd be happy to help you book!"
+                    ),
+                    "French": (
+                        "Été 2026 à Villa Adora — forfaits et événements spéciaux:\n\n"
+                        "🏖️ **Forfaits d'été:**\n"
+                        "• Forfait Romance — 2 nuits Princess/Penthouse Suite, champagne, massage couple, dîner terrasse (dès €950)\n"
+                        "• Retraite Bien-être — 3 nuits, yoga quotidien, 2 massages (dès €1 200)\n"
+                        "• Forfait Aventure — Vintgar, kayak, vélos, pique-nique (dès €850)\n"
+                        "• Séjour Famille — Suite Superior/Island, vélos, panier pique-nique (dès €1 100)\n"
+                        "• Expérience Culinaire — menu dégustation 4 plats avec vin, cours de cuisine (dès €1 050)\n\n"
+                        "🎵 **Événements d'été à Bled:**\n"
+                        "• Festival de Bled (juillet) — musique classique au château\n"
+                        "• Okarina World Music Festival (juillet–août)\n"
+                        "• Bled Days (août)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Chaque soir sur notre terrasse : Apéritif au coucher du soleil avec vue sur le lac !\n"
+                        "Souhaitez-vous plus de détails sur un forfait ? Je serai ravi de vous aider à réserver !"
+                    ),
+                    "Italian": (
+                        "Estate 2026 a Villa Adora — pacchetti ed eventi speciali:\n\n"
+                        "🏖️ **Pacchetti estivi:**\n"
+                        "• Pacchetto Romantico — 2 notti Princess/Penthouse Suite, champagne, coppia massaggio, cena terrazza (da €950)\n"
+                        "• Ritiro Benessere — 3 notti, yoga quotidiano, 2 massaggi (da €1.200)\n"
+                        "• Pacchetto Avventura — Vintgar, kayak, biciclette, pranzo al sacco (da €850)\n"
+                        "• Vacanza in Famiglia — Suite Superior/Island, biciclette, cestino picnic (da €1.100)\n"
+                        "• Esperienza Culinaria — menu degustazione 4 portate con vini, corso di cucina (da €1.050)\n\n"
+                        "🎵 **Eventi estivi a Bled:**\n"
+                        "• Festival di Bled (luglio) — musica classica al castello\n"
+                        "• Okarina World Music Festival (luglio–agosto)\n"
+                        "• Bled Days (agosto)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Ogni sera sulla nostra terrazza: Aperitivo al tramonto con vista sul lago!\n"
+                        "Vuoi maggiori dettagli su un pacchetto? Sarò felice di aiutarti con la prenotazione!"
+                    ),
+                    "Spanish": (
+                        "Verano 2026 en Villa Adora — paquetes y eventos especiales:\n\n"
+                        "🏖️ **Paquetes de verano:**\n"
+                        "• Paquete Romántico — 2 noches Princess/Penthouse Suite, champán, masaje parejas, cena terraza (desde €950)\n"
+                        "• Retiro Wellness — 3 noches, yoga diario, 2 masajes (desde €1.200)\n"
+                        "• Paquete Aventura — Vintgar, kayak, bicicletas, almuerzo (desde €850)\n"
+                        "• Escapada Familiar — Suite Superior/Island, bicicletas, cesta picnic (desde €1.100)\n"
+                        "• Experiencia Culinaria — menú degustación 4 platos con vino, clase de cocina (desde €1.050)\n\n"
+                        "🎵 **Eventos de verano en Bled:**\n"
+                        "• Festival de Bled (julio) — música clásica en el castillo\n"
+                        "• Okarina World Music Festival (julio–agosto)\n"
+                        "• Bled Days (agosto)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Cada tarde en nuestra terraza: Aperitivo al atardecer con vistas al lago!\n"
+                        "¿Desea más detalles sobre algún paquete? ¡Estaré encantado de ayudarle!"
+                    ),
+                    "Croatian": (
+                        "Ljeto 2026 u Villi Adora — posebni paketi i događaji:\n\n"
+                        "🏖️ **Ljetni paketi:**\n"
+                        "• Romantični paket — 2 noći Princess/Penthouse Suite, šampanjac, masaža za par, večera na terasi (od €950)\n"
+                        "• Wellness retreat — 3 noći, dnevna joga, 2 masaže (od €1.200)\n"
+                        "• Avanturistički paket — Vintgar, kajak, bicikli, ručak (od €850)\n"
+                        "• Obiteljski paket — Superior/Island Suite, bicikli, piknik (od €1.100)\n"
+                        "• Kulinarno iskustvo — meni s 4 jela i vinom, kučarski tečaj (od €1.050)\n\n"
+                        "🎽 **Ljetni događaji u Bledu:**\n"
+                        "• Bled Festival (srpanj) — klasična glazba na dvorcu\n"
+                        "• Okarina World Music Festival (srpanj–kolovoz)\n"
+                        "• Bled Days (kolovoz)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Svaku večer na našoj terasi: Sunset Aperitivo s pogledom na jezero!\n"
+                        "Želite li više informacija o nekom paketu? Rado ću vam pomoći s rezervacijom!"
+                    ),
+                    "Serbian": (
+                        "Leto 2026 u Villi Adora — posebni paketi i događaji:\n\n"
+                        "🏖️ **Letnji paketi:**\n"
+                        "• Romantični paket — 2 noći Princess/Penthouse Suite, šampanjac, masaža za par, večera na terasi (od €950)\n"
+                        "• Wellness retreat — 3 noći, dnevna joga, 2 masaže (od €1.200)\n"
+                        "• Avanturistički paket — Vintgar, kajak, bicikli, ručak (od €850)\n"
+                        "• Porodični paket — Superior/Island Suite, bicikli, piknik (od €1.100)\n"
+                        "• Kulinarno iskustvo — meni s 4 jela i vinom, kučarski tečaj (od €1.050)\n\n"
+                        "🎵 **Letnji događaji u Bledu:**\n"
+                        "• Bled Festival (jul) — klasična muzika na dvorcu\n"
+                        "• Okarina World Music Festival (jul–avgust)\n"
+                        "• Bled Days (avgust)\n"
+                        "• Bled International Rowing Regatta\n\n"
+                        "🌅 Svake večeri na našoj terasi: Sunset Aperitivo s pogledom na jezero!\n"
+                        "Želite li više informacija o nekom paketu? Rado ću vam pomoći s rezervacijom!"
+                    ),
+                }
+                direct_response = summer_responses.get(_lookup_lang, summer_responses["English"])
             # Adversarial / tech queries - redirect to hotel topics
             elif any(word in user_message.lower() for word in ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github", "podatkovna baza", "strežnik"]):
                 adversarial_responses = {
@@ -2475,6 +2608,8 @@ def api_chat():
             # Direct response for combined restaurant+wine queries to avoid LLM timeout
             # Must come BEFORE the general topic handler which would catch "restaurant" alone
             elif not is_non_english and topic in ("restaurant", "wine") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef"]):
+                import sys
+                print(f"DEBUG: Combined response triggered! topic={topic}, lang={detected_lang}, is_non_english={is_non_english}", file=sys.stderr)
                 r = hotel_info.get("dining", {}).get("restaurant", {})
                 m = hotel_info.get("menu", {}).get("restaurant", {})
                 w = hotel_info.get("menu", {}).get("wine_list", {})
