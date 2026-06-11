@@ -203,6 +203,18 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Prestižni apartman, 72 m², za 2 osobe — Prizemlje, pogled na jezero\n"
         "Koji vas najviše privlači? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?"
     ),
+    "Serbian": (
+        "Imamo 8 prekrasnih apartmana s prekrasnim pogledom na jezero:\n"
+        "• Apartman Princeza, 55 m², za 2 osobe — Pogled na jezero iz tornja, dnevni boravak\n"
+        "• Luksuzni apartman, za 2 osobe — Pogled na jezero, elegantan nameštaj\n"
+        "• Penthouse apartman, 60 m², za 2 osobe — 2 kata, king-size krevet\n"
+        "• Deluxe apartman, za 2 osobe — Pogled na jezero, luksuzna oprema\n"
+        "• Superior apartman, za 4 osobe — 2 spavaće sobe, porodični apartman\n"
+        "• Otočni apartman, 65 m², za 4 osobe — 2 luksuzne spavaće sobe, 2 balkona\n"
+        "• Apartman Labud, 67 m², za 2 osobe — Pogled na jezero, luksuzna kupatila\n"
+        "• Prestižni apartman, 72 m², za 2 osobe — Prizemlje, pogled na jezero\n"
+        "Koji vas najviše privlači? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?"
+    ),
 }
 
 
@@ -1518,6 +1530,9 @@ def get_hotel_info_response(topic, question):
         # If query is specifically about restaurant dining, keep restaurant topic
         if any(word in q for word in ["dinner", "lunch", "restaurant", "eat", "meal", "food", "menu", "chef", "dining"]):
             actual_topic = "restaurant"
+        elif any(word in q for word in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]):
+            # General dietary accommodation questions — route to restaurant for richer response
+            actual_topic = "restaurant"
         else:
             actual_topic = "breakfast"
 
@@ -2443,8 +2458,10 @@ def api_chat():
         # For non-English messages, include book_room but with strict validation
         # on the Python side (dates, placeholder names, etc. are all checked).
         # Shuttle booking and human agent transfer are always available.
+        # query_hotel_info is included for all languages so the LLM can look up
+        # hotel facts instead of giving generic brief responses.
         if is_non_english:
-            available_tools = [book_room_function, book_shuttle_function, request_human_agent_function]
+            available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
         else:
             available_tools = [book_room_function, query_hotel_info_function, book_shuttle_function, request_human_agent_function]
 
