@@ -29,52 +29,56 @@
 - **Check-out:** 11:00 (11:00 AM)
 - **Late check-in:** Available on request, contact reception to arrange. Can accommodate late arrivals with advance notice.
 - **Late check-out:** Available on request, subject to availability. Additional fees may apply. Contact reception to arrange.
-- 16h reception service, 24h guest support
+- Reception: 7:00-22:00; contact reception in advance for late arrivals or special requests
 - **Quiet hours:** 22:00-07:00
 - **Parties/events:** Not allowed
 
 ## Room Types (7 suites)
 
-### Princess Suite — €250/night
+The official website says Villa Adora has 7 luxury suites overlooking Lake Bled and its sights.
+
+### Princess Suite — from €440/night
 - 55 sq m, lake view from tower
 - Queen bed, living area, bedroom, bathroom
 - Little tower overlooks Lake Bled
-- Perfect for couples, romantic getaway
+- Perfect for couples and romantic getaways
 - A/C, WiFi, TV, safe, minibar, shower, bath, work space
 
-### Luxury Suite — €270/night
+### Luxury Suite — from €480/night
 - Lake view, elegant decor
 - Comfortable bedding
 - A/C, WiFi, TV, safe, minibar
 
-### Penthouse Suite — €300/night
+### Penthouse Suite — from €430/night
 - 60 sq m, 2 floors
 - King-sized bed, most unique place in the house
 - Breathtaking views through the windows
 - Most special and cosy atmosphere
 - Extremely comfortable
 
-### Swan Suite — €370/night
-- 67 sq m, King bed
+### Deluxe Suite — from €570/night
 - Lake view, luxury furnishings
-- Elegant suite with stunning lake views
+- Elegant suite with spacious seating area
+- Flat-screen TV and comfortable amenities
 
-### Island Suite — €380/night
+### Superior Suite — from €570/night
+- Lake and castle views
+- Perfect for families or groups
+- 2 bedrooms and spacious living areas
+- Sleeps up to 4 guests
+
+### Island Suite — from €620/night
 - 65 sq m, first floor
 - 2 luxury bedrooms, big living area, 2 balconies
 - Stunning view of the lake and Bled Island
 - Perfect for couples, groups of friends, or families (sleeps 4)
 
-### Prestige Suite — €420/night
+### Prestige Suite — price on request
 - 72 sq m, ground floor
 - Living area, small dining area, king bed overlooking Lake Bled
 - Very big luxury bathroom, spacious terrace, big flat TV
 - Unforgettable lake view through all windows
 - Absolute harmony of artful decor, elegance and spaciousness
-
-### Castle Suite
-- Stylish luxury suite with castle views
-- Part of the 7-suite collection
 
 ## Amenities
 - Free WiFi throughout
@@ -131,8 +135,10 @@
 - **Hours:**
   - Lunch: Tuesday – Sunday
   - Dinner: Tuesday – Sunday
-  - Brunch: Thursday, Friday, Saturday
+  - Brunch: Thursday, Friday, Saturday; seasonal weekend brunch has been promoted at €28/person when available
   - Drinks: Every day
+- **Private wine cellar:** Intimate private wine-cellar experience for up to 8 guests, with Chef Domen Demšar and Slovenian wine pairings
+- **Private events:** Adora Restaurant can host private lake-view events for small groups up to about 30 guests
 - **Must-Try:** Signature Kremšnita — a fresh, elevated take on Bled's iconic cream cake
 - **Pop-up Events:** Regular pop-up dining events with special themed menus (seasonal menus, 4-course degustation, 8-course special events)
 - **Note:** Small restaurant with limited space — intentionally focused on quality over quantity. Reservations recommended.

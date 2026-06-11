@@ -114,7 +114,7 @@ hotel_info = {
         "quiet_hours": "Quiet hours: 22:00-07:00",
         "parties": "Parties and events are not allowed",
         "shuttle": "Shuttle service available — airport transfer, local transport, and custom routes. Book directly in this chat. Prices vary by route (Ljubljana airport ~€60, Bled town center ~€15). Contact reception for availability.",
-        "reception": "16h reception service, 24h guest support"
+        "reception": "Reception: 7:00-22:00. Guest support/contact available for late arrivals and special requests with advance notice"
     },
     "amenities": [
         "Air conditioning",
@@ -165,7 +165,7 @@ hotel_info = {
                 "brunch": "Thursday – Saturday",
                 "drinks": "Every day"
             },
-            "phone": "+386 40 558 158 / +386 51 603 858",
+            "phone": "+386 40 558 158 / +386 40 835 904 / +386 51 603 858",
             "email": "evita.vilebled@gmail.com",
             "whatsapp": "+386 51 603 858",
             "booking_required": True
@@ -193,7 +193,7 @@ hotel_info = {
             "pop_up_events": "Regular pop-up dining events with special menus. Check website or inquire for upcoming events."
         },
         "wine_list": {
-            "description": "Curated selection of the best Slovenian wines near Bled, chosen by in-house wine expert. Showcases both local and international labels.",
+            "description": "Curated selection of the best Slovenian wines near Bled, chosen by in-house wine expert. Showcases both local and international labels. Private wine cellar for up to 8 guests is available for intimate tastings and special evenings.",
             "highlights": [
                 "Prem Slovenian wines from nearby vineyards",
                 "International labels selected to complement the menu",
@@ -204,6 +204,7 @@ hotel_info = {
         "placeholder_note": "TODO: Add full menu PDF, current wine list, and seasonal dishes when available from hotel management"
     },
     "experiences": [
+        "Official website currently says: no organized hotel experiences are offered at the moment; guests can still ask for nearby Bled activity ideas",
         "Row to Bled Island (traditional pletna boat)",
         "Visit Church of the Assumption on the island",
         "Swimming in Lake Bled (permitted and free)",
@@ -304,6 +305,9 @@ hotel_info = {
         "Signature Kremšnita — a creative twist on Bled's iconic cream cake",
         "Restaurant PDF menus available for download",
         "Regular pop-up dining events with special menus",
-        "8-course special event menus for celebrations"
+        "8-course special event menus for celebrations",
+        "Adora Restaurant can host private lake-view events for small groups up to about 30 guests",
+        "Seasonal weekend brunch at Adora Restaurant has been promoted at €28/person when available",
+        "Villa Pomona is available for private rental and exclusive events"
     ]
 }
