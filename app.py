@@ -2070,7 +2070,7 @@ def api_chat():
         # Detect topic for potential direct response (both English and non-English)
         topic = _detect_topic(user_message) if is_non_english else _detect_topic(user_message)
 
-        if is_non_english:
+        if is_non_english or detected_lang == "English":
             # For non-English messages, detect topic and fetch hotel data directly.
             # Check if we have a pre-translated response for rooms/experiences
             # Use direct response to bypass LLM and avoid timeout issues
@@ -2186,6 +2186,7 @@ def api_chat():
             # messages, or let the LLM handle it (with book_room tool) for longer ones.
             if topic == "booking" and len(user_message.strip()) < 30:
                 booking_prompts = {
+                    "English": "I'd be happy to help you book! We have 8 beautiful suites with lake views. I just need your name, dates, and preferred suite. Which one catches your eye?",
                     "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 8 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
                     "German": "Ich helfe gerne bei der Buchung! Wir haben 8 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
                     "French": "Je serai ravi de vous aider à réserver ! Nous avons 8 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
