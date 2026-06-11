@@ -80,7 +80,7 @@ query_hotel_info_function = {
                         "breakfast", "parking", "wifi", "pets", "cancellation",
                         "payment", "children", "smoking", "contact", "general",
                         "restaurant", "wine", "bar", "late_check_in", "late_check_out",
-                        "shuttle", "room_service",
+                        "shuttle", "room_service", "history",
                     ],
                 },
                 "question": {"type": "string"},
@@ -1036,6 +1036,7 @@ def build_system_prompt() -> str:
         "NEVER mention room prices unless the guest specifically asks about pricing.\n"
         "If asked how booking works, simply say: 'I can help you book! Just tell me your name, dates, and preferred room.'\n"
         "If asked about weather, say: 'I don't have real-time weather data, but I'd recommend checking a weather app for the latest forecast. Bled has beautiful summers and snowy winters!'\n"
+        "If asked about the hotel's history, share warmly: 'Villa Adora was built in 1878 as a private villa during the Austro-Hungarian era, when Bled was a fashionable resort for European aristocracy. It was originally known as Vila Istra and was carefully converted into a luxury design hotel while maintaining its historic charm. The villa is heritage-protected under Slovenian cultural heritage laws.'\n"
         "- ALWAYS use the query_hotel_info tool for factual questions (rooms, policies, location, parking, pets, breakfast, restaurant, bar, wine, activities, etc.) — do NOT answer from your own knowledge, use the tool to get accurate data.\n\n"
         "RESPONSE QUALITY:\n"
         "- Ensure proper spacing between words. Avoid run-on words like 'wewe' or 'abar'.\n"
@@ -1294,6 +1295,7 @@ def _detect_topic(message: str) -> str:
         "gym": ["gym", "fitness", "workout", "exercise", "treadmill", "weights"],
         "smoking": ["smoke", "smoking", "cigarette", "cigar", "tobacco"],
         "spa": ["spa", "wellness", "sauna", "massage"],
+        "history": ["history", "heritage", "built", "vila istra", "vila", "1878", "aristocracy", "austro-hungarian", "zgodovina", "dediščina", "zgradba", "zgodovinska", "geschichte", "historie", "histoire", "storia", "historia", "povijest", "povijesna"],
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
         "wedding": ["wedding", "marriage", "married", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],

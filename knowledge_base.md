@@ -14,6 +14,14 @@
 - **WhatsApp:** +386 51 603 858
 - **Booking:** Booking.com or direct email
 
+## Hotel History
+- Villa Adora was built in 1878 as a private villa during the Austro-Hungarian era, when Bled was a fashionable resort for European aristocracy
+- The villa is heritage-protected, meaning its historic architecture and character are preserved under Slovenian cultural heritage laws
+- Originally known as Vila Istra, it was carefully converted into a luxury design hotel while maintaining its historic charm and architectural details
+- The property retains its original character with artful decor, elegant furnishings, and the unique blend of old-world charm and modern luxury
+- The hotel is one of the few properties directly on the shore of Lake Bled, a position that has made it a beloved destination for over a century
+- The name "Adora" reflects the love and care put into every detail of the guest experience
+
 ## Location Details
 - Directly on the shores of Lake Bled — one of the few hotels with this prime position
 - 2-minute walk to nearest boat station (for island access and lake tours)
