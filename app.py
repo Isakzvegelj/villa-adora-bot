@@ -1165,6 +1165,18 @@ def maybe_retrieve_hotel_facts(query: str, max_facts: int = 2) -> list[str]:
         return []
 
 
+def _looks_like_english(message: str) -> bool:
+    """Return True for common English guest messages, even when shared words overlap other languages."""
+    import re as _re
+    msg = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', message.lower().strip()) + " "
+    msg = _re.sub(r'  +', ' ', msg)
+    return any(w in msg for w in [
+        " do you ", " can i ", " can we ", " tell me ", " i want ", " i will ", " i would ",
+        " are you ", " where ", " what ", " how ", " spa ", " wellness ", " cribs ", " crib ",
+        " extra beds ", " extra bed ", " wedding ", " cocktail ", " drinks ", " bar "
+    ])
+
+
 def _detect_language(message: str) -> str:
     """Simple language detection based on common words and character patterns."""
     import re as _re
@@ -2069,6 +2081,8 @@ def api_chat():
 
     # Detect language and prepare language-specific handling
     detected_lang = _detect_language(user_message)
+    if _looks_like_english(user_message):
+        detected_lang = "English"
     is_non_english = detected_lang != "English"
 
     try:
