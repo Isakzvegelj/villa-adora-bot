@@ -1288,7 +1288,7 @@ def _detect_language(message: str) -> str:
     # Multi-word phrases that are highly distinctive per language
     distinctive_phrases = {
         "German": [
-            " guten tag ", " guten morgen ", " guten abend ", " vielen danke ",
+            " guten tag ", " guten morgen ", " guten abend ", " vielen danke ", " vielen dank ",
             " auf wiedersehen ", " wie geht ", " haben sie ", " ich möchte ",
             " können wir ", " ich hätte ", " buchung ", " zimmer ", " zimmern ", " frühstück ",
             " parkplatz ", " haustier ", " abreise ", " anreise ", " wunderbar ",
@@ -1331,7 +1331,10 @@ def _detect_language(message: str) -> str:
             " soba ", " sobe ", " apartma ", " kajenje ", " kaditi ", " dovoljeno ",
             " prepovedano ", " omogočeno ", " ali je ", " ali imate ", " kakšna ",
             " kakšne ", " kateri ", " katera ", " kje lahko ", " koliko stane ",
-            " želim rezervirati ", " kje ste ", " lep dan ", " srčno pozdravljeni "
+            " želim rezervirati ", " kje ste ", " lep dan ", " srčno pozdravljeni ",
+            " lahko ", " pripeljem ", " psa ", " pes ", " psi ", " mačka ",
+            " hvala ", " prosim ", " zdravo ", " pozdrav ", " dobrodošli ",
+            " apartmaji ", " sobah ", " jezero ", " otok ", " razgled ",
         ],
     }
 
@@ -1365,7 +1368,7 @@ def _detect_topic(message: str) -> str:
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "vins", "wein", "vina"],
         "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast", "d\u00e9jeuner", "fr\u00fchst\u00fcck buffet", "colazione inclusa", "desayuno incluido"],
         "parking": ["parking", "park", "car", "parkplatz", "parkplätze", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro", "parking privé", "parkplatzfrage"],
-        "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
+        "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "psa", "ma\u010dka", "macka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "how close", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
         "experiences": ["experience", "activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what should i do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "nearby", "near", "aktivnost", "attività", "activité", "actividad", "hacer", "qué hacer", "noches", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
