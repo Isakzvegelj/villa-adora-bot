@@ -681,4 +681,60 @@
 - New suite category: "Garden Suite" with private garden access
 - Enhanced smart room features (voice-controlled lighting, automated blinds)
 
+## Summer 2026 Updates
+
+### Summer Packages 2026
+Villa Adora offers four curated summer packages for 2026:
+
+1. **Lake Retreat Package** — €1,290 per person (3 nights)
+   - 3 nights in a Lake View Suite
+   - Daily gourmet breakfast on the terrace
+   - Private boat ride to Bled Island
+   - Welcome bottle of Slovenian wine
+   - Best Seller package
+
+2. **Romantic Escape** — €1,890 per person (3 nights)
+   - 3 nights in the Princess Suite
+   - Champagne welcome with chocolate-covered strawberries
+   - Couples massage in the wellness center
+   - Private candlelit dinner on the lake terrace
+   - Rose petal turndown service
+   - Most Popular package
+
+3. **Alpine Adventure** — €1,450 per person (4 nights)
+   - 4 nights in a Luxury Suite
+   - Guided hike to Ojstrica viewpoint
+   - Full-day Triglav National Park excursion
+   - Complimentary mountain bike rental
+   - Adventure package
+
+4. **Culinary Delight** — €1,150 per person (2 nights)
+   - 2 nights in a Deluxe Suite
+   - Slovenian wine tasting experience
+   - Cooking class with local chef
+   - Dinner at a Michelin-recommended restaurant
+   - Gourmet package
+
+### Summer 2026 Events
+- **Bled Festival:** Annual music and cultural festival in July featuring classical concerts at Bled Castle
+- **Bled Days of Wine and Gastro:** September food and wine festival celebrating Slovenian cuisine
+- **Summer Sports:** Kayaking, SUP, swimming, hiking, cycling, canyoning, paragliding available throughout summer
+- **Outdoor Cinema:** Weekly outdoor film screenings at various Bled locations in July-August
+- **Bled Cream Cake Festival:** August celebration of the famous Bled cream cake (kremšnita)
+
+### Summer 2026 Availability Notes
+- High season: July 1 — August 31 (book 3+ months in advance recommended)
+- Shoulder season: May — June, September — October (better availability, lower rates)
+- Low season: November — April (best rates, some services may be limited)
+- Minimum stay: 2 nights (3 nights on weekends in high season)
+- Early bird discount: 10% off for bookings made 60+ days in advance
+
+### New for Summer 2026
+- New infinity pool with lake views (opened June 2025, fully operational for 2026)
+- Expanded wellness center with cold plunge pool
+- New Garden Suite category with private garden access
+- Enhanced WiFi throughout the property (fiber optic upgrade)
+- New partnership with Bled Island Restaurant for exclusive guest dining experiences
+- Complimentary e-bike rental for all guests (in addition to mountain bikes)
+
 
