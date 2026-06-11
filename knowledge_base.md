@@ -618,4 +618,67 @@
 - DE: "Vielen Dank für Ihren Aufenthalt. Wenn Sie einen Moment haben, teilen Sie bitte, was Ihnen an der Villa Adora besonders gefallen hat."
 - IT: "Grazie per il vostro soggiorno. Se avete un momento, condividete cosa vi è piaciuto di più di Villa Adora."
 
+## Suggested Itineraries for Guests
+
+### Romantic Getaway (1 Day)
+- 08:00: Sunrise breakfast on the terrace
+- 10:00: Pletna boat to Bled Island, ring the wishing bell
+- 12:30: Lakeside walk and photography
+- 14:00: Couples in-room massage
+- 17:00: Garden champagne with lake views
+- 19:30: Sunset dinner at Adora Restaurant with wine pairing
+
+### Family Adventure (1 Day)
+- 08:00: Family breakfast on the terrace
+- 09:30: Bled Castle visit (museum + printing workshop)
+- 12:00: Cream cake tasting in town
+- 14:00: Kayaking on the lake
+- 16:30: Bicycle ride around the lake (complimentary hotel bikes)
+- 19:00: Family dinner in Bled town center
+
+### Active Explorer (1 Day)
+- 07:00: Early morning swim in Lake Bled
+- 08:30: Power breakfast on the terrace
+- 10:00: Vintgar Gorge hike (15 min drive)
+- 13:00: Lunch at a local gostilna (traditional Slovenian dishes)
+- 15:00: Canyoning in Bohinj Valley
+- 19:00: Recovery dinner at Adora + sauna
+
+### Wellness Retreat (1 Day)
+- 08:00: Morning yoga in the garden
+- 09:30: Healthy breakfast with fresh juices
+- 11:00: Hot stone massage
+- 14:00: Mindful lakeside meditation walk
+- 16:00: Afternoon tea service in the garden
+- 18:30: Light dinner + stargazing from the garden
+
+### When guests ask for itinerary suggestions:
+- Ask about their travel style (romantic, family, adventure, relaxation)
+- Suggest the matching itinerary from above
+- Offer to customize based on their preferences
+- Mention that the concierge can book activities and make reservations
+
+## Winter 2026/2027 Updates
+
+### Holiday Season at Villa Adora
+- **Christmas Market:** Bled Christmas Market runs from late November through early January with local crafts, mulled wine, and traditional Slovenian holiday treats
+- **New Year's Eve:** Special gala dinner at the Adora Restaurant with champagne toast at midnight and live music
+- **Winter Activities:** Skiing at Vogel Ski Resort (20 min drive), cross-country skiing, winter hiking, ice skating on the lake (when frozen)
+- **Winter Rates:** Reduced rates apply from November to March (except Christmas/New Year period)
+- **Cozy Experience:** In-room fireplaces in select suites, hot chocolate service, and winter wellness packages
+
+### 2026 Sustainability Report
+- 30% reduction in energy consumption compared to 2023
+- 100% renewable electricity via Slovenian hydroelectric power
+- Zero-waste breakfast initiative: all food waste composted locally
+- Partnership with Bled Lake Conservation Foundation
+- Guest participation: 78% of guests opted for towel/linen reuse program
+
+### 2027 Preview — Upcoming Renovations
+- New rooftop terrace with panoramic views (opening Spring 2027)
+- Expanded wellness area with Finnish sauna and cold plunge pool
+- EV charging capacity doubled to 4 stations
+- New suite category: "Garden Suite" with private garden access
+- Enhanced smart room features (voice-controlled lighting, automated blinds)
+
 
