@@ -756,6 +756,16 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
 
+def deduplicate_repeated_response(text: str) -> str:
+    """Remove exact paragraph-level duplication from responses."""
+    if not text:
+        return text
+    parts = [p.strip() for p in text.split("\n\n") if p.strip()]
+    if len(parts) >= 2 and parts[0] == parts[1]:
+        return "\n\n".join([parts[0]] + [p for p in parts[2:] if p != parts[0]])
+    return text
+
+
 def fix_spacing(text):
     """Fix common LLM spacing issues."""
     import re
@@ -2691,6 +2701,7 @@ def api_chat():
                     sessions[session_id] = messages
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "", "English")
+                    response_text = deduplicate_repeated_response(response_text)
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
 
         if not is_non_english and topic == "general":
