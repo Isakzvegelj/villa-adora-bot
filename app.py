@@ -457,6 +457,11 @@ _WINE_TRANSLATED = {
 
 
 _BAR_TRANSLATED = {
+    "English": (
+        "Our bar serves elegant cocktails and aperitivos daily on the terrace — arguably the best sunset views over Lake Bled! "
+        "It's a lovely place to unwind after a day exploring, and we also have a curated wine list if you'd prefer wine. "
+        "Would you like to reserve a table on the terrace, or shall I help you with a restaurant reservation?"
+    ),
     "Slovenian": (
         "Naš bar streže elegantne koktaje in aperitive vsak dan na terasi z enim najlepših sončnih zahodov nad jezerom Bled. "
         "Popoln kraj za sproščanje po dnevu raziskovanja! Želite več informacij o našem jedilniku pijač?"
@@ -549,6 +554,11 @@ _SHUTTLE_TRANSLATED = {
 
 
 _WELLNESS_TRANSLATED = {
+    "English": (
+        "Villa Adora offers in-room massage with 24 hours' notice. "
+        "You can book through reception or email evita.vilebled@gmail.com. "
+        "Would you like me to check availability for a massage during your stay?"
+    ),
     "Slovenian": (
         "Villa Adora ponuja masažo v sobi z 24-urno predhodno najavo. "
         "Rezervacija prek recepcije ali e-pošte evita.vilebled@gmail.com. "
@@ -576,13 +586,18 @@ _WELLNESS_TRANSLATED = {
     ),
     "Croatian": (
         "Villa Adora nudi masažu u sobi uz 24 sata prethodne najave. "
-        "Rezervacija putem recepcije ili emaila evita.vilebled@gmail.com. "
+        "Rezervacija putem recepcije ili email evita.vilebled@gmail.com. "
         "Želite li da provjerim dostupnost masaže tijekom vašeg boravka?"
     ),
 }
 
 
 _CHILDREN_TRANSLATED = {
+    "English": (
+        "Children of all ages are welcome! Our Superior Suite and Island Suite both have 2 bedrooms and sleep 4, so they are great for families. "
+        "Cribs and extra beds are not available at the moment. "
+        "Are you traveling with children who might enjoy any special amenities?"
+    ),
     "Slovenian": (
         "Otroci vseh starosti so dobrodošli! Imamo Superior apartma (2 spalnici, spalni 4) in "
         "Otoški apartmaj (2 spalnici, 65 m², spalni 4) — idealna za družine. "
@@ -623,6 +638,11 @@ _CHILDREN_TRANSLATED = {
 
 
 _WEDDING_TRANSLATED = {
+    "English": (
+        "Villa Adora is a beautiful setting for intimate weddings and private celebrations. "
+        "For weddings or special events, our reception team can discuss available dates, options, "
+        "and any extra services that may suit your plans. Would you like me to help start an inquiry?"
+    ),
     "Slovenian": (
         "Villa Adora je čudovit prizor za intimna poročna praznovanja. "
         "Za poroke in zasebna praznovanja se lahko dogovorite z recepcijo, ki bo preverila možnosti, "
@@ -1338,7 +1358,7 @@ def _detect_topic(message: str) -> str:
         "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
         "cancellation": ["cancel", "refund", "cancellation", "stornir", "storno", "annulation", "annullamento", "annulaci"],
-        "children": ["child", "kid", "baby", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niu00f1o", "dru\u017eina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
+        "children": ["child", "kid", "kids", "baby", "babies", "crib", "cribs", "extra bed", "extra beds", "family", "families", "toddler", "otrok", "kind", "bambino", "enfant", "niño", "družina", "familie", "gruppe", "grupo", "famille", "famiglia", "gruppe"],
         "room_service": ["room_service", "room service", "in-room dining", "food to room", "order food", "food to my room", "dining in my room", "meal to room", "bring food to room"],
         "shuttle": ["shuttle", "transfer", "airport", "transport", "prevoz", "navette", "transporte"],
         "gym": ["gym", "fitness", "workout", "exercise", "treadmill", "weights"],
@@ -1387,7 +1407,13 @@ def _detect_topic(message: str) -> str:
             return "late_check_out"
         return "late_check_in"
     # Priority: family/children questions should override "room" keyword
-    if _matches(msg_raw, ["family rooms", "family room", "family suite", "family-friendly", "family friendly", "children room", "kids room", "room for kids", "room for children", "družinski", "otroški", "familienzimmer", "kind", "chambre enfant", "camera per bambini", "camera per bambino", "chambre d'enfant"]):
+    if _matches(msg_raw, [
+        "family rooms", "family room", "family suite", "family-friendly", "family friendly",
+        "children room", "kids room", "room for kids", "room for children",
+        "crib", "cribs", "extra bed", "extra beds", "baby bed", "baby beds",
+        "družinski", "otroški", "familienzimmer", "kind", "chambre enfant",
+        "camera per bambini", "camera per bambino", "chambre d'enfant"
+    ]):
         return "children"
     # Priority: spa/wellness specific queries should map directly
     if _matches(msg_raw, ["spa", "wellness", "sauna", "massage", "wellness area", "wellness center", "wellness centre", "savna", "masaža", "massage", "sauna", "wellness"]):

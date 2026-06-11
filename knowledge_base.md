@@ -516,3 +516,75 @@
 - **January:** Winter hiking, possible frozen lake walks
 - **February:** Valentine's Day packages, Carnival in nearby towns
 
+## 2026 Season Updates
+
+### Sustainability Initiatives
+- Villa Adora is committed to sustainable tourism and environmental stewardship
+- Energy-efficient LED lighting throughout the property
+- Solar panels installed on the roof for hot water heating
+- Towel and linen reuse program — guests can opt out of daily changes to save water
+- Locally sourced breakfast products reduce food miles and support local farmers
+- Electric vehicle (EV) charging station available on-site for guests
+- No single-use plastics — refillable glass water bottles in all suites
+- Garden maintained with organic, pesticide-free practices
+- Partnership with local environmental organizations for lake conservation
+
+### EV Charging
+- Free EV charging station available for hotel guests
+- Type 2 connector (standard European)
+- Located in the hotel parking area
+- Available 24/7, no reservation needed
+- Compatible with all major EV brands (Tesla, BMW, Mercedes, VW, Audi, etc.)
+
+### Updated Pet Policy 2026
+- Pets are welcome on request — €35 per pet per night (unchanged)
+- Maximum 2 pets per suite
+- Pets must be supervised at all times and not left unattended in suites
+- Dog waste bags available at reception
+- Nearby walking paths around the lake are ideal for dogs
+- Pet-friendly rooms: Princess Suite, Penthouse Suite, Superior Suite, Island Suite (ground and first floor suites recommended)
+- Please inform us at time of booking so we can prepare accordingly
+
+### New Nearby Restaurants (2026)
+- **Restavracija 1906** — Modern Slovenian cuisine, 5 min walk, terrace with lake views
+- **Pletna Restaurant** — Traditional Slovenian dishes, located at the lakeside
+- **Fine Dining Bled** — Contemporary fine dining, 10 min walk, tasting menus
+- **Café Belvedere** — Casual dining, perfect for lunch with panoramic views
+- **Pizzeria Lina** — Family-friendly Italian, 8 min walk from the hotel
+
+### 2026 Bled Events Calendar
+- **March:** Bled Festival Spring Concerts, St. Patrick's Day celebrations
+- **April:** Cherry blossom season, Easter events at Bled Castle
+- **May:** Bled Days cultural festival, opening of outdoor dining season, International Museum Day
+- **June:** Bled Festival Summer Season, Bled Night (illuminated lake event)
+- **July:** Bled International Rowing Regatta, Open-air cinema, Bled Summer Festival
+- **August:** Bled Castle Summer Events, Lake Bled Swimming Marathon, Bled Cultural Summer
+- **September:** Bled Wine Festival, Harvest season, Bled Marathon (running)
+- **October:** Autumn colours peak, Bled Culinary Festival, St. Martin's Day preparations
+- **November:** St. Martin's Day (wine celebration), pre-Christmas events
+- **December:** Bled Christmas Market, New Year's Eve gala at Bled Castle
+
+### Wellness & Massage Updates 2026
+- In-room massage available with 24 hours notice
+- New: Hot stone massage option added to the service menu
+- New: Aromatherapy massage with essential Slovenian herbs (lavender, pine, chamomile)
+- Massage types available: Relaxing, Sports, Deep Tissue, Hot Stone, Aromatherapy
+- Prices: €70 for 60 min, €100 for 90 min
+- Book through reception or email evita.vilebled@gmail.com
+- Massage therapist available daily 9:00-20:00
+
+### Technology & Connectivity
+- Free high-speed WiFi throughout (upgraded to WiFi 6 in 2026)
+- Smart TVs in all suites with streaming capabilities (Netflix, YouTube, etc.)
+- Bluetooth speakers in every suite
+- USB-C and USB-A charging ports bedside in all suites
+- Digital concierge service via WhatsApp: +386 51 603 858
+
+### Gift Vouchers
+- Villa Adora gift vouchers available for purchase
+- Valid for 12 months from date of purchase
+- Available in any denomination
+- Can be used for room stays, restaurant dining, or massage services
+- Purchase via email: evita.vilebled@gmail.com
+- Digital or printed voucher options available
+
