@@ -2169,7 +2169,7 @@ def api_chat():
     session_id = data.get("session_id", "default")
     user_message = data.get("message", "")
     if not user_message.strip():
-        return jsonify({"replies": [{"type": "text", "content": "Hello! How can I help you today? Feel free to ask about our rooms, restaurant, activities, or anything else about Villa Adora Bled!"}]})
+        return jsonify({"replies": [{"type": "text", "content": "Hello! Welcome to Villa Adora Bled! How can I help you today? Feel free to ask about our rooms, restaurant, activities, or anything else!"}]})
     if len(user_message) > 500:
         user_message = user_message[:500]
     if session_id not in sessions:
@@ -2212,12 +2212,18 @@ def api_chat():
                 topic = "restaurant"
             if topic == "rooms" and _lookup_lang in _ROOM_LISTINGS_TRANSLATED and not _is_price:
                 direct_response = _ROOM_LISTINGS_TRANSLATED[_lookup_lang]
+            elif topic == "rooms" and _lookup_lang == "English" and not _is_price:
+                direct_response = get_hotel_info_response("rooms", user_message)
             elif topic in ("experiences", "activities") and _lookup_lang in _EXPERIENCES_TRANSLATED:
                 direct_response = _EXPERIENCES_TRANSLATED[_lookup_lang]
+            elif topic in ("experiences", "activities") and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("experiences", user_message)
             elif topic == "pets" and _lookup_lang in _PETS_TRANSLATED:
                 direct_response = _PETS_TRANSLATED[_lookup_lang]
             elif topic == "restaurant" and _lookup_lang in _RESTAURANT_TRANSLATED:
                 direct_response = _RESTAURANT_TRANSLATED[_lookup_lang]
+            elif topic == "restaurant" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("restaurant", user_message)
             elif topic == "location" and _lookup_lang in _LOCATION_TRANSLATED:
                 direct_response = _LOCATION_TRANSLATED[_lookup_lang]
             elif topic == "breakfast" and _lookup_lang in _BREAKFAST_TRANSLATED:
@@ -2226,6 +2232,28 @@ def api_chat():
                 direct_response = _CHECKIN_TRANSLATED[_lookup_lang]
             elif topic == "wine" and _lookup_lang in _WINE_TRANSLATED:
                 direct_response = _WINE_TRANSLATED[_lookup_lang]
+            elif topic == "bar" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("bar", user_message)
+            elif topic == "parking" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("parking", user_message)
+            elif topic == "shuttle" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("shuttle", user_message)
+            elif topic == "children" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("children", user_message)
+            elif topic == "smoking" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("smoking", user_message)
+            elif topic == "spa" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("spa", user_message)
+            elif topic == "contact" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("contact", user_message)
+            elif topic == "amenities" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("amenities", user_message)
+            elif topic == "cancellation" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("cancellation", user_message)
+            elif topic == "policies" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("policies", user_message)
+            elif topic == "booking" and _lookup_lang == "English":
+                direct_response = get_hotel_info_response("booking", user_message)
             elif topic == "bar" and _lookup_lang in _BAR_TRANSLATED:
                 direct_response = _BAR_TRANSLATED[_lookup_lang]
             elif topic == "parking" and _lookup_lang in _PARKING_TRANSLATED:
@@ -2450,12 +2478,12 @@ def api_chat():
             if topic == "booking" and len(user_message.strip()) < 30:
                 booking_prompts = {
                     "English": "I'd be happy to help you book! We have 8 beautiful suites with lake views. I just need your name, dates, and preferred suite. Which one catches your eye?",
-                    "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 7 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
-                    "German": "Ich helfe gerne bei der Buchung! Wir haben 7 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
-                    "French": "Je serai ravi de vous aider à réserver ! Nous avons 7 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
-                    "Italian": "Sarò felice di aiutarti con la prenotazione! Abbiamo 7 splendide suite con vista sul lago. Mi servono il tuo nome, le date e la suite preferita. Quale ti piace di più?",
-                    "Spanish": "¡Estaré encantado de ayudarte con la reserva! Tenemos 7 hermosas suites con vistas al lago. Necesito tu nombre, las fechas y la suite preferida. ¿Cuál te gusta más?",
-                    "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 7 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
+                    "Slovenian": "Z veseljem vam pomagam z rezervacijo! Imamo 8 čudovitih apartmajev z razgledom na jezero. Potrebujem vaše ime, datume in želeni apartma. Kateri vas najbolj pritegne?",
+                    "German": "Ich helfe gerne bei der Buchung! Wir haben 8 wunderschöne Suiten mit Seeblick. Ich brauche Ihren Namen, Ihre Reisedaten und Ihre Suite-Welche gefällt Ihnen am besten?",
+                    "French": "Je serai ravi de vous aider à réserver ! Nous avons 8 magnifiques suites avec vue sur le lac. J'ai besoin de votre nom, de vos dates et de votre suite préférée. Laquelle vous plaît le plus ?",
+                    "Italian": "Sarò felice di aiutarti con la prenotazione! Abbiamo 8 splendide suite con vista sul lago. Mi servono il tuo nome, le date e la suite preferita. Quale ti piace di più?",
+                    "Spanish": "¡Estaré encantado de ayudarte con la reserva! Tenemos 8 hermosas suites con vistas al lago. Necesito tu nombre, las fechas y la suite preferida. ¿Cuál te gusta más?",
+                    "Croatian": "Rado ću vam pomoći s rezervacijom! Imamo 8 prekrasnih apartmana s pogledom na jezero. Trebam vaše ime, datume i željeni apartman. Koji vas najviše zanima?",
                 }
                 direct_response = booking_prompts.get(detected_lang, booking_prompts["Slovenian"])
                 messages.append({"role": "user", "content": user_message})
@@ -3096,7 +3124,35 @@ def api_chat():
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
                 # Anti-hallucination: remove any mention of Castle Suite (not a real room)
-                reply["content"] = re.sub(r'(?i)\bCastle Suite\b[^.\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\\bCastle Suite\\b[^.\\n]*', '', reply["content"])
+                # Anti-hallucination: remove mentions of non-existent rooms
+                valid_rooms = ["princess suite", "luxury suite", "penthouse suite", "deluxe suite",
+                              "superior suite", "island suite", "swan suite", "prestige suite"]
+                # Detect any "Suite" mention that's not in our valid list
+                def _has_hallucinated_room(text):
+                    import re as _re
+                    # Find all mentions of "X Suite" patterns
+                    suite_mentions = _re.findall(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+Suite\b', text, _re.IGNORECASE)
+                    for mention in suite_mentions:
+                        if mention.lower().strip() not in valid_rooms:
+                            return True
+                    return False
+
+                if _has_hallucinated_room(reply["content"]):
+                    # Replace the hallucinated room response with correct room list
+                    reply["content"] = (
+                        "I'm sorry, but that suite is not available at Villa Adora Bled. "
+                        "We have 8 beautiful suites with stunning lake views:\n"
+                        "• Princess Suite (55 m², tower view, €440)\n"
+                        "• Luxury Suite (lake view, €480)\n"
+                        "• Penthouse Suite (60 m², 2 floors, €430)\n"
+                        "• Deluxe Suite (lake view, €570)\n"
+                        "• Superior Suite (sleeps 4, €570)\n"
+                        "• Island Suite (65 m², sleeps 4, €620)\n"
+                        "• Swan Suite (67 m², King bed, price on request)\n"
+                        "• Prestige Suite (72 m², ground floor, price on request)\n"
+                        "Which one catches your eye? I can start a booking for you — just tell me your name and dates?"
+                    )
                 # Anti-hallucination: correct breakfast misinformation
                 # Breakfast is €22/person, NOT included in room rate, served 8-10 AM
                 if re.search(r'(?i)breakfast.*(?:included|complimentary|free)', reply["content"]) or \
