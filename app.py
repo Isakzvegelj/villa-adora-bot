@@ -2114,6 +2114,10 @@ def api_chat():
             # Check for price queries first — bypass pre-translated responses
             _q_lower = user_message.lower()
             _is_price = any(w in _q_lower for w in ["koliko stane", "wie viel kostet", "combien coûte", "quanto costa", "cuánto cuesta", "koliko košta", "price", "cost", "how much", "rate", "cena", "preis", "prix", "precio", "prezzo"])
+            # Re-route dietary accommodation questions to restaurant for richer response
+            _is_dietary_accommodate = topic == "breakfast" and any(w in _q_lower for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "restriction"]) and any(w in _q_lower for w in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide", "nudite", "ponujete", "bietet", "können", "proposez", "offrite", "ofrecen", "pueden"])
+            if _is_dietary_accommodate:
+                topic = "restaurant"
             if topic == "rooms" and _lookup_lang in _ROOM_LISTINGS_TRANSLATED and not _is_price:
                 direct_response = _ROOM_LISTINGS_TRANSLATED[_lookup_lang]
             elif topic in ("experiences", "activities") and _lookup_lang in _EXPERIENCES_TRANSLATED:
@@ -2419,6 +2423,9 @@ def api_chat():
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
             elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences", "villa_pomona", "wedding"):
+                # Re-route dietary accommodation questions to restaurant for a richer response
+                if topic == "breakfast" and any(w in user_message.lower() for w in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]) and any(w in user_message.lower() for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "restriction"]):
+                    topic = "restaurant"
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
                     messages.append({"role": "user", "content": user_message})
