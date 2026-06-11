@@ -2605,11 +2605,8 @@ def api_chat():
                     sessions[session_id] = messages
                     response_text = _ensure_ends_with_question(hotel_answer)
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
-            # Direct response for combined restaurant+wine queries to avoid LLM timeout
-            # Must come BEFORE the general topic handler which would catch "restaurant" alone
-            elif not is_non_english and topic in ("restaurant", "wine") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef"]):
-                import sys
-                print(f"DEBUG: Combined response triggered! topic={topic}, lang={detected_lang}, is_non_english={is_non_english}", file=sys.stderr)
+            # Direct response for combined restaurant+wine/dining queries to avoid LLM timeout
+            elif topic in ("restaurant", "wine") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef", "selection"]):
                 r = hotel_info.get("dining", {}).get("restaurant", {})
                 m = hotel_info.get("menu", {}).get("restaurant", {})
                 w = hotel_info.get("menu", {}).get("wine_list", {})
