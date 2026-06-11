@@ -702,7 +702,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
             "Serbian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
-    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
+    elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
             fallbacks = {
                 "Slovenian": "Zajtrk stane 22 € na osobo — postrežen med 8. in 10. uro na terasi s pogledom na jezero. Bogat samopostrežni zajtrk s svežim pecivom, kruhom in lokalnimi slovenskimi izdelki. Veganske, vegetarijanske in brezglutenske možnosti na zahtevo. Imate kakšne prehranske omejitve?",
                 "German": "Frühstück kostet 22 € pro Person — serviert von 8 bis 10 Uhr auf der Terrasse mit Seeblick. Reichhaltiges Buffet mit frischem Gebäck, Brot und lokalen slowenischen Produkten. Vegane, vegetäre und glutenfreie Optionen auf Anfrage. Haben Sie Ernährungseinschränkungen?",
@@ -1366,7 +1366,7 @@ def _detect_topic(message: str) -> str:
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento", "ve\u010derja", "ve\u010derjo", "ve\u010deri", "kosilo", "kosilom", "obed", "obrom", "jedilnik", "jedilnika", "kuhar", "kuhinja", "terasa", "ve\u010dera", "ve\u010deru", "ru\u010dak", "ru\u010dka", "ru\u010dkom", "ve\u010derala", "ve\u010derati", "jela", "jelo", "hrana"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "vins", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast", "d\u00e9jeuner", "fr\u00fchst\u00fcck buffet", "colazione inclusa", "desayuno incluido"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast", "déjeuner", "frühstück buffet", "colazione inclusa", "desayuno incluido", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "vegane opcije", "vegetarijanske opcije", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"],
         "parking": ["parking", "park", "car", "parkplatz", "parkplätze", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro", "parking privé", "parkplatzfrage"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "psa", "ma\u010dka", "macka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "how close", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
@@ -1530,7 +1530,7 @@ def get_hotel_info_response(topic, question):
                     break
 
     # Override: dietary questions should go to breakfast/dining, unless specifically about restaurant/dinner
-    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+    if actual_topic not in ("breakfast",) and any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "vegane opcije", "vegetarijanske opcije", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
         # If query is specifically about restaurant dining, keep restaurant topic
         if any(word in q for word in ["dinner", "lunch", "restaurant", "eat", "meal", "food", "menu", "chef", "dining"]):
             actual_topic = "restaurant"
@@ -1589,7 +1589,7 @@ def get_hotel_info_response(topic, question):
             return (
                 f"Late check-out is available on request, subject to availability. Additional fees may apply. "
                 f"Our standard check-out is {h['policies']['check_out']}. "
-                f"What time would you like to check out?"
+                f"What time would you like?"
             )
 
     # Rooms
@@ -1712,7 +1712,7 @@ def get_hotel_info_response(topic, question):
         b = h.get("dining", {}).get("breakfast", {})
         if isinstance(b, dict):
             dietary = b.get("dietary", {})
-            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction"]):
+            if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
                 return (
                     f"We're happy to accommodate dietary needs! Breakfast (€22/person, served 8-10 AM) "
                     f"offers vegan, vegetarian, and gluten-free options on request. "
@@ -1736,7 +1736,7 @@ def get_hotel_info_response(topic, question):
     if actual_topic == "restaurant":
         r = h.get("dining", {}).get("restaurant", {})
         # If asking about dietary needs, highlight Chef Demšar's accommodations
-        if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant"]):
+        if any(word in q for word in ["vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
             return (
                 f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
                 f"Chef Domen Demšar is known for accommodating dietary needs with creativity and care. "
@@ -2629,7 +2629,7 @@ def api_chat():
                 return jsonify({"replies": [{"type": "text", "content": combined}]})
             elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences", "villa_pomona"):
                 # Re-route dietary accommodation questions to restaurant for a richer response
-                if topic == "breakfast" and any(w in user_message.lower() for w in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]) and any(w in user_message.lower() for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "restriction"]):
+                if topic == "breakfast" and any(w in user_message.lower() for w in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]) and any(w in user_message.lower() for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "restriction", "végétalien", "végétarien", "sans gluten", "opciones veganas", "opciones vegetarianas", "opciones sin gluten", "vegane", "vegetarische", "glutenfreie", "bez glutena", "végétaliennes", "végétariennes", "opzione vegane"]):
                     topic = "restaurant"
                 hotel_answer = get_hotel_info_response(topic, user_message)
                 if hotel_answer and hotel_answer.strip():
