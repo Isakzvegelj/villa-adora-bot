@@ -131,6 +131,18 @@ request_human_agent_function = {
 
 
 _ROOM_LISTINGS_TRANSLATED = {
+    "English": (
+        "We have 8 beautiful suites, all with stunning lake views:\\n"
+        "• Princess Suite, 55 m², sleeps 2 — Lake view from tower, Living area\\n"
+        "• Luxury Suite, sleeps 2 — Lake view, Elegant decor\\n"
+        "• Penthouse Suite, 60 m², sleeps 2 — 2 floors, King-sized bed\\n"
+        "• Deluxe Suite, sleeps 2 — Lake view, Luxury furnishings\\n"
+        "• Superior Suite, sleeps 4 — Perfect for families, 2 bedrooms\\n"
+        "• Island Suite, 65 m², sleeps 4 — First floor, 2 luxury bedrooms\\n"
+        "• Swan Suite, 67 m², sleeps 2 — 67 sq m, King bed\\n"
+        "• Prestige Suite, 72 m², sleeps 2 — Ground floor, Living area\\n"
+        "Which one catches your eye? I can start a booking for you — just tell me your name and dates?"
+    ),
     "Slovenian": (
         "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\\n"
         "• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
