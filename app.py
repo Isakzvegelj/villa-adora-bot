@@ -2425,7 +2425,34 @@ def api_chat():
                         response_text = _ensure_follow_up(response_text, "rooms", "English")
                         return jsonify({"replies": [{"type": "text", "content": response_text}]})
                 # Otherwise fall through to LLM with book_room tool available
-            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "bar", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences", "villa_pomona", "wedding"):
+            elif topic == "gift_vouchers":
+                # Direct response for gift vouchers — static content, no LLM needed
+                hotel_answer = get_hotel_info_response("gift_vouchers", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic == "wedding":
+                # Direct response for wedding queries — static content
+                hotel_answer = get_hotel_info_response("wedding", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic == "bar":
+                # Direct response for bar queries — static content
+                hotel_answer = get_hotel_info_response("bar", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": hotel_answer})
+                    sessions[session_id] = messages
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+            elif topic in ("room_service", "pets", "parking", "wifi", "shuttle", "location", "check_in", "check_out", "late_check_in", "late_check_out", "restaurant", "wine", "breakfast", "children", "contact", "amenities", "smoking", "spa", "weather", "cancellation", "policies", "gym", "experiences", "villa_pomona"):
                 # Re-route dietary accommodation questions to restaurant for a richer response
                 if topic == "breakfast" and any(w in user_message.lower() for w in ["accommodate", "can you", "can i", "do you", "options", "serve", "provide"]) and any(w in user_message.lower() for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "restriction"]):
                     topic = "restaurant"
@@ -2437,6 +2464,30 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     response_text = _ensure_follow_up(response_text, "", "English")
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
+
+        # Direct response for combined restaurant+wine queries to avoid LLM timeout
+        if not is_non_english and topic in ("restaurant", "wine") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef"]):
+            r = hotel_info.get("dining", {}).get("restaurant", {})
+            m = hotel_info.get("menu", {}).get("restaurant", {})
+            w = hotel_info.get("menu", {}).get("wine_list", {})
+            combined = (
+                f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
+                f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
+                f"Led by renowned Chef Domen Demšar. "
+                f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
+                f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
+                f"The terrace has arguably the best sunset views in Bled. "
+                f"Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines "
+                f"from vineyards near Bled alongside selected international labels. "
+                f"Wine pairing is available with our tasting menu (approximately €35/person). "
+                f"The tasting menu is approximately €65/person. "
+                f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
+                f"Would you like to make a reservation?"
+            )
+            messages.append({"role": "user", "content": user_message})
+            messages.append({"role": "assistant", "content": combined})
+            sessions[session_id] = messages
+            return jsonify({"replies": [{"type": "text", "content": combined}]})
 
         # Handle English social messages (greetings, thanks, goodbyes) directly to avoid LLM failures
         if not is_non_english and topic == "general":
@@ -2481,7 +2532,7 @@ def api_chat():
             "tools": available_tools,
             "temperature": 0.3 if is_non_english else 0.5,
             "max_tokens": 2000,
-            "timeout": 50,
+            "timeout": 40,
         }
         tool_params["tool_choice"] = "auto"
 
