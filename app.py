@@ -686,6 +686,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Abbiamo 8 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
             "Spanish": "Tenemos 8 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
             "Croatian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
+            "Serbian": "Imamo 8 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
             fallbacks = {
@@ -695,6 +696,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
                 "Italian": "La colazione costa 22 € a persona — servita dalle 8 alle 10 sulla terrazza con vista sul lago. Buffet ricco con pasticceria fresca, pane e prodotti locali sloveni. Opzioni vegane, vegetariane e senza glutine su richiesta. Hai restrizioni alimentari?",
                 "Spanish": "El desayuno cuesta 22 € por persona — servido de 8 a 10 AM en la terraza con vistas al lago. Buffet rico con pasteles frescos, pan y productos locales eslovenos. Opciones veganas, vegetarianas y sin gluten bajo pedido. ¿Tiene restricciones alimentarias?",
                 "Croatian": "Doručak košta 22 € po osobi — poslužuje se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
+                "Serbian": "Doručak košta 22 € po osobi — služi se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svežim pecivom, hlebom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtev. Imate li prehrambene restrikcije?",
             }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -702,8 +704,9 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "German": "Wir haben das Adora Pop Up Restaurant direkt im Hotel! Kreative Küche mit lokalen slowenischen Zutaten unter der Leitung von Küchenchef Domen Demšar. Die Terrasse bietet einen der besten Ausblicke auf den See. Reservierung: +386 40 558 158. Möchten Sie einen Tisch reservieren?",
             "French": "Nous avons le restaurant Adora Pop Up directement à l'hôtel! Cuisine créative avec des ingrédients slovènes locaux sous la direction du chef Domen Demšar. La terrasse offre l'une des meilleures vues sur le lac. Réservation: +386 40 558 158. Souhaitez-vous réserver une table?",
             "Italian": "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Cucina creativa con ingredienti sloveni locali sotto la guida dello chef Domen Demšar. La terrazza offre una delle migliori viste sul lago. Prenotazione: +386 40 558 158. Vuoi riservare un tavolo?",
-            "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terraza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
+            "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terrazza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
             "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
+            "Serbian": "Imamo restoran Adora Pop Up direktno u hotelu! Kreativna kuhinja sa lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
         }
     else:
         fallbacks = {
@@ -713,6 +716,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 8 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
             "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 8 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
             "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 8 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
+            "Serbian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 8 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
         }
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
@@ -739,8 +743,10 @@ def fix_spacing(text):
     # Fix "from 8 10 AM" -> "from 8-10 AM"
     text = re.sub(r'from (\d{1,2}) (\d{1,2}) (AM|PM)', r'from \1-\2 \3', text, flags=re.IGNORECASE)
     # Fix run-on words: lowercase followed by uppercase with no space
-    text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
-    # Fix "WiFi" being split by the above rule: "Wi Fi" -> "WiFi" (MUST run after the general uppercase split)
+    # Use a targeted approach: only split when the uppercase letter starts a new word
+    # (i.e., followed by lowercase letters), NOT inside camelCase like "WiFi"
+    text = re.sub(r'([a-z])([A-Z][a-z])', r'\1 \2', text)
+    # Fix "WiFi" being split: "Wi Fi" -> "WiFi" (MUST run after the general uppercase split)
     text = re.sub(r'\bWi\s+Fi\b', 'WiFi', text, flags=re.IGNORECASE)
     text = re.sub(r'\bwi\s+fi\b', 'WiFi', text)
     # Fix common LLM spacing glitches
@@ -894,25 +900,28 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "French": " Laquelle vous pla\u00eet le plus ? Je peux r\u00e9server pour vous \u2014 j'ai besoin de votre nom et de vos dates ?",
             "Italian": " Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date?",
             "Spanish": "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas?",
-            "Croatian": " Koji vas najvi\u0161e zanima? Mogu pokrenuti rezervaciju \u2014 samo mi recite va\u0161e ime i datume?",
+            "Croatian": " Koji vas najviše zanima? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?",
+            "Serbian": " Koji vas najviše zanima? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?",
         },
         "experiences": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
             "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati?",
-            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
-            "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
-            "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
-            "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+            "German": " Welche Aktivität interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
+            "French": " Laquelle vous intéresse le plus ? Je serai ravi de vous aider à l'organiser!",
+            "Italian": " Quale ti interessa di più? Sarà un piacere aiutarti!",
+            "Spanish": " ¿Cuál te interesa más? ¡Estaré encantado de ayudarte?",
+            "Croatian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!",
+            "Serbian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!",
         },
         "activities": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
             "Slovenian": " Katero aktivnost vas najbolj zanima? Z veseljem vam jo pomagam organizirati?",
-            "German": " Welche Aktivit\u00e4t interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
-            "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
-            "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
-            "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
-            "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+            "German": " Welche Aktivität interessiert Sie am meisten? Ich helfe gerne bei der Organisation?",
+            "French": " Laquelle vous intéresse le plus ? Je serai ravi de vous aider à l'organiser!",
+            "Italian": " Quale ti interessa di più? Sarà un piacere aiutarti!",
+            "Spanish": " ¿Cuál te interesa más? ¡Estaré encantado de ayudarte?",
+            "Croatian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!",
+            "Serbian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!",
         },
     }
     # Generic follow-up when topic not matched
@@ -921,9 +930,10 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
         "Slovenian": " Vas kaj drugo zanima? Z veseljem vam pomagam!",
         "German": " Gibt es noch etwas, womit ich Ihnen helfen kann?",
         "French": " Y a-t-il autre chose que je puisse faire pour vous ?",
-        "Italian": " C'\u00e8 altro con cui posso aiutarti?",
-        "Spanish": "\u00bfHay algo m\u00e1s en lo que pueda ayudarte?",
-        "Croatian": " Ima li jo\u0161 \u010de\u0161ta u \u010demu vam mogu pomo\u0107i?",
+        "Italian": " C'è altro con cui posso aiutarti?",
+        "Spanish": " ¿Hay algo más en lo que pueda ayudarte?",
+        "Croatian": " Ima li još nešto u čemu vam mogu pomoći?",
+        "Serbian": " Ima li još nešto u čemu vam mogu pomoći?",
     }
     topic_questions = questions.get(topic, {})
     if topic_questions:
@@ -2160,7 +2170,8 @@ def api_chat():
                 "French": ["merci", "bonjour", "bonsoir", "au revoir", "salut", "bienvenue", "comment allez", "enchanté"],
                 "Italian": ["grazie", "buongiorno", "buonasera", "arrivederci", "ciao", "benvenuto", "come stai", "prego"],
                 "Spanish": ["gracias", "hola", "buenos", "buenas", "adiós", "bienvenido", "bienvenida", "cómo estás", "de nada"],
-                "Croatian": ["hvala", "pozdrav", "zdravo", "dovi\u0111enja", "dobrodo\u0161li", "kako si", "lijep dan", "bok", "zbogom", "sretno"],
+                "Croatian": ["hvala", "pozdrav", "zdravo", "doviđenja", "dobrodošli", "kako si", "lijep dan", "bok", "zbogom", "sretno"],
+                "Serbian": ["hvala", "pozdrav", "zdravo", "doviđenja", "dobrodošli", "kako si", "lijep dan", "bok", "zbogom", "sretno"],
             }
             is_social = any(kw in user_message.lower() for kw in social_keywords.get(detected_lang, []))
             if is_social and topic == "general":
@@ -2174,7 +2185,8 @@ def api_chat():
                     "French": ["au revoir", "salut"],
                     "Italian": ["arrivederci", "ciao"],
                     "Spanish": ["adiós", "hasta luego"],
-                    "Croatian": ["dovi\u0111enja", "bok", "zbogom"],
+                    "Croatian": ["doviđenja", "bok", "zbogom"],
+                    "Serbian": ["doviđenja", "bok", "zbogom"],
                 }
                 thanks_words = {
                     "English": ["thank", "thanks"],
@@ -2184,6 +2196,7 @@ def api_chat():
                     "Italian": ["grazie"],
                     "Spanish": ["gracias"],
                     "Croatian": ["hvala"],
+                    "Serbian": ["hvala"],
                 }
                 if any(w in msg_lower for w in goodbye_words.get(detected_lang, [])):
                     social_type = "goodbye"
@@ -2198,25 +2211,27 @@ def api_chat():
                         "French": "Bonjour ! Bienvenue au Villa Adora Bled ! Comment puis-je vous aider avec votre séjour ?",
                         "Italian": "Buongiorno! Benvenuto al Villa Adora Bled! Come posso aiutarti con il tuo soggiorno?",
                         "Spanish": "¡Buenos días! ¡Bienvenido a Villa Adora Bled! ¿Cómo puedo ayudarte con tu estancia?",
-                        "Croatian": "Dobrodo\u0161li u Villa Adora Bled! Kako vam mogu pomo\u0107i s va\u0161im boravkom?",
+                        "Serbian": "Zdravo! Dobrodošli u Villa Adora Bled! Kako vam mogu pomoći sa vašim boravkom?",
                     },
                     "thanks": {
                         "English": "You're very welcome! Is there anything else I can help you with today?",
-                        "Slovenian": "Ni za kaj! Vam lahko \u0161e kako pomagam?",
+                        "Slovenian": "Ni za kaj! Vam lahko še kako pomagam?",
                         "German": "Gern geschehen! Kann ich Ihnen noch mit etwas helfen?",
                         "French": "Je vous en prie ! Y a-t-il autre chose que je puisse faire pour vous ?",
-                        "Italian": "Prego! C'\u00e8 altro con cui posso aiutarti?",
+                        "Italian": "Prego! C'è altro con cui posso aiutarti?",
                         "Spanish": "¡De nada! ¿Hay algo más en lo que pueda ayudarte?",
-                        "Croatian": "Nema na \u010demu! Mogu li vam jo\u0161 nekako pomo\u0107i?",
+                        "Croatian": "Nema na čemu! Mogu li vam još nekako pomoći?",
+                        "Serbian": "Nema na čemu! Mogu li vam još nekako pomoći?",
                     },
                     "goodbye": {
-                        "English": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels \u2014 is there anything else before you go?",
-                        "Slovenian": "Nasvidenje! Upamo, da vas bomo kmali spet videli v Villi Adora Bled. Varno pot \u2014 vas \u0161e kaj zanima?",
-                        "German": "Auf Wiedersehen! Wir freuen uns, Sie im Villa Adora Bled begrüßen zu dürfen. Gute Reise \u2014 kann ich Ihnen noch mit etwas helfen?",
-                        "French": "Au revoir ! Nous avons hâte de vous accueillir au Villa Adora Bled. Bon voyage \u2014 y a-t-il autre chose avant de partir ?",
-                        "Italian": "Arrivederci! Non vediamo l'ora di accoglierci al Villa Adora Bled. Buon viaggio \u2014 c'\u00e8 altro prima di partire?",
-                        "Spanish": "¡Adi\u00f3s! Esperamos darle la bienvenida a Villa Adora Bled. Buen viaje \u2014 \u00bfhay algo m\u00e1s antes de irte?",
-                        "Croatian": "Dovi\u0111enja! Radujemo se \u0161to \u0107emo vas do\u010dekati u Villa Adora Bled. Sretan put \u2014 imam li vam jo\u0161 ne\u0161to pomo\u0107i?",
+                        "English": "Goodbye! We look forward to welcoming you to Villa Adora Bled. Safe travels — is there anything else before you go?",
+                        "Slovenian": "Nasvidenje! Upamo, da vas bomo kmali spet videli v Villi Adora Bled. Varno pot — vas še kaj zanima?",
+                        "German": "Auf Wiedersehen! Wir freuen uns, Sie im Villa Adora Bled begrüßen zu dürfen. Gute Reise — kann ich Ihnen noch mit etwas helfen?",
+                        "French": "Au revoir ! Nous avons hâte de vous accueillir au Villa Adora Bled. Bon voyage — y a-t-il autre chose avant de partir ?",
+                        "Italian": "Arrivederci! Non vediamo l'ora di accoglierci al Villa Adora Bled. Buon viaggio — c'è altro prima di partire?",
+                        "Spanish": "¡Adiós! Esperamos darle la bienvenida a Villa Adora Bled. Buen viaje — ¿hay algo más antes de irte?",
+                        "Croatian": "Doviđenja! Radujemo se što ćemo vas dočekati u Villa Adora Bled. Sretan put — imam li vam još nešto pomoći?",
+                        "Serbian": "Doviđenja! Radujemo se što ćemo vas dočekati u Villa Adora Bled. Sretan put — imam li vam još nešto pomoći?",
                     },
                 }
                 fallback = social_responses.get(social_type, social_responses["greeting"]).get(
@@ -2721,6 +2736,7 @@ def api_chat():
             "Italian": "Mi dispiace, ho problemi di connessione. Riprova o chiamaci al +386 51 603 858. C'è altro con cui posso aiutarti?",
             "Spanish": "Lo siento, tengo problemas de conexión. Inténtalo de nuevo o llama al +386 51 603 858. ¿Hay algo más en lo que pueda ayudarte?",
             "Croatian": "Oprostite, trenutno imam problema s vezom. Pokušajte ponovno ili nas nazovite na +386 51 603 858. Imam li vam još nešto pomoći?",
+            "Serbian": "Oprostite, trenutno imam problema s vezom. Pokušajte ponovno ili nas nazovite na +386 51 603 858. Imam li vam još nešto pomoći?",
         }
         return jsonify({"replies": [{"type": "text", "content": error_messages.get(detected_lang, error_messages["English"])}]}), 200
 
