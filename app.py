@@ -2615,23 +2615,52 @@ def api_chat():
                     response_text = _ensure_ends_with_question(hotel_answer)
                     return jsonify({"replies": [{"type": "text", "content": response_text}]})
             # Direct response for combined restaurant+wine/dining queries to avoid LLM timeout
-            elif topic in ("restaurant", "wine") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef", "selection"]):
+            # Also handles "breakfast" topic when message mentions restaurant/wine
+            elif topic in ("restaurant", "wine", "breakfast") and any(w in user_message.lower() for w in ["restaurant", "wine", "dining", "menu", "chef", "selection"]):
                 r = hotel_info.get("dining", {}).get("restaurant", {})
                 m = hotel_info.get("menu", {}).get("restaurant", {})
                 w = hotel_info.get("menu", {}).get("wine_list", {})
-                combined = (
+                # Build combined response: breakfast + restaurant + wine
+                parts = []
+                if topic == "breakfast" or "breakfast" in user_message.lower():
+                    parts.append(
+                        f"Breakfast is €22 per person, served daily 8-10 AM on our terrace with fresh pastries, bread, and local Slovenian products. "
+                        f"We also offer vegan, vegetarian, and gluten-free options on request."
+                    )
+                parts.append(
                     f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
                     f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
                     f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
                     f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
-                    f"The terrace has arguably the best sunset views in Bled. "
+                    f"The terrace has arguably the best sunset views in Bled."
+                )
+                parts.append(
                     f"Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines "
                     f"from vineyards near Bled alongside selected international labels. "
                     f"Wine pairing is available with our tasting menu (approximately €35/person). "
-                    f"The tasting menu is approximately €65/person. "
+                    f"The tasting menu is approximately €65/person."
+                )
+                parts.append(
                     f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
                     f"Would you like to make a reservation?"
                 )
+                combined = "\n\n".join(parts)
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": combined})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": combined}]})
+            # Direct response for combined activities + dietary queries to avoid LLM timeout
+            elif topic in ("experiences", "activities") and any(w in user_message.lower() for w in ["vegan", "vegetarian", "gluten", "dietary", "allergy", "diet", "restriction", "food", "breakfast", "restaurant"]):
+                exp_answer = get_hotel_info_response("experiences", user_message)
+                diet_answer = get_hotel_info_response("restaurant", user_message)
+                combined = ""
+                if exp_answer and exp_answer.strip():
+                    combined += exp_answer + "\n\n"
+                if diet_answer and diet_answer.strip():
+                    combined += "Regarding dietary needs: " + diet_answer
+                else:
+                    combined += "We also accommodate vegan, vegetarian, and gluten-free dietary needs — just let us know your preferences when you book!"
+                combined = _ensure_ends_with_question(combined)
                 messages.append({"role": "user", "content": user_message})
                 messages.append({"role": "assistant", "content": combined})
                 sessions[session_id] = messages
