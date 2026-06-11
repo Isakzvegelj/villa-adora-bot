@@ -132,19 +132,19 @@ request_human_agent_function = {
 
 _ROOM_LISTINGS_TRANSLATED = {
     "English": (
-        "We have 8 beautiful suites, all with stunning lake views:\\n"
-        "• Princess Suite, 55 m², sleeps 2 — Lake view from tower, Living area\\n"
-        "• Luxury Suite, sleeps 2 — Lake view, Elegant decor\\n"
-        "• Penthouse Suite, 60 m², sleeps 2 — 2 floors, King-sized bed\\n"
-        "• Deluxe Suite, sleeps 2 — Lake view, Luxury furnishings\\n"
-        "• Superior Suite, sleeps 4 — Perfect for families, 2 bedrooms\\n"
-        "• Island Suite, 65 m², sleeps 4 — First floor, 2 luxury bedrooms\\n"
-        "• Swan Suite, 67 m², sleeps 2 — 67 sq m, King bed\\n"
-        "• Prestige Suite, 72 m², sleeps 2 — Ground floor, Living area\\n"
+        "We have 8 beautiful suites, all with stunning lake views:\n"
+        "• Princess Suite, 55 m², sleeps 2 — Lake view from tower, Living area\n"
+        "• Luxury Suite, sleeps 2 — Lake view, Elegant decor\n"
+        "• Penthouse Suite, 60 m², sleeps 2 — 2 floors, King-sized bed\n"
+        "• Deluxe Suite, sleeps 2 — Lake view, Luxury furnishings\n"
+        "• Superior Suite, sleeps 4 — Perfect for families, 2 bedrooms\n"
+        "• Island Suite, 65 m², sleeps 4 — First floor, 2 luxury bedrooms\n"
+        "• Swan Suite, 67 m², sleeps 2 — 67 sq m, King bed\n"
+        "• Prestige Suite, 72 m², sleeps 2 — Ground floor, Living area\n"
         "Which one catches your eye? I can start a booking for you — just tell me your name and dates?"
     ),
     "Slovenian": (
-        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\\n"
+        "Imamo 8 čudovitih apartmajev, vsi s čudovitim razgledom na jezero:\n"
         "• Princesin apartmaj, 55 m², za 2 osebi — Razgled na jezero iz stolpa, dnevna soba\n"
         "• Luksuzni apartmaj, za 2 osebi — Razgled na jezero, elegantna dekoracija\n"
         "• Penthouse apartmaj, 60 m², za 2 osebi — 2 nadstropji, king-size postelja\n"
@@ -156,7 +156,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
     "German": (
-        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\\n"
+        "Wir haben 8 wunderschöne Suiten mit atemberaubendem Seeblick:\n"
         "• Prinzessin Suite, 55 m², für 2 Gäste — Seeblick vom Turm, Wohnbereich\n"
         "• Luxus Suite, für 2 Gäste — Seeblick, elegante Einrichtung\n"
         "• Penthouse Suite, 60 m², für 2 Gäste — 2 Etagen, Kingsize-Bett\n"
@@ -168,7 +168,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Welche Suite gefällt Ihnen am besten? Ich starte gerne eine Buchung — ich brauche nur Ihren Namen und Ihre Reisedaten?"
     ),
     "French": (
-        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\\n"
+        "Nous avons 8 magnifiques suites avec vue imprenable sur le lac:\n"
         "• Suite Princesse, 55 m², pour 2 personnes — Vue sur le lac depuis la tour, salon\n"
         "• Suite de Luxe, pour 2 personnes — Vue sur le lac, décoration élégante\n"
         "• Suite Penthouse, 60 m², pour 2 personnes — 2 étages, lit king-size\n"
@@ -180,7 +180,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Laquelle vous plaît le plus ? Je peux réserver pour vous — j'ai besoin de votre nom et de vos dates?"
     ),
     "Italian": (
-        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\\n"
+        "Abbiamo 8 splendide suite con vista mozzafiato sul lago:\n"
         "• Suite Principessa, 55 m², per 2 persone — Vista lago dalla torre, zona living\n"
         "• Suite Luxury, per 2 persone — Vista lago, arredi eleganti\n"
         "• Suite Penthouse, 60 m², per 2 persone — 2 piani, letto king size\n"
@@ -192,7 +192,7 @@ _ROOM_LISTINGS_TRANSLATED = {
         "Quale ti piace di più? Posso prenotare per te — mi servono solo nome e date?"
     ),
     "Spanish": (
-        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\\n"
+        "Tenemos 8 hermosas suites con vistas impresionantes al lago:\n"
         "• Suite Princesa, 55 m², para 2 personas — Vista al lago desde la torre, zona de estar\n"
         "• Suite de Lujo, para 2 personas — Vista al lago, decoración elegante\n"
         "• Suite Penthouse, 60 m², para 2 personas — 2 pisos, cama king size\n"
@@ -3161,7 +3161,7 @@ def api_chat():
             if reply.get("type") == "text" and reply.get("content"):
                 reply["content"] = clean_response(reply["content"])
                 # Anti-hallucination: remove any mention of Castle Suite (not a real room)
-                reply["content"] = re.sub(r'(?i)\\bCastle Suite\\b[^.\\n]*', '', reply["content"])
+                reply["content"] = re.sub(r'(?i)\\bCastle Suite\\b[^.\n]*', '', reply["content"])
                 # Anti-hallucination: remove mentions of non-existent rooms
                 valid_rooms = ["princess suite", "luxury suite", "penthouse suite", "deluxe suite",
                               "superior suite", "island suite", "swan suite", "prestige suite"]
