@@ -142,6 +142,28 @@ _ROOM_LISTINGS_TRANSLATED = {
         "• Prestižni apartmaj, 72 m², za 2 osebi — Pritličje, pogled na jezero (cena na vprašanje)\n"
         "Kateri vas najbolj pritegne? Lahko začnem z rezervacijo — samo povejte mi vaše ime in datume?"
     ),
+    "Croatian": (
+        "Imamo 7 prekrasnih apartmana s prekrasnim pogledom na jezero:\n"
+        "• Apartman Princeza, 55 m², za 2 osobe, 440 €/noć — Pogled na jezero iz tornja, dnevni boravak\n"
+        "• Luksuzni apartman, za 2 osobe, 480 €/noć — Pogled na jezero, elegantan namještaj\n"
+        "• Penthouse apartman, 60 m², za 2 osobe, 430 €/noć — 2 kata, king-size krevet\n"
+        "• Deluxe apartman, za 2 osobe, 570 €/noć — Pogled na jezero, luksuzna oprema\n"
+        "• Superior apartman, za 4 osobe, 570 €/noć — 2 spavaće sobe, obiteljski apartman\n"
+        "• Otočni apartman, 65 m², za 4 osobe, 620 €/noć — 2 luksuzne spavaće sobe, 2 balkona\n"
+        "• Prestižni apartman, 72 m², za 2 osobe — Prizemlje, pogled na jezero (cena na upit)\n"
+        "Koji vas najviše privlači? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?"
+    ),
+    "Serbian": (
+        "Imamo 7 prekrasnih apartmana sa prekrasnim pogledom na jezero:\n"
+        "• Apartman Princeza, 55 m², za 2 osobe, 440 €/noć — Pogled na jezero iz tornja, dnevni boravak\n"
+        "• Luksuzni apartman, za 2 osobe, 480 €/noć — Pogled na jezero, elegantan namještaj\n"
+        "• Penthouse apartman, 60 m², za 2 osobe, 430 €/noć — 2 kata, king-size krevet\n"
+        "• Deluxe apartman, za 2 osobe, 570 €/noć — Pogled na jezero, luksuzna oprema\n"
+        "• Superior apartman, za 4 osobe, 570 €/noć — 2 spavaće sobe, porodični apartman\n"
+        "• Otočni apartman, 65 m², za 4 osobe, 620 €/noć — 2 luksuzne spavaće sobe, 2 balkona\n"
+        "• Prestižni apartman, 72 m², za 2 osobe — Prizemlje, pogled na jezero (cena na upit)\n"
+        "Koji vas najviše privlači? Mogu pokrenuti rezervaciju — samo mi recite vaše ime i datume?"
+    ),
     "German": (
         "Wir haben 7 wundersch\u00f6ne Suiten mit atemberaubendem Seeblick:\n"
         "\u2022 Prinzessin Suite, 55 m\u00b2, f\u00fcr 2 G\u00e4ste, 440 \u20ac/Nacht \u2014 Seeblick vom Turm, Wohnbereich\n"
@@ -245,6 +267,28 @@ _EXPERIENCES_TRANSLATED = {
         "\u2022 Masaje en habitaci\u00f3n, noches con vino\n"
         "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?"
     ),
+    "Croatian": (
+        "U Bledu i oko njega ima puno toga za istražiti!\n"
+        "\u2022 Vožnja na otok Bled i posjeta crkve Marijina Uznesenja\n"
+        "\u2022 Plivanje, SUP, kajak i brodske vožnje na jezeru\n"
+        "\u2022 Šetnja kroz Vintgar klisuru (2,4 km)\n"
+        "\u2022 Posjeta Bledskom dvorcu (30 min hodanja)\n"
+        "\u2022 6 km obalne staze i 15 planinarskih staza\n"
+        "\u2022 Izleti na Bohinj, Ljubljanu, Postojnšku jamu\n"
+        "\u2022 Masaža u sobi, večeri s vinom u vrtu\n"
+        "Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!"
+    ),
+    "Serbian": (
+        "U Bledu i oko njega ima mnogo toga za istraživanje!\n"
+        "\u2022 Vožnja na Bledski otoš i poseta crkve Marijinog Uznesenja\n"
+        "\u2022 Plivanje, SUP, kajak i brodske vožnje na jezeru\n"
+        "\u2022 Šetnja kroz Vintgar klisuru (2,4 km)\n"
+        "\u2022 Poseta Bledskom dvorcu (30 min hodanja)\n"
+        "\u2022 6 km obalne staze i 15 planinarskih staza\n"
+        "\u2022 Izleti na Bohinj, Ljubljanu, Postojnšku jamu\n"
+        "\u2022 Masaža u sobi, večeri s vinom u vrtu\n"
+        "Koja vas aktivnost najviše zanima? Rado ću vam pomoći sa organizacijom!"
+    ),
 }
 
 _PETS_TRANSLATED = {
@@ -254,6 +298,7 @@ _PETS_TRANSLATED = {
     "Italian": "Gli animali domestici sono ammessi su richiesta \u2014 35 \u20ac per animale per notte. Contattateci per organizzare. State pensando di portare un amico a quattro zampe?",
     "Spanish": "\u00a1Las mascotas son bienvenidas bajo petici\u00f3n \u2014 35 \u20ac por mascota por noche! Cont\u00e1ctenos para organizarlo. \u00bfPlanea traer a un amigo peludo?",
     "Croatian": "Ku\u0107ni ljubimci su dobrodo\u0161li na zahtjev \u2014 35 \u20ac za ljubimca po no\u0107i. Molimo kontaktirajte nas za organizaciju. Planirate li dovesti krznenog prijatelja?",
+    "Serbian": "Ku\u0107ni ljubimci su dobrodo\u0161li na zahtev \u2014 35 \u20ac za ljubimca po no\u0107i. Molimo kontaktirajte nas za organizaciju. Planirate li dovesti krznenog prijatelja?",
 }
 
 
@@ -269,6 +314,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Abbiamo 7 splendide suite con vista sul lago. Tutte dispongono di bagno privato, aria condizionata, WiFi gratuito e TV. Quale suite ti interessa di più? Posso darti maggiori dettagli?",
             "Spanish": "Tenemos 7 hermosas suites con vistas al lago. Todas cuentan con baño privado, aire acondicionado, WiFi gratis y TV. ¿Cuál te llama más la atención? ¡Puedo darte más detalles?",
             "Croatian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
+            "Serbian": "Imamo 7 prekrasnih apartmana s pogledom na jezero. Svi imaju vlastitu klimu, besplatni WiFi i TV. Koji vas najviše zanima? Mogu vam dati više detalja?",
         }
     elif any(w in q for w in ["breakfast", "morning", "brunch", "zajtrk", "frühstück", "colazione", "petit déjeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana"]):
         fallbacks = {
@@ -278,6 +324,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "La colazione è disponibile a 22 € a persona, servita dalle 8 alle 10. Offriamo anche opzioni vegane, vegetariane e senza glutine. Vuoi aggiungere la colazione alla tua prenotazione?",
             "Spanish": "El desayuno está disponible por 22 € por persona, servido de 8 a 10 AM. También ofrecemos opciones veganas, vegetarianas y sin gluten. ¿Te gustaría agregar el desayuno a tu reserva?",
             "Croatian": "Doručak je dostupan za 22 € po osobi, poslužuje se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
+            "Serbian": "Doručak je dostupan za 22 € po osobi, služi se od 8 do 10 sati. Nudimo i veganska, vegetarijanska i bezglutenska jela. Želite li dodati doručak u rezervaciju?",
         }
     elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
         fallbacks = {
@@ -287,6 +334,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Abbiamo il ristorante Adora Pop Up direttamente in hotel! Cucina creativa con ingredienti sloveni locali sotto la guida dello chef Domen Demšar. La terrazza offre una delle migliori viste sul lago. Prenotazione: +386 40 558 158. Vuoi riservare un tavolo?",
             "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terraza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
             "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
+            "Serbian": "Imamo restoran Adora Pop Up direktno u hotelu! Kreativna kuhinja sa lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
         }
     else:
         fallbacks = {
@@ -296,6 +344,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Italian": "Villa Adora Bled è un boutique hotel sul lago di Bled. Abbiamo 7 suite uniche con vista sul lago, un ristorante, parcheggio gratuito e WiFi. Cosa vorresti sapere? Sarò felice di aiutarti?",
             "Spanish": "Villa Adora Bled es un hotel boutique en el lago Bled. Tenemos 7 suites únicas con vistas al lago, un restaurante, estacionamiento gratuito y WiFi. ¿Qué te gustaría saber? ¡Estaré encantado de ayudarte?",
             "Croatian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
+            "Serbian": "Villa Adora Bled je butični hotel na jezeru Bled. Imamo 7 jedinstvenih apartmana s pogledom na jezero, restoran, besplatni parking i WiFi. Što vas zanima? Rado ću vam pomoći?",
         }
     return fallbacks.get(lang, fallbacks.get("Slovenian", "I'm here to help! What would you like to know about Villa Adora Bled?"))
 
@@ -624,7 +673,15 @@ def build_system_prompt() -> str:
         "- Address: Cesta svobode 35, Bled, Slovenia\n"
         "- Phone: +386 51 603 858 | WhatsApp: +386 51 603 858\n"
         "- Booking.com: 9.1/10 Wonderful (698 reviews) | TripAdvisor: 4.7/5 Travelers' Choice\n\n"
-        "ROOMS: Princess Suite (55 m², tower view), Luxury Suite (lake view), Penthouse Suite (60 m², 2 floors), Deluxe Suite (lake view), Superior Suite (sleeps 4, family-friendly), Island Suite (sleeps 4, 65 m²), Prestige Suite (72 m², ground floor) — all with lake views.\n\n"
+        "ROOMS (EXACTLY 7 — never list more or fewer):\n"
+        "  1. Princess Suite (55 m², tower view, €440/night)\n"
+        "  2. Luxury Suite (lake view, €480/night)\n"
+        "  3. Penthouse Suite (60 m², 2 floors, €430/night)\n"
+        "  4. Deluxe Suite (lake view, €570/night)\n"
+        "  5. Superior Suite (sleeps 4, family-friendly, €570/night)\n"
+        "  6. Island Suite (65 m², sleeps 4, €620/night)\n"
+        "  7. Prestige Suite (72 m², ground floor, price on request)\n"
+        "All room names MUST come from the list above. NEVER invent rooms (no 'Swan Suite', 'Royal Suite', etc.).\n\n"
         "NEVER do:\n"
         "- Mention databases, code, APIs, or technical systems\n"
         "- Mention prices unless asked\n"
@@ -632,6 +689,7 @@ def build_system_prompt() -> str:
         "- Give bare answers without a follow-up question ending in '?'\n"
         "- End your response with '!' or '.' — it MUST end with '?'\n"
         "- Send multiple separate replies to a single question\n"
+        "- Invent room names or list rooms not in the official 7 (no 'Swan Suite', 'Royal Suite', 'Eagle Suite', etc.)\n"
         "- If guest is frustrated, unsatisfied, or explicitly asks for a human, use request_human_agent() to transfer them\n"
         "- If you cannot answer a question well, offer to connect the guest with a human agent\n"
         "- Shuttle bookings: use book_shuttle() when guest wants to book a shuttle. Ask for: name, pickup location, date, time, passengers.\n"
@@ -747,6 +805,11 @@ def _detect_language(message: str) -> str:
             " pozdravljeni ", " hvala lepo ", " prosim vas ", " kako ste ",
             " dober dan ", " lahko noč ", " nasvidenje ", " rezervacija ", " zajtrk ",
             " soba ", " sobe ", " apartma "
+        ],
+        "Serbian": [
+            " pozdravljeni ", " hvala lepo ", " molim vas ", " kako ste ",
+            " dobar dan ", " laku noć ", " doviđenja ", " rezervacija ", " doručak ",
+            " soba ", " sobe ", " apartman "
         ],
     }
 
@@ -1754,6 +1817,7 @@ def api_chat():
             "Italian": "Mi dispiace, ho problemi di connessione. Riprova o chiamaci al +386 51 603 858. C'è altro con cui posso aiutarti?",
             "Spanish": "Lo siento, tengo problemas de conexión. Inténtalo de nuevo o llama al +386 51 603 858. ¿Hay algo más en lo que pueda ayudarte?",
             "Croatian": "Oprostite, trenutno imam problema s vezom. Pokušajte ponovno ili nas nazovite na +386 51 603 858. Imam li vam još nešto pomoći?",
+            "Serbian": "Oprostite, trenutno imam problema s vezom. Pokušajte ponovno ili nas nazovite na +386 51 603 858. Imam li vam još nešto pomoći?",
         }
         return jsonify({"replies": [{"type": "text", "content": error_messages.get(detected_lang, error_messages["English"])}]}), 200
 
