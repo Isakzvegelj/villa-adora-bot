@@ -1194,7 +1194,7 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
     if " pozdrav " in msg or msg.strip() == "pozdrav":
         return "Croatian"
-    if " guten tag " in msg or " guten morgen " in msg or " guten abend " in msg:
+    if " guten tag " in msg or " guten morgen " in msg or " guten abend " in msg or " vielen dank " in msg or " danke " in msg:
         return "German"
     if " bonjour " in msg or msg.strip() == "bonjour":
         return "French"
