@@ -690,7 +690,8 @@ _WEDDING_TRANSLATED = {
 
 def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
-    q = user_message.lower()
+    import unicodedata as _ud
+    q = _ud.normalize("NFC", user_message.lower())
     # Detect topic for a more relevant fallback
     if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "zimmer frei", "camere disponibili", "chambres disponibles", "habitaciones disponibles"]):
         fallbacks = {
@@ -1180,6 +1181,9 @@ def _looks_like_english(message: str) -> bool:
 def _detect_language(message: str) -> str:
     """Simple language detection based on common words and character patterns."""
     import re as _re
+    import unicodedata as _ud
+    # Normalize Unicode to NFC for consistent matching
+    message = _ud.normalize("NFC", message)
     msg_raw = " " + message.lower().strip() + " "
     # For word matching, create a version with punctuation replaced by spaces
     msg = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', message.lower().strip()) + " "
@@ -1356,7 +1360,9 @@ def _detect_topic(message: str) -> str:
     """Detect the hotel info topic from a message (language-independent).
     Uses word-boundary matching to prevent false substrings like 'cat' in 'located'."""
     import re as _re
-    msg_raw = message.lower()
+    import unicodedata as _ud
+    # Normalize Unicode to NFC form so accented chars match consistently
+    msg_raw = _ud.normalize("NFC", message.lower())
     # For word-boundary matching, create a padded version
     msg_word = " " + _re.sub(r'[!?,.;:()\[\]{}]', ' ', msg_raw) + " "
     msg_word = _re.sub(r'  +', ' ', msg_word)
@@ -1396,6 +1402,8 @@ def _detect_topic(message: str) -> str:
     def _matches(text, keywords):
         """Check if any keyword matches as a whole word/phrase in text."""
         for kw in keywords:
+            # Normalize keyword to NFC for consistent matching
+            kw = _ud.normalize("NFC", kw)
             # Use word boundary for short keywords (<=4 chars) to avoid false matches
             if len(kw) <= 4:
                 pattern = r'\b' + _re.escape(kw) + r'\b'
@@ -1483,8 +1491,9 @@ def apply_rag_to_messages(messages: list[dict], user_query: str) -> list[dict]:
 
 
 def get_hotel_info_response(topic, question):
+    import unicodedata as _ud
     h = hotel_info
-    q = question.lower()
+    q = _ud.normalize("NFC", question.lower())
 
     # Map common synonyms to topics
     topic_aliases = {
