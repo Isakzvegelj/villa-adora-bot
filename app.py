@@ -516,6 +516,7 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "Italian": " Quale ti piace di pi\u00f9? Posso prenotare per te \u2014 mi servono solo nome e date?",
             "Spanish": "\u00bfCu\u00e1l te gusta m\u00e1s? Puedo hacer la reserva \u2014 solo necesito tu nombre y las fechas?",
             "Croatian": " Koji vas najvi\u0161e zanima? Mogu pokrenuti rezervaciju \u2014 samo mi recite va\u0161e ime i datume?",
+            "Serbian": " Koji vas najvi\u0161e zanima? Mogu pokrenuti rezervaciju \u2014 samo mi recite va\u0161e ime i datume?",
         },
         "experiences": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
@@ -525,6 +526,7 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
             "Spanish": "\u00bfCu\u00e1l te interesa m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
             "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+            "Serbian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i sa organizacijom!",
         },
         "activities": {
             "English": " Which of these sounds most appealing to you? I'd love to help you plan it!",
@@ -533,7 +535,8 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
             "French": " Laquelle vous int\u00e9resse le plus ? Je serai ravi de vous aider \u00e0 l'organiser!",
             "Italian": " Quale ti interessa di pi\u00f9? Sar\u00e0 un piacere aiutarti!",
             "Spanish": "\u00bfCu\u00e1l te interea m\u00e1s? \u00a1Estar\u00e9 encantado de ayudarte?",
-            "Croatian": " Koja vas aktivnost najvi\u0161e zanima? Rado \u0107u vam pomo\u0107i s organizacijom!",
+            "Croatian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći s organizacijom!",
+            "Serbian": " Koja vas aktivnost najviše zanima? Rado ću vam pomoći sa organizacijom!",
         },
     }
     # Generic follow-up when topic not matched
@@ -542,9 +545,10 @@ def _ensure_follow_up(text: str, topic: str = "", lang: str = "English") -> str:
         "Slovenian": " Vas kaj drugo zanima? Z veseljem vam pomagam!",
         "German": " Gibt es noch etwas, womit ich Ihnen helfen kann?",
         "French": " Y a-t-il autre chose que je puisse faire pour vous ?",
-        "Italian": " C'\u00e8 altro con cui posso aiutarti?",
-        "Spanish": "\u00bfHay algo m\u00e1s en lo que pueda ayudarte?",
-        "Croatian": " Ima li jo\u0161 \u010de\u0161ta u \u010demu vam mogu pomo\u0107i?",
+        "Italian": " C'è altro con cui posso aiutarti?",
+        "Spanish": "¿Hay algo más en lo que pueda ayudarte?",
+        "Croatian": " Ima li još nešto u čemu vam mogu pomoći?",
+        "Serbian": " Ima li još nešto u čemu vam mogu pomoći?",
     }
     topic_questions = questions.get(topic, {})
     if topic_questions:
@@ -1723,6 +1727,7 @@ def api_chat():
                         "Italian": " A che ora vorresti? Fammi sapere!",
                         "Spanish": "¿A qué hora te gustaría? ¡Házmelo saber!",
                         "Croatian": " U koliko sati biste željeli? Samo mi recite!",
+                        "Serbian": " U koliko sati biste željeli? Samo mi recite!",
                     }
                     replies[-1]["content"] += late_time_prompts.get(detected_lang, late_time_prompts["English"])
 
