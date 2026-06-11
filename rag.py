@@ -102,6 +102,15 @@ def build_corpus():
         for exp in h.get("experiences", []):
             corpus_entries.append({"source": "hotel_data.py", "text": f"Activity: {exp}"})
 
+        official = h.get("official_website", {})
+        if official:
+            corpus_entries.append({"source": "hotel_data.py", "text": f"Official website: {official.get('url')}. Phone: {official.get('footer_phone')}. Email: {official.get('footer_email')}. Address: {official.get('footer_address')}."})
+        social = h.get("social", {})
+        if social:
+            insta = social.get("instagram", {})
+            if insta:
+                corpus_entries.append({"source": "hotel_data.py", "text": f"Instagram: {insta.get('handle')}. Display name: {insta.get('display_name')}. Posts: {insta.get('posts')}. Followers: {insta.get('followers')}. Bio: {insta.get('bio')}. Highlights: {', '.join(insta.get('highlight_categories', []))}."})
+
     except Exception as e:
         print(f"Error loading hotel_data: {e}")
 

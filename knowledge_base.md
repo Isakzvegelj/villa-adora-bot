@@ -13,6 +13,8 @@
 - **Phone:** +386 51 603 858
 - **WhatsApp:** +386 51 603 858
 - **Booking:** Booking.com or direct email
+- **Official website:** https://www.adorabled.com/ — footer lists the same address and contact details.
+- **Instagram:** @adoraluxuryhotel — active profile with 302 posts, 3,910 followers, and highlights for dining, suites, events, weddings, Pomona, garden, feast, and views.
 
 ## Hotel History
 - Villa Adora was built in 1878 as a private villa during the Austro-Hungarian era, when Bled was a fashionable resort for European aristocracy

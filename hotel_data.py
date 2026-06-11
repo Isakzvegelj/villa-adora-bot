@@ -315,6 +315,25 @@ hotel_info = {
         "contact": "info@villapomona.si",
         "website": "https://villapomona.si"
     },
+    "official_website": {
+        "url": "https://www.adorabled.com/",
+        "footer_phone": "+38651-603-858",
+        "footer_email": "evita.vilebled@gmail.com",
+        "footer_address": "Cesta svobode 35, 4260 Bled, Slovenia",
+        "footer_note": "The footer lists 7.00-22.00, likely referring to opening hours or reception availability."
+    },
+    "social": {
+        "instagram": {
+            "handle": "@adoraluxuryhotel",
+            "display_name": "Lake Bled",
+            "posts": 302,
+            "followers": 3910,
+            "following": 1768,
+            "bio": "Adora Luxury Hotel - Experience Heaven on Earth",
+            "location": "Cesta Svobode 35, Bled, Slovenia 4260",
+            "highlight_categories": ["Dining", "Restaurant", "Suites👑", "Bled", "Events", "Weddings", "Pomona", "Guests ❤️", "Reviews❤️", "Pomona- New!", "Posts we love❤️", "Garden", "Feast", "Views💫"]
+        }
+    },
     "additional_services": [
         "Signature Kremšnita — a creative twist on Bled's iconic cream cake",
         "Restaurant PDF menus available for download",

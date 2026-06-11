@@ -1724,6 +1724,31 @@ def get_hotel_info_response(topic, question):
                 f"Features: {features}. "
                 f"Would you like to book this suite or see other options?"
             )
+
+        # If the guest asks for a specific suite/room name that is not in our official list,
+        # say so clearly instead of listing all rooms. Avoid denying broad searches like "rooms".
+        room_generic_words = {
+            "room", "rooms", "suite", "suites", "zimmer", "zimmern", "chambre", "chambres",
+            "camera", "camere", "habitacion", "habitaciones", "soba", "sobe", "sobes",
+            "apartma", "apartmaji", "apartment", "apartments", "what", "which", "have",
+            "does", "do", "you", "we", "your", "our", "please", "tell", "about", "me",
+            "available", "availability", "options", "option", "list", "types", "type",
+            "family", "familia", "famille", "familie", "družina", "otroci", "kinder",
+            "enfants", "bambini", "niños", "person", "persons", "people", "guests", "gosti",
+            "guest", "capacity", "sleep", "sleeps", "spacious", "large", "big"
+        }
+        specific_room_tokens = []
+        for token in q.replace("-", " ").split():
+            cleaned = token.strip(".,!?;:()[]{}'\"")
+            if len(cleaned) >= 5 and cleaned not in room_generic_words:
+                specific_room_tokens.append(cleaned)
+        if specific_room_tokens and not best_match:
+            lines = [
+                "I don't think we have a suite by that exact name at Villa Adora Bled.",
+                "Our official suites are Princess Suite, Luxury Suite, Penthouse Suite, Deluxe Suite, Superior Suite, Island Suite, Swan Suite, and Prestige Suite.",
+                "Would you like me to tell you about one of these suites?"
+            ]
+            return "\n".join(lines)
         # Check if asking about capacity - highlight suitable rooms
         if is_capacity_query:
             # Extract number of people
