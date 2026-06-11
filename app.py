@@ -1198,14 +1198,29 @@ def _detect_language(message: str) -> str:
         return "Slovenian"
     if " pozdrav " in msg or msg.strip() == "pozdrav":
         return "Croatian"
+    if " zdravo " in msg or msg.strip() == "zdravo":
+        return "Croatian"
     if " guten tag " in msg or " guten morgen " in msg or " guten abend " in msg or " vielen dank " in msg or " danke " in msg:
         return "German"
-    if " bonjour " in msg or msg.strip() == "bonjour":
+    if " bonjour " in msg or " salut " in msg or msg.strip() in ("bonjour", "salut"):
         return "French"
     if " hola " in msg or msg.strip() == "hola":
         return "Spanish"
     if " buongiorno " in msg or msg.strip() == "buongiorno":
         return "Italian"
+    # Additional short greeting detection for languages that may not match English keywords
+    if " nasvidenje " in msg or " adijo " in msg or msg.strip() in ("nasvidenje", "adijo"):
+        return "Slovenian"
+    if " doviđenja " in msg or " bok " in msg or msg.strip() in ("doviđenja",):
+        return "Croatian"
+    if " arrivederci " in msg or msg.strip() == "arrivederci":
+        return "Italian"
+    if " au revoir " in msg or msg.strip() == "au revoir":
+        return "French"
+    if " auf wiedersehen " in msg or " tschüss " in msg or " tschau " in msg:
+        return "German"
+    if " hasta luego " in msg or " adiós " in msg:
+        return "Spanish"
     # High-confidence English check: if the message contains common English-only
     # words with no non-English markers, return English early to prevent
     # false-positive Croatian/Slovenian detection from shared vocabulary
