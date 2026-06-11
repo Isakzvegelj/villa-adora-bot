@@ -3,6 +3,7 @@ import os
 import re
 from collections import Counter
 import math
+from pathlib import Path
 
 CORPUS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_corpus.jsonl")
 
@@ -121,4 +122,4 @@ def build_corpus():
             f.write(json.dumps(entry) + "\n")
 
     print(f"Built corpus with {len(corpus_entries)} entries")
-    return corpus_entries
+    return Path(CORPUS_PATH)

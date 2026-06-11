@@ -588,3 +588,34 @@
 - Purchase via email: evita.vilebled@gmail.com
 - Digital or printed voucher options available
 
+### Guest Review Submission & Reputation FAQ
+- Guests can submit reviews directly on the website at `/write-review`.
+- The review form collects: guest name, email, suite, stay month, overall rating, category ratings, review title, review body, and recommendation answer.
+- Submitted reviews are stored locally in `localStorage` under `villa_adora_reviews` for admin pickup.
+- Guest emails are never published publicly.
+- Reviews are moderated before publication.
+- Encourage guests to mention their suite, travel type, and stay month so future guests can compare similar stays.
+- If a guest reports a problem, respond empathetically and offer to continue the conversation by email or phone.
+- Do not promise compensation, refunds, or upgrades unless approved by management.
+- Positive review response tone: warm, personal, specific to the guest's comment, and signed by Villa Adora team.
+- Critical review response tone: apologize, acknowledge specifics, explain what can be improved, invite private follow-up.
+
+### Concise FAQ Answers for Common Guest Questions
+- "Can I leave a review?" → Yes, please use the Write a Review page and share your experience.
+- "Is breakfast included?" → Yes, buffet breakfast is included and served on the terrace from 7:30 to 10:30.
+- "Is parking free?" → Yes, private on-site parking is free and secured.
+- "Are pets allowed?" → Yes, pets are allowed on request with a €30 cleaning fee per stay.
+- "Can I check in late?" → Late check-in is available on request. Please contact the hotel in advance.
+- "Do you have airport transfer?" → Yes, airport transfer can be arranged for €40 one way from Ljubljana airport.
+- "Do you have massages?" → Yes, in-room massages are available with 24 hours notice; prices start at €70 for 60 minutes.
+- "Is WiFi reliable?" → Yes, high-speed WiFi 6 is available throughout the property and suites.
+- "Can I request a lake-view suite?" → Yes, lake-view suites can be requested during booking; availability depends on the selected dates.
+- "Do you help with restaurant reservations?" → Yes, the concierge can recommend and reserve nearby restaurants on request.
+
+### Multilingual Review Prompts
+- EN: "Thank you for staying with us. If you have a moment, please share what you enjoyed most about Villa Adora."
+- SL: "Hvala, da ste bili naši gosti. Če imate trenutek, delite, kaj vam je bilo pri Villa Adori najbolj všeč."
+- DE: "Vielen Dank für Ihren Aufenthalt. Wenn Sie einen Moment haben, teilen Sie bitte, was Ihnen an der Villa Adora besonders gefallen hat."
+- IT: "Grazie per il vostro soggiorno. Se avete un momento, condividete cosa vi è piaciuto di più di Villa Adora."
+
+
