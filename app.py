@@ -1354,6 +1354,7 @@ def _detect_topic(message: str) -> str:
         "weather": ["weather", "forecast", "temperature", "rain", "sunny", "snow", "climate", "vreme", "temperatura"],
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
         "wedding": ["wedding", "marriage", "married", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],
+        "gift_vouchers": ["gift voucher", "gift vouchers", "voucher", "vouchers", "gift card", "gift certificate", "darilni bon", "darilni boni", "gutschein", "buono regalo", "bon cadeau"],
     }
 
     def _matches(text, keywords):
@@ -1477,6 +1478,7 @@ def get_hotel_info_response(topic, question):
         "shuttle": ["shuttle", "transfer", "airport"],
         "gym": ["gym", "fitness", "workout", "exercise"],
         "general": ["general", "info", "information", "about", "tell me"],
+        "gift_vouchers": ["gift voucher", "gift card", "gift certificate", "voucher", "vouchers", "darilni bon"],
     }
 
     # Detect actual topic from question if topic is generic
@@ -1655,6 +1657,15 @@ def get_hotel_info_response(topic, question):
             f"Check-in: {h['policies']['check_in']}. Check-out: {h['policies']['check_out']}. "
             f"Breakfast is €22 per person (not included in room rate). Free parking and WiFi. Pets allowed on request. "
             f"Is there a specific policy you'd like to know more about?"
+        )
+
+    # Gift vouchers
+    if actual_topic == "gift_vouchers":
+        return (
+            "Yes — Villa Adora gift vouchers are available for stays, restaurant dining, and massage services. "
+            "They are valid for 12 months from purchase and can be created in any amount, either as a digital voucher or printed certificate. "
+            "Please email evita.vilebled@gmail.com with the desired amount, recipient name, and preferred delivery format. "
+            "Would you like me to draft an email request for you?"
         )
 
     # Breakfast
