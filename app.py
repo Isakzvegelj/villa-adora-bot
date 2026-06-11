@@ -680,7 +680,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
     """Return a localized fallback response when the LLM responds in English for non-English queries."""
     q = user_message.lower()
     # Detect topic for a more relevant fallback
-    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma"]):
+    if any(w in q for w in ["room", "suite", "bed", "sleep", "sobe", "soba", "zimmer", "camere", "camera", "chambre", "habitaci", "cuarto", "apartma", "zimmer frei", "camere disponibili", "chambres disponibles", "habitaciones disponibles"]):
         fallbacks = {
             "Slovenian": "Imamo 8 čudovitih apartmajev z razgledom na jezero. Vsi imajo kopalnico, klimo, brezplačen WiFi in TV. Vas kateri vas zanima največ? Rad bi vam podal več podrokov?",
             "German": "Wir haben 8 wunderschöne Suiten mit Seeblick. Alle verfügen über eigenes Bad, Klimaanlage, kostenloses WLAN und TV. Welche Suite interessiert Sie am meisten? Ich kann Ihnen gerne mehr davon erzählen?",
@@ -700,7 +700,7 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
                 "Croatian": "Doručak košta 22 € po osobi — poslužuje se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svježim pecivom, kruhom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtjev. Imate li prehrambene restrikcije?",
                 "Serbian": "Doručak košta 22 € po osobi — služi se od 8 do 10 sati na terasi s pogledom na jezero. Bogati buffet sa svežim pecivom, hlebom i lokalnim slovenskim proizvodima. Veganska, vegetarijanska i bezglutenska jela na zahtev. Imate li prehrambene restrikcije?",
             }
-    elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture"]):
+    elif any(w in q for w in ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "food", "eat", "meal", "ristorante", "restaurante", "speise", "essen", "cucina", "manger", "nourriture", "resto", "restaurant"]):
         fallbacks = {
             "Slovenian": "Imamo restavracijo Adora Pop Up kar v hotelu! Ustvarjena kuhinja z lokalnimi slovenskimi sestavinami pod vodstvom šefa kuhinje Domena Demšara. Terasa ima ene najlepših razgledov na jezero. Rezervacija: +386 40 558 158. Želite rezervirati mizo?",
             "German": "Wir haben das Adora Pop Up Restaurant direkt im Hotel! Kreative Küche mit lokalen slowenischen Zutaten unter der Leitung von Küchenchef Domen Demšar. Die Terrasse bietet einen der besten Ausblicke auf den See. Reservierung: +386 40 558 158. Möchten Sie einen Tisch reservieren?",
@@ -709,6 +709,26 @@ def _get_localized_fallback(lang: str, user_message: str) -> str:
             "Spanish": "¡Tenemos el restaurante Adora Pop Up directamente en el hotel! Cocina creativa con ingredientes eslovenos locales bajo la dirección del chef Domen Demšar. La terrazza ofrece una de las mejores vistas al lago. Reserva: +386 40 558 158. ¿Te gustaría reservar una mesa?",
             "Croatian": "Imamo restoran Adora Pop Up izravno u hotelu! Kreativna kuhinja s lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
             "Serbian": "Imamo restoran Adora Pop Up direktno u hotelu! Kreativna kuhinja sa lokalnim slovenskim sastojcima pod vodstvom šefa kuhinje Domena Demšara. Terasa nudi jedan od najboljih pogleda na jezero. Rezervacija: +386 40 558 158. Želite li rezervirati stol?",
+        }
+    elif any(w in q for w in ["parking", "park", "car", "parkplatz", "parkplätze", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"]):
+        fallbacks = {
+            "Slovenian": "Imamo brezplačno parkirišče — 8 parkirnih mest pred hotelom. Boste vozili v Bled ali želite nasvete za javni prevoz?",
+            "German": "Wir bieten kostenlosen privaten Parkplatz an — 8 Parkplätze direkt vor dem Hotel. Kommen Sie mit dem Auto nach Bled, oder benötigen Sie Tipps für den öffentlichen Nahverkehr?",
+            "French": "Nous offrons un parking privé gratuit — 8 places de parking devant l'hôtel. Venez-vous à Bled en voiture, ou souhaitez-vous des conseils sur les transports en commun ?",
+            "Italian": "Offriamo parcheggio privato gratuito — 8 posti auto davanti all'hotel. Verrai a Bled in auto, o vuoi suggerimenti sui trasporti pubblici?",
+            "Spanish": "Ofrecemos estacionamiento privado gratuito — 8 espacios de estacionamiento frente al hotel. ¿Vas a venir a Bled en coche, o te gustaría recibir consejos sobre transporte público?",
+            "Croatian": "Nudimo besplatno privatno parkiralište — 8 parkirnih mjesta ispred hotela. Dolazite li u Bled autom, ili želite savjete za javni prijevoz?",
+            "Serbian": "Nudimo besplatno privatno parkiralište — 8 parkirnih mjesta ispred hotela. Dolazite li u Bled autom, ili želite savjete za javni prijevoz?",
+        }
+    elif any(w in q for w in ["check-in", "check in", "checkin", "arrival", "arrive", "enregistrement", "réception", "prijava", "prijave", "check-in horaires", "heures d'arrivée", "ankunft", "anreise", "arrivo", "arrivée", "llegada"]):
+        fallbacks = {
+            "Slovenian": "Prijava je od 14:00 do 23:00, odjava do 11:00. Pozna prijava/odjava je na voljo na zahtevo — kontaktirajte recepcijo. Ob kateri uri načrtujete prihod?",
+            "German": "Check-in ist von 14:00 bis 23:00, Check-out bis 11:00. Später Check-in/Check-out ist auf Anfrage möglich — kontaktieren Sie die Rezeption. Um welche Uhrzeit planen Sie Ihre Ankunft?",
+            "French": "L'enregistrement est de 14h00 à 23h00, le départ à 11h00. L'enregistrement/départ tardif est possible sur demande — contactez la réception. À quelle heure prévoyez-vous d'arriver ?",
+            "Italian": "Il check-in è dalle 14:00 alle 23:00, il check-out fino alle 11:00. Check-in/check-out tardivo è disponibile su richiesta — contatta la reception. A che ora prevedi di arrivare?",
+            "Spanish": "El check-in es de 14:00 a 23:00, el check-out hasta las 11:00. Check-in/check-out tardío está disponible bajo petición — contacte con recepción. ¿A qué hora planeas llegar?",
+            "Croatian": "Prijava je od 14:00 do 23:00, odjava do 11:00. Kasna prijava/odjava je dostupna na zahtjev — kontaktirajte recepciju. U koje vrijeme planirate dolazak?",
+            "Serbian": "Prijava je od 14:00 do 23:00, odjava do 11:00. Kasna prijava/odjava je dostupna na zahtev — kontaktirajte recepciju. U koje vrijeme planirate dolazak?",
         }
     else:
         fallbacks = {
@@ -1327,19 +1347,19 @@ def _detect_topic(message: str) -> str:
     msg_word = _re.sub(r'  +', ' ', msg_word)
 
     topic_keywords = {
-        "rooms": ["room", "rooms", "suite", "suites", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio"],
+        "rooms": ["room", "rooms", "suite", "suites", "bed", "sleep", "sobe", "soba", "zimmer", "zimmern", "camere", "camera", "chambre", "chambres", "habitaci", "cuarto", "apartma", "apartmaj", "sobah", "habitacion", "dormitorio", "zimmer frei", "camere disponibili", "chambres disponibles", "habitaciones disponibles", "apartmaji", "sobe prosta"],
         "restaurant": ["restaurant", "dining", "dinner", "lunch", "menu", "chef", "domen", "dem\u0161ar", "demar", "pop up", "pop-up", "terrace dining", "food", "eat", "meal", "restavracija", "ristorante", "restaurante", "speise", "essen", "ku00fcche", "cucina", "manger", "nourriture", "comida", "comer", "alimento", "ve\u010derja", "ve\u010derjo", "ve\u010deri", "kosilo", "kosilom", "obed", "obrom", "jedilnik", "jedilnika", "kuhar", "kuhinja", "terasa", "ve\u010dera", "ve\u010deru", "ru\u010dak", "ru\u010dka", "ru\u010dkom", "ve\u010derala", "ve\u010derati", "jela", "jelo", "hrana"],
         "bar": ["bar", "cocktail", "drink", "aperitivo", "aperitiv", "pijau010da", "getru00e4nk", "bevanda", "boisson"],
         "wine": ["wine", "wines", "vineyard", "sommelier", "wine pairing", "vino", "vin", "vins", "wein", "vina"],
-        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast"],
-        "parking": ["parking", "park", "car", "parkplatz", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro"],
+        "breakfast": ["breakfast", "morning meal", "brunch", "zajtrk", "fr\u00fchst\u00fcck", "colazione", "petit d\u00e9jeuner", "desayuno", "vegan", "vegetarian", "gluten", "allergy", "allergies", "dietary", "diet", "restriction", "celiac", "lactose", "intolerant", "vegansko", "vegetarijansko", "brezglutensko", "alergija", "prehrana", "koliko stane", "kako much", "how much is breakfast", "how much does breakfast", "d\u00e9jeuner", "fr\u00fchst\u00fcck buffet", "colazione inclusa", "desayuno incluido"],
+        "parking": ["parking", "park", "car", "parkplatz", "parkplätze", "parcheggio", "aparcamiento", "stationnement", "parken", "parkiranje", "avto", "auto", "wagen", "voiture", "coche", "macchina", "estacionamiento", "carro", "parking privé", "parkplatzfrage"],
         "pets": ["pet", "pets", "dog", "dogs", "cat", "cats", "animal", "pes", "mau010dka", "hund", "katze", "cane", "gatto", "chien", "chat", "perro", "gato", "mascot"],
         "location": ["location", "address", "where", "direction", "directions", "map", "located", "find you", "find the", "how do i get", "how to get", "how far", "distance", "walk", "drive", "minutes away", "minutes walk", "minutes drive", "close", "how close", "lokacija", "naslov", "kje", "standort", "adresse", "dove", "ou00f9", "du00f3nde", "donde", "ubicaci", "ubicacion", "direccion"],
         "experiences": ["experience", "activity", "activities", "thing to do", "things to do", "what to do", "what can i do", "what should i do", "attraction", "sight", "visit", "tour", "hike", "swim", "massage", "spa", "nearby", "near", "aktivnost", "attività", "activité", "actividad", "hacer", "qué hacer", "noches", "noč", "večer", "nacht", "soirée", "soir", "noche", "sera", "bicycle", "bike", "bikes", "cycling", "rental", "kolo", "kolesa", "kolesarjenje", "izposoja", "velo", "vélo", "bicicletta", "bicicleta"],
         "late_check_in": ["late check in", "late checkin", "late arrival", "arrive late", "late check-in", "pozen prihod", "spu00e4t ankommen", "arrivo tardif", "arrivu00e9e tardive"],
         "late_check_out": ["late check out", "late checkout", "late departure", "leave late", "late check-out", "pozen odhod", "spu00e4t abreise", "partenza tardif", "du00e9part tardif"],
-        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivu00e9e", "llegada", "prijava", "prijave", "che ora", "wann ist"],
-        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "odhod", "abreise", "partenza", "du00e9part", "salida"],
+        "check_in": ["check in", "checkin", "arrival", "arrive", "check-in", "prihod", "ankunft", "anreise", "arrivo", "arrivée", "llegada", "prijava", "prijave", "che ora", "wann ist", "enregistrement", "réception", "check-in horaires", "heures d'arrivée", "ora di arrivo", "ankunftszeit"],
+        "check_out": ["check out", "checkout", "departure", "depart", "check-out", "odhod", "abreise", "partenza", "départ", "salida", "enregistrement", "réception", "heures de départ", "ora di partenza", "abreisezeit"],
         "wifi": ["wifi", "wi-fi", "internet", "wireless", "wlan"],
         "contact": ["contact", "phone", "email", "call", "reach", "kontakt", "telefon", "rufen", "chiamare", "appeler", "llamar"],
         "policies": ["policy", "rule", "regulation", "pravilo", "regel", "ru00e8gle", "regla"],
@@ -2305,6 +2325,15 @@ def api_chat():
                 return jsonify({"replies": [{"type": "text", "content": fallback}]})
 
             # For other topics, use LLM with pre-fetched data
+            # If topic is still "general" for non-English, use localized fallback
+            # instead of sending to LLM (which often gives generic greetings)
+            if is_non_english and topic == "general":
+                fallback = _get_localized_fallback(detected_lang, user_message)
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": fallback})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": fallback}]})
+
             hotel_answer = get_hotel_info_response(topic, user_message)
             if hotel_answer and hotel_answer.strip():
                 lang_messages.append({
