@@ -2557,6 +2557,49 @@ def api_chat():
         else:
             # For English messages, use direct response for rooms/experiences to reduce latency
             # Adversarial / tech queries - redirect to hotel topics (before LLM call)
+            msg_lower = user_message.lower()
+
+            # Combined dining/wine questions should get one complete, deterministic answer.
+            if any(w in msg_lower for w in ["restaurant", "dining", "menu", "chef"]) and any(w in msg_lower for w in ["wine", "selection", "pairing"]):
+                r = hotel_info.get("dining", {}).get("restaurant", {})
+                w = hotel_info.get("menu", {}).get("wine_list", {})
+                dining_parts = [
+                    (
+                        f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
+                        f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
+                        f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
+                        f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
+                        f"The terrace has arguably the best sunset views in Bled."
+                    ),
+                    (
+                        f"Our wine list is curated by an in-house wine expert, featuring the best Slovenian wines "
+                        f"from vineyards near Bled alongside selected international labels. "
+                        f"{w.get('description', 'Wine pairing is available with our tasting menu.')}"
+                    ),
+                    (
+                        f"Reservations: {r.get('phone', '+386 40 558 158')} or {r.get('email', 'evita.vilebled@gmail.com')}. "
+                        f"Would you like to make a reservation?"
+                    ),
+                ]
+                response_text = "\n\n".join(part for part in dining_parts if part.strip())
+                messages.append({"role": "user", "content": user_message})
+                messages.append({"role": "assistant", "content": response_text})
+                sessions[session_id] = messages
+                return jsonify({"replies": [{"type": "text", "content": response_text}]})
+
+            dietary_keywords = ["vegan", "vegetarian", "gluten", "dietary", "allergy", "allergies", "diet", "restriction", "intolerance", "celiac", "bez glutena", "sans gluten", "glutenfrei", "vegano", "vegetariano"]
+            accommodation_words = ["accommodate", "can you", "can i", "do you", "options", "serve", "provide", "available", "option"]
+            if any(w in msg_lower for w in dietary_keywords) and any(w in msg_lower for w in accommodation_words):
+                hotel_answer = get_hotel_info_response("restaurant", user_message)
+                if hotel_answer and hotel_answer.strip():
+                    response_text = _ensure_ends_with_question(hotel_answer)
+                    response_text = _ensure_follow_up(response_text, "", "English")
+                    response_text = deduplicate_repeated_response(response_text)
+                    messages.append({"role": "user", "content": user_message})
+                    messages.append({"role": "assistant", "content": response_text})
+                    sessions[session_id] = messages
+                    return jsonify({"replies": [{"type": "text", "content": response_text}]})
+
             adversarial_keywords_en = ["database", "api", "sqlite", "flask", "server", "backend", "rag", "tool", "function", "schema", "parameter", "token", "model", "llm", "openai", "openrouter", "deploy", "docker", "kubernetes", "codebase", "source code", "repository", "github"]
             if any(word in user_message.lower() for word in adversarial_keywords_en):
                 response_text = (
@@ -3103,8 +3146,14 @@ def api_chat():
         # Merge consecutive text replies into one to avoid duplicate/fragmented responses
         merged_replies = []
         for reply in replies:
+            if reply.get("type") == "text" and reply.get("content"):
+                reply["content"] = deduplicate_repeated_response(reply["content"].strip())
             if reply.get("type") == "text" and merged_replies and merged_replies[-1].get("type") == "text":
-                merged_replies[-1]["content"] += "\n\n" + reply["content"]
+                previous = merged_replies[-1]["content"].strip()
+                current = reply["content"].strip()
+                if previous == current:
+                    continue
+                merged_replies[-1]["content"] = f"{previous}\n\n{current}"
             else:
                 merged_replies.append(reply)
         replies = merged_replies
