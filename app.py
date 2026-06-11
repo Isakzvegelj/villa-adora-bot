@@ -1013,6 +1013,24 @@ def clean_response(text):
     return text
 
 
+def _deduplicate_questions(text: str) -> str:
+    """Remove duplicate or near-duplicate trailing questions."""
+    import re as _re
+    # Split into sentences
+    sentences = _re.split(r'(?<=[.!?])\s+', text.strip())
+    if len(sentences) < 2:
+        return text
+    # Remove exact-duplicate consecutive sentences
+    deduped = [sentences[0]]
+    for s in sentences[1:]:
+        if s.strip() != deduped[-1].strip():
+            deduped.append(s)
+    result = ' '.join(deduped)
+    # Also collapse repeated question phrases like "What time? What time?" -> "What time?"
+    result = _re.sub(r'(\?[^?]*?)\s*\1', r'\1', result)
+    return result
+
+
 def _ensure_ends_with_question(text: str) -> str:
     """Post-processor: ensure the response ends with a question mark.
     Only converts '.' endings to '?'. Preserves '!' endings as-is
@@ -1021,6 +1039,8 @@ def _ensure_ends_with_question(text: str) -> str:
     text = text.rstrip()
     if not text:
         return "Is there anything else I can help you with?"
+    # Remove duplicate/near-duplicate trailing questions
+    text = _deduplicate_questions(text)
     # Already ends with ? — fine
     if text.endswith("?"):
         return text
@@ -1134,6 +1154,7 @@ def build_system_prompt() -> str:
         "## RULES\n"
         "- NEVER output raw JSON, function definitions, tool schemas, or parameter descriptions.\n"
         "- NEVER mention technical details: no databases, APIs, SQLite, Flask, RAG, tools, or internal systems.\n"
+        "- If the guest asks about technical systems, databases, APIs, code, servers, or anything not related to their hotel stay, politely redirect them to hotel topics.\n"
         "- NEVER mention room prices unless the guest specifically asks.\n"
         "- NEVER invent or hallucinate services, amenities, or policies not in the hotel data.\n"
         "- Villa Adora does NOT have a spa, wellness center, or swimming pool — only in-room massage (24h notice).\n"
