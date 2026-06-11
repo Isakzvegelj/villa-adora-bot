@@ -291,6 +291,33 @@
 - **Contact:** info@villapomona.si
 - **Website:** https://villapomona.si
 
+## Summer 2026 Events & Packages
+
+### Summer Highlights
+- **June–September 2026:** Extended summer season with full restaurant service, daily brunch (Thu–Sat), and pop-up dining events
+- **July–August:** Peak season — all suites available, 72-hour cancellation policy applies
+- **June & September:** Shoulder season — fewer crowds, mild weather, ideal for hiking and cycling
+
+### Special Summer 2026 Packages
+- **Romance Package:** 2-night stay in Princess or Penthouse Suite, champagne on arrival, couples massage, private dinner on the terrace — from €950
+- **Wellness Retreat:** 3-night stay, daily yoga session, 2 massages per person, healthy brunch, sauna access — from €1,200
+- **Adventure Package:** 2-night stay, guided Vintgar Gorge hike, kayak rental, bicycle rental, packed lunch — from €850
+- **Family Getaway:** 2-night stay in Superior or Island Suite, bike rental, lake picnic basket, children's welcome gift — from €1,100
+- **Culinary Experience:** 2-night stay, 4-course tasting menu with wine pairing, cooking class with Chef Domen Demšar — from €1,050
+
+### Regular Summer Events
+- **Sunset Aperitivo:** Every evening on the terrace — cocktails, wine, and appetizers with lake views
+- **Garden Evenings:** Weekly wine and cheese gatherings in the garden pavilion
+- **Pop-up Dining:** Themed dinner events (check schedule) — seasonal menus, guest chefs
+- **Live Music:** Occasional live acoustic music on the terrace during summer weekends
+
+### Bled Summer Events
+- **Bled Festival (July):** Classical music festival at Bled Castle
+- **Bled Days (August):** Traditional celebration with local food, music, and crafts
+- **Okarina World Music Festival (July–August):** International world music festival
+- **Summer on Bled:** Various outdoor events, markets, and performances throughout summer
+- **Bled International Rowing Regatta:** World-class rowing competition on Lake Bled
+
 ## Additional Highlights
 - Signature Kremšnita — a creative twist on Bled's iconic cream cake
 - Restaurant PDF menus available for download at adorabled.com
