@@ -1014,7 +1014,8 @@ def clean_response(text):
 
 
 def _deduplicate_questions(text: str) -> str:
-    """Remove duplicate or near-duplicate trailing questions."""
+    """Remove duplicate or near-duplicate trailing questions.
+    Keeps only the last question if multiple questions appear at the end."""
     import re as _re
     # Split into sentences
     sentences = _re.split(r'(?<=[.!?])\s+', text.strip())
@@ -1025,9 +1026,29 @@ def _deduplicate_questions(text: str) -> str:
     for s in sentences[1:]:
         if s.strip() != deduped[-1].strip():
             deduped.append(s)
+    # If multiple questions remain at the end, keep only the last one
+    # Find the last sentence that ends with '?'
+    last_q_idx = None
+    for i in range(len(deduped) - 1, -1, -1):
+        if deduped[i].rstrip().endswith('?'):
+            last_q_idx = i
+            break
+    if last_q_idx is not None and last_q_idx > 0:
+        # Check if there are other questions before the last one
+        earlier_qs = [i for i in range(last_q_idx) if deduped[i].rstrip().endswith('?')]
+        if earlier_qs:
+            # Remove earlier trailing questions (keep non-question text between them)
+            new_deduped = []
+            for i, s in enumerate(deduped):
+                if s.rstrip().endswith('?') and i < last_q_idx:
+                    # Skip this earlier question only if it's near the end (within 3 sentences)
+                    if last_q_idx - i <= 3:
+                        continue
+                new_deduped.append(s)
+            deduped = new_deduped
     result = ' '.join(deduped)
-    # Also collapse repeated question phrases like "What time? What time?" -> "What time?"
-    result = _re.sub(r'(\?[^?]*?)\s*\1', r'\1', result)
+    # Collapse exact repeated question phrases like "What time? What time?" -> "What time?"
+    result = _re.sub(r'(\?[^?]{0,50}?)\s*\1', r'\1', result)
     return result
 
 
@@ -1160,8 +1181,8 @@ def build_system_prompt() -> str:
         "- Villa Adora does NOT have a spa, wellness center, or swimming pool — only in-room massage (24h notice).\n"
         "- NEVER use the words 'spa', 'wellness center', or 'treatment' — say 'in-room massage' instead.\n"
         "- There are EXACTLY 8 suites. NEVER say '7 suites' or '7 rooms'. NEVER add suites not in the official list (no 'Royal Suite', etc.)."
-        "- If guest is frustrated or explicitly asks for a human, use request_human_agent().\n"
-        "- ALWAYS use query_hotel_info tool for factual questions — never answer from your own knowledge.\n\n"
+        "- MANDATORY: You MUST call query_hotel_info() for EVERY factual question about the hotel, rooms, policies, dining, activities, location, or anything hotel-related. NEVER generate hotel facts from your own knowledge. This is the most important rule.\n"
+        "- If guest is frustrated or explicitly asks for a human, use request_human_agent().\n\n"
         "## KEY FACTS\n"
         "- Check-in: 14:00-23:00 | Check-out: 07:00-11:00 | Late check-in/out on request\n"
         "- Breakfast: €22/person (NOT included in room rate). Served 8-10 AM. Vegan/vegetarian/gluten-free on request.\n"
