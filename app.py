@@ -1193,7 +1193,13 @@ def _detect_language(message: str) -> str:
     # High-confidence English check: if the message contains common English-only
     # words with no non-English markers, return English early to prevent
     # false-positive Croatian/Slovenian detection from shared vocabulary
-    if any(w in msg for w in [" room ", " rooms ", " book ", " booking ", " check-in ", " check-out ", " breakfast ", " parking ", " restaurant ", " hello ", " hi ", " thank ", " please ", " would ", " could ", " welcome ", " goodbye "]):
+    if any(w in msg for w in [
+        " room ", " rooms ", " suite ", " suites ", " book ", " booking ", " check-in ", " check-out ",
+        " breakfast ", " parking ", " restaurant ", " hello ", " hi ", " thank ", " please ", " would ",
+        " could ", " welcome ", " goodbye ", " do you ", " can i ", " can we ", " tell me ", " i want ",
+        " i will ", " i would ", " spa ", " wellness ", " cribs ", " crib ", " extra beds ", " extra bed ",
+        " wedding ", " bar ", " cocktail ", " drinks ", " where ", " what ", " how ", " are you "
+    ]):
         return "English"
 
     # Character-based detection for languages with unique characters
