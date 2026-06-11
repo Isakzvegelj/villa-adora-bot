@@ -1390,6 +1390,7 @@ def _detect_topic(message: str) -> str:
         "booking": ["book", "reserve", "reservation", "rezervir", "buchen", "prenotare", "réserver", "reservar"],
         "wedding": ["wedding", "marriage", "married", "bride", "groom", "poroka", "poročni", "hochzeits", "mariage", "matrimonio", "boda", "vjenčanje"],
         "gift_vouchers": ["gift voucher", "gift vouchers", "voucher", "vouchers", "gift card", "gift certificate", "darilni bon", "darilni boni", "gutschein", "buono regalo", "bon cadeau"],
+        "summer": ["summer", "summer 2026", "july", "august", "june", "september", "package", "packages", "romance package", "wellness retreat", "adventure package", "family getaway", "culinary experience", "event", "events", "festival", "concert", "poletje", "poletno", "julij", "avgust", "junij", "september", "paket", "paketi", "dogodek", "dogodki", "festival", "sommer", "juli", "august", "juni", "paket", "veranstaltung", "veranstaltungen", "festival", "été", "juillet", "août", "juin", "forfait", "forfaits", "événement", "festival", "estate", "luglio", "agosto", "giugno", "pacchetto", "pacchetti", "evento", "festival"],
     }
 
     def _matches(text, keywords):
@@ -2480,7 +2481,6 @@ def api_chat():
                 combined = (
                     f"We have the {r.get('name', 'Adora Pop Up Restaurant')} right here at the hotel! "
                     f"{r.get('description', 'Creative Slovenian cuisine with stunning lake views.')} "
-                    f"Led by renowned Chef Domen Demšar. "
                     f"Hours: Lunch & Dinner {r.get('hours', {}).get('lunch', 'Tue-Sun')}, "
                     f"Brunch {r.get('hours', {}).get('brunch', 'Thu-Sat')}. "
                     f"The terrace has arguably the best sunset views in Bled. "
